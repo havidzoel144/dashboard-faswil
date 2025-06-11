@@ -1,0 +1,5 @@
+{
+    "require": {
+        "linfo/linfo": "^4.0"
+    }
+}

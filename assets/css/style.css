@@ -1,0 +1,112 @@
+/*================================================================================
+	Item Name: Modern Admin - Clean Bootstrap 4 Dashboard HTML Template
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+.dataTables_filter {
+  text-align: left !important;
+  /* background-color: red; */
+}
+
+.dataTables_length {
+  padding: 5px;
+}
+
+.bottom {
+  display: flex;
+  justify-content: center;
+}
+
+.data-dosen {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ikon-cari {
+  padding: 14px 20px;
+  font-size: 1.8rem !important;
+}
+
+.dataTables_length select {
+  outline: 0;
+  border-width: 0 0 2px;
+  border-color: blue;
+}
+
+.col-form-label {
+  text-align: right;
+}
+
+.border-bottom {
+  outline: 0 !important;
+  border-width: 0 0 2px !important;
+  border-color: blue !important;
+}
+
+.row-baru {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+/* Custom CSS for Select2 */
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+  border: none; /* Remove the default border */
+  border-radius: 0; /* Remove border radius */
+  box-shadow: none; /* Remove any box-shadow */
+  outline: none; /* Remove any outline */
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__arrow,
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__arrow {
+  height: 100%; /* Ensure the dropdown arrow aligns properly */
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered,
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__rendered {
+  line-height: initial; /* Adjust line height if necessary */
+  padding: 6px 8px; /* Adjust padding for a better look */
+  border: 2px solid blue;
+  border-width: 0 0 2px;
+  padding-bottom: 10px !important;
+}
+
+/* If you also need to style the dropdown when it is opened */
+.select2-container--open .select2-selection--single,
+.select2-container--open .select2-selection--multiple {
+  border-bottom-color: blue; /* Maintain the bottom border color when dropdown is open */
+}
+
+.btn-warning-dashboard {
+  background-color: #ea7c00;
+  border-radius: 50px 50px 50px 50px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  color: white;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+.btn-warning-dashboard:hover {
+  color: white;
+  transform: scale(1.1);
+}
