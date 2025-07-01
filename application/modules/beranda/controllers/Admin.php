@@ -20,7 +20,7 @@ class Admin extends MX_Controller
   {
     parent::__construct();
     $this->load->library(['javascript', 'upload']);
-    $this->load->model(['Data_belmawa', 'User_model']);
+    $this->load->model(['Data_belmawa', 'User_model', 'Periode_model', 'Penilaian_model']);
     $this->load->helper('download'); // Load helper download untuk memudahkan proses download file
     date_default_timezone_set("Asia/Jakarta");
 
@@ -374,7 +374,12 @@ class Admin extends MX_Controller
 
   function dashboard()
   {
+    $periode = $this->Periode_model->get_active_periode();
     $data['dashboard'] = "active";
+    $data['periode_aktif'] = $periode;
+    $data['progres_penilaian'] = $this->Penilaian_model->get_data_penilaian_by_periode($periode->kode);
+
+    // echo json_encode(($data['penilaian_tipologi']));exit;
     $this->load->view("admin/v_index", $data);
   }
 

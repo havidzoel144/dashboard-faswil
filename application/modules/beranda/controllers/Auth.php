@@ -74,6 +74,6 @@ class Auth extends MX_Controller
     // $this->session->unset_userdata(array('user_id', 'username', 'role', 'logged_in'));
 
     // Redirect ke halaman login
-    redirect(base_url('login'));
+    redirect(base_url());
   }
 }

@@ -19,9 +19,20 @@
              </li>
          </ul>
 
-         <a href="https://lldikti3.kemdikbud.go.id/">
-             <button class="btn btn-warning-dashboard"><i class="la la-home"></i> Halaman Utama</button>
-         </a>
+         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
+             <a class="mr-1" href="https://lldikti3.kemdikbud.go.id/">
+                 <button class="btn btn-warning-dashboard"><i class="la la-home"></i> Halaman Utama</button>
+             </a>
+             <?php if ($this->session->userdata('logged_in')): ?>
+                 <a href="<?= base_url('admin/dashboard') ?>">
+                     <button class="btn btn-admin-dashboard me-1"> <i class="la la-user"></i> Admin Dashboard</button>
+                 </a>
+             <?php else: ?>
+                 <a href="<?= base_url('login') ?>">
+                     <button class="btn btn-login-dashboard"> <i class="la la-sign-in"></i> Login</button>
+                 </a>
+             <?php endif; ?>
+         </ul>
      </div>
  </div>
  <!-- END: Main Menu-->

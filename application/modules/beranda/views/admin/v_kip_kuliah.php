@@ -1,11 +1,5 @@
 <?= $this->load->view('admin/v_header') ?>
 
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/tables/datatable/datatables.min.css">
-<script src="<?= base_url() ?>assets/js/Chart.min.js"></script>
-
-<!-- END: Vendor CSS-->
-
 <?= $this->load->view('admin/v_menu') ?>
 
 <!-- BEGIN: Content-->
@@ -18,20 +12,22 @@
     </div>
     <div class="content-body">
       <!-- Basic Horizontal Timeline -->
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <div class="card">
             <div class="card-header">
               <h4 class="card-title" id="heading-buttons1">List Data KIP Kuliah</h4>
               <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
               <div class="heading-elements">
-                <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-tambah-data="false" data-target="#tambah-data">Tambah Data</button>
+                <?php if (has_role([3])) : ?>
+                  <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-tambah-data="false" data-target="#tambah-data">Tambah Data</button>
+                <?php endif; ?>
               </div>
             </div>
             <div class="card-content">
               <div class="card-body">
                 <div class="table-responsive">
-                  <table id="tabel-kip-kuliah" class="table table-striped table-bordered"">
+                  <table id="tabel-kip-kuliah" class="table table-striped table-bordered">
                     <thead>
                       <tr style="background-color: #563BFF; color: #ffffff">
                         <th class="text-center">#</th>

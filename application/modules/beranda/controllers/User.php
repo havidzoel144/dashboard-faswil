@@ -15,32 +15,52 @@ class User extends MX_Controller
       redirect(base_url('login'));
     }
 
-    $this->only_for_roles(['1']);
+    $this->only_for_roles([1, 2]);
+  }
+
+  public function allowed_ids()
+  {
+    // Ambil semua role_id user dari session
+    $session_roles = $this->session->userdata('roles');
+    $user_role_ids = array_column($session_roles, 'role_id');
+
+    // Inisialisasi allowed_ids kosong
+    $allowed_ids = [];
+
+    // Tambahkan role berdasarkan role_id yang dimiliki user
+    if (in_array('1', $user_role_ids)) {
+      $allowed_ids = array_merge($allowed_ids, [1, 2, 3]);
+    }
+    if (in_array('2', $user_role_ids)) {
+      $allowed_ids = array_merge($allowed_ids, [4, 5]);
+    }
+
+    // Hilangkan duplikat (jika ada)
+    return $allowed_ids = array_unique($allowed_ids);
   }
 
   public function index()
   {
+    $allowed_ids = $this->allowed_ids(); // hasil: [1,2,3,4,5]
+    $ids_string = '(' . implode(',', $allowed_ids) . ')';
+    // echo json_encode(($this->allowed_ids()));
+    // exit;
+
     $data = [
       'master' => 'active',
       'user' => 'active',
-      'data_user' => $this->User_model->get_users_with_roles(),
-      'data_role' => $this->db->query("SELECT * FROM `roles`")->result()
+      'data_user' => $this->User_model->get_users_with_roles($ids_string),
+      'data_role' => $this->db->query("SELECT * FROM `roles`")->result(),
+      'allowed_ids' => $this->allowed_ids(),
     ];
+
+    // echo json_encode($data['allowed_ids']);exit;
 
     $this->load->view("admin/master/user/v_index", $data);
   }
 
   public function simpanUser()
   {
-    // Validasi akses
-    $this->only_for_roles(['1']); // misal hanya admin superuser
-
-    // Validasi sederhana
-    // if (empty($nama) || empty($username) || empty($email) || empty($role)) {
-    //   $this->session->set_flashdata('error', 'Mohon lengkapi semua field.');
-    //   redirect('admin/data-user'); // ganti sesuai route kamu
-    // }
-
     $this->form_validation->set_rules('nama', 'Nama User', 'required');
     $this->form_validation->set_rules('username', 'Username', 'required|is_unique[users.username]');
     $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
@@ -228,7 +248,7 @@ class User extends MX_Controller
     }
 
     // Reset password (misalnya set password default)
-    $new_password = 'admin123'; // atau bisa generate password baru
+    $new_password = '123456'; // atau bisa generate password baru
 
     // Update password user
     $update = $this->User_model->update_password($user_id, $new_password);

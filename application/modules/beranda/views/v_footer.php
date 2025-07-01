@@ -1,6 +1,63 @@
 <div class="sidenav-overlay"></div>
 <div class="drag-target"></div>
 
+<!-- Modal Ubah Password -->
+<div class="modal fade text-left" id="modalUbahPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel4">UBAH PASSWORD</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <?php echo form_open(site_url('admin/ubah-password'), array('class' => 'form-horizontal', 'role' => 'form')); ?>
+            <input type="hidden" name="user_id" id="user_id">
+            <div class="modal-body">
+                <fieldset class="form-group">
+                    <label for="current-password">Password Saat Ini</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control square" id="current-password" name="current_password" placeholder="Masukkan Password Saat Ini">
+                        <div class="input-group-append">
+                            <span class="input-group-text toggle-password" data-target="#current-password" style="cursor:pointer;">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <label for="new-password">Password Baru</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control square" id="new-password" name="new_password" placeholder="Masukkan Password Baru">
+                        <div class="input-group-append">
+                            <span class="input-group-text toggle-password" data-target="#new-password" style="cursor:pointer;">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <label for="confirm-password">Konfirmasi Password Baru</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control square" id="confirm-password" name="confirm_password" placeholder="Masukkan Konfirmasi Password Baru">
+                        <div class="input-group-append">
+                            <span class="input-group-text toggle-password" data-target="#confirm-password" style="cursor:pointer;">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Ubah Password</button>
+                <button type="button" class="btn grey btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+            <?php echo form_close(); ?>
+        </div>
+    </div>
+</div>
+
 <!-- BEGIN: Footer-->
 <footer class="footer footer-transparent footer-light navbar-shadow">
     <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2 container center-layout"><span class="float-md-left d-block d-md-inline-block">Copyright &copy; 2023 <a class="text-bold-800 grey darken-2" href="#" target="_blank">LLDIKTI III</a></span><span class="float-md-right d-none d-lg-block">by SI BTI 4.0<i class="ft-heart pink"></i><span id="scroll-top"></span></span></p>
@@ -99,6 +156,24 @@
             placeholder: "Silakan pilih Status Keaktifan (bisa pilih lebih dari 1)",
             allowClear: true
         });
+    });
+
+    function ubahPassword(encryptedId) {
+        var decoded = decodeURIComponent(encryptedId);
+        document.getElementById('user_id').value = decoded;
+        $('#modalUbahPassword').modal('show');
+    }
+
+    $(document).on('click', '.toggle-password', function() {
+        var input = $($(this).data('target'));
+        var icon = $(this).find('i');
+        if (input.attr('type') === 'password') {
+            input.attr('type', 'text');
+            icon.removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+            input.attr('type', 'password');
+            icon.removeClass('fa-eye-slash').addClass('fa-eye');
+        }
     });
 </script>
 

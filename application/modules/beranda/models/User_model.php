@@ -15,12 +15,13 @@ class User_model extends CI_Model
     return $query->result_array();
   }
 
-  public function get_users_with_roles()
+  public function get_users_with_roles($allowed_ids_array)
   {
     $this->db->select('u.id, u.nama, u.username, u.email, u.status, GROUP_CONCAT(r.id ORDER BY r.id ASC SEPARATOR ", ") as role_id, GROUP_CONCAT(r.nama_role SEPARATOR ", ") as roles');
     $this->db->from('users u');
     $this->db->join('user_roles ur', 'u.id = ur.user_id', 'left');
     $this->db->join('roles r', 'ur.role_id = r.id', 'left');
+    $this->db->where('ur.role_id IN ' . $allowed_ids_array); // $allowed_ids sudah dalam format string (1,2,3,...)
     $this->db->group_by('u.id');
     $query = $this->db->get();
     return $query->result();
@@ -138,6 +139,22 @@ class User_model extends CI_Model
 
     // Tambahkan subquery EXISTS untuk memastikan user punya role_id=4
     $this->db->where('EXISTS (SELECT 1 FROM user_roles WHERE user_id = u.id AND role_id = 4)', null, false);
+    // $this->db->where('u.status', '1');
+
+    $this->db->group_by('u.id');
+    $query = $this->db->get();
+    return $query->result();
+  }
+
+  public function get_users_with_validator_role()
+  {
+    $this->db->select('u.id, u.nama, u.username, u.email, u.status, GROUP_CONCAT(r.id ORDER BY r.id ASC SEPARATOR ", ") as role_id, GROUP_CONCAT(r.nama_role SEPARATOR ", ") as roles');
+    $this->db->from('users u');
+    $this->db->join('user_roles ur', 'u.id = ur.user_id', 'left');
+    $this->db->join('roles r', 'ur.role_id = r.id', 'left');
+
+    // Tambahkan subquery EXISTS untuk memastikan user punya role_id=5
+    $this->db->where('EXISTS (SELECT 1 FROM user_roles WHERE user_id = u.id AND role_id = 5)', null, false);
     // $this->db->where('u.status', '1');
 
     $this->db->group_by('u.id');

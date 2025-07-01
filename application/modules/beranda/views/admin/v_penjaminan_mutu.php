@@ -1,11 +1,5 @@
 <?= $this->load->view('admin/v_header.php') ?>
 
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/tables/datatable/datatables.min.css">
-<script src="<?= base_url() ?>assets/js/Chart.min.js"></script>
-
-<!-- END: Vendor CSS-->
-
 <?= $this->load->view('admin/v_menu.php') ?>
 
 <!-- BEGIN: Content-->
@@ -18,7 +12,7 @@
     </div>
     <div class="content-body">
       <!-- Basic Horizontal Timeline -->
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-xl-12">
           <div class="card">
             <div class="card-header">
@@ -107,12 +101,14 @@
                             <div class="col-md-1"></div>
                           </div>
 
-                          <div class="form-group row d-flex justify-content-center">
-                            <button type="button" class="btn btn-dark mb-1 waves-effect waves-light" data-toggle="modal" data-backdrop="false" data-target="#backdrop">Import Data</button>
-                            <a href="<?= base_url('uploads/template_penjaminan_mutu.xlsx') ?>" class="btn btn-success mb-1 waves-effect waves-light">Download Template</a>
-                            <!-- Tombol untuk truncate tabel -->
-                            <button type="button" class="btn btn-danger mb-1 waves-effect waves-light" data-toggle="modal" data-backdrop="false" data-target="#backdropHapus">Hapus Data</button>
-                          </div>
+                          <?php if (has_role([2])) : ?>
+                            <div class="form-group row d-flex justify-content-center">
+                              <button type="button" class="btn btn-dark mb-1 waves-effect waves-light" data-toggle="modal" data-backdrop="false" data-target="#backdrop">Import Data</button>
+                              <a href="<?= base_url('uploads/template_penjaminan_mutu.xlsx') ?>" class="btn btn-success mb-1 waves-effect waves-light">Download Template</a>
+                              <!-- Tombol untuk truncate tabel -->
+                              <button type="button" class="btn btn-danger mb-1 waves-effect waves-light" data-toggle="modal" data-backdrop="false" data-target="#backdropHapus">Hapus Data</button>
+                            </div>
+                          <?php endif; ?>
                         </div>
                       </div>
 

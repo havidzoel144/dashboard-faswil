@@ -1,11 +1,5 @@
 <?= $this->load->view('admin/v_header') ?>
 
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/tables/datatable/datatables.min.css">
-<script src="<?= base_url() ?>assets/js/Chart.min.js"></script>
-
-<!-- END: Vendor CSS-->
-
 <?= $this->load->view('admin/v_menu') ?>
 
 <!-- BEGIN: Content-->
@@ -18,7 +12,7 @@
     </div>
     <div class="content-body">
       <!-- Basic Horizontal Timeline -->
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <div class="card">
             <div class="card-header">
@@ -56,11 +50,16 @@
                             <td class="text-start" style="width: 15%;"><?= $data->email ?></td>
                             <td class="text-start" style="width: 15%;"><?= ucwords($data->roles) ?></td>
                             <td class="text-center" style="width: 7%;">
-                              <div class="status-toggle" data-status="<?= $data->status ?>" data-id="<?= $data->id ?>" style="cursor: pointer;">
-                                <?= $data->status == '1'
-                                  ? '<div class="badge bg-success block">Aktif</div>'
-                                  : '<div class="badge bg-red block">Non Aktif</div>'
-                                ?>
+                              <div class="status-toggle d-inline-block w-100 text-center" data-status="<?= $data->status ?>" data-id="<?= $data->id ?>" style="cursor: pointer;">
+                                <?php if ($data->status == '1'): ?>
+                                  <span class="badge rounded-pill w-100" style="background: linear-gradient(90deg, #28a745 0%, #218838 100%); color: #fff; font-size: 0.95em; padding: 0.5em 1em; display: block;">
+                                    <i class="la la-check-circle mr-1"></i> Aktif
+                                  </span>
+                                <?php else: ?>
+                                  <span class="badge rounded-pill w-100" style="background: linear-gradient(90deg, #dc3545 0%, #b52a37 100%); color: #fff; font-size: 0.95em; padding: 0.5em 1em; display: block;">
+                                    <i class="la la-times-circle mr-1"></i> Non Aktif
+                                  </span>
+                                <?php endif; ?>
                               </div>
                             </td>
                             <td class="text-center" style="width: 10%;">
@@ -122,9 +121,11 @@
         <fieldset class="form-group">
           <label for="role">Role</label>
           <select class="select2 form-control" aria-hidden="true" multiple="multiple" name="role_id[]" id="role" style="width:100%;">
-            <?php foreach ($data_role as $role) { ?>
-              <option value="<?= $role->id ?>"><?= ucwords($role->nama_role) ?></option>
-            <?php } ?>
+            <?php foreach ($data_role as $role) : ?>
+              <?php if (in_array($role->id, $allowed_ids)) : ?>
+                <option value="<?= $role->id ?>"><?= ucwords($role->nama_role) ?></option>
+              <?php endif; ?>
+            <?php endforeach; ?>
           </select>
         </fieldset>
         <fieldset class="form-group">
@@ -173,9 +174,11 @@
         <fieldset class="form-group">
           <label for="edit-role">Role</label>
           <select class="select2 form-control" aria-hidden="true" multiple="multiple" name="role_id[]" id="edit-role" style="width:100%;">
-            <?php foreach ($data_role as $role) { ?>
-              <option value="<?= $role->id ?>"><?= ucwords($role->nama_role) ?></option>
-            <?php } ?>
+            <?php foreach ($data_role as $role) : ?>
+              <?php if (in_array($role->id, $allowed_ids)) : ?>
+                <option value="<?= $role->id ?>"><?= ucwords($role->nama_role) ?></option>
+              <?php endif; ?>
+            <?php endforeach; ?>
           </select>
         </fieldset>
         <fieldset class="form-group">
@@ -307,7 +310,9 @@
   function confirmResetPassword(id) {
     Swal.fire({
       title: "Reset Password",
-      text: "Apakah anda yakin ingin mereset password akun ini?",
+      // text: "Apakah anda yakin ingin mereset password akun ini?",
+      html: `Apakah anda yakin ingin mereset password akun ini? <br>
+            Password standar adalah <b>123456</b>`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -387,10 +392,18 @@
               // Update UI status
               const statusElement = $('[data-id="' + userId + '"]');
               if (status == '1') {
-                statusElement.html('<div class="badge bg-red block">Non Aktif</div>');
+                statusElement.html(`
+                  <span class="badge rounded-pill w-100" style="background: linear-gradient(90deg, #dc3545 0%, #b52a37 100%); color: #fff; font-size: 0.95em; padding: 0.5em 1em; display: block;">
+                  <i class="la la-times-circle mr-1"></i> Non Aktif
+                  </span>
+                `);
                 statusElement.data('status', '0');
               } else {
-                statusElement.html('<div class="badge bg-success block">Aktif</div>');
+                statusElement.html(`
+                  <span class="badge rounded-pill w-100" style="background: linear-gradient(90deg, #28a745 0%, #218838 100%); color: #fff; font-size: 0.95em; padding: 0.5em 1em; display: block;">
+                  <i class="la la-check-circle mr-1"></i> Aktif
+                  </span>
+                `);
                 statusElement.data('status', '1');
               }
               Swal.fire('Berhasil!', `Status user berhasil diubah menjadi ${newStatus}.`, 'success');

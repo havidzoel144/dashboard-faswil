@@ -1,11 +1,5 @@
 <?= $this->load->view('admin/v_header') ?>
 
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/tables/datatable/datatables.min.css">
-<script src="<?= base_url() ?>assets/js/Chart.min.js"></script>
-
-<!-- END: Vendor CSS-->
-
 <?= $this->load->view('admin/v_menu') ?>
 
 <!-- BEGIN: Content-->
@@ -30,179 +24,126 @@
 
       $roles_string = implode(', ', $role_names);
       ?>
-      <div class="row mb-2">
-        <div class="col-12">
-          <h1 class="display-5">
-            Selamat datang
-            <span class="badge-info"><?= $this->session->userdata('nama') ?></span> di website Dashboard LLDIKTI 3.
-            Anda login sebagai
-            <span class="badge-info"><?= $roles_string ?></span>
-          </h1>
+
+      <div class="row justify-content-center">
+        <div class="col-12 text-center">
+          <div class="card shadow-lg border-0" style="background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); color: #f8f9fa;">
+            <div class="card-body py-4">
+              <h1 class="display-4 font-weight-bold mb-3" style="letter-spacing: 1px; color: #fff;">
+                Selamat Datang,
+                <span class="badge" style="background: #f8f9fa; color: #2a5298; font-size:1.2em; box-shadow: 0 2px 8px rgba(30,60,114,0.12);">
+                  <?= $this->session->userdata('nama') ?>
+                </span>
+              </h1>
+              <p class="lead mb-2" style="font-size:1.3em;">
+                Anda login sebagai
+                <span class="badge" style="background: #ffb347; color: #1e3c72; font-size:1em; box-shadow: 0 2px 8px rgba(255,179,71,0.12);">
+                  <?= $roles_string ?>
+                </span>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-xl-3 col-lg-6 col-12">
-          <div class="card pull-up">
-            <div class="card-content">
-              <div class="card-body">
-                <div class="media d-flex">
-                  <div class="media-body text-left">
-                    <h3 class="info">850</h3>
-                    <h6>Products Sold</h6>
+      <?php if (has_role([2])) : ?>
+        <div class="row mb-3">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title ml-1" id="heading-buttons1">Data Penilaian Tipologi | <span class="badge badge-secondary font-medium-1"><?= $periode_aktif->keterangan ?></span></h4>
+                <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+              </div>
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table id="tabel-penilaian" class="table table-striped table-bordered">
+                      <thead>
+                        <tr style="background-color: #563BFF; color: #ffffff">
+                          <th class="text-center">#</th>
+                          <th class="text-center">Nama Fasilitator</th>
+                          <th class="text-center">Perguruan Tinggi</th>
+                          <th class="text-center">Periode</th>
+                          <th class="text-center">Nama Validator</th>
+                          <th class="text-center">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                        $i = 0; // Inisialisasi counter
+                        if (!empty($progres_penilaian)) { // Cek apakah array progres_penilaian tidak kosong
+                          foreach ($progres_penilaian as $data) {
+                            $row_class = '';
+                            if ($data->id_status_penilaian == '4') {
+                              $row_class = 'table-success'; // hijau
+                            } elseif ($data->id_status_penilaian == '3') {
+                              $row_class = 'table-danger'; // kuning
+                            } elseif ($data->id_status_penilaian == '2') {
+                              $row_class = 'table-warning'; // merah
+                            }
+                        ?>
+                            <tr class="<?= $row_class ?>">
+                              <td class="text-center" style="width: 3%;"><?= ++$i ?></td>
+                              <td class="text-start" style="width: 10%;"><?= $data->nama_fasilitator ?></td>
+                              <td class="text-start" style="width: 20%;"><?= $data->nama_pt ?></td>
+                              <td class="text-start" style="width: 13%;"><?= $data->keterangan ?></td>
+                              <td class="text-start" style="width: 15%;">
+                                <?php if ($data->nama_validator == NULL): ?>
+                                  <span class="badge w-100" style="background: #ff4d4f; color: #fff; font-size: 1em; padding: 8px 14px; border-radius: 20px; letter-spacing: 0.5px;">
+                                    <i class="fa fa-user-times" aria-hidden="true" style="margin-right: 6px;"></i>
+                                    Belum ada validator
+                                  </span>
+                                <?php else: ?>
+                                  <span class="badge w-100" style="background: #28a745; color: #fff; font-size: 1em; padding: 8px 14px; border-radius: 20px; letter-spacing: 0.5px;">
+                                    <i class="fa fa-user" aria-hidden="true" style="margin-right: 6px;"></i>
+                                    <?= $data->nama_validator ?>
+                                  </span>
+                                <?php endif; ?>
+                              </td>
+                              <td class="text-center" style="width: 5%;">
+                                <?php
+                                $warna_badge = $data->id_status_penilaian == '4' ? 'badge-success' : (
+                                  $data->id_status_penilaian == '3' ? 'badge-danger' : (
+                                    $data->id_status_penilaian == '2' ? 'badge-warning' : 'badge-secondary'
+                                  )
+                                );
+
+                                $icon = $data->id_status_penilaian == '4' ? 'fa-check-circle' : (
+                                  $data->id_status_penilaian == '3' ? 'fa-times-circle' : (
+                                    $data->id_status_penilaian == '2' ? 'fa-hourglass-half' : 'fa-ban'
+                                  )
+                                );
+                                ?>
+                                <span class="badge <?= $warna_badge ?>" style="font-size: 1em; padding: 8px 14px; border-radius: 20px; letter-spacing: 0.5px; width: 100%;">
+                                  <i class="fa <?= $icon ?>" aria-hidden="true" style="margin-right: 6px;"></i>
+                                  <?= $data->nm_status !== null ? $data->nm_status : 'Belum input' ?>
+                                </span>
+                              </td>
+                            </tr>
+                          <?php
+                          }
+                        } else { // Jika progres_penilaian kosong
+                          ?>
+                          <tr>
+                            <td colspan="6" class="text-center">Data tidak tersedia</td> <!-- Baris kosong -->
+                          </tr>
+                        <?php
+                        }
+                        ?>
+                      </tbody>
+                    </table>
                   </div>
-                  <div>
-                    <i class="icon-basket-loaded info font-large-2 float-right"></i>
-                  </div>
-                </div>
-                <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                  <div class="progress-bar bg-gradient-x-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-lg-6 col-12">
-          <div class="card pull-up">
-            <div class="card-content">
-              <div class="card-body">
-                <div class="media d-flex">
-                  <div class="media-body text-left">
-                    <h3 class="warning">$748</h3>
-                    <h6>Net Profit</h6>
-                  </div>
-                  <div>
-                    <i class="icon-pie-chart warning font-large-2 float-right"></i>
-                  </div>
-                </div>
-                <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                  <div class="progress-bar bg-gradient-x-warning" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-6 col-12">
-          <div class="card pull-up">
-            <div class="card-content">
-              <div class="card-body">
-                <div class="media d-flex">
-                  <div class="media-body text-left">
-                    <h3 class="success">146</h3>
-                    <h6>New Customers</h6>
-                  </div>
-                  <div>
-                    <i class="icon-user-follow success font-large-2 float-right"></i>
-                  </div>
-                </div>
-                <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                  <div class="progress-bar bg-gradient-x-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-6 col-12">
-          <div class="card pull-up">
-            <div class="card-content">
-              <div class="card-body">
-                <div class="media d-flex">
-                  <div class="media-body text-left">
-                    <h3 class="danger">99.89 %</h3>
-                    <h6>Customer Satisfaction</h6>
-                  </div>
-                  <div>
-                    <i class="icon-heart danger font-large-2 float-right"></i>
-                  </div>
-                </div>
-                <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                  <div class="progress-bar bg-gradient-x-danger" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <?php endif; ?>
       <!--/ Basic Horizontal Timeline -->
     </div>
   </div>
 </div>
 <!-- END: Content-->
-
-<!-- MODAL TAMBAH START -->
-<div class="modal fade text-left" id="backdrop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel4">TAMBAH DATA KIP KULIAH</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="<?= base_url('admin/simpan-kip-kuliah') ?>" method="POST">
-        <div class="modal-body">
-          <fieldset class="form-group">
-            <label for="tahun">Tahun</label>
-            <input type="text" class="form-control square" id="tahun" name="tahun" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" value="<?= date('Y') ?>">
-          </fieldset>
-          <fieldset class="form-group">
-            <label for="kuota_reguler">Kuota Reguler</label>
-            <input type="text" class="form-control square" id="kuota_reguler" name="kuota_reguler" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
-          </fieldset>
-          <fieldset class="form-group">
-            <label for="kuota_usulan">Kuota Usulan</label>
-            <input type="text" class="form-control square" id="kuota_usulan" name="kuota_usulan" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
-          </fieldset>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Tutup</button>
-          <button type="submit" class="btn btn-outline-primary">Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- MODAL TAMBAH END -->
-
-<!-- MODAL UBAH START -->
-<!-- Modal untuk mengubah data -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Ubah Data KIP Kuliah</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Form untuk memperbarui data -->
-        <form id="editForm" method="post" action="<?= base_url('admin/update_kip_kuliah') ?>">
-          <input type="hidden" id="edit_id" name="id"> <!-- Input tersembunyi untuk ID -->
-
-          <div class="form-group">
-            <label for="edit_tahun">Tahun</label>
-            <input type="text" class="form-control" id="edit_tahun" name="tahun" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" required>
-          </div>
-
-          <div class="form-group">
-            <label for="edit_kuota_reguler">Kuota Reguler</label>
-            <input type="text" class="form-control" id="edit_kuota_reguler" name="kuota_reguler" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" required>
-          </div>
-
-          <div class="form-group">
-            <label for="edit_kuota_usulan">Kuota Usulan</label>
-            <input type="text" class="form-control" id="edit_kuota_usulan" name="kuota_usulan" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" required>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL UBAH END -->
 
 <?= $this->load->view('admin/v_footer') ?>
 
@@ -219,58 +160,16 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    var dataTable = $('#tabel-kip-kuliah').DataTable({
-      dom: '<"top data-dosen"li>frt<"bottom"p><"clear">',
-      // processing: true,
-      // serverSide: true,
-      searching: false,
-    });
+    var tabelPenilaian = $('#tabel-penilaian').DataTable();
 
+    // Inisialisasi tooltip saat tabel selesai digambar ulang
+    tabelPenilaian.on('draw.dt', function() {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
 
     // Sembunyikan alert flash message setelah 3 detik (3000 ms)
     setTimeout(function() {
       $('#flash-message').fadeOut('slow');
     }, 2000); // 3 detik
   });
-
-  function confirmDelete(id) {
-    Swal.fire({
-      title: "Yakin?",
-      text: "Anda akan menghapus data ini!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: "Tidak!",
-      confirmButtonText: "Yes, hapus!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Berhasil!",
-          text: "Data telah dihapus.",
-          icon: "success"
-        }).then(() => {
-          // Setelah pengguna klik tombol OK, baru proses penghapusan dilakukan
-          window.location.href = "<?= base_url('admin/hapus-kip-kuliah/') ?>" + id;
-        });
-      }
-    });
-
-    // if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-    // Jika konfirmasi "Ya", kirim permintaan ke server untuk menghapus data
-    // window.location.href = "<?= base_url('admin/hapus-kip-kuliah/') ?>" + id;
-    // }
-    // Jika user klik "No", tidak terjadi apa-apa, alert ditutup
-  }
-
-  function openEditModal(id, tahun, kuota_reguler, kuota_usulan) {
-    // Isi form di modal dengan data yang ada menggunakan jQuery
-    $('#edit_id').val(id);
-    $('#edit_tahun').val(tahun);
-    $('#edit_kuota_reguler').val(kuota_reguler);
-    $('#edit_kuota_usulan').val(kuota_usulan);
-
-    // Tampilkan modal menggunakan jQuery
-    $('#editModal').modal('show');
-  }
 </script>

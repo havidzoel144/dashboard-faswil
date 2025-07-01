@@ -66,24 +66,76 @@ class Penilaian_model extends CI_Model
     return $output;
   }
 
-  public function get_data_penilaian_by_fasilitator($fasilitator_id)
+  public function get_data_penilaian_by_fasilitator($fasilitator_id, $periode)
   {
     // Cari user berdasarkan username
+    $this->db->select('pt.*, uf.nama as nama_fasilitator, uv.nama as nama_validator, p.keterangan, sp.nm_status');
+    $this->db->from('penilaian_tipologi pt');
+    $this->db->join('users uf', 'uf.id = pt.fasilitator_id', 'left');
+    $this->db->join('users uv', 'uv.id = pt.validator_id', 'left');
+    $this->db->join('periode p', 'p.kode = pt.periode', 'left');
+    $this->db->join('status_penilaian sp', 'sp.id_status = pt.id_status_penilaian', 'left');
+    $this->db->where('pt.fasilitator_id', $fasilitator_id);
+    $this->db->where('pt.periode', $periode);
+    $query = $this->db->get();
+    return $query->result();
+  }
+
+  // public function update_penilaian($kode_pt, $fasilitator_id, $periode, $data)
+  public function update_penilaian($id_penilaian_tipologi, $data)
+  {
+    // $this->db->where('kode_pt', $kode_pt);
+    // $this->db->where('fasilitator_id', $fasilitator_id);
+    // $this->db->where('periode', $periode);
+    $this->db->where('id_penilaian_tipologi', $id_penilaian_tipologi);
+    $this->db->update('penilaian_tipologi', $data);
+  }
+
+  public function get_data_penilaian_by_periode($periode)
+  {
+    // Cari user berdasarkan username
+    $this->db->select('pt.*, uf.nama as nama_fasilitator, uv.nama as nama_validator, p.keterangan, sp.nm_status');
+    $this->db->from('penilaian_tipologi pt');
+    $this->db->join('users uf', 'uf.id = pt.fasilitator_id', 'left');
+    $this->db->join('users uv', 'uv.id = pt.validator_id', 'left');
+    $this->db->join('periode p', 'p.kode = pt.periode', 'left');
+    $this->db->join('status_penilaian sp', 'sp.id_status = pt.id_status_penilaian', 'left');
+    $this->db->where('pt.periode', $periode);
+    $query = $this->db->get();
+    return $query->result();
+  }
+
+  // public function getPenilaian($kode_pt, $fasilitator_id, $periode)
+  public function getPenilaian($id_penilaian_tipologi)
+  {
     $this->db->select('pt.*, uf.nama as nama_fasilitator, uv.nama as nama_validator, p.keterangan');
     $this->db->from('penilaian_tipologi pt');
     $this->db->join('users uf', 'uf.id = pt.fasilitator_id', 'left');
     $this->db->join('users uv', 'uv.id = pt.validator_id', 'left');
     $this->db->join('periode p', 'p.kode = pt.periode', 'left');
-    $this->db->where('pt.fasilitator_id', $fasilitator_id);
+    // $this->db->where('pt.periode', $periode);
+    // $this->db->where('pt.kode_pt', $kode_pt);
+    // $this->db->where('pt.fasilitator_id', $fasilitator_id);
+    $this->db->where('pt.id_penilaian_tipologi', $id_penilaian_tipologi);
     $query = $this->db->get();
-    return $query->result();
+    return $query->row();
   }
 
-  public function update_penilaian($kode_pt, $fasilitator_id, $periode, $data)
+  public function get_data_penilaian_by_id($id)
   {
-    $this->db->where('kode_pt', $kode_pt);
-    $this->db->where('fasilitator_id', $fasilitator_id);
-    $this->db->where('periode', $periode);
-    return $this->db->update('penilaian_tipologi', $data);
+    $this->db->select('pt.*, uf.nama as nama_fasilitator, uv.nama as nama_validator, p.keterangan, sp.id_status, sp.nm_status');
+    $this->db->from('penilaian_tipologi pt');
+    $this->db->join('users uf', 'uf.id = pt.fasilitator_id', 'left');
+    $this->db->join('users uv', 'uv.id = pt.validator_id', 'left');
+    $this->db->join('periode p', 'p.kode = pt.periode', 'left');
+    $this->db->join('status_penilaian sp', 'sp.id_status = pt.id_status_penilaian', 'left');
+    $this->db->where('pt.id_penilaian_tipologi', $id);
+    $query = $this->db->get();
+    return $query->row();
+  }
+
+  public function delete_penilaian_by_id($id)
+  {
+    return $this->db->delete('penilaian_tipologi', ['id_penilaian_tipologi' => $id]);
   }
 }

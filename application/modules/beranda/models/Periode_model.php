@@ -12,6 +12,17 @@ class Periode_model extends CI_Model
     return $query->result_array();
   }
 
+  public function get_data_periode_by_fasilitator($fasilitator_id)
+  {
+    $this->db->select('p.*');
+    $this->db->from('periode p');
+    $this->db->join('penilaian_tipologi pt', 'p.kode = pt.periode');
+    $this->db->where('pt.fasilitator_id', $fasilitator_id);
+    $this->db->group_by('p.kode');
+    $query = $this->db->get();
+    return $query->result_array();
+  }
+
   public function get_active_periode()
   {
     $this->db->select('*');
@@ -22,30 +33,35 @@ class Periode_model extends CI_Model
   }
 
   // Insert user baru dan return ID
-  public function insert_user($data)
+  public function insert_periode($data)
   {
-    $this->db->insert('users', $data);
-    return $this->db->insert_id();
+    return $this->db->insert('periode', $data);
   }
 
   // Method untuk update data user
-  public function update_user($user_id, $update_data)
+  public function update_periode($kode, $update_data)
   {
-    $this->db->where('id', $user_id);
-    return $this->db->update('users', $update_data); // Update data user di tabel 'users'
+    $this->db->where('kode', $kode);
+    return $this->db->update('periode', $update_data); // Update data user di tabel 'users'
   }
 
-  public function delete_user($user_id)
-  { // Hapus data user_roles yang terkait
-    $this->db->where('user_id', $user_id);
-    $this->db->delete('user_roles');
-
-    return $this->db->delete('users', ['id' => $user_id]);
+  public function get_periode_by_kode($kode)
+  {
+    return $this->db->get_where('periode', ['kode' => $kode])->row();
   }
 
-  public function update_status($user_id, $status)
+  public function delete_periode($kode)
   {
-    $this->db->where('id', $user_id);
-    return $this->db->update('users', ['status' => $status]);
+    // Hapus data periode yang terkait
+    return $this->db->delete('periode', ['kode' => $kode]);
+  }
+
+  public function update_status($kode, $status)
+  {
+    // Step 1: Set semua status jadi 0
+    $this->db->update('periode', ['status' => 0]);
+
+    $this->db->where('kode', $kode);
+    return $this->db->update('periode', ['status' => $status]);
   }
 }

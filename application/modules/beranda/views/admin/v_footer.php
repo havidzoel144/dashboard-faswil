@@ -17,15 +17,36 @@
             <div class="modal-body">
                 <fieldset class="form-group">
                     <label for="current-password">Password Saat Ini</label>
-                    <input type="text" class="form-control square" id="current-password" name="current_password" placeholder="Masukkan Password Saat Ini">
+                    <div class="input-group">
+                        <input type="password" class="form-control square" id="current-password" name="current_password" placeholder="Masukkan Password Saat Ini">
+                        <div class="input-group-append">
+                            <span class="input-group-text toggle-password" data-target="#current-password" style="cursor:pointer;">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
                 </fieldset>
                 <fieldset class="form-group">
                     <label for="new-password">Password Baru</label>
-                    <input type="text" class="form-control square" id="new-password" name="new_password" placeholder="Masukkan Password Baru">
+                    <div class="input-group">
+                        <input type="password" class="form-control square" id="new-password" name="new_password" placeholder="Masukkan Password Baru">
+                        <div class="input-group-append">
+                            <span class="input-group-text toggle-password" data-target="#new-password" style="cursor:pointer;">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
                 </fieldset>
                 <fieldset class="form-group">
                     <label for="confirm-password">Konfirmasi Password Baru</label>
-                    <input type="text" class="form-control square" id="confirm-password" name="confirm_password" placeholder="Masukkan Konfirmasi Password Baru">
+                    <div class="input-group">
+                        <input type="password" class="form-control square" id="confirm-password" name="confirm_password" placeholder="Masukkan Konfirmasi Password Baru">
+                        <div class="input-group-append">
+                            <span class="input-group-text toggle-password" data-target="#confirm-password" style="cursor:pointer;">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
                 </fieldset>
             </div>
             <div class="modal-footer">
@@ -42,6 +63,7 @@
     <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2 container center-layout"><span class="float-md-left d-block d-md-inline-block">Copyright &copy; 2023 <a class="text-bold-800 grey darken-2" href="#" target="_blank">LLDIKTI III</a></span><span class="float-md-right d-none d-lg-block">by SI BTI 4.0<i class="ft-heart pink"></i><span id="scroll-top"></span></span></p>
 </footer>
 <!-- END: Footer-->
+
 <!-- BEGIN: Vendor JS-->
 <script src="<?= base_url() ?>app-assets/vendors/js/vendors.min.js"></script>
 <!-- BEGIN Vendor JS-->
@@ -80,6 +102,7 @@
 <script src="<?= base_url() ?>app-assets/js/scripts/forms/switch.js"></script>
 
 <script src="<?= base_url() ?>app-assets/js/scripts/extensions/list.js"></script>
+<script src="<?= base_url() ?>assets/js/Chart.min.js"></script>
 <!-- END: Page JS-->
 
 <!-- SWEETALERT -->
@@ -169,6 +192,18 @@
         document.getElementById('user_id').value = decoded;
         $('#modalUbahPassword').modal('show');
     }
+
+    $(document).on('click', '.toggle-password', function() {
+        var input = $($(this).data('target'));
+        var icon = $(this).find('i');
+        if (input.attr('type') === 'password') {
+            input.attr('type', 'text');
+            icon.removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+            input.attr('type', 'password');
+            icon.removeClass('fa-eye-slash').addClass('fa-eye');
+        }
+    });
 </script>
 
 </body>

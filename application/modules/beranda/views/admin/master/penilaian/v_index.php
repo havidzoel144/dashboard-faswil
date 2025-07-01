@@ -1,11 +1,5 @@
 <?= $this->load->view('admin/v_header') ?>
 
-<!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/tables/datatable/datatables.min.css">
-<script src="<?= base_url() ?>assets/js/Chart.min.js"></script>
-
-<!-- END: Vendor CSS-->
-
 <?= $this->load->view('admin/v_menu') ?>
 
 <!-- BEGIN: Content-->
@@ -17,251 +11,93 @@
     <div class="content-header row">
     </div>
     <div class="content-body">
-      <div class="row match-height">
-        <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="row">
+        <div class="col-lg-8 col-md-6 col-sm-12 mx-auto">
           <div class="card">
             <div class="card-header">
-              <h4 class="card-title" id="list-basic">Perguruan Tinggi</h4>
-            </div>
-            <div class="card-body">
-
-              <div id="list-pt">
-                <input type="text" class="search form-control round border-primary mb-1" placeholder="Cari">
-                <ul class="list-group list">
-                  <?php if (!empty($data_pt_binaan)) : ?>
-                    <?php foreach ($data_pt_binaan as $data) : ?>
-                      <?php
-                      $sudah_input = !is_null($data->skor_1a);
-                      $item_class = $sudah_input ? 'bg-success text-white' : '';
-                      ?>
-                      <li class="list-group-item <?= $item_class ?>" data-nama-pt="<?= $data->nama_pt ?>" data-kode-pt="<?= $data->kode_pt ?>">
-
-                        <div class="d-flex justify-content-between align-items-center">
-                          <div>
-                            <h3 class="nama_pt" style="margin-bottom: 0;"><?= $data->nama_pt ?></h3>
-                            <p class="kode_pt" style="margin-bottom: 0;"><?= $data->kode_pt ?></p>
-                          </div>
-                          <?php if ($sudah_input) : ?>
-                            <span class="badge badge-light custom-badge">Sudah input</span>
-                          <?php endif; ?>
-                        </div>
-
-                      </li>
-                    <?php endforeach; ?>
-                  <?php else : ?>
-                    <li class="list-group-item">
-                      <h3 class="nama_pt">Belum ada data</h3>
-                      <p class="kode_pt">-</p>
-                    </li>
-                  <?php endif; ?>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-8 col-md-6 col-sm-12">
-          <div class="card">
-            <div class="card-header">
-              <h4 class="card-title" id="heading-buttons1">Input Skor</h4>
+              <h4 class="card-title" id="heading-buttons1">Periode Penilaian Fasilitator</h4>
             </div>
             <div class="dropdown-divider"></div>
             <div class="card-content">
               <div class="card-body">
 
-                <div class="row">
-                  <div class="col-sm-12">
-                    <?php echo form_open(site_url('admin/simpan-skor'), array('class' => 'form-horizontal', 'role' => 'form', 'id' => 'form-input-skor')); ?>
-
-                    <div class="row">
-                      <div class="col-lg-3">
-                        <fieldset class="form-group mb-1">
-                          <label for="kode-pt">Kode PT</label>
-                          <input type="text" class="form-control square" id="kode-pt" name="kode_pt" readonly>
-                        </fieldset>
-                      </div>
-                      <div class="col-lg-9">
-                        <fieldset class="form-group mb-1">
-                          <label for="nama-pt">Nama PT</label>
-                          <input type="text" class="form-control square" id="nama-pt" name="nama_pt" readonly>
-                        </fieldset>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-lg-3">
-                        <fieldset class="form-group mb-1">
-                          <label for="skor-1a">
-                            Skor 1a
-                            <span class="text-danger" data-toggle="popover" data-content="<b>Skor 0 :</b> PT tidak menjalankan SPMI; <br> <b>Skor 1 :</b> PT telah menjalankan SPMI namun belum mencakup seluruhnya; <br> <b>Skor 2 :</b> PT telah menjalankan SPMI yang dibuktikan dengan keberadaan 5 aspek; <br> <b>Skor 3 :</b> PT telah menjalankan SPMI yang dibuktikan dengan keberadaan 5 aspek dan memiliki standar yang melampaui SN Dikti; <br> <b>Skor 4 :</b> PT telah menjalankan SPMI yang dibuktikan dengan keberadaan 5 aspek dan memiliki standar yang melampaui SN Dikti dan menerapkan SPMI berbasis resiko (risk based audit) atau inovasi lainnya" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
-                          </label>
-                          <input type="text" class="form-control square skor" id="skor-1a" name="skor_1a" maxlength="4" oninput="validateSkorInput(this)" onblur="validateSkorValue(this)">
-                        </fieldset>
-                      </div>
-                      <div class="col-lg-9">
-                        <fieldset class="form-group mb-1">
-                          <label for="catatan-1a">Catatan Skor 1a</label>
-                          <textarea class="form-control textarea-catatan" name="catatan_1a" id="catatan-1a" placeholder="Berikan catatan untuk skor 1a"></textarea>
-                        </fieldset>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-lg-3">
-                        <fieldset class="form-group mb-1">
-                          <label for="skor-1b">
-                            Skor 1b
-                            <span class="text-danger" data-toggle="popover" data-content="<b>Tidak ada Skor dibawah 2;</b> <br> <b>Skor 2 :</b> PT tidak memiliki bukti sahis terkait praktik baik pengembangan buday amutu di PT melalui RTM; <br> <b>Skor 3 :</b> PT memiliki bukti sahih terkait praktik baik pengembangan budaya mutu di PT melalui RTM yang mengagendakan pembahasan sebagian dari 7 unsur; <br> <b>Skor 4 :</b> PT memiliki bukti sahih terkait praktik baik pengembangan budaya mutu di PT melalui RTM yang mengagendakan pembahasan dari 7 unsur" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
-                          </label>
-                          <input type="text" class="form-control square skor" id="skor-1b" name="skor_1b" maxlength="4" oninput="validateSkorInput(this)" onblur="validateMinSkorValue(this)">
-                        </fieldset>
-                      </div>
-                      <div class="col-lg-9">
-                        <fieldset class="form-group mb-1">
-                          <label for="catatan-1b">Catatan Skor 1b</label>
-                          <textarea class="form-control textarea-catatan" name="catatan_1b" id="catatan-1b" placeholder="Berikan catatan untuk skor 1b"></textarea>
-                        </fieldset>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-lg-3">
-                        <fieldset class="form-group mb-1">
-                          <label for="skor-2">
-                            Skor 2
-                            <span class="text-danger" data-toggle="popover" data-content="<b>Skor 0 :</b> PT belum melaksanakan sistem penjaminan mutu; <br> <b>Skor 1 :</b> PT telah melaksanakan sistem penjaminan mutu namun belum efektif serta belum memenuhi seluruh aspek; <br> <b>Skor 2 :</b> PT telah melaksanakan sistem penjaminan mutu yang terbukti efektif memenuhi 4 aspek; <br> <b>Skor 3 :</b> PT telah melaksanakan sistem penjaminan mutu yang terbukti efektif memenuhi 4 aspek dan dilakukan review terhadap siklus penjamnan mutu; <br> <b>Skor 4 :</b> PT telah melaksanakan sistem penjaminan mutu yang terbukti efektif memenuhi 4 aspek dan dilakukan review terhadap siklus penjamnan mutu dan melibatkan reviewer eksternal" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
-                          </label>
-                          <input type="text" class="form-control square skor" id="skor-2" name="skor_2" maxlength="4" oninput="validateSkorInput(this)" onblur="validateSkorValue(this)">
-                        </fieldset>
-                      </div>
-                      <div class="col-lg-9">
-                        <fieldset class="form-group mb-1">
-                          <label for="catatan-2">Catatan Skor 2</label>
-                          <textarea class="form-control textarea-catatan" name="catatan_2" id="catatan-2" placeholder="Berikan catatan untuk skor 2"></textarea>
-                        </fieldset>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <fieldset class="form-group mb-1">
-                          <label for="catatan-keseluruhan">Catatan Keseluruhan</label>
-                          <textarea class="form-control textarea-catatan" name="catatan_keseluruhan" id="catatan-keseluruhan" placeholder="Berikan catatan keseluruhan"></textarea>
-                        </fieldset>
-                      </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Simpan Skor</button>
-                    <?php echo form_close(); ?>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Basic Horizontal Timeline -->
-    <div class="row">
-      <div class="col-md-12 col-sm-12">
-        <div class="card">
-          <div class="card-header">
-            <h4 class="card-title" id="heading-buttons1">Data Penilaian Tipologi</h4>
-            <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
-          </div>
-          <div class="card-content">
-            <div class="card-body">
-              <div class="table-responsive">
-                <table id="tabel-penilaian" class="table table-striped table-bordered">
-                  <thead>
-                    <tr style="background-color: #563BFF; color: #ffffff">
-                      <th class="text-center" rowspan="3">#</th>
-                      <th class="text-center" rowspan="3">Periode <span class="text-danger" data-toggle="popover" data-content="Periode 1 : Januari - Juni <br> Periode 2 : Juli - November" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                      <th class="text-center" rowspan="3">Kode PT</th>
-                      <th class="text-center" rowspan="3">Nama PT</th>
-                      <th class="text-center" colspan="3">Butir Penilaian</th>
-                      <th class="text-center" rowspan="3">
-                        Skor <br> Total <br>
-                        <span class="text-danger" data-toggle="popover" data-content="Skor Total =((Skor 1a+(2*Skor 1b))/3)x2,22)+(Skor 2 x 2,78)" data-trigger="hover" data-original-title="Formula Perhitungan"><i class="la la-info-circle"></i></span>
-                      </th>
-                      <th class="text-center" rowspan="3">
-                        Tipologi
-                        <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 rentang Nilai Terbobot : 17,5 < n ≤ 20; <br> Tipologi 2 rentang Nilai Terbobot : 15 < n ≤ 17,5; <br> Tipologi 3 rentang Nilai Terbobot : 10 ≤ n ≤ 15; <br> Tipologi 4 Nilai Terbobot : < 10;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
-                      </th>
-                      <th class="text-center" rowspan="3">Status</th>
-                      <th class="text-center" rowspan="3">Validator</th>
-                      <th class="text-center" rowspan="3">Aksi</th>
-                    </tr>
-                    <tr style="background-color: #563BFF; color: #ffffff">
-                      <th class="text-center" colspan="2">Butir 1 <br> (Bobot 2,22)</th>
-                      <th class="text-center">Butir 2 <br> (Bobot 2,78)</th>
-                    </tr>
-                    <tr style="background-color: #563BFF; color: #ffffff">
-                      <th class="text-center text-wrap">Skor 1a <span class="text-danger" data-toggle="popover" data-content="Ketersediaan dokumen formal SPMI yang dibuktikan dengan keberadaan 5 aspek sebagai berikut: <br> (1) organ/fungsi spmi, <br> (2) dokumen SPMI <br> (3) auditor internal <br> (4) hasil audit <br> (5) bukti tndak lanjut" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                      <th class="text-center text-wrap">Skor 1b <span class="text-danger" data-toggle="popover" data-content="Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM yang mengagendakan unsur-unsur <br> (1) hasil audit internal <br> (2) umpan balik <br> (3) kinerja proses dan kesesuaian produk <br> (4) status tindakan pencegahan dan perbaikan <br> (5) tindak lanjut dari tinjauan sebelumnya <br> (6) perubahan yang dapat mempengaruhi sistem manajemen mutu <br> (7) rekomendasi peningkatan" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                      <th class="text-center text-wrap">Skor 2 <span class="text-danger" data-toggle="popover" data-content="Efektivitas pelaksanaan penjaminan mutu yang memenuhi 4 aspek sbb: <br> 1. keberadaan dokumen formal penetapan standar mutu <br> 2. standar mutu dilaksanakan secara konsisten <br> 3. minitoring evaluasi dan pengendalian terhadap standar mutu yang telah ditetapkan <br> 4. hasilnya ditindaklanjuti untuk perbaikan dan peningkatan mutu" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    $i = 0; // Inisialisasi counter
-                    if (!empty($data_pt_binaan)) { // Cek apakah array data_pt_binaan tidak kosong
-                      foreach ($data_pt_binaan as $data) {
-                        if (substr($data->periode, -1, 1 == '1')) {
-                          $periode = substr($data->periode, 0, 4) . ' Periode 1';
-                        } else {
-                          $periode = substr($data->periode, 0, 4) . ' Periode 2';
+                <div class="table-responsive">
+                  <table id="tabel-penilaian" class="table table-striped table-bordered">
+                    <thead>
+                      <tr style="background-color: #563BFF; color: #ffffff">
+                        <th class="text-center">#</th>
+                        <th class="text-center">Periode</th>
+                        <th class="text-center">Keterangan</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      $i = 0; // Inisialisasi counter
+                      if (!empty($data_periode)) { // Cek apakah array data_pt_binaan tidak kosong
+                        foreach ($data_periode as $data) {
+                          $warna_baris = $data['status'] == '1' ? 'table-success' : '';
+                      ?>
+                          <tr class="<?= $warna_baris ?>">
+                            <td class="text-center" style="width: 3%;"><?= ++$i ?></td>
+                            <td class="text-center" style="width: 7%;"><?= $data['kode'] ?></td>
+                            <td class="text-center" style="width: 20%;"><?= $data['keterangan'] ?></td>
+                            <td class="text-center" style="width: 7%;">
+                              <div class="d-inline-block w-100 text-center" data-status="<?= $data['status'] ?>" data-kode="<?= $data['kode'] ?>">
+                                <?php if ($data['status'] == '1'): ?>
+                                  <span class="badge rounded-pill w-100" style="background: linear-gradient(90deg, #28a745 0%, #218838 100%); color: #fff; font-size: 0.95em; padding: 0.5em 1em; display: block;">
+                                    <i class="la la-check-circle mr-1"></i> Aktif
+                                  </span>
+                                <?php else: ?>
+                                  <span class="badge rounded-pill w-100" style="background: linear-gradient(90deg, #dc3545 0%, #b52a37 100%); color: #fff; font-size: 0.95em; padding: 0.5em 1em; display: block;">
+                                    <i class="la la-times-circle mr-1"></i> Non Aktif
+                                  </span>
+                                <?php endif; ?>
+                              </div>
+                            </td>
+                            <td class="text-center" style="width: 8%;">
+                              <?php if ($data['status'] == '1') : ?>
+                                <a href="<?= base_url('admin/input-skor/') . safe_url_encrypt($data['kode']) ?>">
+                                  <button class="btn btn-primary btn-sm" type="button" data-toggle="tooltip" title="Nilai">
+                                    <i class="la la-edit"></i> Nilai
+                                  </button>
+                                </a>
+                              <?php else: ?>
+                                <a href="<?= base_url('admin/lihat-skor/') . safe_url_encrypt($data['kode']) ?>">
+                                  <button class="btn btn-dark btn-sm" type="button" data-toggle="tooltip" title="Lihat">
+                                    <i class="la la-eye"></i> Lihat
+                                  </button>
+                                </a>
+                              <?php endif; ?>
+                              <!-- <button class="btn btn-info btn-sm waves-effect waves-light" type="button" onclick='modalRiwayat("<?= safe_url_encrypt($data->fasilitator_id) ?>", "<?= safe_url_encrypt($data->kode_pt) ?>", "<?= safe_url_encrypt($data->periode) ?>")' data-toggle="tooltip" data-placement="top" data-original-title="Kirim ke Validator">
+                                <i class="la la-send"></i>
+                              </button> -->
+                            </td>
+                          </tr>
+                        <?php
                         }
-                    ?>
+                      } else { // Jika data_pt_binaan kosong
+                        ?>
                         <tr>
-                          <td class="text-center" style="width: 3%;"><?= ++$i ?></td>
-                          <td class="text-center" style="width: 10%;"><?= $periode ?></td>
-                          <td class="text-center" style="width: 5%;"><?= $data->kode_pt ?></td>
-                          <td class="text-start" style="width: 18%;"><?= $data->nama_pt ?></td>
-                          <td class="text-center" style="width: 5%;"><?= $data->skor_1a ?></td>
-                          <td class="text-center" style="width: 5%;"><?= $data->skor_1b ?></td>
-                          <td class="text-center" style="width: 5%;"><?= $data->skor_2 ?></td>
-                          <td class="text-center" style="width: 5%;"><?= $data->skor_total ?></td>
-                          <td class="text-center" style="width: 5%;"><?= $data->tipologi ?></td>
-                          <td class="text-center" style="width: 5%;"><?= $data->status ?></td>
-                          <td class="text-start" style="width: 10%;"><?= $data->nama_validator == NULL ? '<div class="badge badge-danger">Belum ada validator</div>' : $data->nama_validator ?></td>
-                          <td class="text-center" style="width: 8%;">
-                            <a href="<?= base_url('admin/input-skor/') .
-                                        safe_url_encrypt($data->fasilitator_id) . '/' .
-                                        safe_url_encrypt($data->kode_pt) . '/' .
-                                        safe_url_encrypt($data->periode)
-                                      ?>">
-                              <button class="btn btn-primary btn-sm" type="button" data-toggle="tooltip" title="Input Nilai">
-                                <i class="la la-edit"></i>
-                              </button>
-                            </a>
-                            <button class="btn btn-dark btn-sm waves-effect waves-light" type="button" onclick='modalRiwayat("<?= safe_url_encrypt($data->fasilitator_id) ?>", "<?= safe_url_encrypt($data->kode_pt) ?>", "<?= safe_url_encrypt($data->periode) ?>")' data-toggle="tooltip" data-placement="top" data-original-title="Riwayat Penilaian">
-                              <i class="la la-history"></i>
-                            </button>
-                          </td>
+                          <td colspan="5" class="text-center">Data tidak tersedia</td> <!-- Baris kosong -->
                         </tr>
                       <?php
                       }
-                    } else { // Jika data_pt_binaan kosong
                       ?>
-                      <tr>
-                        <td colspan="7" class="text-center">Data tidak tersedia</td> <!-- Baris kosong -->
-                      </tr>
-                    <?php
-                    }
-                    ?>
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+
+
+                </div>
+
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!--/ Basic Horizontal Timeline -->
   </div>
-</div>
 </div>
 <!-- END: Content-->
 

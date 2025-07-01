@@ -23,6 +23,10 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/extensions/toastr.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/forms/toggle/bootstrap-switch.min.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/forms/toggle/switchery.min.css">
+
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <!-- Tambahkan Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -99,57 +103,96 @@
         }
 
         #list-pt .list {
-            max-height: 500px;
+            max-height: 1040px;
             /* Atur sesuai tinggi 5 item */
             overflow-y: auto;
         }
 
-        .list-group-item {
-            cursor: pointer;
+        /* Putihkan font untuk .kode_pt dan .nama_pt jika status bg-success, bg-danger, bg-warning, selain itu hitam */
+        .kode_pt,
+        .nama_pt {
+            color: #212529 !important;
+            /* Default: hitam */
         }
 
-        .bg-success {
+        .bg-success .kode_pt,
+        .bg-success .nama_pt,
+        .bg-danger .kode_pt,
+        .bg-danger .nama_pt,
+        .bg-warning .kode_pt,
+        .bg-warning .nama_pt {
+            color: #fff !important;
+            /* Jika status: putih */
+        }
+
+        /* Status 4: Success */
+        .list-group-item.bg-success:hover,
+        .list-group-item.bg-success:focus,
+        .list-group-item.bg-success:hover .badge,
+        .list-group-item.bg-success:focus .badge {
+            background-color: rgb(18, 109, 37) !important;
+            color: #fff !important;
+            transition: none;
+        }
+
+        .list-group-item.bg-success.active-item,
+        .list-group-item.bg-success.active,
+        .list-group-item.bg-success.active-item .badge,
+        .list-group-item.bg-success.active .badge {
             background-color: #28a745 !important;
-            color: white !important;
+            color: #fff !important;
+            transition: none;
         }
 
-        .custom-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            background-color: #f8f9fa;
-            color: #212529;
+        /* Status 3: Danger */
+        .list-group-item.bg-danger:hover,
+        .list-group-item.bg-danger:focus,
+        .list-group-item.bg-danger:hover .badge,
+        .list-group-item.bg-danger:focus .badge {
+            background-color: rgb(137, 5, 18) !important;
+            color: #fff !important;
+            transition: none;
         }
 
-        /* Transisi dan kursor pointer */
-        .list-group-item {
-            transition: background-color 0.2s ease;
-            cursor: pointer;
+        .list-group-item.bg-danger.active-item,
+        .list-group-item.bg-danger.active,
+        .list-group-item.bg-danger.active-item .badge,
+        .list-group-item.bg-danger.active .badge {
+            background-color: rgb(193, 40, 55) !important;
+            color: #fff !important;
+            transition: none;
         }
 
-        /* Hover umum (item tanpa bg-success) */
-        .list-group-item:hover {
-            background-color: #f0f0f0;
+        /* Status 2: Warning */
+        .list-group-item.bg-warning:hover,
+        .list-group-item.bg-warning:focus,
+        .list-group-item.bg-warning:hover .badge,
+        .list-group-item.bg-warning:focus .badge {
+            background-color: rgb(150, 112, 0) !important;
+            color: #fff !important;
+            transition: none;
         }
 
-        /* Hover khusus jika item punya bg-success */
-        .list-group-item.bg-success:hover {
-            background-color: #218838 !important;
-            /* hijau gelap */
-            color: #fff;
+        .list-group-item.bg-warning.active-item,
+        .list-group-item.bg-warning.active,
+        .list-group-item.bg-warning.active-item .badge,
+        .list-group-item.bg-warning.active .badge {
+            background-color: rgb(195, 148, 7) !important;
+            color: #fff !important;
+            transition: none;
         }
 
-        /* Saat diklik (dipilih), override semua warna */
-        .list-group-item.active-item {
-            background-color: #007bff !important;
-            /* biru */
-            color: white !important;
+        /* Default (tanpa status) */
+        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning):hover,
+        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning):focus {
+            background-color: #e2e6ea !important;
+            color: #212529 !important;
         }
 
-        /* Badge agar tetap terbaca di item biru */
-        .list-group-item.active-item .badge {
-            background-color: white;
-            color: #007bff;
+        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning).active-item,
+        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning).active {
+            background-color: rgba(107, 161, 214, 0.51) !important;
+            color: #212529 !important;
         }
 
         .skor {
@@ -162,6 +205,72 @@
             resize: none;
             border: 1px solid rgba(0, 0, 0, 0.3) !important;
         }
+
+        .label-required::after {
+            content: " *";
+            color: red;
+            font-weight: bold;
+        }
+
+        /* Custom style for .active menu */
+        .navbar-nav .nav-item .active,
+        .navbar-nav .nav-link.active,
+        .navbar-nav .nav-item.active>.nav-link {
+            background: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important;
+            color: #fff !important;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(103, 18, 200, 0.08);
+            font-weight: 600;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .navbar-nav .nav-item .active:hover,
+        .navbar-nav .nav-link.active:hover,
+        .navbar-nav .nav-item.active>.nav-link:hover {
+            background: linear-gradient(90deg, #4e0fa3 28%, #1761c1 98%) !important;
+            color: #fff !important;
+        }
+
+        .navbar-nav .nav-link {
+            transition: background 0.2s, color 0.2s;
+        }
+
+        /* Style for active dropdown submenu */
+        .navbar-nav .dropdown-menu .dropdown-item.active,
+        .navbar-nav .dropdown-menu .dropdown-item:active,
+        .navbar-nav .dropdown-menu li.active>.dropdown-item {
+            background: linear-gradient(90deg, #2375fc 28%, #6712c8 98%) !important;
+            color: #fff !important;
+            font-weight: 600;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(35, 117, 252, 0.08);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .navbar-nav .dropdown-menu .dropdown-item.active:hover,
+        .navbar-nav .dropdown-menu .dropdown-item:active:hover,
+        .navbar-nav .dropdown-menu li.active>.dropdown-item:hover {
+            background: linear-gradient(90deg, #1761c1 28%, #4e0fa3 98%) !important;
+            color: #fff !important;
+        }
+
+        .btn-dashboard {
+            background-color: rgb(56, 11, 135);
+            border-radius: 50px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-dashboard:hover {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .input-group-text {
+            background-color: rgb(175, 146, 224);
+        }
     </style>
 
 </head>
@@ -171,7 +280,7 @@
 
 <!-- <body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  " data-open="click" data-menu="horizontal-menu" data-col="2-columns"> -->
 
-<body class="horizontal-layout horizontal-menu 2-columns  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<body class="horizontal-layout horizontal-menu 2-columns" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
 
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow navbar-static-top navbar-light navbar-brand-center">
