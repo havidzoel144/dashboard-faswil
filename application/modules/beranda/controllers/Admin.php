@@ -375,9 +375,29 @@ class Admin extends MX_Controller
   function dashboard()
   {
     $periode = $this->Periode_model->get_active_periode();
-    $data['dashboard'] = "active";
-    $data['periode_aktif'] = $periode;
-    $data['progres_penilaian'] = $this->Penilaian_model->get_data_penilaian_by_periode($periode->kode);
+
+
+    $data = [
+      'dashboard' => "active",
+      'periode_aktif' => $periode,
+      'progres_penilaian' => $this->Penilaian_model->get_data_penilaian_by_periode($periode->kode),
+      'jumlah_fasilitator' => count(array_unique(array_column($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), 'fasilitator_id'))),
+      'jumlah_validator' => count(array_unique(array_column($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), 'validator_id'))),
+      'jumlah_pt' => count(array_unique(array_column($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), 'kode_pt'))),
+    ];
+
+    $data['jml_penilaian_validator'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 2;
+    }));
+    $data['jml_revisi_validator'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 3;
+    }));
+    $data['jml_valid'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 4;
+    }));
+    $data['jml_belum_input'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), function ($item) {
+      return !isset($item->id_status_penilaian) || $item->id_status_penilaian === null;
+    }));
 
     // echo json_encode(($data['penilaian_tipologi']));exit;
     $this->load->view("admin/v_index", $data);
