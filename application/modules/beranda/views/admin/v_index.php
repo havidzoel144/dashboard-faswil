@@ -18,11 +18,19 @@
       $role_names = [];
       if (!empty($roles) && is_array($roles)) {
         foreach ($roles as $role) {
-          $role_names[] = ucwords($role->nama_role); // bisa juga strtoupper($role->nama_role)
+          $role_names[] = ucwords($role->nama_role);
         }
       }
 
-      $roles_string = implode(', ', $role_names);
+      // Gabungkan nama role dengan "dan" sebelum role terakhir jika lebih dari satu
+      $roles_string = '';
+      $count = count($role_names);
+      if ($count > 1) {
+        $roles_string = implode(', ', array_slice($role_names, 0, -1));
+        $roles_string .= ' dan ' . end($role_names);
+      } elseif ($count === 1) {
+        $roles_string = $role_names[0];
+      }
       ?>
 
       <div class="row justify-content-center">
@@ -37,9 +45,21 @@
               </h1>
               <p class="lead mb-2" style="font-size:1.3em;">
                 Anda login sebagai
-                <span class="badge" style="background: #ffb347; color: #1e3c72; font-size:1em; box-shadow: 0 2px 8px rgba(255,179,71,0.12);">
-                  <?= $roles_string ?>
-                </span>
+                <?php
+                // Tampilkan badge untuk setiap role user, dipisahkan dengan koma dan 'dan' sebelum role terakhir
+                if (!empty($role_names)) {
+                  $count = count($role_names);
+                  foreach ($role_names as $idx => $role) {
+                  // Tampilkan badge nama role
+                  echo '<span class="badge" style="background: #ffb347; color: #1e3c72; font-size:1em; box-shadow: 0 2px 8px rgba(255,179,71,0.12);">' . $role . '</span>';
+                  // Tambahkan pemisah jika lebih dari satu role
+                  if ($count > 1 && $idx < $count - 1) {
+                    // Jika sebelum role terakhir, gunakan ' dan ', selain itu gunakan koma
+                    echo '<span style="color:#fff;">' . ($idx == $count - 2 ? ' dan ' : ', ') . '</span>';
+                  }
+                  }
+                }
+                ?>
               </p>
             </div>
           </div>
@@ -47,6 +67,104 @@
       </div>
 
       <?php if (has_role([2])) : ?>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
+            <div class="card shadow-sm border-0 h-100">
+              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                <div class="mb-2">
+                  <span class="rounded-circle bg-info bg-gradient d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    <i class="la la-users text-white" style="font-size: 2rem;"></i>
+                  </span>
+                </div>
+                <h6 class="card-title mb-1 text-info font-weight-bold" style="font-size: 1.05rem;">Jumlah Fasilitator</h6>
+                <span class="display-4 font-weight-bold text-info"><?= $jumlah_fasilitator ?></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
+            <div class="card shadow-sm border-0 h-100">
+              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                <div class="mb-2">
+                  <span class="rounded-circle bg-secondary bg-gradient d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    <i class="la la-user-secret text-white" style="font-size: 2rem;"></i>
+                  </span>
+                </div>
+                <h6 class="card-title mb-1 text-secondary font-weight-bold" style="font-size: 1.05rem;">Jumlah Validator</h6>
+                <span class="display-4 font-weight-bold text-secondary"><?= $jumlah_validator ?></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
+            <div class="card shadow-sm border-0 h-100">
+              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                <div class="mb-2">
+                  <span class="rounded-circle bg-dark bg-gradient d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    <i class="la la-university text-white" style="font-size: 2rem;"></i>
+                  </span>
+                </div>
+                <h6 class="card-title mb-1 text-dark font-weight-bold" style="font-size: 1.05rem;">Jumlah Perguruan Tinggi</h6>
+                <span class="display-4 font-weight-bold text-dark"><?= $jumlah_pt ?></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-2">
+            <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #fff4e3 0%, #ffb866 100%);">
+              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                <div class="mb-2">
+                  <span class="rounded-circle" style="background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%); display: flex; align-items: center; justify-content: center; width:48px;height:48px;">
+                    <i class="la la-hourglass-half text-white" style="font-size: 2rem;"></i>
+                  </span>
+                </div>
+                <h6 class="card-title mb-1 font-weight-bold" style="font-size: 1.05rem; color: #ff9800;">Menunggu Dinilai Validator</h6>
+                <span class="display-4 font-weight-bold" style="color: #ff9800;"><?= $jml_penilaian_validator ?></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-2">
+            <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #ffe3e3 0%, #ffb2b2 100%);">
+              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                <div class="mb-2">
+                  <span class="rounded-circle bg-danger bg-gradient d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    <i class="la la-edit text-white" style="font-size: 2rem;"></i>
+                  </span>
+                </div>
+                <h6 class="card-title mb-1 font-weight-bold" style="font-size: 1.05rem; color: #dc3545;">Perlu Revisi</h6>
+                <span class="display-4 font-weight-bold" style="color: #dc3545;"><?= $jml_revisi_validator ?></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-2">
+            <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #e3ffe3 0%, #b2ffb2 100%);">
+              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                <div class="mb-2">
+                  <span class="rounded-circle bg-success bg-gradient d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    <i class="la la-check-circle text-white" style="font-size: 2rem;"></i>
+                  </span>
+                </div>
+                <h6 class="card-title mb-1 font-weight-bold" style="font-size: 1.05rem; color: #28a745;">Penilaian Valid</h6>
+                <span class="display-4 font-weight-bold" style="color: #28a745;"><?= $jml_valid ?></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-2">
+            <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #f0f0f0 0%, #cccccc 100%);">
+              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                <div class="mb-2">
+                  <span class="rounded-circle bg-secondary bg-gradient d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    <i class="la la-user-times text-white" style="font-size: 2rem;"></i>
+                  </span>
+                </div>
+                <h6 class="card-title mb-1 font-weight-bold" style="font-size: 1.05rem; color: #6c757d;">Fasilitator Belum Input</h6>
+                <span class="display-4 font-weight-bold" style="color: #6c757d;"><?= $jml_belum_input ?></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="row mb-3">
           <div class="col-12">
             <div class="card">

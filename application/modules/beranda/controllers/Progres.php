@@ -45,8 +45,24 @@ class Progres extends MX_Controller
       'master' => 'active',
       'progres' => 'active',
       'periode_dipilih' => $periode_dipilih,
+      'jumlah_fasilitator' => count(array_unique(array_column($this->Penilaian_model->get_data_penilaian_by_periode($periode), 'fasilitator_id'))),
+      'jumlah_validator' => count(array_unique(array_column($this->Penilaian_model->get_data_penilaian_by_periode($periode), 'validator_id'))),
+      'jumlah_pt' => count(array_unique(array_column($this->Penilaian_model->get_data_penilaian_by_periode($periode), 'kode_pt'))),
       'progres_penilaian' => $this->Penilaian_model->get_data_penilaian_by_periode($periode),
     ];
+
+    $data['jml_penilaian_validator'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 2;
+    }));
+    $data['jml_revisi_validator'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 3;
+    }));
+    $data['jml_valid'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 4;
+    }));
+    $data['jml_belum_input'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode), function ($item) {
+      return !isset($item->id_status_penilaian) || $item->id_status_penilaian === null;
+    }));
 
     // echo json_encode($data);exit;
 
@@ -204,7 +220,7 @@ class Progres extends MX_Controller
     $sheetTitle = 'Penilaian Tipologi ' . $periode;
     $sheet->setTitle(substr($sheetTitle, 0, 31));
     $sheet->setSelectedCell('A1');
-    
+
     // Export file
     $writer = new Xlsx($spreadsheet);
     $filename = 'Rekap Penilaian Tipologi Periode ' . $periode . '_' . date('Y-m-d_H-i-s') . '.xlsx';
