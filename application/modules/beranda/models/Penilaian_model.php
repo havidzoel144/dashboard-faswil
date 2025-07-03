@@ -49,10 +49,11 @@ class Penilaian_model extends CI_Model
     // Susun hasil sebagai object
     $output = [];
     foreach ($all_pts as $pt) {
-      $is_plotted = in_array($pt->kode_pt, $plotted_pts);
+      $kode_pt = trim($pt->kode_pt); // Hapus spasi di awal/akhir
+      $is_plotted = in_array($kode_pt, $plotted_pts);
 
       $row = new stdClass();
-      $row->kode_pt = $pt->kode_pt;
+      $row->kode_pt = $kode_pt;
       $row->nama_pt = $is_plotted
         ? $pt->nama_pt . ' (Sudah diplot ke fasilitator lain)'
         : $pt->nama_pt;

@@ -14,6 +14,7 @@ $route['admin/update-user'] = 'beranda/user/updateUser';
 $route['admin/update-status-user'] = 'beranda/user/updateStatusUser';
 $route['admin/hapus-user/(:num)'] = 'beranda/user/hapusUser/$1';
 $route['admin/reset-password-user/(:num)'] = 'beranda/user/resetPassword/$1';
+$route['admin/ajax-get-dosen'] = 'beranda/user/ajaxGetDosen';
 
 // MANAGE PERIODE
 $route['admin/data-periode'] = 'beranda/periode';

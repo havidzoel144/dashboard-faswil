@@ -50,13 +50,13 @@
                 if (!empty($role_names)) {
                   $count = count($role_names);
                   foreach ($role_names as $idx => $role) {
-                  // Tampilkan badge nama role
-                  echo '<span class="badge" style="background: #ffb347; color: #1e3c72; font-size:1em; box-shadow: 0 2px 8px rgba(255,179,71,0.12);">' . $role . '</span>';
-                  // Tambahkan pemisah jika lebih dari satu role
-                  if ($count > 1 && $idx < $count - 1) {
-                    // Jika sebelum role terakhir, gunakan ' dan ', selain itu gunakan koma
-                    echo '<span style="color:#fff;">' . ($idx == $count - 2 ? ' dan ' : ', ') . '</span>';
-                  }
+                    // Tampilkan badge nama role
+                    echo '<span class="badge" style="background: #ffb347; color: #1e3c72; font-size:1em; box-shadow: 0 2px 8px rgba(255,179,71,0.12);">' . $role . '</span>';
+                    // Tambahkan pemisah jika lebih dari satu role
+                    if ($count > 1 && $idx < $count - 1) {
+                      // Jika sebelum role terakhir, gunakan ' dan ', selain itu gunakan koma
+                      echo '<span style="color:#fff;">' . ($idx == $count - 2 ? ' dan ' : ', ') . '</span>';
+                    }
                   }
                 }
                 ?>
