@@ -19,7 +19,7 @@
               <h4 class="card-title" id="heading-buttons1">List Data User</h4>
               <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
               <div class="heading-elements">
-                <button type="button" class="btn btn-primary waves-effect waves-light mr-1" data-toggle="modal" data-tambah-data="false" data-target="#tambah-data">Tambah Data</button>
+                <button type="button" class="btn btn-primary waves-effect waves-light mr-1" data-toggle="modal" data-tambah-data="false" data-target="#form-tambah-data" id="btn-tambah-data">Tambah Data</button>
               </div>
             </div>
             <div class="card-content">
@@ -94,7 +94,7 @@
 <!-- END: Content-->
 
 <!-- MODAL TAMBAH START -->
-<div class="modal fade text-left" id="tambah-data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+<div class="modal fade text-left" id="form-tambah-data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -106,21 +106,39 @@
 
       <?php echo form_open(site_url('admin/simpan-user'), array('class' => 'form-horizontal', 'role' => 'form')); ?>
       <div class="modal-body">
+        <fieldset class="form-group d-flex justify-content-center align-items-center mb-1">
+          <div class="row w-100">
+            <div class="col-6 pr-1">
+                <button type="button" class="btn w-100 d-flex align-items-center justify-content-center" id="btn-input-manual"
+                style="height: 40px; background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%); color: #fff; border-radius: 20px; font-size: 1.2em; box-shadow: 0 2px 8px rgba(255,152,0,0.2); transition: background 0.3s;">
+                <i class="la la-keyboard-o mr-1"></i>
+                <span style="font-size: 1em;">Input Manual</span>
+                </button>
+            </div>
+            <div class="col-6 pl-1">
+              <button type="button" class="btn w-100 d-flex align-items-center justify-content-center" id="btn-ambil-dosen"
+                style="height: 40px; background: linear-gradient(135deg, #00c9ff 0%, #92fe9d 100%); color: #000; border-radius: 20px; font-size: 1.2em; box-shadow: 0 2px 8px rgba(0,201,255,0.2); transition: background 0.3s;">
+                <i class="la la-user-plus mr-1"></i>
+                <span style="font-size: 1em;">Ambil Data Dosen</span>
+              </button>
+            </div>
+          </div>
+        </fieldset>
         <fieldset class="form-group">
           <label for="nama">Nama User</label>
-          <input type="text" class="form-control square" id="nama" name="nama" placeholder="Masukkan Nama Lengkap User">
+          <input type="text" class="form-control square" id="nama" name="nama" placeholder="Masukkan Nama Lengkap User" disabled>
         </fieldset>
         <fieldset class="form-group">
           <label for="username">Username</label>
-          <input type="text" class="form-control square" id="username" name="username" placeholder="Masukkan Username">
+          <input type="text" class="form-control square" id="username" name="username" placeholder="Masukkan Username" disabled>
         </fieldset>
         <fieldset class="form-group">
           <label for="email">Email</label>
-          <input type="email" class="form-control square" id="email" name="email" placeholder="Masukkan Alamat Email">
+          <input type="email" class="form-control square" id="email" name="email" placeholder="Masukkan Alamat Email" disabled>
         </fieldset>
         <fieldset class="form-group">
           <label for="role">Role</label>
-          <select class="select2 form-control" aria-hidden="true" multiple="multiple" name="role_id[]" id="role" style="width:100%;">
+          <select class="select2 form-control" aria-hidden="true" multiple="multiple" name="role_id[]" id="role" style="width:100%;" disabled>
             <?php foreach ($data_role as $role) : ?>
               <?php if (in_array($role->id, $allowed_ids)) : ?>
                 <option value="<?= $role->id ?>"><?= ucwords($role->nama_role) ?></option>
@@ -135,7 +153,7 @@
         </fieldset>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="submit" class="btn btn-primary d-none" id="btn-simpan">Simpan</button>
         <button type="button" class="btn grey btn-secondary" data-dismiss="modal">Tutup</button>
       </div>
       <?php echo form_close(); ?>
@@ -197,6 +215,35 @@
   </div>
 </div>
 <!-- MODAL UBAH END -->
+
+<!-- Modal Data Dosen -->
+<div class="modal fade" id="modal-dosen" tabindex="-1" role="dialog" aria-labelledby="modalDosenLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDosenLabel">Pilih Data Dosen</h5>
+        <button type="button" class="close btn-close-dosen" aria-label="Close" style="color: #000;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped" id="tabel-dosen" style="width: 100%;">
+            <thead>
+              <tr>
+                <th class="text-center">NIDN</th>
+                <th class="text-center">Nama Dosen</th>
+                <th class="text-center">Nama PT</th>
+                <th class="text-center"">Aksi</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Data Dosen -->
 
 <?= $this->load->view('admin/v_footer') ?>
 
@@ -349,11 +396,11 @@
     });
   });
 
-  $('#tambah-data').on('shown.bs.modal', function() {
+  $('#form-tambah-data').on('shown.bs.modal', function() {
     $("#role").select2({
       placeholder: "Silakan pilih role user (bisa pilih lebih dari 1)",
       allowClear: true,
-      dropdownParent: $('#tambah-data')
+      dropdownParent: $('#form-tambah-data')
     });
   });
 
@@ -417,5 +464,123 @@
         });
       }
     });
+  });
+
+  // Inisialisasi DataTable hanya sekali dengan server-side processing
+  var tabelDosen = null;
+
+  function initTabelDosen() {
+    if (!$.fn.DataTable.isDataTable('#tabel-dosen')) {
+      tabelDosen = $('#tabel-dosen').DataTable({
+        processing: true,
+        serverSide: true,
+        pageLength: 10,
+        autoWidth: false, // tambahkan ini
+        ajax: {
+          url: '<?= base_url('admin/ajax-get-dosen') ?>',
+          type: 'POST',
+          data: function(d) {
+            // Ambil token terbaru dari variabel global
+            d[csrfName] = csrfHash;
+          },
+          dataSrc: function(json) {
+            // Update token setelah respon
+            csrfHash = json.csrfHash;
+            return json.data; // data harus ada untuk DataTables
+          }
+        },
+        columns: [
+          {
+            data: 'nidn',
+            className: 'text-center',
+            width: '12%'
+          },
+          {
+            data: 'nama',
+            width: '35%'
+          },
+          {
+            data: 'nm_pt',
+            width: '50%'
+          },
+          {
+            data: null,
+            orderable: false,
+            searchable: false,
+            className: 'text-center',
+            width: '3%',
+            render: function(data, type, row) {
+              return `<button type="button" class="btn btn-primary round btn-sm pilih-dosen"
+          data-nidn="${row.nidn ? row.nidn : ''}"
+          data-nama="${row.nama ? row.nama.replace(/"/g, '&quot;') : ''}"">
+          Pilih
+              </button>`;
+            }
+          }
+        ],
+        destroy: true,
+        language: {
+          emptyTable: "Data dosen tidak tersedia"
+        }
+      });
+    }
+  }
+
+  $('#btn-ambil-dosen').on('click', function() {
+    $('#modal-dosen').modal({
+      backdrop: 'static',
+      keyboard: false
+    }).modal('show');
+
+    // Inisialisasi DataTable jika belum, reload jika sudah
+    if (!$.fn.DataTable.isDataTable('#tabel-dosen')) {
+      initTabelDosen();
+    } else {
+      tabelDosen.ajax.reload(null, false);
+    }
+  });
+
+  // Event delegation untuk tombol pilih pada hasil ajax
+  $(document).on('click', '.pilih-dosen', function() {
+    var nidn = $(this).data('nidn');
+    var nama = $(this).data('nama');
+    $('#nama').val(nama);
+    $('#username').val(nidn);
+    $('#email').focus();
+    $('#modal-dosen').modal('hide');
+    $('#nama, #email, #username, #role, #status-switch').prop('disabled', false);
+
+    
+    if (nidn !== ''){
+      console.log('nidn:', nidn);
+      $('#username').prop('readonly', true); // Set username readonly
+    } else {
+      $('#username').prop('readonly', false); // Set username editable
+    }
+
+    $('#role').val(null).trigger('change'); // Kosongkan select2
+    $('#status-switch').prop('checked', true).trigger('change'); // Set status ke Aktif
+    $('#nama').focus(); // Fokus ke input nama
+    $('#btn-simpan').removeClass('d-none'); // Tampilkan tombol simpan
+  });
+
+  $(document).on('click', '#btn-tambah-data', function() {
+    $('#btn-simpan').addClass('d-none'); // Sembunyikan tombol simpan saat modal dibuka
+    $('#nama, #username, #email, #role, #status-switch').prop('disabled', true); // Nonaktifkan input
+    $('#nama, #username, #email').val(''); // Kosongkan input
+    $('#role').val(null).trigger('change'); // Kosongkan select2
+  });
+
+  $('.btn-close-dosen').on('click', function() {
+    $('#modal-dosen').modal('hide');
+  });
+  
+  $('#btn-input-manual').on('click', function() {
+    $('#nama, #username, #email, #role, #status-switch').prop('disabled', false);
+    $('#nama, #username, #email').val(''); // Kosongkan input
+    $('#role').val(null).trigger('change'); // Kosongkan select2
+    $('#status-switch').prop('checked', true).trigger('change'); // Set status ke Aktif
+    $('#nama').focus(); // Fokus ke input nama
+    $('#btn-simpan').removeClass('d-none'); // Tampilkan tombol simpan
   });
 </script>

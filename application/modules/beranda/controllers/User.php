@@ -276,4 +276,49 @@ class User extends MX_Controller
       echo json_encode(['success' => false]);
     }
   }
+
+  public function ajaxGetDosen()
+  {
+    if ($this->input->is_ajax_request()) {
+      $draw = $this->input->post('draw');
+      $start = $this->input->post('start');
+      $length = $this->input->post('length');
+      $search = $this->input->post('search')['value'];
+      $order_col = $this->input->post('order')[0]['column'];
+      $order_dir = $this->input->post('order')[0]['dir'];
+
+      $columns = ['nidn', 'nama', 'nm_pt'];
+      $order_by = isset($columns[$order_col]) ? $columns[$order_col] : 'nidn';
+
+      // Total record tanpa filter
+      $totalRecords = $this->db->count_all('data_dosen');
+
+      // Pencarian
+      if (!empty($search)) {
+        $this->db->group_start()
+          ->like('nidn', $search)
+          ->or_like('nama', $search)
+          ->or_like('nm_pt', $search)
+          ->group_end();
+      }
+
+      $filteredRecords = $this->db->count_all_results('data_dosen', false);
+
+      // Pagination dan ordering
+      $this->db->order_by($order_by, $order_dir);
+      $this->db->limit($length, $start);
+      $query = $this->db->get();
+      $data = $query->result();
+
+      echo json_encode([
+        'draw' => intval($draw),
+        'recordsTotal' => $totalRecords,
+        'recordsFiltered' => $filteredRecords,
+        'data' => $data,
+        'csrfHash' => $this->security->get_csrf_hash()
+      ]);
+    } else {
+      show_error('Permintaan tidak valid', 400);
+    }
+  }
 }
