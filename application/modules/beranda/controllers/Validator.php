@@ -152,7 +152,7 @@ class Validator extends MX_Controller
                                 JOIN `users` c
                                   ON a.`fasilitator_id` = c.`id`
                               WHERE a.`fasilitator_id` = '$fasilitator_id' AND a.`validator_id` = '$user_id'
-                                AND a.`periode` = '$periode'");
+                                AND a.`periode` = '$periode' ORDER BY a.`id_penilaian_tipologi` ASC");
 
     // Ambil satu baris data penilaian
     $data['fas'] = $query->row();
@@ -191,7 +191,7 @@ class Validator extends MX_Controller
 
     // die("$catatan_keseluruhan");
 
-    if ($cek_1a == "" || $cek_1b == "" || $cek_2 == "") {
+    if ($cek_1a == "0" || $cek_1b == "0" || $cek_2 == "0") {
       $id_status_penilaian = 3; // revisi validator
     } else {
       $id_status_penilaian = 4; // valid
@@ -200,27 +200,11 @@ class Validator extends MX_Controller
     // Mulai transaksi database
     $this->db->trans_start();
 
-    if ($cek_1a == "") {
-      $cek_1a_ok = "0";
-    } else {
-      $cek_1a_ok = "1";
-    }
-    if ($cek_1b == "") {
-      $cek_1b_ok = "0";
-    } else {
-      $cek_1b_ok = "1";
-    }
-    if ($cek_2 == "") {
-      $cek_2_ok = "0";
-    } else {
-      $cek_2_ok = "1";
-    }
-
     // Siapkan data untuk disimpan
     $data = [
-      'cek_1a' => $cek_1a_ok,
-      'cek_1b' => $cek_1b_ok,
-      'cek_2' => $cek_2_ok,
+      'cek_1a' => $cek_1a,
+      'cek_1b' => $cek_1b,
+      'cek_2' => $cek_2,
       'catatan_1a_validator' => $catatan_1a_validator,
       'catatan_1b_validator' => $catatan_1b_validator,
       'catatan_2_validator' => $catatan_2_validator,
@@ -231,9 +215,9 @@ class Validator extends MX_Controller
     $this->db->update('penilaian_tipologi', $data);
 
     $this->db->insert('rwy_penilaian_validator', [
-      'cek_1a' => $cek_1a_ok,
-      'cek_1b' => $cek_1b_ok,
-      'cek_2' => $cek_2_ok,
+      'cek_1a' => $cek_1a,
+      'cek_1b' => $cek_1b,
+      'cek_2' => $cek_2,
       'catatan_1a' => $catatan_1a,
       'catatan_1b' => $catatan_1b,
       'catatan_2' => $catatan_2,

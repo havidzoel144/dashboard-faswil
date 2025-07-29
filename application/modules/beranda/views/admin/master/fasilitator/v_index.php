@@ -44,17 +44,17 @@
                             <td class="text-center" style="width: 7%;"><?= $data['kode'] ?></td>
                             <td class="text-center" style="width: 20%;"><?= $data['keterangan'] ?></td>
                             <td class="text-center" style="width: 7%;">
-                                <div class="d-inline-block w-100 text-center" data-status="<?= $data['status'] ?>" data-kode="<?= $data['kode'] ?>">
+                              <div class="d-inline-block w-100 text-center" data-status="<?= $data['status'] ?>" data-kode="<?= $data['kode'] ?>">
                                 <?php if ($data['status'] == '1'): ?>
                                   <span class="badge rounded-pill w-100" style="background: linear-gradient(90deg, #28a745 0%, #218838 100%); color: #fff; font-size: 0.95em; padding: 0.5em 1em; display: block;">
-                                  <i class="la la-check-circle mr-1"></i> Aktif
+                                    <i class="la la-check-circle mr-1"></i> Aktif
                                   </span>
                                 <?php else: ?>
                                   <span class="badge rounded-pill w-100" style="background: linear-gradient(90deg, #dc3545 0%, #b52a37 100%); color: #fff; font-size: 0.95em; padding: 0.5em 1em; display: block;">
-                                  <i class="la la-times-circle mr-1"></i> Non Aktif
+                                    <i class="la la-times-circle mr-1"></i> Non Aktif
                                   </span>
                                 <?php endif; ?>
-                                </div>
+                              </div>
                             </td>
                             <td class="text-center" style="width: 8%;">
                               <a href="<?= base_url('admin/plotting-fasilitator/') . safe_url_encrypt($data['kode']) ?>">

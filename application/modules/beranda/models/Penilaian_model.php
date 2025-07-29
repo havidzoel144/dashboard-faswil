@@ -78,6 +78,7 @@ class Penilaian_model extends CI_Model
     $this->db->join('status_penilaian sp', 'sp.id_status = pt.id_status_penilaian', 'left');
     $this->db->where('pt.fasilitator_id', $fasilitator_id);
     $this->db->where('pt.periode', $periode);
+    $this->db->order_by('pt.id_penilaian_tipologi', 'ASC');
     $query = $this->db->get();
     return $query->result();
   }
@@ -138,5 +139,100 @@ class Penilaian_model extends CI_Model
   public function delete_penilaian_by_id($id)
   {
     return $this->db->delete('penilaian_tipologi', ['id_penilaian_tipologi' => $id]);
+  }
+
+  public function kirimNilai($periode, $fasilitator_id)
+  {
+    // Update status_penilaian menjadi 2 untuk penilaian_tipologi yang statusnya 1 pada periode dan fasilitator ini
+    $this->db->where('periode', $periode);
+    $this->db->where('fasilitator_id', $fasilitator_id);
+    $this->db->where('id_status_penilaian', '1');
+    return $this->db->update('penilaian_tipologi', ['id_status_penilaian' => 2]);
+  }
+
+  public function publish_penilaian_by_periode($periode)
+  {
+    // Ambil semua data dari tabel data_pt sekali di awal
+    $data_pt = $this->db->select('kode_pt, akreditasi_pt')->get('data_pt')->result_array();
+
+    // Buat array indexed by kode_pt untuk pencarian cepat
+    $pt_data = array();
+    foreach ($data_pt as $pt) {
+      $pt_data[trim($pt['kode_pt'])] = $pt['akreditasi_pt'];
+    }
+
+    // Query untuk menghitung total prodi, prodi aktif, dan persentase prodi aktif terakreditasi
+    $this->db->select('kode_pt');
+    $this->db->select('nm_pt');
+    $this->db->select('COUNT(nama_prodi) AS total_prodi');
+    $this->db->select('COUNT(CASE WHEN nm_stat_prodi = "Aktif" THEN 1 END) AS prodi_aktif');
+    $this->db->select('COUNT(CASE WHEN nm_stat_prodi = "Aktif" AND akreditasi_prodi <> "-" AND akreditasi_prodi <> "" AND akreditasi_prodi <> "Tidak Terakreditasi" THEN 1 END) AS prodi_aktif_terakreditasi');
+    $this->db->select('FORMAT((COUNT(CASE WHEN nm_stat_prodi = "Aktif" AND akreditasi_prodi <> "-" AND akreditasi_prodi <> "" AND akreditasi_prodi <> "Tidak Terakreditasi" THEN 1 END) / 
+        COUNT(CASE WHEN nm_stat_prodi = "Aktif" THEN 1 END) * 100), 2) AS persentase_aktif_terakreditasi');
+    $this->db->from('data_prodi');
+    $this->db->group_by('kode_pt, nm_pt');
+
+    // Eksekusi query dan dapatkan hasilnya
+    $query = $this->db->get();
+    $presentase = $query->result_array();
+
+    // Buat array indexed by kode_pt untuk pencarian cepat
+    $presentase_data = array();
+    foreach ($presentase as $pres) {
+      $presentase_data[trim($pres['kode_pt'])] = $pres['persentase_aktif_terakreditasi'];
+    }
+
+    // Ambil data penilaian
+    $data = $this->db->select('periode, kode_pt, nama_pt, skor_1a, skor_1b, skor_2, skor_1_bobot, skor_2_bobot, skor_total, tipologi')
+      ->from('penilaian_tipologi')
+      ->where('periode', $periode)
+      ->get()
+      ->result_array();
+
+    // Tambahkan akreditasi_institusi dan presentase_prodi_terakreditasi ke setiap data penilaian
+    foreach ($data as &$row) {
+      $kode_pt = trim($row['kode_pt']);
+      $row['akreditasi_institusi'] = isset($pt_data[$kode_pt]) ? $pt_data[$kode_pt] : null;
+      $row['presentase_prodi_terakreditasi'] = isset($presentase_data[$kode_pt]) ? $presentase_data[$kode_pt] : null;
+    }
+    unset($row);
+
+    // Proses insert/update ke tabel data_penjaminan_mutu
+    $this->db->trans_start();
+    foreach ($data as $row) {
+      $where = [
+        'periode' => $row['periode'],
+        'kode_pt' => $row['kode_pt']
+      ];
+      $existing = $this->db->get_where('data_penjaminan_mutu', $where)->row();
+
+      $data_mutu = [
+        'periode' => $row['periode'],
+        'kode_pt' => $row['kode_pt'],
+        'nama_pt' => $row['nama_pt'],
+        'skor_1a' => $row['skor_1a'],
+        'skor_1b' => $row['skor_1b'],
+        'skor_2' => $row['skor_2'],
+        'skor_1_bobot' => $row['skor_1_bobot'],
+        'skor_2_bobot' => $row['skor_2_bobot'],
+        'skor_total' => $row['skor_total'],
+        'tipologi' => $row['tipologi'],
+        'akreditasi_institusi' => $row['akreditasi_institusi'],
+        'presentase_prodi_terakreditasi' => $row['presentase_prodi_terakreditasi'],
+        'tgl_update' => date('Y-m-d H:i:s'),
+      ];
+
+      if ($existing) {
+        $this->db->where($where)->update('data_penjaminan_mutu', $data_mutu);
+      } else {
+        $this->db->insert('data_penjaminan_mutu', $data_mutu);
+      }
+    }
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status() === FALSE) {
+      return false;
+    }
+    return true;
   }
 }

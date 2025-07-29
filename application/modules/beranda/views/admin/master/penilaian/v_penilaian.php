@@ -28,7 +28,9 @@
                         $is_disabled = ($data->id_status_penilaian == '4' || $data->id_status_penilaian == '2');
                         $item_class = $data->id_status_penilaian == '4' ? 'bg-success text-white' : (
                           $data->id_status_penilaian == '3' ? 'bg-danger text-white' : (
-                            $data->id_status_penilaian == '2' ? 'bg-warning text-dark' : ''
+                            $data->id_status_penilaian == '2' ? 'bg-warning text-dark' : (
+                              $data->id_status_penilaian == '1' ? 'bg-info text-white' : ''
+                            )
                           )
                         );
                         ?>
@@ -60,6 +62,11 @@
                                 <div>
                                   <span class="badge bg-warning text-dark text-wrap" style="margin-top: 5px; font-size: 1em; white-space: wrap;"><?= $data->nm_status ?></span>
                                 </div>
+                              <?php elseif ($data->id_status_penilaian == '1'): ?>
+                                <i class="fa fa-spinner" style="font-size: 3em;"></i>
+                                <div>
+                                  <span class="badge bg-info text-wrap" style="margin-top: 5px; font-size: 1em; white-space: wrap;"><?= $data->nm_status ?></span>
+                                </div>
                               <?php endif; ?>
                             </div>
                           </div>
@@ -72,9 +79,6 @@
                       </li>
                     <?php endif; ?>
                   </ul>
-                  <script>
-
-                  </script>
                 </div>
               </div>
             </div>
@@ -130,8 +134,11 @@
                           <div class="row">
                             <div class="col-lg-12">
                               <fieldset class="form-group mb-1">
-                                <label for="catatan-1a" class="label-required">Catatan Skor 1a</label>
-                                <textarea class="form-control textarea-catatan" name="catatan_1a" id="catatan-1a" placeholder="Berikan catatan untuk skor 1a" required></textarea>
+                                <label for="catatan-1a" class="label-required">
+                                  Catatan Skor 1a
+                                  <span class="text-danger" data-toggle="popover" data-content="<b>Ketersediaan dokumen formal SPMI</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                </label>
+                                <textarea class="form-control textarea-catatan" name="catatan_1a" id="catatan-1a" placeholder="Berikan catatan untuk skor 1a. Indikator Penilaian : Ketersediaan dokumen formal SPMI" required></textarea>
                               </fieldset>
                             </div>
                           </div>
@@ -160,8 +167,11 @@
                           <div class="row">
                             <div class="col-lg-12">
                               <fieldset class="form-group mb-1">
-                                <label for="catatan-1b" class="label-required">Catatan Skor 1b</label>
-                                <textarea class="form-control textarea-catatan" name="catatan_1b" id="catatan-1b" placeholder="Berikan catatan untuk skor 1b" required></textarea>
+                                <label for="catatan-1b" class="label-required">
+                                  Catatan Skor 1b
+                                  <span class="text-danger" data-toggle="popover" data-content="<b>Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                </label>
+                                <textarea class="form-control textarea-catatan" name="catatan_1b" id="catatan-1b" placeholder="Berikan catatan untuk skor 1b. Indikator Penilaian : Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM" required></textarea>
                               </fieldset>
                             </div>
                           </div>
@@ -190,8 +200,11 @@
                           <div class="row">
                             <div class="col-lg-12">
                               <fieldset class="form-group mb-1">
-                                <label for="catatan-2" class="label-required">Catatan Skor 2</label>
-                                <textarea class="form-control textarea-catatan" name="catatan_2" id="catatan-2" placeholder="Berikan catatan untuk skor 2" required></textarea>
+                                <label for="catatan-2" class="label-required">
+                                  Catatan Skor 2
+                                  <span class="text-danger" data-toggle="popover" data-content="<b>Efektivitas pelaksanaan penjaminan mutu</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                </label>
+                                <textarea class="form-control textarea-catatan" name="catatan_2" id="catatan-2" placeholder="Berikan catatan untuk skor 2. Indikator Penilaian : Efektivitas pelaksanaan penjaminan mutu" required></textarea>
                               </fieldset>
                             </div>
                           </div>
@@ -209,7 +222,19 @@
                       <div class="row">
                         <div class="col-lg-12">
                           <fieldset class="form-group mb-1">
-                            <label for="catatan-keseluruhan" class="label-required">Catatan Keseluruhan</label>
+                            <label for="skor-2" class="label-required">Link Detail Penilaian</label>
+                            <input type="text" class="form-control square" id="link-detail-penilaian" name="link_detail_penilaian" placeholder="Masukkan link detail penilaian" required>
+                          </fieldset>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <fieldset class="form-group mb-1">
+                            <label for="catatan-keseluruhan" class="label-required">
+                              Rekomendasi Perbaikan
+                              <span class="text-danger" data-toggle="popover" data-content="<b>Point :</b> sebutkan masalah utama secara jelas; <br> <b>Lead-in :</b> jelaskan secara singkat konteks atau urgensi masalah; <br> <b>Observation :</b> tuliskan temuan atau analisis penyebab masalah berdasarkan data atau hasil evaluasi; <br> <b>Recommendation :</b> tuliskan saran tindakan yang spesifik, aplikatif, dan terukur yang dapat  langsung diterapkan;" data-trigger="hover" data-original-title="Gunakan pendekatan PLOR dalam menyusun rekomendasi perbaikan:" data-html="true"><i class="la la-info-circle"></i></span>
+                            </label>
                             <textarea class="form-control textarea-catatan" name="catatan_keseluruhan" id="catatan-keseluruhan" placeholder="Berikan catatan keseluruhan" rows="5" required></textarea>
                           </fieldset>
                         </div>
@@ -258,6 +283,19 @@
                       Kembali
                     </button>
                   </a>
+                <?php else : ?>
+
+                  <?php
+                  if ($buka_tutup == "tutup") {
+                  ?>
+                    <a href="#" class="btn btn-danger waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="Sudah ditutup">
+                      Penilaian sudah ditutup
+                    </a>
+                  <?php } else { ?>
+                    <a href="<?= base_url('admin/kirim-nilai/' . safe_url_encrypt($periode_dipilih->kode)) ?>" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="Kirim semua nilai yang statusnya draft ke validator" id="kirim-nilai">
+                      Kirim Nilai ke Validator
+                    </a>
+                  <?php } ?>
                 <?php endif; ?>
               </div>
             </div>
@@ -299,7 +337,7 @@
                       $i = 0; // Inisialisasi counter
                       if (!empty($data_pt_binaan)) { // Cek apakah array data_pt_binaan tidak kosong
                         foreach ($data_pt_binaan as $data) {
-                          if (substr($data->periode, -1, 1 == '1')) {
+                          if (substr($data->periode, -1, 1) == '1') {
                             $periode = substr($data->periode, 0, 4) . ' Periode 1';
                           } else {
                             $periode = substr($data->periode, 0, 4) . ' Periode 2';
@@ -312,29 +350,56 @@
                             $row_class = 'table-danger'; // kuning
                           } elseif ($data->id_status_penilaian == '2') {
                             $row_class = 'table-warning'; // merah
+                          } elseif ($data->id_status_penilaian == '1') {
+                            $row_class = 'table-info'; // biru
                           }
                       ?>
                           <tr class="<?= $row_class ?> text-dark">
                             <td class="text-center" style="width: 3%;"><?= ++$i ?></td>
-                            <td class="text-center" style="width: 10%;"><?= $periode ?></td>
+                            <td class="text-center" style="width: 12%;"><?= $periode ?></td>
                             <td class="text-center" style="width: 5%;"><?= $data->kode_pt ?></td>
                             <td class="text-start" style="width: 18%;"><?= $data->nama_pt ?></td>
-                            <td class="text-center" style="width: 5%;"><?= $data->skor_1a ?></td>
-                            <td class="text-center" style="width: 5%;"><?= $data->skor_1b ?></td>
-                            <td class="text-center" style="width: 5%;"><?= $data->skor_2 ?></td>
+                            <td class="text-center" style="width: 5%;">
+                              <?= $data->skor_1a ?>
+                              <?php
+                              $warna_1a = ($data->cek_1a == '1' && $data->skor_1a !== null) ? 'text-success' : 'text-danger';
+                              $iconCek_1a = ($data->cek_1a == '1' && $data->skor_1a !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_1a == '0' && $data->skor_1a !== null) ? '<i class="fa fa-times"></i>' : '');
+                              ?>
+                              <span class="<?= $warna_1a ?>" data-toggle="popover" data-content="<?= $data->catatan_1a_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 1a" style="cursor: pointer;"><?= $iconCek_1a ?></span>
+                            </td>
+                            <td class="text-center" style="width: 5%;">
+                              <?= $data->skor_1b ?>
+                              <?php
+                              $warna_1b = ($data->cek_1b == '1' && $data->skor_1b !== null) ? 'text-success' : 'text-danger';
+                              $iconCek_1b = ($data->cek_1b == '1' && $data->skor_1b !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_1b == '0' && $data->skor_1b !== null) ? '<i class="fa fa-times"></i>' : '');
+                              ?>
+                              <span class="<?= $warna_1b ?>" data-toggle="popover" data-content="<?= $data->catatan_1b_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 1b" style="cursor: pointer;"><?= $iconCek_1b ?></span>
+                            </td>
+                            <td class="text-center" style="width: 5%;">
+                              <?= $data->skor_2 ?>
+                              <?php
+                              $warna_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? 'text-success' : 'text-danger';
+                              $iconCek_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_2 == '0' && $data->skor_2 !== null) ? '<i class="fa fa-times"></i>' : '');
+                              ?>
+                              <span class="<?= $warna_2 ?>" data-toggle="popover" data-content="<?= $data->catatan_2_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 2" style="cursor: pointer;"><?= $iconCek_2 ?></span>
+                            </td>
                             <td class="text-center" style="width: 5%;"><?= $data->skor_total ?></td>
                             <td class="text-center" style="width: 5%;"><?= $data->tipologi ?></td>
                             <td class="text-center" style="width: 5%;">
                               <?php
                               $warna_badge = $data->id_status_penilaian == '4' ? 'badge-success' : (
                                 $data->id_status_penilaian == '3' ? 'badge-danger' : (
-                                  $data->id_status_penilaian == '2' ? 'badge-warning' : 'badge-secondary'
+                                  $data->id_status_penilaian == '2' ? 'badge-warning' : (
+                                    $data->id_status_penilaian == '1' ? 'badge-info' : 'badge-secondary'
+                                  )
                                 )
                               );
 
                               $icon = $data->id_status_penilaian == '4' ? 'fa-check-circle' : (
                                 $data->id_status_penilaian == '3' ? 'fa-times-circle' : (
-                                  $data->id_status_penilaian == '2' ? 'fa-hourglass-half' : 'fa-ban'
+                                  $data->id_status_penilaian == '2' ? 'fa-hourglass-half' : (
+                                    $data->id_status_penilaian == '1' ? 'fa-spinner fa-spin' : 'fa-question-circle'
+                                  )
                                 )
                               );
                               ?>
@@ -581,10 +646,33 @@
         $('#catatan-1b').val(response.data.catatan_1b);
         $('#catatan-2').val(response.data.catatan_2);
         $('#catatan-keseluruhan').val(response.data.catatan_keseluruhan);
+        $('#link-detail-penilaian').val(response.data.link_detail_penilaian)
       },
       error: function(xhr) {
         alert('Gagal mengambil data');
       }
     });
+  });
+
+  $(document).on('click', '#kirim-nilai', function(event) {
+    event.preventDefault(); // Cegah aksi default link
+    // console.log($('#kirim-nilai').attr('href'));
+
+    Swal.fire({
+      title: 'Kirim Nilai?',
+      text: "Apakah anda yakin ingin mengirim semua nilai yang statusnya draft ke validator?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, kirim!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Redirect ke URL kirim-nilai
+        window.location.href = $(this).attr('href');
+      }
+    });
+
   });
 </script>

@@ -386,6 +386,9 @@ class Admin extends MX_Controller
       'jumlah_pt' => count(array_unique(array_column($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), 'kode_pt'))),
     ];
 
+    $data['jml_draft'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 1;
+    }));
     $data['jml_penilaian_validator'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), function ($item) {
       return isset($item->id_status_penilaian) && $item->id_status_penilaian == 2;
     }));

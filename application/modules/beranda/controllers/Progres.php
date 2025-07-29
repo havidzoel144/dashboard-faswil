@@ -51,6 +51,9 @@ class Progres extends MX_Controller
       'progres_penilaian' => $this->Penilaian_model->get_data_penilaian_by_periode($periode),
     ];
 
+    $data['jml_draft'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 1;
+    }));
     $data['jml_penilaian_validator'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode), function ($item) {
       return isset($item->id_status_penilaian) && $item->id_status_penilaian == 2;
     }));
@@ -234,5 +237,18 @@ class Progres extends MX_Controller
 
     $writer->save('php://output');
     exit;
+  }
+
+  public function publishPenilaian()
+  {
+    $periode = safe_url_decrypt($this->input->post('periode'));
+
+    $data = $this->Penilaian_model->publish_penilaian_by_periode($periode);
+    if (!$data) {
+      $this->session->set_flashdata('error', 'Penilaian gagal dipublikasikan.');
+      redirect('beranda/progres');
+    }
+    $this->session->set_flashdata('success', 'Penilaian berhasil dipublikasikan.');
+    redirect('beranda/progres');
   }
 }

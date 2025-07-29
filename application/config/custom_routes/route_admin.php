@@ -36,6 +36,7 @@ $route['admin/lihat-skor/(:any)'] = 'beranda/penilaian/inputSkor/$1';
 $route['admin/get-penilaian'] = 'beranda/penilaian/getPenilaian';
 $route['admin/simpan-skor'] = 'beranda/penilaian/simpanSkor';
 $route['admin/riwayat-penilaian/(:any)'] = 'beranda/penilaian/riwayatPenilaian/$1';
+$route['admin/kirim-nilai/(:any)'] = 'beranda/penilaian/kirimNilai/$1';
 
 // PENILAIAN VALIDATOR
 $route['admin/validator'] = 'beranda/validator';
@@ -49,3 +50,4 @@ $route['admin/progres-penilaian'] = 'beranda/progres';
 $route['admin/lihat-progres/(:any)'] = 'beranda/progres/lihatProgres/$1';
 $route['admin/export-nilai-pdf/(:any)'] = 'beranda/progres/exportNilaiPdf/$1';
 $route['admin/export-nilai-excel/(:any)'] = 'beranda/progres/exportNilaiExcel/$1';
+$route['admin/publish-penilaian'] = 'beranda/progres/publishPenilaian';
