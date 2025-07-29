@@ -72,8 +72,21 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-2">
+        <div class="row d-flex justify-content-center">
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
+            <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #e3eaff 0%, #b2cfff 100%);">
+              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                <div class="mb-2">
+                  <span class="rounded-circle bg-primary bg-gradient d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    <i class="la la-pencil text-white" style="font-size: 2rem;"></i>
+                  </span>
+                </div>
+                <h6 class="card-title mb-1 font-weight-bold" style="font-size: 1.05rem; color: #007bff;">Draft</h6>
+                <span class="display-4 font-weight-bold" style="color: #007bff;"><?= $jml_draft ?></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
             <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #fff4e3 0%, #ffb866 100%);">
               <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
                 <div class="mb-2">
@@ -86,7 +99,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-2">
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
             <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #ffe3e3 0%, #ffb2b2 100%);">
               <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
                 <div class="mb-2">
@@ -99,7 +112,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-2">
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
             <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #e3ffe3 0%, #b2ffb2 100%);">
               <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
                 <div class="mb-2">
@@ -112,7 +125,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-2">
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
             <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #f0f0f0 0%, #cccccc 100%);">
               <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
                 <div class="mb-2">
@@ -135,11 +148,19 @@
                   <h4 class="card-title ml-1" id="heading-buttons1">Data Penilaian Tipologi | <span class="badge badge-secondary font-medium-1"><?= $periode_dipilih->keterangan ?></span></h4>
                   <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
 
-                  <a href="<?= base_url('admin/progres-penilaian') ?>" class="mr-1">
-                    <button type="button" class="btn btn-dark waves-effect waves-light">
-                      Kembali
+                  <div class="d-flex align-items-center">
+                    <?php echo form_open(site_url('admin/publish-penilaian'), array('class' => 'form-horizontal', 'role' => 'form', 'id' => 'form-publish-penilaian')); ?>
+                    <input type="hidden" name="periode" value="<?= safe_url_encrypt($periode_dipilih->kode) ?>">
+                    <button type="submit" class="btn btn-primary waves-effect waves-light mr-1" id="btn-publish">
+                      <i class="la la-send"></i> Publish Penilaian
                     </button>
-                  </a>
+                    <?php echo form_close(); ?>
+                    <a href="<?= base_url('admin/progres-penilaian') ?>" class="mr-1">
+                      <button type="button" class="btn btn-dark waves-effect waves-light">
+                        Kembali
+                      </button>
+                    </a>
+                  </div>
                 </div>
               </div>
               <div class="card-content">
@@ -169,6 +190,8 @@
                               $row_class = 'table-danger'; // kuning
                             } elseif ($data->id_status_penilaian == '2') {
                               $row_class = 'table-warning'; // merah
+                            } elseif ($data->id_status_penilaian == '1') {
+                              $row_class = 'table-info'; // biru
                             }
                         ?>
                             <tr class="<?= $row_class ?>">
@@ -193,13 +216,17 @@
                                 <?php
                                 $warna_badge = $data->id_status_penilaian == '4' ? 'badge-success' : (
                                   $data->id_status_penilaian == '3' ? 'badge-danger' : (
-                                    $data->id_status_penilaian == '2' ? 'badge-warning' : 'badge-secondary'
+                                    $data->id_status_penilaian == '2' ? 'badge-warning' : (
+                                      $data->id_status_penilaian == '1' ? 'badge-info' : 'badge-secondary'
+                                    )
                                   )
                                 );
 
                                 $icon = $data->id_status_penilaian == '4' ? 'fa-check-circle' : (
                                   $data->id_status_penilaian == '3' ? 'fa-times-circle' : (
-                                    $data->id_status_penilaian == '2' ? 'fa-hourglass-half' : 'fa-ban'
+                                    $data->id_status_penilaian == '2' ? 'fa-hourglass-half' : (
+                                      $data->id_status_penilaian == '1' ? 'fa-spinner fa-spin' : 'fa-question-circle'
+                                    )
                                   )
                                 );
                                 ?>
@@ -267,5 +294,26 @@
     setTimeout(function() {
       $('#flash-message').fadeOut('slow');
     }, 2000); // 3 detik
+
+    $(document).on('click', '#btn-publish', function(event) {
+      const periode = '<?= $periode_dipilih->keterangan ?>';
+      event.preventDefault();
+
+      Swal.fire({
+        title: 'Publish Penilaian?',
+        text: "Apakah anda yakin ingin publish penilaian " + periode + "?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, publish!',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Gunakan native submit agar event berjalan normal
+          document.getElementById('form-publish-penilaian').submit();
+        }
+      });
+    });
   });
 </script>

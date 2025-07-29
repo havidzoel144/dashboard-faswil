@@ -2,11 +2,12 @@
 <div class="header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-dark navbar-without-dd-arrow navbar-shadow navbar-lldikti" role="navigation" data-menu="menu-wrapper">
     <div class="navbar-container main-menu-content container center-layout" data-menu="menu-container">
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-
+            <span class="d-flex align-items-center" style="padding-right: 15px;">
+                <img src="<?= base_url() ?>assets/img/bg_dashboard_lldikti3.png" alt="Logo Dashboard LLDIKTI 3" class="brand-logo" style="height: 50px;">
+            </span>
             <li class="nav-item <?= $dashboard ?>" data-menu="">
                 <a class="nav-link " href="<?= base_url() ?>admin/dashboard" data-toggle=""><i class="la la-home"></i></a>
             </li>
-
             <?php if (has_role([1, 2])) : ?>
                 <li class="dropdown nav-item" data-menu="dropdown">
                     <a class="dropdown-toggle nav-link <?= $master ?>" href="#" data-toggle="dropdown" aria-expanded="false"><i class="la la-angle-down"></i><span data-i18n="Data Master">Data Master </span></a>

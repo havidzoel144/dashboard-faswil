@@ -83,26 +83,6 @@
               <td><?= htmlspecialchars($progres_penilaian->keterangan); ?></td>
             </tr>
             <tr class="info">
-              <th>SKOR 1A</th>
-              <td><?= htmlspecialchars($progres_penilaian->skor_1a); ?></td>
-            </tr>
-            <tr class="info">
-              <th>SKOR 1B</th>
-              <td><?= htmlspecialchars($progres_penilaian->skor_1b); ?></td>
-            </tr>
-            <tr class="info">
-              <th>SKOR 2</th>
-              <td><?= htmlspecialchars($progres_penilaian->skor_2); ?></td>
-            </tr>
-            <tr class="primary">
-              <th>SKOR 1 BOBOT</th>
-              <td><?= htmlspecialchars($progres_penilaian->skor_1_bobot); ?></td>
-            </tr>
-            <tr class="primary">
-              <th>SKOR 2 BOBOT</th>
-              <td><?= htmlspecialchars($progres_penilaian->skor_2_bobot); ?></td>
-            </tr>
-            <tr class="primary">
               <th>SKOR TOTAL</th>
               <td><?= htmlspecialchars($progres_penilaian->skor_total); ?></td>
             </tr>

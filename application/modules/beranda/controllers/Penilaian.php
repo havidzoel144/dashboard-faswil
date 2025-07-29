@@ -135,7 +135,7 @@ class Penilaian extends MX_Controller
 
     // Data yang akan diupdate
     $data = [
-      'id_status_penilaian' => 2,
+      'id_status_penilaian' => 1,
       'skor_1a' => $post['skor_1a'],
       'catatan_1a' => $post['catatan_1a'],
       'skor_1b' => $post['skor_1b'],
@@ -143,6 +143,7 @@ class Penilaian extends MX_Controller
       'skor_2' => $post['skor_2'],
       'catatan_2' => $post['catatan_2'],
       'catatan_keseluruhan' => $post['catatan_keseluruhan'],
+      'link_detail_penilaian' => $post['link_detail_penilaian'],
       'skor_1_bobot' => $skor_1_bobot,
       'skor_2_bobot' => $skor_2_bobot,
       'skor_total' => $skor_total,
@@ -233,5 +234,25 @@ class Penilaian extends MX_Controller
     // echo json_encode($data);exit;
 
     $this->load->view("admin/master/penilaian/v_riwayat_penilaian", $data);
+  }
+
+  public function kirimNilai($enc_periode)
+  {
+    $periode = safe_url_decrypt($enc_periode);
+    $fasilitator_id = $this->session->userdata('user_id');
+
+    $kirim_nilai = $this->Penilaian_model->kirimNilai($periode, $fasilitator_id);
+
+    if ($kirim_nilai) {
+      $this->session->set_flashdata('success', 'Data berhasil dikirim ke validator');
+    } else {
+      $this->session->set_flashdata('error', 'Gagal mengirim nilai');
+    }
+
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+      redirect($_SERVER['HTTP_REFERER']);
+    } else {
+      redirect('admin/penilaian-tipologi');
+    }
   }
 }

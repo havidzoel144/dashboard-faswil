@@ -116,7 +116,7 @@
                             <thead>
                               <tr style="background-color: #563BFF; color: #ffffff">
                                 <th class="text-center" rowspan="3">#</th>
-                                <th class="text-center" rowspan="3">Periode <span class="text-danger" data-toggle="popover" data-content="Periode 1 : Januari - Juni <br> Periode 2 : Juli - November" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
+                                <th class="text-center" rowspan="3" style="width: 10%;">Periode <span class="text-danger" data-toggle="popover" data-content="Periode 1 : Januari - Juni <br> Periode 2 : Juli - November" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
                                 <th class="text-center" rowspan="3">Kode PT</th>
                                 <th class="text-center" rowspan="3">Nama PT</th>
                                 <th class="text-center" colspan="3">Butir Penilaian</th>

@@ -100,9 +100,11 @@
                         if ($data->id_status_penilaian == '4') {
                           $row_class = 'table-success'; // hijau
                         } elseif ($data->id_status_penilaian == '3') {
-                          $row_class = 'table-primary'; // kuning
+                          $row_class = 'table-danger'; // merah
                         } elseif ($data->id_status_penilaian == '2') {
-                          $row_class = 'table-danger'; // putih (default)
+                          $row_class = 'table-warning'; // kuning
+                        } elseif ($data->id_status_penilaian == '1') {
+                          $row_class = 'table-info'; // biru
                         }
                         ?>
                         <tr class="<?= $row_class ?>">
@@ -110,24 +112,49 @@
                           <td class="text-center" style="width: 10%;"><?= $periode ?></td>
                           <td class="text-center" style="width: 5%;"><?= $data->kode_pt ?></td>
                           <td class="text-start" style="width: 18%;"><?= $data->nama_pt ?></td>
-                          <td class="text-center" style="width: 5%;"><?= $data->skor_1a ?></td>
-                          <td class="text-center" style="width: 5%;"><?= $data->skor_1b ?></td>
-                          <td class="text-center" style="width: 5%;"><?= $data->skor_2 ?></td>
+                          <td class="text-center" style="width: 5%;">
+                            <?= $data->skor_1a ?>
+                            <?php
+                            $warna_1a = ($data->cek_1a == '1' && $data->skor_1a !== null) ? 'text-success' : 'text-danger';
+                            $iconCek_1a = ($data->cek_1a == '1' && $data->skor_1a !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_1a == '0' && $data->skor_1a !== null) ? '<i class="fa fa-times"></i>' : '');
+                            ?>
+                            <span class="<?= $warna_1a ?>" data-toggle="popover" data-content="<?= $data->catatan_1a_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 1a" style="cursor: pointer;"><?= $iconCek_1a ?></span>
+                          </td>
+                          <td class="text-center" style="width: 5%;">
+                            <?= $data->skor_1b ?>
+                            <?php
+                            $warna_1b = ($data->cek_1b == '1' && $data->skor_1b !== null) ? 'text-success' : 'text-danger';
+                            $iconCek_1b = ($data->cek_1b == '1' && $data->skor_1b !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_1b == '0' && $data->skor_1b !== null) ? '<i class="fa fa-times"></i>' : '');
+                            ?>
+                            <span class="<?= $warna_1b ?>" data-toggle="popover" data-content="<?= $data->catatan_1b_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 1b" style="cursor: pointer;"><?= $iconCek_1b ?></span>
+                          </td>
+                          <td class="text-center" style="width: 5%;">
+                            <?= $data->skor_2 ?>
+                            <?php
+                            $warna_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? 'text-success' : 'text-danger';
+                            $iconCek_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_2 == '0' && $data->skor_2 !== null) ? '<i class="fa fa-times"></i>' : '');
+                            ?>
+                            <span class="<?= $warna_2 ?>" data-toggle="popover" data-content="<?= $data->catatan_2_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 2" style="cursor: pointer;"><?= $iconCek_2 ?></span>
+                          </td>
                           <td class="text-center" style="width: 5%;"><?= $data->skor_total ?></td>
                           <td class="text-center" style="width: 5%;"><?= $data->tipologi ?></td>
                           <td class="text-center text-white" style="width: 5%;">
                             <span class="badge 
                               <?php
                               if ($data->id_status_penilaian == '4') echo 'badge-success';
-                              elseif ($data->id_status_penilaian == '3') echo 'badge-primary';
+                              elseif ($data->id_status_penilaian == '3') echo 'badge-danger';
                               elseif ($data->id_status_penilaian == '2') echo 'badge-warning';
+                              elseif ($data->id_status_penilaian == '1') echo 'badge-info';
+                              else echo 'badge-secondary';
                               ?>"
-                              style="font-size: 1em; padding: 8px 14px; border-radius: 20px; letter-spacing: 0.5px;">
+                              style="font-size: 1em; padding: 8px 14px; border-radius: 20px; letter-spacing: 0.5px; width: 100%;">
                               <i class="fa 
                                 <?php
                                 if ($data->id_status_penilaian == '4') echo 'fa-check-circle';
                                 elseif ($data->id_status_penilaian == '3') echo 'fa-times-circle';
                                 elseif ($data->id_status_penilaian == '2') echo 'fa-hourglass-half';
+                                elseif ($data->id_status_penilaian == '1') echo 'fa-spinner fa-spin';
+                                else echo 'fa-question-circle';
                                 ?>"
                                 aria-hidden="true" style="margin-right: 6px;"></i>
                               <?= $data->nm_status ?>
@@ -213,12 +240,14 @@
                                     </div>
                                     <div class="form-group row">
                                       <div class="col-sm-2">
-                                        <label class="col-form-label text-left" style="display: block; text-align: left;">Validasi</label>
-                                        <input type="checkbox" name="cek_1a" value="1" <?= ($data->cek_1a == 1) ? 'checked' : '' ?>> Valid
+                                        <label class="col-form-label text-left" style="display: block; text-align: left;font-weight: 800;">Validasi</label>
+                                        <input required type="radio" style="transform: scale(1.3);" name="cek_1a" value="1" <?= ($data->cek_1a == "1") ? 'checked' : '' ?>>&nbsp;Valid
+                                        <br>
+                                        <input required type="radio" style="transform: scale(1.3);" name="cek_1a" value="0" <?= ($data->cek_1a == "0") ? 'checked' : '' ?>>&nbsp;Tidak Valid
                                       </div>
                                       <div class="col-sm-10">
                                         <label class="col-form-label text-left" style="display: block; text-align: left;">Catatan validator Skor 1a</label>
-                                        <textarea class="form-control textarea-catatan" placeholder="ketik disini..." rows="3" name="catatan_1a_validator"><?= $data->catatan_1a_validator ?></textarea>
+                                        <textarea class="form-control textarea-catatan" required placeholder="ketik disini..." rows="3" name="catatan_1a_validator"><?= $data->catatan_1a_validator ?></textarea>
                                       </div>
                                     </div>
 
@@ -236,12 +265,14 @@
                                     </div>
                                     <div class="form-group row">
                                       <div class="col-sm-2">
-                                        <label class="col-form-label text-left" style="display: block; text-align: left;">Validasi</label>
-                                        <input type="checkbox" name="cek_1b" value="1" <?= ($data->cek_1b == 1) ? 'checked' : '' ?>> Valid
+                                        <label class="col-form-label text-left" style="display: block; text-align: left;font-weight: 800;">Validasi</label>
+                                        <input required type="radio" style="transform: scale(1.3);" name="cek_1b" value="1" <?= ($data->cek_1b == "1") ? 'checked' : '' ?>>&nbsp;Valid
+                                        <br>
+                                        <input required type="radio" style="transform: scale(1.3);" name="cek_1b" value="0" <?= ($data->cek_1b == "0") ? 'checked' : '' ?>>&nbsp;Tidak Valid
                                       </div>
                                       <div class="col-sm-10">
                                         <label class="col-form-label text-left" style="display: block; text-align: left;">Catatan validator Skor 1b</label>
-                                        <textarea class="form-control textarea-catatan" placeholder="ketik disini..." rows="3" name="catatan_1b_validator"><?= $data->catatan_1b_validator ?></textarea>
+                                        <textarea class="form-control textarea-catatan" required placeholder="ketik disini..." rows="3" name="catatan_1b_validator"><?= $data->catatan_1b_validator ?></textarea>
                                       </div>
                                     </div>
 
@@ -259,12 +290,23 @@
                                     </div>
                                     <div class="form-group row">
                                       <div class="col-sm-2">
-                                        <label class="col-form-label text-left" style="display: block; text-align: left;">Validasi</label>
-                                        <input type="checkbox" name="cek_2" value="1" <?= ($data->cek_2 == 1) ? 'checked' : '' ?>> Valid
+                                        <label class="col-form-label text-left" style="display: block; text-align: left;font-weight: 800;">Validasi</label>
+                                        <input required type="radio" style="transform: scale(1.3);" name="cek_2" value="1" <?= ($data->cek_2 == "1") ? 'checked' : '' ?>>&nbsp;Valid
+                                        <br>
+                                        <input required type="radio" style="transform: scale(1.3);" name="cek_2" value="0" <?= ($data->cek_2 == "0") ? 'checked' : '' ?>>&nbsp;Tidak Valid
                                       </div>
                                       <div class="col-sm-10">
                                         <label class="col-form-label text-left" style="display: block; text-align: left;">Catatan validator Skor 2</label>
-                                        <textarea class="form-control textarea-catatan" placeholder="ketik disini..." rows="3" name="catatan_2_validator"><?= $data->catatan_2_validator ?></textarea>
+                                        <textarea class="form-control textarea-catatan" required placeholder="ketik disini..." rows="3" name="catatan_2_validator"><?= $data->catatan_2_validator ?></textarea>
+                                      </div>
+                                    </div>
+
+                                    <hr style="border-top: 3px solid #343a40;">
+
+                                    <div class="form-group row">
+                                      <div class="col-lg-12">
+                                        <label for="current-password">Link Detail Penilaian</label>
+                                        <input type="text" class="form-control square" value="<?= $data->link_detail_penilaian ?>" required readonly>
                                       </div>
                                     </div>
 
@@ -276,7 +318,7 @@
                                     </fieldset>
                                     <fieldset class="form-group">
                                       <label for="current-password">Catatan Keseluruhan Validator</label>
-                                      <textarea class="form-control textarea-catatan" placeholder="ketik disini..." rows="3" name="catatan_keseluruhan_validator"><?= $data->catatan_keseluruhan_validator ?></textarea>
+                                      <textarea class="form-control textarea-catatan" required placeholder="ketik disini..." rows="3" name="catatan_keseluruhan_validator"><?= $data->catatan_keseluruhan_validator ?></textarea>
 
                                   </div>
                                   <div class="modal-footer">

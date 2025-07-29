@@ -120,7 +120,9 @@
         .bg-danger .kode_pt,
         .bg-danger .nama_pt,
         .bg-warning .kode_pt,
-        .bg-warning .nama_pt {
+        .bg-warning .nama_pt,
+        .bg-info .kode_pt,
+        .bg-info .nama_pt {
             color: #fff !important;
             /* Jika status: putih */
         }
@@ -182,15 +184,34 @@
             transition: none;
         }
 
+        /* Status 1: Info */
+        .list-group-item.bg-info:hover,
+        .list-group-item.bg-info:focus,
+        .list-group-item.bg-info:hover .badge,
+        .list-group-item.bg-info:focus .badge {
+            background-color: rgb(23, 123, 251) !important;
+            color: #fff !important;
+            transition: none;
+        }
+
+        .list-group-item.bg-info.active-item,
+        .list-group-item.bg-info.active,
+        .list-group-item.bg-info.active-item .badge,
+        .list-group-item.bg-info.active .badge {
+            background-color: rgb(0, 104, 218) !important;
+            color: #fff !important;
+            transition: none;
+        }
+
         /* Default (tanpa status) */
-        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning):hover,
+        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info):hover,
         .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning):focus {
             background-color: #e2e6ea !important;
             color: #212529 !important;
         }
 
-        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning).active-item,
-        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning).active {
+        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info).active-item,
+        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info).active {
             background-color: rgba(107, 161, 214, 0.51) !important;
             color: #212529 !important;
         }
