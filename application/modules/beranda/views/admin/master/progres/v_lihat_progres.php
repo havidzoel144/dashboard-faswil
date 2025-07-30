@@ -140,6 +140,65 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-12">
+            <?php
+            // Ambil tanggal dan waktu sekarang
+            $now = new DateTime();
+
+            // Ambil data periode dari $buka_tutup[0]
+            $mulai = new DateTime($buka_tutup[0]->mulai_tgl . ' ' . $buka_tutup[0]->mulai_waktu);
+            $akhir = new DateTime($buka_tutup[0]->akhir_tgl . ' ' . $buka_tutup[0]->akhir_waktu);
+
+            // Tentukan status periode
+            if ($now < $mulai) {
+              $label = '<span class="badge badge-secondary ml-2">Belum Dibuka</span>';
+            } elseif ($now >= $mulai && $now <= $akhir) {
+              $label = '<span class="badge badge-success ml-2">Sedang Berlangsung</span>';
+            } else {
+              $label = '<span class="badge badge-danger ml-2">Sudah Lewat</span>';
+            }
+            ?>
+            <div class="alert alert-info alert-dismissible fade show" role="alert" style="background: linear-gradient(90deg, #e3f2fd 0%, #bbdefb 100%); color: #1565c0; border: 1px solid #90caf9;">
+              <strong style="display: inline-block; width: 220px; border-right: 1px solid #90caf9;">Periode <?= $buka_tutup[0]->jenis ?></strong>
+              <?= $label ?>
+              <span style="font-weight: 500;">
+                <?= $buka_tutup[0]->mulai_tgl . ' ' . $buka_tutup[0]->mulai_waktu . ' s/d ' . $buka_tutup[0]->akhir_tgl . ' ' . $buka_tutup[0]->akhir_waktu ?>
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-12">
+            <?php
+            // Ambil tanggal dan waktu sekarang
+            $now2 = new DateTime();
+
+            // Ambil data periode dari $buka_tutup[1]
+            $mulai2 = new DateTime($buka_tutup[1]->mulai_tgl . ' ' . $buka_tutup[1]->mulai_waktu);
+            $akhir2 = new DateTime($buka_tutup[1]->akhir_tgl . ' ' . $buka_tutup[1]->akhir_waktu);
+
+            // Tentukan status periode
+            if ($now2 < $mulai2) {
+              $label2 = '<span class="badge badge-secondary ml-2">Belum Dibuka</span>';
+            } elseif ($now2 >= $mulai2 && $now2 <= $akhir2) {
+              $label2 = '<span class="badge badge-success ml-2">Sedang Berlangsung</span>';
+            } else {
+              $label2 = '<span class="badge badge-danger ml-2">Sudah Lewat</span>';
+            }
+            ?>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" style="background: linear-gradient(90deg, #fffde7 0%, #ffe082 100%); color: #ff9800; border: 1px solid #ffd54f;">
+              <strong style="display: inline-block; width: 220px; border-right: 1px solid #ffd54f;">Periode <?= $buka_tutup[1]->jenis ?></strong>
+              <?= $label2 ?>
+              <span style="font-weight: 500;">
+                <?= $buka_tutup[1]->mulai_tgl . ' ' . $buka_tutup[1]->mulai_waktu . ' s/d ' . $buka_tutup[1]->akhir_tgl . ' ' . $buka_tutup[1]->akhir_waktu ?>
+              </span>
+            </div>
+          </div>
+        </div>
+
         <div class="row mb-3">
           <div class="col-12">
             <div class="card">
@@ -299,21 +358,55 @@
       const periode = '<?= $periode_dipilih->keterangan ?>';
       event.preventDefault();
 
-      Swal.fire({
-        title: 'Publish Penilaian?',
-        text: "Apakah anda yakin ingin publish penilaian " + periode + "?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, publish!',
-        cancelButtonText: 'Batal'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Gunakan native submit agar event berjalan normal
-          document.getElementById('form-publish-penilaian').submit();
-        }
-      });
+      // Ambil tanggal dan waktu periode fasilitator & validator dari PHP
+      const mulaiFasilitator = '<?= $buka_tutup[0]->mulai_tgl . ' ' . $buka_tutup[0]->mulai_waktu ?>';
+      const akhirFasilitator = '<?= $buka_tutup[0]->akhir_tgl . ' ' . $buka_tutup[0]->akhir_waktu ?>';
+      const mulaiValidator = '<?= $buka_tutup[1]->mulai_tgl . ' ' . $buka_tutup[1]->mulai_waktu ?>';
+      const akhirValidator = '<?= $buka_tutup[1]->akhir_tgl . ' ' . $buka_tutup[1]->akhir_waktu ?>';
+
+      const now = new Date();
+
+      const mulaiF = new Date(mulaiFasilitator.replace(/-/g, '/'));
+      const akhirF = new Date(akhirFasilitator.replace(/-/g, '/'));
+      const mulaiV = new Date(mulaiValidator.replace(/-/g, '/'));
+      const akhirV = new Date(akhirValidator.replace(/-/g, '/'));
+
+      // Cek status periode
+      if (now < mulaiF || now < mulaiV) {
+        Swal.fire({
+          title: 'Periode Belum Dibuka',
+          text: 'Pengisian belum dibuka untuk fasilitator atau validator.',
+          icon: 'info',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        });
+        return;
+      } else if ((now >= mulaiF && now <= akhirF) || (now >= mulaiV && now <= akhirV)) {
+        Swal.fire({
+          title: 'Penilaian Sedang Berlangsung',
+          text: 'Penilaian sedang berlangsung, tunggu hingga proses penilaian selesai.',
+          icon: 'info',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        });
+        return;
+      } else if (now > akhirF && now > akhirV) {
+        Swal.fire({
+          title: 'Publish Penilaian?',
+          text: "Apakah anda yakin ingin publish penilaian " + periode + "?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ya, publish!',
+          cancelButtonText: 'Batal'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Gunakan native submit agar event berjalan normal
+            document.getElementById('form-publish-penilaian').submit();
+          }
+        });
+      }
     });
   });
 </script>

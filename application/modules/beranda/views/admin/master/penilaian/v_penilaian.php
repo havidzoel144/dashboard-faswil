@@ -12,6 +12,35 @@
     </div>
     <div class="content-body">
       <?php if ($periode_dipilih->status == '1') : ?>
+        <div class="row">
+          <div class="col-12">
+            <?php
+            // Ambil tanggal dan waktu sekarang
+            $now = new DateTime();
+
+            // Ambil data periode dari $buka_tutup[0]
+            $mulai = new DateTime($bt->mulai_tgl . ' ' . $bt->mulai_waktu);
+            $akhir = new DateTime($bt->akhir_tgl . ' ' . $bt->akhir_waktu);
+
+            // Tentukan status periode
+            if ($now < $mulai) {
+              $label = '<span class="badge badge-secondary ml-2">Belum Dibuka</span>';
+            } elseif ($now >= $mulai && $now <= $akhir) {
+              $label = '<span class="badge badge-success ml-2">Sedang Berlangsung</span>';
+            } else {
+              $label = '<span class="badge badge-danger ml-2">Sudah Lewat</span>';
+            }
+            ?>
+            <div class="alert alert-info alert-dismissible fade show" role="alert" style="background: linear-gradient(90deg, #e3f2fd 0%, #bbdefb 100%); color: #1565c0; border: 1px solid #90caf9;">
+              <strong style="display: inline-block; width: 220px; border-right: 1px solid #90caf9;">Periode <?= $bt->jenis ?></strong>
+              <?= $label ?>
+              <span style="font-weight: 500;">
+                <?= $bt->mulai_tgl . ' ' . $bt->mulai_waktu . ' s/d ' . $bt->akhir_tgl . ' ' . $bt->akhir_waktu ?>
+              </span>
+            </div>
+          </div>
+        </div>
+
         <div class="row match-height">
           <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="card">
@@ -63,7 +92,7 @@
                                   <span class="badge bg-warning text-dark text-wrap" style="margin-top: 5px; font-size: 1em; white-space: wrap;"><?= $data->nm_status ?></span>
                                 </div>
                               <?php elseif ($data->id_status_penilaian == '1'): ?>
-                                <i class="fa fa-spinner" style="font-size: 3em;"></i>
+                                <i class="fa fa-spinner fa-spin" style="font-size: 3em;"></i>
                                 <div>
                                   <span class="badge bg-info text-wrap" style="margin-top: 5px; font-size: 1em; white-space: wrap;"><?= $data->nm_status ?></span>
                                 </div>

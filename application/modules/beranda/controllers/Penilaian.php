@@ -66,6 +66,7 @@ class Penilaian extends MX_Controller
     $data['dabk'] = $bk;
     $current_date = date('Y-m-d');
     $current_time = date('H:i:s');
+    $data['bt'] = $bk;
 
     // Cek tanggal dan waktu sekaligus
     if (

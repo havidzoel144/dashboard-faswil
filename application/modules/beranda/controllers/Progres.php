@@ -49,6 +49,7 @@ class Progres extends MX_Controller
       'jumlah_validator' => count(array_unique(array_column($this->Penilaian_model->get_data_penilaian_by_periode($periode), 'validator_id'))),
       'jumlah_pt' => count(array_unique(array_column($this->Penilaian_model->get_data_penilaian_by_periode($periode), 'kode_pt'))),
       'progres_penilaian' => $this->Penilaian_model->get_data_penilaian_by_periode($periode),
+      'buka_tutup' => $this->db->query("SELECT * FROM buka_tutup")->result(),
     ];
 
     $data['jml_draft'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode), function ($item) {
