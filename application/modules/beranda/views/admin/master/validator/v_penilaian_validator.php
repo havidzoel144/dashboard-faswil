@@ -11,6 +11,35 @@
     <div class="content-header row">
     </div>
 
+    <div class="row">
+      <div class="col-12">
+        <?php
+        // Ambil tanggal dan waktu sekarang
+        $now2 = new DateTime();
+
+        // Ambil data periode dari $bt
+        $mulai2 = new DateTime($bt->mulai_tgl . ' ' . $bt->mulai_waktu);
+        $akhir2 = new DateTime($bt->akhir_tgl . ' ' . $bt->akhir_waktu);
+
+        // Tentukan status periode
+        if ($now2 < $mulai2) {
+          $label2 = '<span class="badge badge-secondary ml-2">Belum Dibuka</span>';
+        } elseif ($now2 >= $mulai2 && $now2 <= $akhir2) {
+          $label2 = '<span class="badge badge-success ml-2">Sedang Berlangsung</span>';
+        } else {
+          $label2 = '<span class="badge badge-danger ml-2">Sudah Lewat</span>';
+        }
+        ?>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="background: linear-gradient(90deg, #fffde7 0%, #ffe082 100%); color: #ff9800; border: 1px solid #ffd54f;">
+          <strong style="display: inline-block; width: 220px; border-right: 1px solid #ffd54f;">Periode <?= $bt->jenis ?></strong>
+          <?= $label2 ?>
+          <span style="font-weight: 500;">
+            <?= $bt->mulai_tgl . ' ' . $bt->mulai_waktu . ' s/d ' . $bt->akhir_tgl . ' ' . $bt->akhir_waktu ?>
+          </span>
+        </div>
+      </div>
+    </div>
+
     <!-- Basic Horizontal Timeline -->
     <div class="row">
       <div class="col-md-12 col-sm-12">
@@ -161,10 +190,11 @@
                             </span>
                           </td>
                           <td class="text-center" style="width: 10%;">
-
-                            <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#validasiModal<?= $data->id_penilaian_tipologi ?>" title="Validasi">
-                              <i class="la la-pencil"></i>
-                            </button>
+                            <?php if ($data->id_status_penilaian == '2') : ?>
+                              <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#validasiModal<?= $data->id_penilaian_tipologi ?>" title="Validasi">
+                                <i class="la la-pencil"></i>
+                              </button>
+                            <?php endif; ?>
 
                             <!-- awal modal penilaian validator -->
                             <div class="modal fade text-left" id="validasiModal<?= $data->id_penilaian_tipologi ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" style="display: none;">
