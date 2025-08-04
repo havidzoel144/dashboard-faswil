@@ -144,13 +144,15 @@ class Penilaian extends MX_Controller
       'skor_2' => $post['skor_2'],
       'catatan_2' => $post['catatan_2'],
       'catatan_keseluruhan' => $post['catatan_keseluruhan'],
-      'link_detail_penilaian' => $post['link_detail_penilaian'],
+      // 'link_detail_penilaian' => $post['link_detail_penilaian'],
       'skor_1_bobot' => $skor_1_bobot,
       'skor_2_bobot' => $skor_2_bobot,
       'skor_total' => $skor_total,
       'tipologi' => $tipologi,
       'updated_at' => date('Y-m-d H:i:s') // optional timestamp
     ];
+    echo json_encode($data);
+    exit;
 
     // echo gettype($id_penilaian_tipologi);exit;
     // $update = $this->Penilaian_model->update_penilaian($kode_pt, $fasilitator_id, $periode->kode, $data);

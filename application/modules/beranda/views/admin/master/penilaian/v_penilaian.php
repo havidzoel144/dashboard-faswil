@@ -248,14 +248,14 @@
                         </div>
                       </div>
 
-                      <div class="row">
+                      <!-- <div class="row">
                         <div class="col-lg-12">
                           <fieldset class="form-group mb-1">
                             <label for="skor-2" class="label-required">Link Detail Penilaian</label>
                             <input type="text" class="form-control square" id="link-detail-penilaian" name="link_detail_penilaian" placeholder="Masukkan link detail penilaian" required>
                           </fieldset>
                         </div>
-                      </div>
+                      </div> -->
 
                       <div class="row">
                         <div class="col-lg-12">
@@ -661,7 +661,47 @@
         $('#catatan-1b').val(response.data.catatan_1b);
         $('#catatan-2').val(response.data.catatan_2);
         $('#catatan-keseluruhan').val(response.data.catatan_keseluruhan);
-        $('#link-detail-penilaian').val(response.data.link_detail_penilaian)
+        $('#catatan-1a-validator').val(response.data.catatan_1a_validator);
+        $('#catatan-1b-validator').val(response.data.catatan_1b_validator);
+        $('#catatan-2-validator').val(response.data.catatan_2_validator);
+        $('#catatan-keseluruhan-validator').val(response.data.catatan_keseluruhan_validator);
+        // $('#link-detail-penilaian').val(response.data.link_detail_penilaian)
+
+        // Enable all skor fields by default
+        $('#skor-1a').prop('disabled', false);
+        $('#catatan-1a').prop('disabled', false);
+        $('#skor-1b').prop('disabled', false);
+        $('#catatan-1b').prop('disabled', false);
+        $('#skor-2').prop('disabled', false);
+        $('#catatan-2').prop('disabled', false);
+
+        // Helper untuk set readonly dan style
+        function setReadonly(selector, isReadonly) {
+          $(selector).prop('readonly', isReadonly)
+            .css({
+              'box-shadow': isReadonly ? '0 0 0 1px #28a745' : '0 0 0 1px #dc3545',
+              'cursor': isReadonly ? 'not-allowed' : 'pointer',
+              'background-color': isReadonly ? '#b5e49fff' : '#ffd6d6'
+            });
+        }
+
+        if (response.data.id_status_penilaian == 3) {
+          setReadonly('#skor-1a', response.data.cek_1a == 1);
+          setReadonly('#catatan-1a', response.data.cek_1a == 1);
+          setReadonly('#skor-1b', response.data.cek_1b == 1);
+          setReadonly('#catatan-1b', response.data.cek_1b == 1);
+          setReadonly('#skor-2', response.data.cek_2 == 1);
+          setReadonly('#catatan-2', response.data.cek_2 == 1);
+        } else {
+          // Kembalikan ke style awal (editable, style default)
+          $('#skor-1a, #catatan-1a, #skor-1b, #catatan-1b, #skor-2, #catatan-2').prop('readonly', false)
+            .css({
+              'box-shadow': '',
+              'cursor': '',
+              'background-color': ''
+            });
+        }
+
       },
       error: function(xhr) {
         alert('Gagal mengambil data');
