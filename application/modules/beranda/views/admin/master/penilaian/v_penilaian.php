@@ -348,7 +348,6 @@
                           <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 rentang Nilai Terbobot : 17,5 < n ≤ 20; <br> Tipologi 2 rentang Nilai Terbobot : 15 < n ≤ 17,5; <br> Tipologi 3 rentang Nilai Terbobot : 10 ≤ n ≤ 15; <br> Tipologi 4 Nilai Terbobot : < 10;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
                         </th>
                         <th class="text-center" rowspan="3">Status</th>
-                        <th class="text-center" rowspan="3">Validator</th>
                         <th class="text-center" rowspan="3">Aksi</th>
                       </tr>
                       <tr style="background-color: #563BFF; color: #ffffff">
@@ -385,9 +384,9 @@
                       ?>
                           <tr class="<?= $row_class ?> text-dark">
                             <td class="text-center" style="width: 3%;"><?= ++$i ?></td>
-                            <td class="text-center" style="width: 12%;"><?= $periode ?></td>
+                            <td class="text-center" style="width: 10%;"><?= $periode ?></td>
                             <td class="text-center" style="width: 5%;"><?= $data->kode_pt ?></td>
-                            <td class="text-start" style="width: 18%;"><?= $data->nama_pt ?></td>
+                            <td class="text-start" style="width: 20%;"><?= $data->nama_pt ?></td>
                             <td class="text-center" style="width: 5%;">
                               <?= $data->skor_1a ?>
                               <?php
@@ -436,19 +435,6 @@
                                 <i class="fa <?= $icon ?>" aria-hidden="true" style="margin-right: 6px;"></i>
                                 <?= $data->nm_status !== null ? $data->nm_status : 'Belum input' ?>
                               </span>
-                            </td>
-                            <td class="text-start" style="width: 10%;">
-                              <?php if ($data->nama_validator == NULL): ?>
-                                <span class="badge w-100" style="background: #ff4d4f; color: #fff; font-size: 1em; padding: 8px 14px; border-radius: 20px; letter-spacing: 0.5px;">
-                                  <i class="fa fa-user-times" aria-hidden="true" style="margin-right: 6px;"></i>
-                                  Belum ada validator
-                                </span>
-                              <?php else: ?>
-                                <span class="badge w-100" style="background: #28a745; color: #fff; font-size: 1em; padding: 8px 14px; border-radius: 20px; letter-spacing: 0.5px;">
-                                  <i class="fa fa-user" aria-hidden="true" style="margin-right: 6px;"></i>
-                                  <?= $data->nama_validator ?>
-                                </span>
-                              <?php endif; ?>
                             </td>
                             <td class="text-center" style="width: 8%;">
                               <a href="<?= base_url('admin/riwayat-penilaian/' . safe_url_encrypt($data->id_penilaian_tipologi)) ?>" target="_blank">
