@@ -165,9 +165,9 @@
                               <fieldset class="form-group mb-1">
                                 <label for="catatan-1a" class="label-required">
                                   Catatan Skor 1a
-                                  <span class="text-danger" data-toggle="popover" data-content="<b>Ketersediaan dokumen formal SPMI</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                  <span class="text-danger" data-toggle="popover" data-content="Ketersediaan dokumen formal SPMI yang dibuktikan dengan keberadaan 5 aspek sebagai berikut:<br> <b>(1) organ/fungsi spmi; <br> (2) dokumen SPMI; <br> (3) auditor internal; <br> (4) hasil audit; <br> (5) bukti tindak lanjut</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
                                 </label>
-                                <textarea class="form-control textarea-catatan" name="catatan_1a" id="catatan-1a" placeholder="Berikan catatan untuk skor 1a. Indikator Penilaian : Ketersediaan dokumen formal SPMI" required></textarea>
+                                <textarea class="form-control textarea-catatan" name="catatan_1a" id="catatan-1a" placeholder="Indikator Penilaian : Ketersediaan dokumen formal SPMI yang dibuktikan dengan keberadaan 5 aspek sebagai berikut: (1) organ/fungsi spmi, (2) dokumen SPMI (3) auditor internal (4) hasil audit (5) bukti tindak lanjut" required></textarea>
                               </fieldset>
                             </div>
                           </div>
@@ -198,9 +198,9 @@
                               <fieldset class="form-group mb-1">
                                 <label for="catatan-1b" class="label-required">
                                   Catatan Skor 1b
-                                  <span class="text-danger" data-toggle="popover" data-content="<b>Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                  <span class="text-danger" data-toggle="popover" data-content="Ketersediaan bukti sahih terkait praktik baik pengembangan budaya mutu di perguruan tinggi melalui RTM yang mengagendakan unsur-unsur: <br> <b> (1) hasil audit internal; <br> (2) umpan balik; <br> (3) kinerja proses dan kesesuaian produk; <br> (4) status tindakan pencegahan dan perbaikan; <br> (5) tindak lanjut dari tinjauan sebelumnya; <br> (6) perubahan yang dapat mempengaruhi sistem manajemen mutu; <br> (7) rekomendasi peningkatan</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
                                 </label>
-                                <textarea class="form-control textarea-catatan" name="catatan_1b" id="catatan-1b" placeholder="Berikan catatan untuk skor 1b. Indikator Penilaian : Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM" required></textarea>
+                                <textarea class="form-control textarea-catatan" name="catatan_1b" id="catatan-1b" placeholder="Indikator Penilaian : Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM yang mengagendakan unsur-unsur (1) hasil audit internal (2) umpan balik (3) kinerja proses dan kesesuaian produk (4) status tindakan pencegahan dan perbaikan (5) tindak lanjut dari tinjauan sebelumnya (6) perubahan yang dapat mempengaruhi sistem manajemen mutu (7) rekomendasi peningkatan" required></textarea>
                               </fieldset>
                             </div>
                           </div>
@@ -231,9 +231,9 @@
                               <fieldset class="form-group mb-1">
                                 <label for="catatan-2" class="label-required">
                                   Catatan Skor 2
-                                  <span class="text-danger" data-toggle="popover" data-content="<b>Efektivitas pelaksanaan penjaminan mutu</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                  <span class="text-danger" data-toggle="popover" data-content="Efektivitas pelaksanaan penjaminan mutu yang memenuhi 4 aspek sbb: <br> <b> 1. keberadaan dokumen formal penetapan standar mutu; <br> 2. standar mutu dilaksanakan secara konsisten; <br> 3. minitoring evaluasi dan pengendalian terhadap standar mutu yang telah ditetapkan <br> 4. hasilnya ditindaklanjuti untuk perbaikan dan peningkatan mutu</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
                                 </label>
-                                <textarea class="form-control textarea-catatan" name="catatan_2" id="catatan-2" placeholder="Berikan catatan untuk skor 2. Indikator Penilaian : Efektivitas pelaksanaan penjaminan mutu" required></textarea>
+                                <textarea class="form-control textarea-catatan" name="catatan_2" id="catatan-2" placeholder="Indikator Penilaian : Efektivitas pelaksanaan penjaminan mutu yang memenuhi 4 aspek sbb: 1. keberadaan dokumen formal penetapan standar mutu 2. standar mutu dilaksanakan secara konsisten 3. minitoring evaluasi dan pengendalian terhadap standar mutu yang telah ditetapkan 4. hasilnya ditindaklanjuti untuk perbaikan dan peningkatan mutu" required></textarea>
                               </fieldset>
                             </div>
                           </div>
