@@ -3,7 +3,7 @@
     <div class="navbar-container main-menu-content container center-layout" data-menu="menu-container">
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
             <span class="d-flex align-items-center" style="padding-right: 15px;">
-                <img src="<?= base_url() ?>assets/img/bg_dashboard_lldikti3.png" alt="Logo Dashboard LLDIKTI 3" class="brand-logo" style="height: 50px;">
+                <img src="<?= base_url() ?>assets/img/logo-penilaian-tipologi.png" alt="Logo Dashboard LLDIKTI 3" class="brand-logo" style="height: 60px;">
             </span>
             <li class="nav-item <?= $dashboard ?>" data-menu="">
                 <a class="nav-link " href="<?= base_url() ?>admin/dashboard" data-toggle=""><i class="la la-home"></i></a>

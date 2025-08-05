@@ -190,7 +190,7 @@
                             </span>
                           </td>
                           <td class="text-center" style="width: 10%;">
-                            <?php if ($data->id_status_penilaian == '2') : ?>
+                            <?php if ($data->id_status_penilaian != '1') : ?>
                               <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#validasiModal<?= $data->id_penilaian_tipologi ?>" title="Validasi">
                                 <i class="la la-pencil"></i>
                               </button>
@@ -270,13 +270,13 @@
                                     </div>
                                     <div class="form-group row">
                                       <div class="col-sm-2">
-                                        <label class="col-form-label text-left" style="display: block; text-align: left;font-weight: 800;">Validasi</label>
+                                        <label class="col-form-label text-left label-required" style="display: block; text-align: left;font-weight: 800;">Validasi</label>
                                         <input required type="radio" style="transform: scale(1.3);" name="cek_1a" value="1" <?= ($data->cek_1a == "1") ? 'checked' : '' ?>>&nbsp;Valid
                                         <br>
                                         <input required type="radio" style="transform: scale(1.3);" name="cek_1a" value="0" <?= ($data->cek_1a == "0") ? 'checked' : '' ?>>&nbsp;Tidak Valid
                                       </div>
                                       <div class="col-sm-10">
-                                        <label class="col-form-label text-left" style="display: block; text-align: left;">Catatan validator Skor 1a</label>
+                                        <label class="col-form-label text-left label-required" style="display: block; text-align: left;">Catatan validator Skor 1a</label>
                                         <textarea class="form-control textarea-catatan" required placeholder="ketik disini..." rows="3" name="catatan_1a_validator"><?= $data->catatan_1a_validator ?></textarea>
                                       </div>
                                     </div>
@@ -295,13 +295,13 @@
                                     </div>
                                     <div class="form-group row">
                                       <div class="col-sm-2">
-                                        <label class="col-form-label text-left" style="display: block; text-align: left;font-weight: 800;">Validasi</label>
+                                        <label class="col-form-label text-left label-required" style="display: block; text-align: left;font-weight: 800;">Validasi</label>
                                         <input required type="radio" style="transform: scale(1.3);" name="cek_1b" value="1" <?= ($data->cek_1b == "1") ? 'checked' : '' ?>>&nbsp;Valid
                                         <br>
                                         <input required type="radio" style="transform: scale(1.3);" name="cek_1b" value="0" <?= ($data->cek_1b == "0") ? 'checked' : '' ?>>&nbsp;Tidak Valid
                                       </div>
                                       <div class="col-sm-10">
-                                        <label class="col-form-label text-left" style="display: block; text-align: left;">Catatan validator Skor 1b</label>
+                                        <label class="col-form-label text-left label-required" style="display: block; text-align: left;">Catatan validator Skor 1b</label>
                                         <textarea class="form-control textarea-catatan" required placeholder="ketik disini..." rows="3" name="catatan_1b_validator"><?= $data->catatan_1b_validator ?></textarea>
                                       </div>
                                     </div>
@@ -320,34 +320,34 @@
                                     </div>
                                     <div class="form-group row">
                                       <div class="col-sm-2">
-                                        <label class="col-form-label text-left" style="display: block; text-align: left;font-weight: 800;">Validasi</label>
+                                        <label class="col-form-label text-left label-required" style="display: block; text-align: left;font-weight: 800;">Validasi</label>
                                         <input required type="radio" style="transform: scale(1.3);" name="cek_2" value="1" <?= ($data->cek_2 == "1") ? 'checked' : '' ?>>&nbsp;Valid
                                         <br>
                                         <input required type="radio" style="transform: scale(1.3);" name="cek_2" value="0" <?= ($data->cek_2 == "0") ? 'checked' : '' ?>>&nbsp;Tidak Valid
                                       </div>
                                       <div class="col-sm-10">
-                                        <label class="col-form-label text-left" style="display: block; text-align: left;">Catatan validator Skor 2</label>
+                                        <label class="col-form-label text-left label-required" style="display: block; text-align: left;">Catatan validator Skor 2</label>
                                         <textarea class="form-control textarea-catatan" required placeholder="ketik disini..." rows="3" name="catatan_2_validator"><?= $data->catatan_2_validator ?></textarea>
                                       </div>
                                     </div>
 
                                     <hr style="border-top: 3px solid #343a40;">
 
-                                    <div class="form-group row">
+                                    <!-- <div class="form-group row">
                                       <div class="col-lg-12">
                                         <label for="current-password">Link Detail Penilaian</label>
                                         <input type="text" class="form-control square" value="<?= $data->link_detail_penilaian ?>" required readonly>
                                       </div>
                                     </div>
 
-                                    <hr style="border-top: 3px solid #343a40;">
+                                    <hr style="border-top: 3px solid #343a40;"> -->
 
                                     <fieldset class="form-group">
                                       <label for="current-password">Catatan Keseluruhan Fasilitator</label>
                                       <textarea class="form-control textarea-catatan" rows="3" name="catatan_keseluruhan" readonly><?= $data->catatan_keseluruhan ?></textarea>
                                     </fieldset>
                                     <fieldset class="form-group">
-                                      <label for="current-password">Catatan Keseluruhan Validator</label>
+                                      <label class="label-required" for="current-password">Catatan Keseluruhan Validator</label>
                                       <textarea class="form-control textarea-catatan" required placeholder="ketik disini..." rows="3" name="catatan_keseluruhan_validator"><?= $data->catatan_keseluruhan_validator ?></textarea>
 
                                   </div>
