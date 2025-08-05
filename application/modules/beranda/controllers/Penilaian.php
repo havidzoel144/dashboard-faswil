@@ -151,8 +151,6 @@ class Penilaian extends MX_Controller
       'tipologi' => $tipologi,
       'updated_at' => date('Y-m-d H:i:s') // optional timestamp
     ];
-    echo json_encode($data);
-    exit;
 
     // echo gettype($id_penilaian_tipologi);exit;
     // $update = $this->Penilaian_model->update_penilaian($kode_pt, $fasilitator_id, $periode->kode, $data);
