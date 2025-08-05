@@ -123,6 +123,7 @@ class Validator extends MX_Controller
                                   ON a.`periode` = d.`kode`
                               WHERE a.`validator_id` = '$user_id'
                                 AND a.`periode` = '$periode' 
+                                AND a.`id_status_penilaian` IN('2','3','4')
                                 ORDER BY a.`id_penilaian_tipologi` ASC");
 
     // Ambil satu baris data penilaian
