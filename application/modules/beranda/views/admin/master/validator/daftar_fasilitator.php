@@ -72,7 +72,7 @@
                                             <td class="text-center" style="font-weight: bold; color:chocolate; font-size: large;"><?= $v->jml_revisi ?></td>
                                             <td class="text-center" style="font-weight: bold; color:red; font-size: large;"><?= $v->jml_blm_validasi ?></td>
                                             <td class="text-center">
-                                                <a href="<?= base_url('penilaian-validator/' . safe_url_encrypt($v->fasilitator_id) . '/' . safe_url_encrypt($periode)) ?>" class="btn btn-primary btn-sm">Validasi</a>
+                                                <a href="<?= base_url('penilaian-validator/' . safe_url_encrypt($periode)) ?>" class="btn btn-primary btn-sm">Validasi</a>
                                             </td>
                                         </tr>
                                     <?php } ?>

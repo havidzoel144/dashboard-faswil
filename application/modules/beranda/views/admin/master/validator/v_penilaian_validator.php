@@ -59,23 +59,17 @@
               <i class="fa fa-check-circle" style="color: #ffd700; margin-right: 8px;"></i>
               Validasi Penilaian Tipologi
             </h4>
-            <div style="font-size: 1.1em; margin-bottom: 4px;">
-              <span style="margin-right: 18px;">
-                <i class="fa fa-user" style="color: #fff;"></i>
-                <b>Fasilitator:</b> <span style="color: #ffd700;"><?= $fas->nama ?></span>
-              </span>
-            </div>
             <div style="font-size: 1.1em;">
               <i class="fa fa-calendar" style="color: #fff;"></i>
-              <b><?= $isi_periode ?></b>
+              <b><?= $fas->keterangan ?></b>
             </div>
             <a class="heading-elements-toggle" style="color: #fff;"><i class="la la-ellipsis-v font-medium-3"></i></a>
           </div>
 
           <div style="margin-left: 20px;margin-top: 20px;">
-            <a href="<?= base_url('daftar-fasilitator/' . safe_url_encrypt($periode)) ?>">
+            <a href="<?= base_url('admin/validator') ?>">
               <button class="btn btn-info btn-md" type="button">
-                <i class="fa fa-arrow-left"></i> Lihat Daftar Fasilitator
+                <i class="fa fa-arrow-left"></i> Kembali ke Daftar Periode
               </button>
             </a>
           </div>
@@ -190,11 +184,9 @@
                             </span>
                           </td>
                           <td class="text-center" style="width: 10%;">
-                            <?php if ($data->id_status_penilaian == '2') : ?>
-                              <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#validasiModal<?= $data->id_penilaian_tipologi ?>" title="Validasi">
-                                <i class="la la-pencil"></i>
-                              </button>
-                            <?php endif; ?>
+                            <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#validasiModal<?= $data->id_penilaian_tipologi ?>" title="Validasi">
+                              <i class="la la-pencil"></i>
+                            </button>
 
                             <!-- awal modal penilaian validator -->
                             <div class="modal fade text-left" id="validasiModal<?= $data->id_penilaian_tipologi ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" style="display: none;">

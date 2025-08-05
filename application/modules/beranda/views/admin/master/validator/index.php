@@ -32,6 +32,11 @@
                                         <tr style="background-color: #563BFF; color: #ffffff">
                                             <th class="text-center">#</th>
                                             <th class="text-center">Periode</th>
+                                            <th class="text-center">Keterangan</th>
+                                            <th class="text-center">Jumlah PT</th>
+                                            <th class="text-center">Jumlah Valid</th>
+                                            <th class="text-center">Jumlah Revisi</th>
+                                            <th class="text-center">Jumlah Belum Validasi</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -41,18 +46,14 @@
                                             <?php foreach ($val as $v) { ?>
                                         <tr>
                                             <td class="text-center"><?= $no++ ?></td>
+                                            <td class="text-center"><?= $v->periode ?></td>
+                                            <td class="text-center"><?= $v->keterangan ?></td>
+                                            <td class="text-center" style="font-weight: bold; color:#563BFF; font-size: large;"><?= $v->jml_pt ?></td>
+                                            <td class="text-center" style="font-weight: bold; color:green; font-size: large;"><?= $v->jml_valid ?></td>
+                                            <td class="text-center" style="font-weight: bold; color:chocolate; font-size: large;"><?= $v->jml_revisi ?></td>
+                                            <td class="text-center" style="font-weight: bold; color:red; font-size: large;"><?= $v->jml_blm_validasi ?></td>
                                             <td class="text-center">
-                                                <?php
-                                                if (substr($v->periode, -1, 1) == '1') {
-                                                    $periode = substr($v->periode, 0, 4) . ' Periode 1';
-                                                } else {
-                                                    $periode = substr($v->periode, 0, 4) . ' Periode 2';
-                                                }
-                                                ?>
-                                                <?= $periode ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="<?= base_url('daftar-fasilitator/' . safe_url_encrypt($v->periode)) ?>" class="btn btn-primary btn-sm">Lihat Fasilitator</a>
+                                                <a href="<?= base_url('penilaian-validator/' . safe_url_encrypt($v->periode)) ?>" class="btn btn-primary btn-sm">Validasi</a>
                                             </td>
                                         </tr>
                                     <?php } ?>
