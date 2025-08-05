@@ -165,9 +165,9 @@
                               <fieldset class="form-group mb-1">
                                 <label for="catatan-1a" class="label-required">
                                   Catatan Skor 1a
-                                  <span class="text-danger" data-toggle="popover" data-content="<b>Ketersediaan dokumen formal SPMI</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                  <span class="text-danger" data-toggle="popover" data-content="Ketersediaan dokumen formal SPMI yang dibuktikan dengan keberadaan 5 aspek sebagai berikut:<br> <b>(1) organ/fungsi spmi; <br> (2) dokumen SPMI; <br> (3) auditor internal; <br> (4) hasil audit; <br> (5) bukti tindak lanjut</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
                                 </label>
-                                <textarea class="form-control textarea-catatan" name="catatan_1a" id="catatan-1a" placeholder="Berikan catatan untuk skor 1a. Indikator Penilaian : Ketersediaan dokumen formal SPMI" required></textarea>
+                                <textarea class="form-control textarea-catatan" name="catatan_1a" id="catatan-1a" placeholder="Indikator Penilaian : Ketersediaan dokumen formal SPMI yang dibuktikan dengan keberadaan 5 aspek sebagai berikut: (1) organ/fungsi spmi, (2) dokumen SPMI (3) auditor internal (4) hasil audit (5) bukti tindak lanjut" required></textarea>
                               </fieldset>
                             </div>
                           </div>
@@ -198,9 +198,9 @@
                               <fieldset class="form-group mb-1">
                                 <label for="catatan-1b" class="label-required">
                                   Catatan Skor 1b
-                                  <span class="text-danger" data-toggle="popover" data-content="<b>Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                  <span class="text-danger" data-toggle="popover" data-content="Ketersediaan bukti sahih terkait praktik baik pengembangan budaya mutu di perguruan tinggi melalui RTM yang mengagendakan unsur-unsur: <br> <b> (1) hasil audit internal; <br> (2) umpan balik; <br> (3) kinerja proses dan kesesuaian produk; <br> (4) status tindakan pencegahan dan perbaikan; <br> (5) tindak lanjut dari tinjauan sebelumnya; <br> (6) perubahan yang dapat mempengaruhi sistem manajemen mutu; <br> (7) rekomendasi peningkatan</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
                                 </label>
-                                <textarea class="form-control textarea-catatan" name="catatan_1b" id="catatan-1b" placeholder="Berikan catatan untuk skor 1b. Indikator Penilaian : Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM" required></textarea>
+                                <textarea class="form-control textarea-catatan" name="catatan_1b" id="catatan-1b" placeholder="Indikator Penilaian : Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM yang mengagendakan unsur-unsur (1) hasil audit internal (2) umpan balik (3) kinerja proses dan kesesuaian produk (4) status tindakan pencegahan dan perbaikan (5) tindak lanjut dari tinjauan sebelumnya (6) perubahan yang dapat mempengaruhi sistem manajemen mutu (7) rekomendasi peningkatan" required></textarea>
                               </fieldset>
                             </div>
                           </div>
@@ -231,9 +231,9 @@
                               <fieldset class="form-group mb-1">
                                 <label for="catatan-2" class="label-required">
                                   Catatan Skor 2
-                                  <span class="text-danger" data-toggle="popover" data-content="<b>Efektivitas pelaksanaan penjaminan mutu</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                  <span class="text-danger" data-toggle="popover" data-content="Efektivitas pelaksanaan penjaminan mutu yang memenuhi 4 aspek sbb: <br> <b> 1. keberadaan dokumen formal penetapan standar mutu; <br> 2. standar mutu dilaksanakan secara konsisten; <br> 3. minitoring evaluasi dan pengendalian terhadap standar mutu yang telah ditetapkan <br> 4. hasilnya ditindaklanjuti untuk perbaikan dan peningkatan mutu</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
                                 </label>
-                                <textarea class="form-control textarea-catatan" name="catatan_2" id="catatan-2" placeholder="Berikan catatan untuk skor 2. Indikator Penilaian : Efektivitas pelaksanaan penjaminan mutu" required></textarea>
+                                <textarea class="form-control textarea-catatan" name="catatan_2" id="catatan-2" placeholder="Indikator Penilaian : Efektivitas pelaksanaan penjaminan mutu yang memenuhi 4 aspek sbb: 1. keberadaan dokumen formal penetapan standar mutu 2. standar mutu dilaksanakan secara konsisten 3. minitoring evaluasi dan pengendalian terhadap standar mutu yang telah ditetapkan 4. hasilnya ditindaklanjuti untuk perbaikan dan peningkatan mutu" required></textarea>
                               </fieldset>
                             </div>
                           </div>
@@ -248,14 +248,14 @@
                         </div>
                       </div>
 
-                      <div class="row">
+                      <!-- <div class="row">
                         <div class="col-lg-12">
                           <fieldset class="form-group mb-1">
                             <label for="skor-2" class="label-required">Link Detail Penilaian</label>
                             <input type="text" class="form-control square" id="link-detail-penilaian" name="link_detail_penilaian" placeholder="Masukkan link detail penilaian" required>
                           </fieldset>
                         </div>
-                      </div>
+                      </div> -->
 
                       <div class="row">
                         <div class="col-lg-12">
@@ -348,7 +348,6 @@
                           <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 rentang Nilai Terbobot : 17,5 < n ≤ 20; <br> Tipologi 2 rentang Nilai Terbobot : 15 < n ≤ 17,5; <br> Tipologi 3 rentang Nilai Terbobot : 10 ≤ n ≤ 15; <br> Tipologi 4 Nilai Terbobot : < 10;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
                         </th>
                         <th class="text-center" rowspan="3">Status</th>
-                        <th class="text-center" rowspan="3">Validator</th>
                         <th class="text-center" rowspan="3">Aksi</th>
                       </tr>
                       <tr style="background-color: #563BFF; color: #ffffff">
@@ -385,9 +384,9 @@
                       ?>
                           <tr class="<?= $row_class ?> text-dark">
                             <td class="text-center" style="width: 3%;"><?= ++$i ?></td>
-                            <td class="text-center" style="width: 12%;"><?= $periode ?></td>
+                            <td class="text-center" style="width: 10%;"><?= $periode ?></td>
                             <td class="text-center" style="width: 5%;"><?= $data->kode_pt ?></td>
-                            <td class="text-start" style="width: 18%;"><?= $data->nama_pt ?></td>
+                            <td class="text-start" style="width: 20%;"><?= $data->nama_pt ?></td>
                             <td class="text-center" style="width: 5%;">
                               <?= $data->skor_1a ?>
                               <?php
@@ -436,19 +435,6 @@
                                 <i class="fa <?= $icon ?>" aria-hidden="true" style="margin-right: 6px;"></i>
                                 <?= $data->nm_status !== null ? $data->nm_status : 'Belum input' ?>
                               </span>
-                            </td>
-                            <td class="text-start" style="width: 10%;">
-                              <?php if ($data->nama_validator == NULL): ?>
-                                <span class="badge w-100" style="background: #ff4d4f; color: #fff; font-size: 1em; padding: 8px 14px; border-radius: 20px; letter-spacing: 0.5px;">
-                                  <i class="fa fa-user-times" aria-hidden="true" style="margin-right: 6px;"></i>
-                                  Belum ada validator
-                                </span>
-                              <?php else: ?>
-                                <span class="badge w-100" style="background: #28a745; color: #fff; font-size: 1em; padding: 8px 14px; border-radius: 20px; letter-spacing: 0.5px;">
-                                  <i class="fa fa-user" aria-hidden="true" style="margin-right: 6px;"></i>
-                                  <?= $data->nama_validator ?>
-                                </span>
-                              <?php endif; ?>
                             </td>
                             <td class="text-center" style="width: 8%;">
                               <a href="<?= base_url('admin/riwayat-penilaian/' . safe_url_encrypt($data->id_penilaian_tipologi)) ?>" target="_blank">
@@ -675,7 +661,47 @@
         $('#catatan-1b').val(response.data.catatan_1b);
         $('#catatan-2').val(response.data.catatan_2);
         $('#catatan-keseluruhan').val(response.data.catatan_keseluruhan);
-        $('#link-detail-penilaian').val(response.data.link_detail_penilaian)
+        $('#catatan-1a-validator').val(response.data.catatan_1a_validator);
+        $('#catatan-1b-validator').val(response.data.catatan_1b_validator);
+        $('#catatan-2-validator').val(response.data.catatan_2_validator);
+        $('#catatan-keseluruhan-validator').val(response.data.catatan_keseluruhan_validator);
+        // $('#link-detail-penilaian').val(response.data.link_detail_penilaian)
+
+        // Enable all skor fields by default
+        $('#skor-1a').prop('disabled', false);
+        $('#catatan-1a').prop('disabled', false);
+        $('#skor-1b').prop('disabled', false);
+        $('#catatan-1b').prop('disabled', false);
+        $('#skor-2').prop('disabled', false);
+        $('#catatan-2').prop('disabled', false);
+
+        // Helper untuk set readonly dan style
+        function setReadonly(selector, isReadonly) {
+          $(selector).prop('readonly', isReadonly)
+            .css({
+              'box-shadow': isReadonly ? '0 0 0 1px #28a745' : '0 0 0 1px #dc3545',
+              'cursor': isReadonly ? 'not-allowed' : 'pointer',
+              'background-color': isReadonly ? '#b5e49fff' : '#ffd6d6'
+            });
+        }
+
+        if (response.data.id_status_penilaian == 3) {
+          setReadonly('#skor-1a', response.data.cek_1a == 1);
+          setReadonly('#catatan-1a', response.data.cek_1a == 1);
+          setReadonly('#skor-1b', response.data.cek_1b == 1);
+          setReadonly('#catatan-1b', response.data.cek_1b == 1);
+          setReadonly('#skor-2', response.data.cek_2 == 1);
+          setReadonly('#catatan-2', response.data.cek_2 == 1);
+        } else {
+          // Kembalikan ke style awal (editable, style default)
+          $('#skor-1a, #catatan-1a, #skor-1b, #catatan-1b, #skor-2, #catatan-2').prop('readonly', false)
+            .css({
+              'box-shadow': '',
+              'cursor': '',
+              'background-color': ''
+            });
+        }
+
       },
       error: function(xhr) {
         alert('Gagal mengambil data');
