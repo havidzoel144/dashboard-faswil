@@ -19,54 +19,25 @@ class Validator extends MX_Controller
 
   public function index()
   {
-    $user_id = $this->session->userdata('user_id');
-    $data['cek_penilaian'] = 'active';
-    $data['val'] = $this->db->query("SELECT
-                                      *
-                                    FROM
-                                      `penilaian_tipologi`
-                                    WHERE `validator_id`='$user_id'
-                                    AND `id_status_penilaian` IN('2','3','4')
-                                    GROUP BY `periode`
-                                    ORDER BY periode DESC")->result();
-
-    $this->load->view("admin/master/validator/index", $data);
-  }
-
-  public function daftar_fasilitator($periode_encrypt)
-  {
-    $periode = safe_url_decrypt($periode_encrypt);
-    $user_id = $this->session->userdata('user_id');
-
-    $data['periode']      = $periode;
-    $data['validator_id'] = $user_id;
-    $data['cek_penilaian'] = 'active';
-
-    // Ambil data penilaian berdasarkan periode dan validator
-    $val = $this->db->query("SELECT
-                                      a.*,
-                                      b.`nama`,
-                                      c.`nm_status`
-                                    FROM
-                                      `penilaian_tipologi` a
-                                      JOIN `users` b
-                                        ON a.`fasilitator_id` = b.`id`
-                                      JOIN `status_penilaian` c
-                                        ON a.`id_status_penilaian` = c.`id_status`
-                                    WHERE a.`validator_id` = '$user_id'
-                                      AND a.`periode` = '$periode'
-                                      AND a.`id_status_penilaian` IN('2','3','4')
-                                    GROUP BY a.`fasilitator_id`
-                                    ORDER BY b.`nama`")->result();
-
+    $user_id                = $this->session->userdata('user_id');
+    $data['cek_penilaian']  = 'active';
+    $val                    = $this->db->query("SELECT
+                                                  *
+                                                FROM
+                                                  `penilaian_tipologi` a
+                                                JOIN periode b ON a.periode = b.kode
+                                                WHERE a.`validator_id`='$user_id'
+                                                AND a.`id_status_penilaian` IN('2','3','4')
+                                                GROUP BY a.`periode`
+                                                ORDER BY a.periode DESC")->result();
     foreach ($val as $v) {
       // Ambil jumlah data pt 
       $v->jml_pt = $this->db->query("SELECT
                                         kode_pt
                                       FROM
                                         penilaian_tipologi
-                                      WHERE `fasilitator_id` = '$v->fasilitator_id' AND `validator_id` = '$user_id'
-                                        AND `periode` = '$periode'
+                                      WHERE `validator_id` = '$user_id'
+                                        AND `periode` = '$v->periode'
                                         AND `id_status_penilaian` IN('2','3','4')
                                       GROUP BY `kode_pt`")->num_rows();
 
@@ -75,8 +46,8 @@ class Validator extends MX_Controller
                                             kode_pt
                                           FROM
                                             penilaian_tipologi
-                                          WHERE `fasilitator_id` = '$v->fasilitator_id' AND `validator_id` = '$user_id'
-                                            AND `periode` = '$periode'
+                                          WHERE `validator_id` = '$user_id'
+                                            AND `periode` = '$v->periode'
                                             AND `id_status_penilaian` ='4'
                                           GROUP BY `kode_pt`")->num_rows();
 
@@ -85,8 +56,8 @@ class Validator extends MX_Controller
                                             kode_pt
                                           FROM
                                             penilaian_tipologi
-                                          WHERE `fasilitator_id` = '$v->fasilitator_id' AND `validator_id` = '$user_id'
-                                            AND `periode` = '$periode'
+                                          WHERE `validator_id` = '$user_id'
+                                            AND `periode` = '$v->periode'
                                             AND `id_status_penilaian` ='3'
                                           GROUP BY `kode_pt`")->num_rows();
 
@@ -95,8 +66,8 @@ class Validator extends MX_Controller
                                             kode_pt
                                           FROM
                                             penilaian_tipologi
-                                          WHERE `fasilitator_id` = '$v->fasilitator_id' AND `validator_id` = '$user_id'
-                                            AND `periode` = '$periode'
+                                          WHERE `validator_id` = '$user_id'
+                                            AND `periode` = '$v->periode'
                                             AND `id_status_penilaian` ='2'
                                           GROUP BY `kode_pt`")->num_rows();
     }
@@ -104,28 +75,23 @@ class Validator extends MX_Controller
     // Lempar data ke view
     $data['val'] = $val;
 
-
-    $this->load->view("admin/master/validator/daftar_fasilitator", $data);
+    $this->load->view("admin/master/validator/index", $data);
   }
 
-  public function penilaian_validator($fasilitator_id_encrypt, $periode_encrypt)
+  public function penilaian_validator($periode_encrypt)
   {
-    $fasilitator_id   = safe_url_decrypt($fasilitator_id_encrypt);
     $periode          = safe_url_decrypt($periode_encrypt);
     $user_id          = $this->session->userdata('user_id');
 
-    // die("$fasilitator_id - $periode - $user_id");
-
     $data['periode']        = $periode;
-    $data['fasilitator_id'] = $fasilitator_id;
     $data['validator_id']   = $user_id;
-    $data['cek_penilaian'] = 'active';
+    $data['cek_penilaian']  = 'active';
 
-    $bk = $this->db->query("SELECT * FROM `buka_tutup` WHERE `id` = '2'")->row();
+    $bk           = $this->db->query("SELECT * FROM `buka_tutup` WHERE `id` = '2'")->row();
     $data['dabk'] = $bk;
     $current_date = date('Y-m-d');
     $current_time = date('H:i:s');
-    $data['bt'] = $bk;
+    $data['bt']   = $bk;
 
     // Cek tanggal dan waktu sekaligus
     if (
@@ -145,15 +111,19 @@ class Validator extends MX_Controller
     $query = $this->db->query("SELECT
                                 a.*,
                                 b.`nm_status`,
-                                c.`nama`
+                                c.`nama`,
+                                d.keterangan
                               FROM
                                 penilaian_tipologi a
                                 JOIN `status_penilaian` b
                                   ON a.`id_status_penilaian` = b.`id_status`
                                 JOIN `users` c
                                   ON a.`fasilitator_id` = c.`id`
-                              WHERE a.`fasilitator_id` = '$fasilitator_id' AND a.`validator_id` = '$user_id'
-                                AND a.`periode` = '$periode' ORDER BY a.`id_penilaian_tipologi` ASC");
+                                JOIN `periode` d
+                                  ON a.`periode` = d.`kode`
+                              WHERE a.`validator_id` = '$user_id'
+                                AND a.`periode` = '$periode' 
+                                ORDER BY a.`id_penilaian_tipologi` ASC");
 
     // Ambil satu baris data penilaian
     $data['fas'] = $query->row();
@@ -247,7 +217,7 @@ class Validator extends MX_Controller
       $this->session->set_flashdata('error', 'Gagal menyimpan validasi.');
     }
 
-    redirect('penilaian-validator/' . safe_url_encrypt($fasilitator_id) . '/' . safe_url_encrypt($periode));
+    redirect('penilaian-validator/' . safe_url_encrypt($periode));
   }
 
   public function rwy_validator($id_penilaian_topologi_encrypt)

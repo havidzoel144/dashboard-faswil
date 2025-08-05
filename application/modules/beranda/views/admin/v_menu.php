@@ -28,6 +28,16 @@
                 </li>
             <?php endif; ?>
 
+            <?php if (has_role([1])) : ?>
+                <li class="dropdown nav-item" data-menu="dropdown">
+                    <a class="dropdown-toggle nav-link <?= $sinkron ?>" href="#" data-toggle="dropdown" aria-expanded="false"><i class="la la-angle-down"></i><span data-i18n="Data Master">Sinkron </span></a>
+                    <ul class="dropdown-menu">
+                        <li data-menu="" class="<?= $sinkronPt ?>"><a class="dropdown-item" href="<?= base_url('sinkronPt') ?>"><span class="fonticon-wrap"><i class="la la-calendar"></i></span><span data-i18n="Data PT">Data PT</span></a></li>
+                        <li data-menu="" class="<?= $sinkronProdi ?>"><a class="dropdown-item" href="<?= base_url('sinkronProdi') ?>"><span class="fonticon-wrap"><i class="la la-calendar"></i></span><span data-i18n="Data Prodi">Data Prodi</span></a></li>
+                    </ul>
+                </li>
+            <?php endif; ?>
+
             <?php if (has_role([5])) : ?>
                 <li class="nav-item <?= $cek_penilaian ?>" data-menu="">
                     <a class="nav-link" href="<?= base_url() ?>admin/validator"><i class="la la-edit"></i><span data-i18n="Validasi Nilai">Validasi Nilai</span></a>

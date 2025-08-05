@@ -43,7 +43,7 @@ $route['admin/validator'] = 'beranda/validator';
 $route['simpan_validasi'] = 'beranda/validator/simpan_validasi';
 $route['rwy-validator/(:any)'] = 'beranda/validator/rwy_validator/$1';
 $route['daftar-fasilitator/(:any)'] = 'beranda/validator/daftar_fasilitator/$1';
-$route['penilaian-validator/(:any)/(:any)'] = 'beranda/validator/penilaian_validator/$1/$2';
+$route['penilaian-validator/(:any)'] = 'beranda/validator/penilaian_validator/$1';
 
 // PROGRES PENILAIAN
 $route['admin/progres-penilaian'] = 'beranda/progres';
@@ -51,3 +51,7 @@ $route['admin/lihat-progres/(:any)'] = 'beranda/progres/lihatProgres/$1';
 $route['admin/export-nilai-pdf/(:any)'] = 'beranda/progres/exportNilaiPdf/$1';
 $route['admin/export-nilai-excel/(:any)'] = 'beranda/progres/exportNilaiExcel/$1';
 $route['admin/publish-penilaian'] = 'beranda/progres/publishPenilaian';
+
+//SINKRON UTK DATA API PDDIKTI
+$route['sinkronPt']         = 'beranda/sinkronpt';
+$route['import_pt_awal']    = 'beranda/sinkronpt/import_pt_awal';
