@@ -173,7 +173,7 @@
                                                         <select class="select2 form-control select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true" name="kode_pt" id="kode_pt">
                                                             <option value="">Silakan pilih Kode / Nama PT</option>
                                                             <?php foreach ($kode_nama_pt as $item) { ?>
-                                                                <option value="<?= $item['kode_pt'] ?>"><?= $item['kode_pt'] ?> - <?= $item['nm_pt'] ?></option>
+                                                                <option value="<?= trim($item['kode_pt']) ?>"><?= $item['kode_pt'] ?> - <?= $item['nm_pt'] ?></option>
                                                             <?php } ?>
                                                         </select>
                                                         <!-- <input type="text" name="kode_pt" class="form-control border-bottom" placeholder="Masukkan Kode PT"> -->

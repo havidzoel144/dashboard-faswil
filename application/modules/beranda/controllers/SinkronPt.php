@@ -112,6 +112,12 @@ class SinkronPt extends MX_Controller
 
         $data['rekap_t2']   = $this->db->query("SELECT * from rekap_sinkron WHERE jenis='data_pt_t2'")->result();
         $data['pt_awal']    = $this->db->query("SELECT * FROM data_pt_awal ORDER BY nm_pt ASC")->result();
+        $data['belum_t1']   = $this->db->query("SELECT * FROM `data_pt_awal` WHERE `kd_pt` NOT IN (SELECT kode_pt FROM `data_pt_tahap1`)")->result();
+        $data['proses_t1']  = $this->db->query("SELECT * FROM data_pt_tahap1")->result();
+        $data['tidak_t1']   = $this->db->query("SELECT * FROM data_pt_tidak_ada")->result();
+        $data['proses_t2']  = $this->db->query("SELECT * FROM data_pt_tahap2")->result();
+        $data['belum_t2']   = $this->db->query("SELECT * FROM `data_pt_tahap1` WHERE `kode_pt` NOT IN (SELECT kode_pt FROM `data_pt_tahap2`)")->result();
+        $data['tidak_t2']   = $this->db->query("SELECT * FROM data_pt_tidak_ada_tahap2")->result();
 
         $this->load->view("sinkron_pt/v_index", $data);
     }
@@ -319,7 +325,7 @@ class SinkronPt extends MX_Controller
             'percent' => $percent,
             'processed' => $total_proses,
             'total' => $jawal,
-            'label' => "Jafung",
+            'label' => "status dan bentuk PT",
         ]);
     }
 
@@ -543,7 +549,7 @@ class SinkronPt extends MX_Controller
             'percent' => $percent,
             'processed' => $total_proses,
             'total' => $jawal,
-            'label' => "Jafung",
+            'label' => "akreditasi PT",
         ]);
     }
 
