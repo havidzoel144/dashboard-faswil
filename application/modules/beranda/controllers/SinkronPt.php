@@ -100,20 +100,19 @@ class SinkronPt extends MX_Controller
         $c          = $this->db->query("SELECT * FROM rekap_sinkron WHERE jenis='data_pt_t1'");
         $jml_awal   = $this->db->query("SELECT * FROM data_pt_awal")->num_rows();
 
-        if ($c->num_rows() == 0) {
-            $this->db->insert('rekap_sinkron', [
-                'jenis' => 'data_pt_t1',
-                'jml_awal' => $jml_awal
-            ]);
-        }
-
         $data['rekap']      = $c->result();
         $data['jml_awal']   = $jml_awal;
 
         $data['rekap_t2']   = $this->db->query("SELECT * from rekap_sinkron WHERE jenis='data_pt_t2'")->result();
         $data['pt_awal']    = $this->db->query("SELECT * FROM data_pt_awal ORDER BY nm_pt ASC")->result();
+        $data['belum_t1']   = $this->db->query("SELECT * FROM `data_pt_awal` WHERE `kd_pt` NOT IN (SELECT kode_pt FROM `data_pt_tahap1`)")->result();
+        $data['proses_t1']  = $this->db->query("SELECT * FROM data_pt_tahap1")->result();
+        $data['tidak_t1']   = $this->db->query("SELECT * FROM data_pt_tidak_ada")->result();
+        $data['proses_t2']  = $this->db->query("SELECT * FROM data_pt_tahap2")->result();
+        $data['belum_t2']   = $this->db->query("SELECT * FROM `data_pt_tahap1` WHERE `kode_pt` NOT IN (SELECT kode_pt FROM `data_pt_tahap2`)")->result();
+        $data['tidak_t2']   = $this->db->query("SELECT * FROM data_pt_tidak_ada_tahap2")->result();
 
-        $this->load->view("sinkron_pt/v_index", $data);
+        $this->load->view("admin/sinkron/v_index", $data);
     }
 
     // --- 1. Inisialisasi batch, memulai proses dan buat job file & log file
@@ -202,10 +201,10 @@ class SinkronPt extends MX_Controller
                 if (is_array($responseData) && isset($responseData[0]['id'])) {
 
                     $data_insert = [
-                        'kode_pt'        => $responseData[0]['kode'] ?? null,
-                        'nama_pt'        => $responseData[0]['nama'] ?? null,
-                        'status_pt'      => $responseData[0]['status'] ?? null,
-                        'bentuk_pt'      => $responseData[0]['bentuk_pendidikan']['nama'] ?? null,
+                        'kode_pt'        => isset($responseData[0]['kode']) ? $responseData[0]['kode'] : null,
+                        'nama_pt'        => isset($responseData[0]['nama']) ? $responseData[0]['nama'] : null,
+                        'status_pt'      => isset($responseData[0]['status']) ? $responseData[0]['status'] : null,
+                        'bentuk_pt'      => isset($responseData[0]['bentuk_pendidikan']['nama']) ? $responseData[0]['bentuk_pendidikan']['nama'] : null,
                         'tgl_update'     => date('Y-m-d')
                     ];
                     // Simpan dengan replace/update (hindari duplikat)
@@ -319,7 +318,7 @@ class SinkronPt extends MX_Controller
             'percent' => $percent,
             'processed' => $total_proses,
             'total' => $jawal,
-            'label' => "Jafung",
+            'label' => "status dan bentuk PT",
         ]);
     }
 
@@ -543,7 +542,7 @@ class SinkronPt extends MX_Controller
             'percent' => $percent,
             'processed' => $total_proses,
             'total' => $jawal,
-            'label' => "Jafung",
+            'label' => "akreditasi PT",
         ]);
     }
 

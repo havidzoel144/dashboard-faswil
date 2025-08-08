@@ -53,5 +53,9 @@ $route['admin/export-nilai-excel/(:any)'] = 'beranda/progres/exportNilaiExcel/$1
 $route['admin/publish-penilaian'] = 'beranda/progres/publishPenilaian';
 
 //SINKRON UTK DATA API PDDIKTI
-$route['sinkronPt']         = 'beranda/sinkronpt';
-$route['import_pt_awal']    = 'beranda/sinkronpt/import_pt_awal';
+$route['sinkronPt']             = 'beranda/sinkronpt';
+$route['sinkronProdi']          = 'beranda/sinkronProdi';
+$route['belumSinkronProdi']     = 'beranda/sinkronProdi/belumSinkronProdi';
+$route['prosesSinkronProdi']    = 'beranda/sinkronProdi/prosesSinkronProdi';
+$route['tidakSinkronProdi']     = 'beranda/sinkronProdi/tidakSinkronProdi';
+$route['import_pt_awal']        = 'beranda/sinkronpt/import_pt_awal';
