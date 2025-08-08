@@ -699,7 +699,7 @@
 </div>
 <!-- END: Content-->
 
-<?= $this->load->view('v_footer.php') ?>
+<?= $this->load->view('admin/v_footer') ?>
 
 <!-- BEGIN: Page Vendor JS-->
 <script src="<?= base_url() ?>app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
