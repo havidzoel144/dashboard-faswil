@@ -133,6 +133,10 @@
                                 <small style="color:#888;">Mendapatkan data <b>status</b> &amp; <b>bentuk</b> Perguruan Tinggi</small>
                             </h4>
 
+                            <div class="d-flex justify-content-center mt-1">
+                                <a href="<?= base_url('beranda/sinkronpt/proses_ulang') ?>" onclick="return confirm('Anda yakin ingin memproses ulang data PT ?')" class="btn btn-primary waves-effect waves-light"><i class="ft ft-repeat"></i> Proses Ulang</a>
+                            </div>
+
                             <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">

@@ -221,30 +221,43 @@ class sinkronProdi extends MX_Controller
                 ),
                 CURLOPT_SSL_VERIFYPEER => false,
             ));
-            $respon = curl_exec($curl);
+            $respon                 = curl_exec($curl);
+            $http_code              = curl_getinfo($curl, CURLINFO_HTTP_CODE);  // Cek status HTTP
             curl_close($curl);
+
+            // Cek apakah HTTP response-nya 200
+            if ($http_code != 200) {
+                file_put_contents($log_file, "   ✖️ Gagal request API dengan kode HTTP: $http_code untuk $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
+                continue;
+            }
 
             if ($respon !== false) {
                 $responseData = json_decode($respon, true);
-                if (is_array($responseData) && isset($responseData[0]['id'])) {
+
+                if (is_array($responseData) && count($responseData) > 0) {
 
                     foreach ($responseData as $item) {
-                        // Ambil data sesuai struktur API Anda
-                        $data_insert = [
-                            'id_prodi'       => isset($item['id']) ? $item['id'] : null,
-                            'kode_pt'        => isset($item['pt']['kode']) ? $item['pt']['kode'] : null,
-                            'nm_pt'          => isset($item['pt']['nama']) ? $item['pt']['nama'] : null,
-                            'kode_prodi'     => isset($item['kode']) ? $item['kode'] : null,
-                            'nama_prodi'     => isset($item['nama']) ? $item['nama'] : null,
-                            'program'        => isset($item['jenjang_didik']['nama']) ? $item['jenjang_didik']['nama'] : null,
-                            'status_prodi'   => isset($item['status']) ? $item['status'] : null,
-                            'smt_mulai'      => isset($item['semester_mulai']) ? $item['semester_mulai'] : null,
-                            'tgl_update'     => date('Y-m-d')
-                        ];
-                        // Simpan dengan replace/update (hindari duplikat)
-                        $this->db->replace('data_prodi_tahap1', $data_insert);
+                        if (isset($item['id'])) {
+                            // Ambil data sesuai struktur API Anda
+                            $data_insert = [
+                                'id_prodi'       => isset($item['id']) ? $item['id'] : null,
+                                'kode_pt'        => isset($item['pt']['kode']) ? $item['pt']['kode'] : null,
+                                'nm_pt'          => isset($item['pt']['nama']) ? $item['pt']['nama'] : null,
+                                'kode_prodi'     => isset($item['kode']) ? $item['kode'] : null,
+                                'nama_prodi'     => isset($item['nama']) ? $item['nama'] : null,
+                                'program'        => isset($item['jenjang_didik']['nama']) ? $item['jenjang_didik']['nama'] : null,
+                                'status_prodi'   => isset($item['status']) ? $item['status'] : null,
+                                'smt_mulai'      => isset($item['semester_mulai']) ? $item['semester_mulai'] : null,
+                                'tgl_update'     => date('Y-m-d')
+                            ];
+
+                            // Simpan dengan replace/update (hindari duplikat)
+                            $this->db->replace('data_prodi_tahap1', $data_insert);
+                            file_put_contents($log_file, "   ✔️ Berhasil tarik & simpan data API  $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
+                        } else {
+                            file_put_contents($log_file, "   ✖️ Data tidak ditemukan untuk $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
+                        }
                     }
-                    file_put_contents($log_file, "   ✔️ Berhasil tarik & simpan data API  $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
                 } else {
                     file_put_contents($log_file, "   ✖️ Data tidak ditemukan/format tidak sesuai  $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
 
@@ -453,22 +466,33 @@ class sinkronProdi extends MX_Controller
                 ),
                 CURLOPT_SSL_VERIFYPEER => false,
             ));
-            $respon = curl_exec($curl);
+            $respon     = curl_exec($curl);
+            $http_code  = curl_getinfo($curl, CURLINFO_HTTP_CODE);  // Cek status HTTP
             curl_close($curl);
+
+            // Cek apakah HTTP response-nya 200
+            if ($http_code != 200) {
+                file_put_contents($log_file, "   ✖️ Gagal request API dengan kode HTTP: $http_code untuk data $nm_pt ($kd_pt) prodi $nama_prodi ($kode_prodi - $id_prodi)<br>\n", FILE_APPEND);
+                continue;
+            }
 
             if ($respon !== false) {
                 $responseData = json_decode($respon, true);
-                if (is_array($responseData) && isset($responseData[0]['prodi']['id'])) {
-                    $daup = [
-                        'id_prodi'          => isset($responseData[0]['prodi']['id']) ? $responseData[0]['prodi']['id'] : null,
-                        'akreditasi_prodi'  => isset($responseData[0]['nilai']) ? $responseData[0]['nilai'] : null,
-                        'tgl_akhir_akred'   => isset($responseData[0]['tst_sk_akreditasi']) ? $responseData[0]['tst_sk_akreditasi'] : null,
-                        'tgl_update'        => date('Y-m-d')
-                    ];
-                    // Simpan dengan replace/update (hindari duplikat)
-                    $this->db->replace('data_prodi_tahap2', $daup);
 
-                    file_put_contents($log_file, "   ✔️ Berhasil tarik & simpan data API  $nm_pt ($kd_pt) prodi $nama_prodi ($kode_prodi - $id_prodi)<br>\n", FILE_APPEND);
+                if (is_array($responseData) && count($responseData) > 0) {
+                    if (isset($responseData[0]['prodi']['id'])) {
+                        $daup = [
+                            'id_prodi'          => isset($responseData[0]['prodi']['id']) ? $responseData[0]['prodi']['id'] : null,
+                            'akreditasi_prodi'  => isset($responseData[0]['nilai']) ? $responseData[0]['nilai'] : null,
+                            'tgl_akhir_akred'   => isset($responseData[0]['tst_sk_akreditasi']) ? $responseData[0]['tst_sk_akreditasi'] : null,
+                            'tgl_update'        => date('Y-m-d')
+                        ];
+                        // Simpan dengan replace/update (hindari duplikat)
+                        $this->db->replace('data_prodi_tahap2', $daup);
+                        file_put_contents($log_file, "   ✔️ Berhasil tarik & simpan data API  $nm_pt ($kd_pt) prodi $nama_prodi ($kode_prodi - $id_prodi)<br>\n", FILE_APPEND);
+                    } else {
+                        file_put_contents($log_file, "   ✖️ Data tidak ditemukan untuk $nm_pt ($kd_pt) prodi $nama_prodi ($kode_prodi - $id_prodi)<br>\n", FILE_APPEND);
+                    }
                 } else {
                     file_put_contents($log_file, "   ✖️ Data tidak ditemukan/format tidak sesuai  $nm_pt ($kd_pt) prodi $nama_prodi ($kode_prodi - $id_prodi)<br>\n", FILE_APPEND);
 

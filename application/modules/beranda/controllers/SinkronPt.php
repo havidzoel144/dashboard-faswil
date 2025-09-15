@@ -115,6 +115,48 @@ class SinkronPt extends MX_Controller
         $this->load->view("admin/sinkron/v_index", $data);
     }
 
+    public function proses_ulang()
+    {
+        $jml_awal   = $this->db->query("SELECT * FROM data_pt_awal")->num_rows();
+
+        $this->db->trans_start();
+
+        $up_t1 = [
+            'jml_awal' => $jml_awal,
+            'jml_proses' => 0,
+            'jml_tidak_ada' => 0,
+            'jml_prodi' => 0,
+            'jml_prodi_aktif' => 0
+        ];
+        $this->db->where('jenis', 'data_pt_t1');
+        $this->db->update('rekap_sinkron', $up_t1);
+
+        $up_t2 = [
+            'jml_awal' => 0,
+            'jml_proses' => 0,
+            'jml_tidak_ada' => 0,
+            'jml_prodi' => 0,
+            'jml_prodi_aktif' => 0
+        ];
+        $this->db->where('jenis', 'data_pt_t2');
+        $this->db->update('rekap_sinkron', $up_t2);
+
+        $this->db->truncate('data_pt_tahap1');
+        $this->db->truncate('data_pt_tidak_ada');
+        $this->db->truncate('data_pt_tahap2');
+        $this->db->truncate('data_pt_tidak_ada_tahap2');
+
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === true) {
+            $this->session->set_flashdata('success', 'Data berhasil diproses ulang');
+        } else {
+            $this->session->set_flashdata('error', 'Data gagal diproses ulang');
+        }
+
+        redirect('sinkronPt');
+    }
+
     // --- 1. Inisialisasi batch, memulai proses dan buat job file & log file
     public function proses_batch_start()
     {
@@ -193,24 +235,36 @@ class SinkronPt extends MX_Controller
                 ),
                 CURLOPT_SSL_VERIFYPEER => false,
             ));
-            $respon = curl_exec($curl);
+            $respon         = curl_exec($curl);
+            $http_code      = curl_getinfo($curl, CURLINFO_HTTP_CODE);  // Cek status HTTP
             curl_close($curl);
+
+            // Cek apakah HTTP response-nya 200
+            if ($http_code != 200) {
+                file_put_contents($log_file, "   ✖️ Gagal request API dengan kode HTTP: $http_code $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
+                continue;
+            }
 
             if ($respon !== false) {
                 $responseData = json_decode($respon, true);
-                if (is_array($responseData) && isset($responseData[0]['id'])) {
 
-                    $data_insert = [
-                        'kode_pt'        => isset($responseData[0]['kode']) ? $responseData[0]['kode'] : null,
-                        'nama_pt'        => isset($responseData[0]['nama']) ? $responseData[0]['nama'] : null,
-                        'status_pt'      => isset($responseData[0]['status']) ? $responseData[0]['status'] : null,
-                        'bentuk_pt'      => isset($responseData[0]['bentuk_pendidikan']['nama']) ? $responseData[0]['bentuk_pendidikan']['nama'] : null,
-                        'tgl_update'     => date('Y-m-d')
-                    ];
-                    // Simpan dengan replace/update (hindari duplikat)
-                    $this->db->replace('data_pt_tahap1', $data_insert);
+                if (is_array($responseData) && count($responseData) > 0) {
 
-                    file_put_contents($log_file, "   ✔️ Berhasil tarik & simpan data API  $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
+                    if (isset($responseData[0]['id'])) {
+                        $data_insert = [
+                            'kode_pt'        => isset($responseData[0]['kode']) ? $responseData[0]['kode'] : null,
+                            'nama_pt'        => isset($responseData[0]['nama']) ? $responseData[0]['nama'] : null,
+                            'status_pt'      => isset($responseData[0]['status']) ? $responseData[0]['status'] : null,
+                            'bentuk_pt'      => isset($responseData[0]['bentuk_pendidikan']['nama']) ? $responseData[0]['bentuk_pendidikan']['nama'] : null,
+                            'tgl_update'     => date('Y-m-d')
+                        ];
+                        // Simpan dengan replace/update (hindari duplikat)
+                        $this->db->replace('data_pt_tahap1', $data_insert);
+
+                        file_put_contents($log_file, "   ✔️ Berhasil tarik & simpan data API  $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
+                    } else {
+                        file_put_contents($log_file, "   ✖️ Data tidak ditemukan di item $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
+                    }
                 } else {
                     file_put_contents($log_file, "   ✖️ Data tidak ditemukan/format tidak sesuai  $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
 
@@ -401,25 +455,37 @@ class SinkronPt extends MX_Controller
                 ),
                 CURLOPT_SSL_VERIFYPEER => false,
             ));
-            $respon = curl_exec($curl);
+            $respon                 = curl_exec($curl);
+            $http_code              = curl_getinfo($curl, CURLINFO_HTTP_CODE);  // Cek status HTTP
             curl_close($curl);
+
+            // Cek apakah HTTP response-nya 200
+            if ($http_code != 200) {
+                file_put_contents($log_file, "   ✖️ Gagal request API dengan kode HTTP: $http_code $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
+                continue;
+            }
 
             if ($respon !== false) {
                 $responseData = json_decode($respon, true);
-                if (is_array($responseData) && isset($responseData[0]['pt']['id'])) {
 
-                    $daup = [
-                        'kode_pt'           => $responseData[0]['pt']['kode'] ?? null,
-                        'nama_pt'           => $responseData[0]['pt']['nama'] ?? null,
-                        'akreditasi_pt'     => $responseData[0]['nilai'] ?? null,
-                        'tgl_mulai_akred'   => $responseData[0]['tgl_sk_akreditasi'] ?? null,
-                        'tgl_akhir_akred'   => $responseData[0]['tst_sk_akreditasi'] ?? null,
-                        'tgl_update'        => date('Y-m-d')
-                    ];
-                    // Simpan dengan replace/update (hindari duplikat)
-                    $this->db->replace('data_pt_tahap2', $daup);
+                if (is_array($responseData) && count($responseData) > 0) {
 
-                    file_put_contents($log_file, "   ✔️ Berhasil tarik & simpan data API  $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
+                    if (isset($responseData[0]['pt']['id'])) {
+                        $daup = [
+                            'kode_pt'           => $responseData[0]['pt']['kode'] ?? null,
+                            'nama_pt'           => $responseData[0]['pt']['nama'] ?? null,
+                            'akreditasi_pt'     => $responseData[0]['nilai'] ?? null,
+                            'tgl_mulai_akred'   => $responseData[0]['tgl_sk_akreditasi'] ?? null,
+                            'tgl_akhir_akred'   => $responseData[0]['tst_sk_akreditasi'] ?? null,
+                            'tgl_update'        => date('Y-m-d')
+                        ];
+                        // Simpan dengan replace/update (hindari duplikat)
+                        $this->db->replace('data_pt_tahap2', $daup);
+
+                        file_put_contents($log_file, "   ✔️ Berhasil tarik & simpan data API  $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
+                    } else {
+                        file_put_contents($log_file, "   ✖️ identitas tidak ditemukan di item $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
+                    }
                 } else {
                     file_put_contents($log_file, "   ✖️ Data tidak ditemukan/format tidak sesuai  $nm_pt ($kd_pt)<br>\n", FILE_APPEND);
 
