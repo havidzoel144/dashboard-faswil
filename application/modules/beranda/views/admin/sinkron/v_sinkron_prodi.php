@@ -27,7 +27,7 @@
                             </h4>
 
                             <div class="d-flex justify-content-center mt-1">
-                                <a href="<?= base_url('beranda/sinkronprodi/proses_ulang') ?>" onclick="return confirm('Anda yakin ingin memproses ulang data prodi ?')" class="btn btn-primary waves-effect waves-light"><i class="ft ft-repeat"></i> Proses Ulang</a>
+                                <a href="<?= base_url('beranda/SinkronProdi/proses_ulang') ?>" onclick="return confirm('Anda yakin ingin memproses ulang data prodi ?')" class="btn btn-primary waves-effect waves-light"><i class="ft ft-repeat"></i> Proses Ulang</a>
                             </div>
 
                             <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
