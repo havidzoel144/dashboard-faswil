@@ -295,11 +295,16 @@
                                 </span>
                               </td>
                               <td class="text-center" style="width: 5%;">
-                                <a href="<?= base_url('admin/export-nilai-pdf/') . safe_url_encrypt($data->id_penilaian_tipologi) ?>">
-                                  <button class="btn btn-primary btn-sm" type="button" data-toggle="tooltip" title="Export PDF">
-                                    <i class="la la-file-pdf-o"></i>
+                                <div class="d-flex justify-content-center">
+                                  <a href="<?= base_url('admin/export-nilai-pdf/') . safe_url_encrypt($data->id_penilaian_tipologi) ?>" target="_blank" style="margin-right: 1px;">
+                                    <button class="btn btn-primary btn-sm" type="button" data-toggle="tooltip" title="Export PDF">
+                                      <i class="la la-file-pdf-o"></i>
+                                    </button>
+                                  </a>
+                                  <button class="btn btn-dark btn-sm btn-publish-nilai-pt" type="button" data-toggle="tooltip" title="Publish Nilai" data-id="<?= safe_url_encrypt($data->id_penilaian_tipologi) ?>" data-periode="<?= safe_url_encrypt($periode_dipilih->kode) ?>" data-kode="<?= safe_url_encrypt($data->kode_pt) ?>" data-nama="<?= $data->nama_pt ?>">
+                                    <i class="la la-upload"></i>
                                   </button>
-                                </a>
+                                </div>
                               </td>
                             </tr>
                           <?php
@@ -393,7 +398,7 @@
       } else if (now > akhirF && now > akhirV) {
         Swal.fire({
           title: 'Publish Penilaian?',
-          text: "Apakah anda yakin ingin publish penilaian " + periode + "?",
+          html: "Apakah anda yakin ingin publish penilaian <b class=\"text-primary\">" + periode + "</b>?",
           icon: 'question',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -404,6 +409,102 @@
           if (result.isConfirmed) {
             // Gunakan native submit agar event berjalan normal
             document.getElementById('form-publish-penilaian').submit();
+          }
+        });
+      }
+    });
+
+    $(document).on('click', '.btn-publish-nilai-pt', function(event) {
+      event.preventDefault();
+
+      const periode = '<?= $periode_dipilih->keterangan ?>';
+      let namaPt = $(this).data('nama');
+
+      // Ambil tanggal dan waktu periode fasilitator & validator dari PHP
+      const mulaiFasilitator = '<?= $buka_tutup[0]->mulai_tgl . ' ' . $buka_tutup[0]->mulai_waktu ?>';
+      const akhirFasilitator = '<?= $buka_tutup[0]->akhir_tgl . ' ' . $buka_tutup[0]->akhir_waktu ?>';
+      const mulaiValidator = '<?= $buka_tutup[1]->mulai_tgl . ' ' . $buka_tutup[1]->mulai_waktu ?>';
+      const akhirValidator = '<?= $buka_tutup[1]->akhir_tgl . ' ' . $buka_tutup[1]->akhir_waktu ?>';
+
+      const now = new Date();
+
+      const mulaiF = new Date(mulaiFasilitator.replace(/-/g, '/'));
+      const akhirF = new Date(akhirFasilitator.replace(/-/g, '/'));
+      const mulaiV = new Date(mulaiValidator.replace(/-/g, '/'));
+      const akhirV = new Date(akhirValidator.replace(/-/g, '/'));
+
+      // Cek status periode
+      if (now < mulaiF || now < mulaiV) {
+        Swal.fire({
+          title: 'Periode Belum Dibuka',
+          text: 'Pengisian belum dibuka untuk fasilitator atau validator.',
+          icon: 'info',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        });
+        return;
+      } else if ((now >= mulaiF && now <= akhirF) || (now >= mulaiV && now <= akhirV)) {
+        Swal.fire({
+          title: 'Penilaian Sedang Berlangsung',
+          text: 'Penilaian sedang berlangsung, tunggu hingga proses penilaian selesai.',
+          icon: 'info',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        });
+        return;
+      } else if (now > akhirF && now > akhirV) {
+        Swal.fire({
+          title: 'Publish Penilaian?',
+          html: "Apakah anda yakin ingin publish penilaian <b class=\"text-primary\">" + periode + "</b> untuk <b class=\"text-danger\">" + namaPt + "</b>?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ya, publish!',
+          cancelButtonText: 'Batal'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const idPenilaian = $(this).data('id');
+            const periodeKode = $(this).data('periode');
+            const kodePt = $(this).data('kode');
+
+            // Lakukan request AJAX untuk publish nilai PT
+            $.ajax({
+              url: '<?= site_url('admin/publish-penilaian-pt') ?>',
+              type: 'POST',
+              dataType: 'json',
+              data: {
+                penilaian_id: idPenilaian,
+                periode: periodeKode,
+                kode_pt: kodePt,
+                '<?= $this->security->get_csrf_token_name(); ?>': '<?= $this->security->get_csrf_hash(); ?>'
+              },
+              success: function(response) {
+                console.log(response);
+                if (response.status === 'success') {
+                  Swal.fire({
+                    title: 'Berhasil!',
+                    text: response.message,
+                    icon: 'success'
+                  }).then(() => location.reload());
+                } else {
+                  Swal.fire({
+                    title: 'Gagal!',
+                    text: response.message || 'Terjadi kesalahan saat mempublish nilai.',
+                    icon: 'error'
+                  });
+                }
+              },
+              error: function() {
+                Swal.fire({
+                  title: 'Gagal!',
+                  text: 'Terjadi kesalahan saat mempublish nilai.',
+                  icon: 'error',
+                  confirmButtonColor: '#3085d6',
+                  confirmButtonText: 'OK'
+                });
+              }
+            });
           }
         });
       }

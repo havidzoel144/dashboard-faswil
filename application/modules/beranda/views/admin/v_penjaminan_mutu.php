@@ -322,6 +322,11 @@
   var data_tipologi = <?= json_encode($data); ?>;
 
   // Membuat array untuk data dan labels
+  // Filter data: ambil semua tipologi kecuali null/kosong
+  data_tipologi = (data_tipologi || []).filter(item => {
+    const t = item?.tipologi;
+    return t !== null && t !== undefined && String(t).trim() !== '' && String(t).toLowerCase() !== 'null';
+  });
   const labels = data_tipologi.map(item => item.tipologi); // Ambil semua nama tipologi
   const jumlah = data_tipologi.map(item => parseInt(item.jumlah_tipologi)); // Ambil jumlah_tipologi sebagai angka
   const $total_data = data_tipologi.map(item => parseInt(item.total_data)); // Ambil jumlah_tipologi sebagai angka
