@@ -252,4 +252,38 @@ class Progres extends MX_Controller
     $this->session->set_flashdata('success', 'Penilaian berhasil dipublikasikan.');
     redirect('beranda/progres');
   }
+
+  public function publishPenilaianPt()
+  {
+    if (!$this->input->is_ajax_request()) {
+      show_error('Akses tidak diizinkan.', 403);
+      return;
+    }
+
+    $periode = safe_url_decrypt($this->input->post('periode'));
+    $penilaian_id = safe_url_decrypt($this->input->post('penilaian_id'));
+    $kode_pt = safe_url_decrypt($this->input->post('kode_pt'));
+
+    if (!$periode || !$penilaian_id || !$kode_pt) {
+      echo json_encode([
+        'status' => 'error',
+        'message' => 'Data tidak valid.'
+      ]);
+      return;
+    }
+
+    $success = $this->Penilaian_model->publish_penilaian_by_pt($periode, $penilaian_id, $kode_pt);
+
+    if ($success) {
+      echo json_encode([
+        'status' => 'success',
+        'message' => 'Penilaian berhasil dipublikasikan.'
+      ]);
+    } else {
+      echo json_encode([
+        'status' => 'error',
+        'message' => 'Penilaian gagal dipublikasikan.'
+      ]);
+    }
+  }
 }
