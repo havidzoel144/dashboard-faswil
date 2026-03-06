@@ -130,8 +130,8 @@
                                   Tipologi
                                   <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 rentang Nilai Terbobot : 17,5 < n ≤ 20; <br> Tipologi 2 rentang Nilai Terbobot : 15 < n ≤ 17,5; <br> Tipologi 3 rentang Nilai Terbobot : 10 ≤ n ≤ 15; <br> Tipologi 4 Nilai Terbobot : < 10;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
                                 </th>
-                                <th class="text-center" rowspan="3">Akreditasi <br> Institusi</th>
-                                <th class="text-center" rowspan="3">Persentase <br> Prodi <br> Terakreditasi</th>
+                                <!-- <th class="text-center" rowspan="3">Akreditasi <br> Institusi</th>
+                                <th class="text-center" rowspan="3">Persentase <br> Prodi <br> Terakreditasi</th> -->
                               </tr>
                               <tr style="background-color: #563BFF; color: #ffffff">
                                 <th class="text-center" colspan="2">Butir 1 <br> (Bobot 2,22)</th>

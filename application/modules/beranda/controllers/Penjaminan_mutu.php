@@ -84,8 +84,8 @@ class Penjaminan_mutu extends MX_Controller
                 $row[] = '<center>' . $t->skor_2 . '</center>';
                 $row[] = '<center>' . $t->skor_total . '</center>';
                 $row[] = '<center>' . $t->tipologi . '</center>';
-                $row[] = '<center>' . $t->akreditasi_institusi . '</center>';
-                $row[] = '<center>' . $t->presentase_prodi_terakreditasi . '</center>';
+                // $row[] = '<center>' . $t->akreditasi_institusi . '</center>';
+                // $row[] = '<center>' . $t->presentase_prodi_terakreditasi . '</center>';
 
                 $data[] = $row;
             }
