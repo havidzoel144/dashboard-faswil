@@ -67,6 +67,12 @@ class Progres extends MX_Controller
     $data['jml_belum_input'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode), function ($item) {
       return !isset($item->id_status_penilaian) || $item->id_status_penilaian === null;
     }));
+    $data['jml_draft_validator'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 5;
+    }));
+    $data['jml_menunggu_approval_admin'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 6;
+    }));
 
     // echo json_encode($data);exit;
 
@@ -283,6 +289,122 @@ class Progres extends MX_Controller
       echo json_encode([
         'status' => 'error',
         'message' => 'Penilaian gagal dipublikasikan.'
+      ]);
+    }
+  }
+
+  public function ubahStatusPenilaian($enc_id_penilaian)
+  {
+    $id_penilaian = safe_url_decrypt($enc_id_penilaian);
+    $ubah_status_penilaian = $this->Penilaian_model->ubahStatusPenilaian($id_penilaian, 'menunggu');
+
+    if ($ubah_status_penilaian) {
+      $this->session->set_flashdata('success', 'Proses berhasil, status diubah menjadi Draft Validator');
+    } else {
+      $this->session->set_flashdata('error', 'Proses gagal');
+    }
+
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+      redirect($_SERVER['HTTP_REFERER']);
+    } else {
+      redirect('admin/penilaian-tipologi');
+    }
+  }
+
+  public function getFaswilValidator()
+  {
+    if (!$this->input->is_ajax_request()) {
+      show_error('Akses tidak diizinkan.', 403);
+      return;
+    }
+
+    $periode = safe_url_decrypt($this->input->post('periode'));
+    $all_fasilitators = $this->db->select('users.id, users.nama')->from('users')->join('user_roles', 'users.id = user_roles.user_id')->where('user_roles.role_id', 4)->get()->result();
+    $all_validators = $this->db->select('users.id, users.nama')->from('users')->join('user_roles', 'users.id = user_roles.user_id')->where('user_roles.role_id', 5)->get()->result();
+
+    if ($periode) {
+      echo json_encode([
+        'status' => 'success',
+        'all_fasilitators' => $all_fasilitators,
+        'all_validators' => $all_validators,
+        'enc_periode' => safe_url_encrypt($periode),
+      ]);
+    } else {
+      echo json_encode([
+        'status' => 'error',
+        'message' => 'Data tidak ditemukan.'
+      ]);
+    }
+  }
+
+  public function getPtBinaanFasilitator()
+  {
+    $periode = safe_url_decrypt($this->input->post('periode'));
+    $id_fasilitator = $this->input->post('idFasilitator');
+    $data = $this->Penilaian_model->getPtBinaanFasilitatorByPeriode($periode, $id_fasilitator);
+    echo json_encode([
+      'status' => 'success',
+      'data' => $data,
+    ]);
+  }
+
+  public function getPtBinaanValidator()
+  {
+    $periode = safe_url_decrypt($this->input->post('periode'));
+    $id_validator = $this->input->post('idValidator');
+    $data = $this->Penilaian_model->getPtBinaanValidatorByPeriode($periode, $id_validator);
+    echo json_encode([
+      'status' => 'success',
+      'data' => $data,
+      'periode' => $periode,
+      'id_validator' => $id_validator,
+    ]);
+  }
+
+  public function updateFaswilValidator()
+  {
+    if (!$this->input->is_ajax_request()) {
+      show_error('Akses tidak diizinkan.', 403);
+      return;
+    }
+
+    $tipe = $this->input->post('tipe');
+    $periode = safe_url_decrypt($this->input->post('periode'));
+    if ($tipe === 'fasilitator') {
+      $id_awal = $this->input->post('idFasilitator');
+      $id_pengganti = $this->input->post('idFasilitatorPengganti');
+      $perguruan_tinggi = $this->input->post('PTFaswil');
+      } else if ($tipe === 'validator') {
+        $id_awal = $this->input->post('idValidator');
+        $id_pengganti = $this->input->post('idValidatorPengganti');
+        $perguruan_tinggi = $this->input->post('PTValidator');
+    } else {
+      echo json_encode([
+        'status' => 'error',
+        'message' => 'Tipe tidak valid.'
+      ]);
+      return;
+    }
+
+    if (!$periode || !$id_awal || !$id_pengganti) {
+      echo json_encode([
+        'status' => 'error',
+        'message' => 'Data tidak valid.'
+      ]);
+      return;
+    }
+
+    $update = $this->Penilaian_model->updateFaswilValidator($tipe, $periode, $id_awal, $id_pengganti, $perguruan_tinggi);
+
+    if ($update) {
+      echo json_encode([
+        'status' => 'success',
+        'message' => ucfirst($tipe) . ' berhasil diperbarui.'
+      ]);
+    } else {
+      echo json_encode([
+        'status' => 'error',
+        'message' => 'Gagal memperbarui ' . ucfirst($tipe) . '.'
       ]);
     }
   }

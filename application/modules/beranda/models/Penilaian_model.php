@@ -141,13 +141,52 @@ class Penilaian_model extends CI_Model
     return $this->db->delete('penilaian_tipologi', ['id_penilaian_tipologi' => $id]);
   }
 
-  public function kirimNilai($periode, $fasilitator_id)
+  public function kirimNilai($periode, $id_penilaian, $fasilitator_id)
   {
     // Update status_penilaian menjadi 2 untuk penilaian_tipologi yang statusnya 1 pada periode dan fasilitator ini
     $this->db->where('periode', $periode);
+    if ($id_penilaian !== 'semua') {
+      $this->db->where('id_penilaian_tipologi', $id_penilaian);
+    }
     $this->db->where('fasilitator_id', $fasilitator_id);
     $this->db->where('id_status_penilaian', '1');
     return $this->db->update('penilaian_tipologi', ['id_status_penilaian' => 2]);
+  }
+
+  public function prosesNilai($periode, $id_penilaian, $validator_id)
+  {
+    $this->db->select('id_penilaian_tipologi, cek_1a, cek_1b, cek_2');
+    $this->db->from('penilaian_tipologi');
+    $this->db->where('periode', $periode);
+    $this->db->where('validator_id', $validator_id);
+    $this->db->where('id_status_penilaian', 5);
+
+    if ($id_penilaian !== 'semua') {
+      $this->db->where('id_penilaian_tipologi', $id_penilaian);
+    }
+
+    $query = $this->db->get();
+    $rows = $query->result();
+
+    if (!$rows) {
+      return false;
+    }
+
+    foreach ($rows as $row) {
+
+      if ($row->cek_1a == "0" || $row->cek_1b == "0" || $row->cek_2 == "0") {
+        $status = 3; // revisi validator
+      } else {
+        $status = 4; // valid
+      }
+
+      $this->db->where('id_penilaian_tipologi', $row->id_penilaian_tipologi);
+      $this->db->update('penilaian_tipologi', [
+        'id_status_penilaian' => $status
+      ]);
+    }
+
+    return true;
   }
 
   public function publish_penilaian_by_periode($periode)
@@ -323,5 +362,98 @@ class Penilaian_model extends CI_Model
       return false;
     }
     return true;
+  }
+
+  public function ubahStatusPenilaian($id_penilaian, $status_penilaian = null)
+  {
+    // Update status_penilaian menjadi 4 untuk penilaian_tipologi yang statusnya 6 pada periode dan validator ini ATAU 
+    // Update status_penilaian menjadi 6 untuk penilaian_tipologi yang statusnya 5 pada periode dan validator ini 
+    $this->db->where('id_penilaian_tipologi', $id_penilaian);
+    if ($status_penilaian === 'valid') {
+      $this->db->where('id_status_penilaian', '4');
+      return $this->db->update('penilaian_tipologi', ['id_status_penilaian' => 6]);
+    } else if ($status_penilaian === 'menunggu') {
+      $this->db->where('id_status_penilaian', '6');
+      return $this->db->update('penilaian_tipologi', ['id_status_penilaian' => 5]);
+    }
+  }
+
+  public function updateFaswilValidator($tipe, $periode, $id_awal, $id_pengganti, $perguruan_tinggi)
+  {
+    if ($tipe === 'fasilitator') {
+      // Cek apakah ada fasilitator dengan id_awal di periode tersebut
+      $check = $this->db->where('periode', $periode)
+        ->where('fasilitator_id', $id_awal)
+        ->get('penilaian_tipologi')
+        ->num_rows();
+
+      if ($check === 0) {
+        echo json_encode([
+          'status' => 'error',
+          'message' => 'Fasilitator tidak diplotting pada periode ini.'
+        ]);
+        // return false;
+      }
+
+      $data = [
+        'fasilitator_id' => $id_pengganti
+      ];
+
+      if (!empty($perguruan_tinggi)) {
+        $this->db->where_in('kode_pt', $perguruan_tinggi);
+      }
+
+      $this->db->where('periode', $periode);
+      $this->db->where('fasilitator_id', $id_awal);
+      return $this->db->update('penilaian_tipologi', $data);
+    } else if ($tipe === 'validator') {
+      // Cek apakah ada validator dengan id_awal di periode tersebut
+      $check = $this->db->where('periode', $periode)
+        ->where('validator_id', $id_awal)
+        ->get('penilaian_tipologi')
+        ->num_rows();
+
+      if ($check === 0) {
+        echo json_encode([
+          'status' => 'error',
+          'message' => 'Validator tidak diplotting pada periode ini.'
+        ]);
+        // return false;
+      }
+
+      $data = [
+        'validator_id' => $id_pengganti
+      ];
+
+      if (!empty($perguruan_tinggi)) {
+        $this->db->where_in('kode_pt', $perguruan_tinggi);
+      }
+
+      $this->db->where('periode', $periode);
+      $this->db->where('validator_id', $id_awal);
+      return $this->db->update('penilaian_tipologi', $data);
+    }
+  }
+
+  public function getPtBinaanFasilitatorByPeriode($periode, $fasilitator_id)
+  {
+    $this->db->select('kode_pt, nama_pt');
+    $this->db->from('penilaian_tipologi');
+    $this->db->where('periode', $periode);
+    $this->db->where('fasilitator_id', $fasilitator_id);
+    $this->db->order_by('nama_pt', 'ASC');
+    return $query = $this->db->get()->result_array();
+    // return array_column($query->result_array(), 'kode_pt');
+  }
+
+  public function getPtBinaanValidatorByPeriode($periode, $validator_id)
+  {
+    $this->db->select('kode_pt, nama_pt');
+    $this->db->from('penilaian_tipologi');
+    $this->db->where('periode', $periode);
+    $this->db->where('validator_id', $validator_id);
+    $this->db->order_by('nama_pt', 'ASC');
+    return $query = $this->db->get()->result_array();
+    // return array_column($query->result_array(), 'kode_pt');
   }
 }

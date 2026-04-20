@@ -15,6 +15,7 @@ $route['admin/update-status-user'] = 'beranda/user/updateStatusUser';
 $route['admin/hapus-user/(:num)'] = 'beranda/user/hapusUser/$1';
 $route['admin/reset-password-user/(:num)'] = 'beranda/user/resetPassword/$1';
 $route['admin/ajax-get-dosen'] = 'beranda/user/ajaxGetDosen';
+$route['admin/ajax-get-pt'] = 'beranda/user/ajaxGetPT';
 
 // MANAGE PERIODE
 $route['admin/data-periode'] = 'beranda/periode';
@@ -36,10 +37,12 @@ $route['admin/lihat-skor/(:any)'] = 'beranda/penilaian/inputSkor/$1';
 $route['admin/get-penilaian'] = 'beranda/penilaian/getPenilaian';
 $route['admin/simpan-skor'] = 'beranda/penilaian/simpanSkor';
 $route['admin/riwayat-penilaian/(:any)'] = 'beranda/penilaian/riwayatPenilaian/$1';
-$route['admin/kirim-nilai/(:any)'] = 'beranda/penilaian/kirimNilai/$1';
+$route['admin/kirim-nilai/(:any)/(:any)'] = 'beranda/penilaian/kirimNilai/$1/$2';
 
 // PENILAIAN VALIDATOR
 $route['admin/validator'] = 'beranda/validator';
+$route['admin/validator/kirim-nilai/(:any)/(:any)'] = 'beranda/validator/kirim_nilai/$1/$2';
+$route['admin/validator/ubah-status-penilaian/(:any)'] = 'beranda/validator/ubah_status_penilaian/$1';
 $route['simpan_validasi'] = 'beranda/validator/simpan_validasi';
 $route['rwy-validator/(:any)'] = 'beranda/validator/rwy_validator/$1';
 $route['daftar-fasilitator/(:any)'] = 'beranda/validator/daftar_fasilitator/$1';
@@ -52,6 +55,11 @@ $route['admin/export-nilai-pdf/(:any)'] = 'beranda/progres/exportNilaiPdf/$1';
 $route['admin/export-nilai-excel/(:any)'] = 'beranda/progres/exportNilaiExcel/$1';
 $route['admin/publish-penilaian'] = 'beranda/progres/publishPenilaian';
 $route['admin/publish-penilaian-pt'] = 'beranda/progres/publishPenilaianPt';
+$route['admin/ubah-status-penilaian/(:any)'] = 'beranda/progres/ubahStatusPenilaian/$1';
+$route['admin/get-faswil-validator'] = 'beranda/progres/getFaswilValidator';
+$route['admin/update-faswil-validator'] = 'beranda/progres/updateFaswilValidator';
+$route['admin/get-pt-binaan-fasilitator'] = 'beranda/progres/getPtBinaanFasilitator';
+$route['admin/get-pt-binaan-validator'] = 'beranda/progres/getPtBinaanValidator';
 
 //SINKRON UTK DATA API PDDIKTI
 $route['sinkronPt']             = 'beranda/SinkronPt';
@@ -60,3 +68,8 @@ $route['belumSinkronProdi']     = 'beranda/SinkronProdi/belumSinkronProdi';
 $route['prosesSinkronProdi']    = 'beranda/SinkronProdi/prosesSinkronProdi';
 $route['tidakSinkronProdi']     = 'beranda/SinkronProdi/tidakSinkronProdi';
 $route['import_pt_awal']        = 'beranda/Sinkronpt/import_pt_awal';
+
+// EVALUASI 360
+$route['admin/evaluasi-360'] = 'beranda/evaluasi';
+$route['admin/evaluasi-360/detail/(:any)'] = 'beranda/evaluasi/detail/$1';
+$route['admin/evaluasi-360/simpan'] = 'beranda/evaluasi/simpan';

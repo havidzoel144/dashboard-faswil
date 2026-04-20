@@ -82,6 +82,7 @@
 <script src="<?= base_url() ?>app-assets/vendors/js/forms/toggle/switchery.min.js"></script>
 
 <script src="<?= base_url() ?>app-assets/vendors/js/extensions/listjs/list.min.js"></script>
+<script src="<?= base_url() ?>app-assets/vendors/js/extensions/jquery.raty.js"></script>
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Theme JS-->
@@ -103,6 +104,7 @@
 
 <script src="<?= base_url() ?>app-assets/js/scripts/extensions/list.js"></script>
 <script src="<?= base_url() ?>assets/js/Chart.min.js"></script>
+<script src="<?= base_url() ?>app-assets/js/scripts/extensions/rating.js"></script>
 <!-- END: Page JS-->
 
 <!-- SWEETALERT -->

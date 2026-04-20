@@ -7,6 +7,7 @@ class Validator extends MX_Controller
   {
     parent::__construct();
     $this->load->library(['javascript']);
+    $this->load->model(['Periode_model', 'Penilaian_model']);
     date_default_timezone_set("Asia/Jakarta");
 
     if (!$this->session->userdata('username')) {
@@ -27,7 +28,7 @@ class Validator extends MX_Controller
                                                   `penilaian_tipologi` a
                                                 JOIN periode b ON a.periode = b.kode
                                                 WHERE a.`validator_id`='$user_id'
-                                                AND a.`id_status_penilaian` IN('2','3','4')
+                                                -- AND a.`id_status_penilaian` IN('1','2','3','4','5')
                                                 GROUP BY a.`periode`
                                                 ORDER BY a.periode DESC")->result();
     foreach ($val as $v) {
@@ -38,9 +39,26 @@ class Validator extends MX_Controller
                                         penilaian_tipologi
                                       WHERE `validator_id` = '$user_id'
                                         AND `periode` = '$v->periode'
-                                        AND `id_status_penilaian` IN('2','3','4')
+                                        -- AND `id_status_penilaian` IN('1','2','3','4','5')
                                       GROUP BY `kode_pt`")->num_rows();
-
+      // Ambil jumlah data menunggu approval admin
+      $v->jml_menunggu_approval_admin = $this->db->query("SELECT
+                                            kode_pt
+                                          FROM
+                                            penilaian_tipologi
+                                          WHERE `validator_id` = '$user_id'
+                                            AND `periode` = '$v->periode'
+                                            AND `id_status_penilaian` ='6'
+                                          GROUP BY `kode_pt`")->num_rows();
+      // Ambil jumlah data draft validator
+      $v->jml_draft = $this->db->query("SELECT
+                                            kode_pt
+                                          FROM
+                                            penilaian_tipologi
+                                          WHERE `validator_id` = '$user_id'
+                                            AND `periode` = '$v->periode'
+                                            AND `id_status_penilaian` ='5'
+                                          GROUP BY `kode_pt`")->num_rows();
       // Ambil jumlah data valid
       $v->jml_valid = $this->db->query("SELECT
                                             kode_pt
@@ -69,6 +87,24 @@ class Validator extends MX_Controller
                                           WHERE `validator_id` = '$user_id'
                                             AND `periode` = '$v->periode'
                                             AND `id_status_penilaian` ='2'
+                                          GROUP BY `kode_pt`")->num_rows();
+      // Ambil jumlah input faswil
+      $v->jml_input_faswil = $this->db->query("SELECT
+                                            kode_pt
+                                          FROM
+                                            penilaian_tipologi
+                                          WHERE `validator_id` = '$user_id'
+                                            AND `periode` = '$v->periode'
+                                            AND `id_status_penilaian` ='1'
+                                          GROUP BY `kode_pt`")->num_rows();
+      // Ambil jumlah faswil belum input
+      $v->jml_faswil_belum_input = $this->db->query("SELECT
+                                            kode_pt
+                                          FROM
+                                            penilaian_tipologi
+                                          WHERE `validator_id` = '$user_id'
+                                            AND `periode` = '$v->periode'
+                                            AND `id_status_penilaian` IS NULL
                                           GROUP BY `kode_pt`")->num_rows();
     }
 
@@ -115,7 +151,7 @@ class Validator extends MX_Controller
                                 d.keterangan
                               FROM
                                 penilaian_tipologi a
-                                JOIN `status_penilaian` b
+                                LEFT JOIN `status_penilaian` b
                                   ON a.`id_status_penilaian` = b.`id_status`
                                 JOIN `users` c
                                   ON a.`fasilitator_id` = c.`id`
@@ -123,7 +159,7 @@ class Validator extends MX_Controller
                                   ON a.`periode` = d.`kode`
                               WHERE a.`validator_id` = '$user_id'
                                 AND a.`periode` = '$periode' 
-                                AND a.`id_status_penilaian` IN('2','3','4')
+                                -- AND a.`id_status_penilaian` IN('2','3','4','5')
                                 ORDER BY a.`id_penilaian_tipologi` ASC");
 
     // Ambil satu baris data penilaian
@@ -160,14 +196,15 @@ class Validator extends MX_Controller
     $skor_1_bobot                  = $this->input->post("skor_1_bobot", true);
     $skor_2_bobot                  = $this->input->post("skor_2_bobot", true);
     $skor_total                    = $this->input->post("skor_total", true);
+    $id_status_penilaian           = 5; // default draft validator
 
     // die("$catatan_keseluruhan");
 
-    if ($cek_1a == "0" || $cek_1b == "0" || $cek_2 == "0") {
-      $id_status_penilaian = 3; // revisi validator
-    } else {
-      $id_status_penilaian = 4; // valid
-    }
+    // if ($cek_1a == "0" || $cek_1b == "0" || $cek_2 == "0") {
+    //   $id_status_penilaian = 3; // revisi validator
+    // } else {
+    //   $id_status_penilaian = 4; // valid
+    // }
 
     // Mulai transaksi database
     $this->db->trans_start();
@@ -250,5 +287,44 @@ class Validator extends MX_Controller
     $data['val']  = $val->result();
 
     $this->load->view("admin/master/validator/v_rwy_validator", $data);
+  }
+
+  public function kirim_nilai($enc_periode, $enc_id = 'semua')
+  {
+    $periode = safe_url_decrypt($enc_periode);
+    $id_penilaian = safe_url_decrypt($enc_id);
+    $validator_id = $this->session->userdata('user_id');
+
+    $kirim_nilai = $this->Penilaian_model->prosesNilai($periode, $id_penilaian, $validator_id);
+
+    if ($kirim_nilai) {
+      $this->session->set_flashdata('success', 'Data berhasil diproses');
+    } else {
+      $this->session->set_flashdata('error', 'Gagal memproses nilai');
+    }
+
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+      redirect($_SERVER['HTTP_REFERER']);
+    } else {
+      redirect('admin/penilaian-tipologi');
+    }
+  }
+
+  public function ubah_status_penilaian($enc_id_penilaian)
+  {
+    $id_penilaian = safe_url_decrypt($enc_id_penilaian);
+    $ubah_status_penilaian = $this->Penilaian_model->ubahStatusPenilaian($id_penilaian, 'valid');
+
+    if ($ubah_status_penilaian) {
+      $this->session->set_flashdata('success', 'Proses berhasil, menunggu approval dari admin');
+    } else {
+      $this->session->set_flashdata('error', 'Proses gagal');
+    }
+
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+      redirect($_SERVER['HTTP_REFERER']);
+    } else {
+      redirect('admin/penilaian-tipologi');
+    }
   }
 }

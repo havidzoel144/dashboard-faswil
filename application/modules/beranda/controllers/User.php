@@ -32,7 +32,7 @@ class User extends MX_Controller
       $allowed_ids = array_merge($allowed_ids, [1, 2, 3]);
     }
     if (in_array('2', $user_role_ids)) {
-      $allowed_ids = array_merge($allowed_ids, [4, 5]);
+      $allowed_ids = array_merge($allowed_ids, [4, 5, 6, 7]);
     }
 
     // Hilangkan duplikat (jika ada)
@@ -50,7 +50,7 @@ class User extends MX_Controller
       'master' => 'active',
       'user' => 'active',
       'data_user' => $this->User_model->get_users_with_roles($ids_string),
-      'data_role' => $this->db->query("SELECT * FROM `roles`")->result(),
+      'data_role' => $this->db->query("SELECT * FROM `roles` WHERE id IN " . $ids_string)->result(),
       'allowed_ids' => $this->allowed_ids(),
     ];
 
@@ -65,7 +65,6 @@ class User extends MX_Controller
     $this->form_validation->set_rules('username', 'Username', 'required|is_unique[users.username]');
     $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
     $this->form_validation->set_rules('role_id[]', 'Role User', 'required'); // note: role_id[] karena multiple select
-
     if ($this->form_validation->run() == FALSE) {
       // Jika validasi gagal
       $errors = $this->form_validation->error_array();
@@ -248,7 +247,7 @@ class User extends MX_Controller
     }
 
     // Reset password (misalnya set password default)
-    $new_password = '123456'; // atau bisa generate password baru
+    $new_password = 'admin123'; // atau bisa generate password baru
 
     // Update password user
     $update = $this->User_model->update_password($user_id, $new_password);
@@ -303,6 +302,50 @@ class User extends MX_Controller
       }
 
       $filteredRecords = $this->db->count_all_results('data_dosen', false);
+
+      // Pagination dan ordering
+      $this->db->order_by($order_by, $order_dir);
+      $this->db->limit($length, $start);
+      $query = $this->db->get();
+      $data = $query->result();
+
+      echo json_encode([
+        'draw' => intval($draw),
+        'recordsTotal' => $totalRecords,
+        'recordsFiltered' => $filteredRecords,
+        'data' => $data,
+        'csrfHash' => $this->security->get_csrf_hash()
+      ]);
+    } else {
+      show_error('Permintaan tidak valid', 400);
+    }
+  }
+
+  public function ajaxGetPT()
+  {
+    if ($this->input->is_ajax_request()) {
+      $draw = $this->input->post('draw');
+      $start = $this->input->post('start');
+      $length = $this->input->post('length');
+      $search = $this->input->post('search')['value'];
+      $order_col = $this->input->post('order')[0]['column'];
+      $order_dir = $this->input->post('order')[0]['dir'];
+
+      $columns = ['kode_pt', 'nama_pt'];
+      $order_by = isset($columns[$order_col]) ? $columns[$order_col] : 'kode_pt';
+
+      // Total record tanpa filter
+      $totalRecords = $this->db->count_all('data_pt');
+
+      // Pencarian
+      if (!empty($search)) {
+        $this->db->group_start()
+          ->like('kode_pt', $search)
+          ->or_like('nama_pt', $search)
+          ->group_end();
+      }
+
+      $filteredRecords = $this->db->count_all_results('data_pt', false);
 
       // Pagination dan ordering
       $this->db->order_by($order_by, $order_dir);

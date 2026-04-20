@@ -237,12 +237,13 @@ class Penilaian extends MX_Controller
     $this->load->view("admin/master/penilaian/v_riwayat_penilaian", $data);
   }
 
-  public function kirimNilai($enc_periode)
+  public function kirimNilai($enc_periode, $enc_id = 'semua')
   {
     $periode = safe_url_decrypt($enc_periode);
+    $id_penilaian = safe_url_decrypt($enc_id);
     $fasilitator_id = $this->session->userdata('user_id');
 
-    $kirim_nilai = $this->Penilaian_model->kirimNilai($periode, $fasilitator_id);
+    $kirim_nilai = $this->Penilaian_model->kirimNilai($periode, $id_penilaian, $fasilitator_id);
 
     if ($kirim_nilai) {
       $this->session->set_flashdata('success', 'Data berhasil dikirim ke validator');

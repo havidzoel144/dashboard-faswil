@@ -110,10 +110,6 @@
                                 <span><b><?= $isi_periode ?></b></span>
                             </div>
                             <div style="font-size: 1.15em; display: flex; align-items: center; gap: 8px;">
-                                <i class="fa fa-user" style="color: #fff; font-size: 1.2em;"></i>
-                                <span>Fasilitator: <b><?= $da->nama ?></b></span>
-                            </div>
-                            <div style="font-size: 1.15em; display: flex; align-items: center; gap: 8px;">
                                 <i class="fa fa-university" style="color: #fff; font-size: 1.2em;"></i>
                                 <span>PT: <b><?= $da->nama_pt ?> (<?= $da->kode_pt ?>)</b></span>
                             </div>

@@ -16,7 +16,7 @@
         <div class="col-md-12 col-sm-12">
           <div class="card">
             <div class="card-header">
-              <h4 class="card-title" id="heading-buttons1">Bukat Tutup</h4>
+              <h4 class="card-title" id="heading-buttons1">Buka Tutup</h4>
               <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
             </div>
             <div class="card-content">

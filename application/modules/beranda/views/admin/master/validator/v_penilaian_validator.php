@@ -72,6 +72,17 @@
                 <i class="fa fa-arrow-left"></i> Kembali ke Daftar Periode
               </button>
             </a>
+            <?php
+            if ($buka_tutup == "tutup") {
+            ?>
+              <a href="#" class="btn btn-danger waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="Sudah ditutup">
+                Penilaian sudah ditutup
+              </a>
+            <?php } else { ?>
+              <a href="<?= base_url('admin/validator/kirim-nilai/' . safe_url_encrypt($periode) . '/' . safe_url_encrypt('semua')) ?>" class="btn btn-success waves-effect waves-light kirim-nilai" data-toggle="tooltip" data-placement="top" title="Proses semua nilai yang sudah divalidasi" data-content="semua nilai">
+                Proses Nilai
+              </a>
+            <?php } ?>
           </div>
 
           <div class="card-content">
@@ -112,15 +123,17 @@
                     if (!empty($data_pt_binaan_result)) { // Cek apakah array data_pt_binaan_result tidak kosong
                       foreach ($data_pt_binaan_result as $data) {
                         if (substr($data->periode, -1, 1 == '1')) {
-                          $periode = substr($data->periode, 0, 4) . ' Periode 1';
+                          $periode_label = substr($data->periode, 0, 4) . ' Periode 1';
                         } else {
-                          $periode = substr($data->periode, 0, 4) . ' Periode 2';
+                          $periode_label = substr($data->periode, 0, 4) . ' Periode 2';
                         }
                     ?>
                         <?php
                         // Tentukan kelas warna baris berdasarkan id_status_penilaian
                         $row_class = '';
-                        if ($data->id_status_penilaian == '4') {
+                        if ($data->id_status_penilaian == '5') {
+                          $row_class = 'table-primary'; // biru
+                        } elseif ($data->id_status_penilaian == '4') {
                           $row_class = 'table-success'; // hijau
                         } elseif ($data->id_status_penilaian == '3') {
                           $row_class = 'table-danger'; // merah
@@ -132,39 +145,56 @@
                         ?>
                         <tr class="<?= $row_class ?>">
                           <td class="text-center" style="width: 3%;"><?= ++$i ?></td>
-                          <td class="text-center" style="width: 10%;"><?= $periode ?></td>
+                          <td class="text-center" style="width: 10%;"><?= $periode_label ?></td>
                           <td class="text-center" style="width: 5%;"><?= $data->kode_pt ?></td>
                           <td class="text-start" style="width: 18%;"><?= $data->nama_pt ?></td>
-                          <td class="text-center" style="width: 5%;">
-                            <?= $data->skor_1a ?>
-                            <?php
-                            $warna_1a = ($data->cek_1a == '1' && $data->skor_1a !== null) ? 'text-success' : 'text-danger';
-                            $iconCek_1a = ($data->cek_1a == '1' && $data->skor_1a !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_1a == '0' && $data->skor_1a !== null) ? '<i class="fa fa-times"></i>' : '');
-                            ?>
-                            <span class="<?= $warna_1a ?>" data-toggle="popover" data-content="<?= $data->catatan_1a_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 1a" style="cursor: pointer;"><?= $iconCek_1a ?></span>
-                          </td>
-                          <td class="text-center" style="width: 5%;">
-                            <?= $data->skor_1b ?>
-                            <?php
-                            $warna_1b = ($data->cek_1b == '1' && $data->skor_1b !== null) ? 'text-success' : 'text-danger';
-                            $iconCek_1b = ($data->cek_1b == '1' && $data->skor_1b !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_1b == '0' && $data->skor_1b !== null) ? '<i class="fa fa-times"></i>' : '');
-                            ?>
-                            <span class="<?= $warna_1b ?>" data-toggle="popover" data-content="<?= $data->catatan_1b_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 1b" style="cursor: pointer;"><?= $iconCek_1b ?></span>
-                          </td>
-                          <td class="text-center" style="width: 5%;">
-                            <?= $data->skor_2 ?>
-                            <?php
-                            $warna_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? 'text-success' : 'text-danger';
-                            $iconCek_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_2 == '0' && $data->skor_2 !== null) ? '<i class="fa fa-times"></i>' : '');
-                            ?>
-                            <span class="<?= $warna_2 ?>" data-toggle="popover" data-content="<?= $data->catatan_2_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 2" style="cursor: pointer;"><?= $iconCek_2 ?></span>
-                          </td>
-                          <td class="text-center" style="width: 5%;"><?= $data->skor_total ?></td>
-                          <td class="text-center" style="width: 5%;"><?= $data->tipologi ?></td>
+                          <?php if (in_array($data->id_status_penilaian, ['1', null])) : ?>
+                            <td class="text-center" colspan="5" style="width: 5%;">
+                              <?php if ($data->id_status_penilaian == '1') : ?>
+                                <i class="fa fa-spinner fa-spin" style="color: #007bff;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Nilai sudah diinput oleh validator, tetapi belum dipublish"></i>
+                              <?php elseif ($data->id_status_penilaian == null) : ?>
+                                <i class="fa fa-question" style="color: #4c4e51;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Fasilitator belum input nilai"></i>
+                              <?php endif; ?>
+                            </td>
+                          <?php else : ?>
+                            <td class="text-center" style="width: 5%;">
+                              <?= $data->skor_1a ?>
+                              <?php
+                              $warna_1a = ($data->cek_1a == '1' && $data->skor_1a !== null) ? 'text-success' : 'text-danger';
+                              $iconCek_1a = ($data->cek_1a == '1' && $data->skor_1a !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_1a == '0' && $data->skor_1a !== null) ? '<i class="fa fa-times"></i>' : '');
+                              ?>
+                              <span class="<?= $warna_1a ?>" data-toggle="popover" data-content="<?= $data->catatan_1a_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 1a" style="cursor: pointer;"><?= $iconCek_1a ?></span>
+                            </td>
+                            <td class="text-center" style="width: 5%;">
+                              <?= $data->skor_1b ?>
+                              <?php
+                              $warna_1b = ($data->cek_1b == '1' && $data->skor_1b !== null) ? 'text-success' : 'text-danger';
+                              $iconCek_1b = ($data->cek_1b == '1' && $data->skor_1b !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_1b == '0' && $data->skor_1b !== null) ? '<i class="fa fa-times"></i>' : '');
+                              ?>
+                              <span class="<?= $warna_1b ?>" data-toggle="popover" data-content="<?= $data->catatan_1b_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 1b" style="cursor: pointer;"><?= $iconCek_1b ?></span>
+                            </td>
+                            <td class="text-center" style="width: 5%;">
+                              <?= $data->skor_2 ?>
+                              <?php
+                              $warna_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? 'text-success' : 'text-danger';
+                              $iconCek_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_2 == '0' && $data->skor_2 !== null) ? '<i class="fa fa-times"></i>' : '');
+                              ?>
+                              <span class="<?= $warna_2 ?>" data-toggle="popover" data-content="<?= $data->catatan_2_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 2" style="cursor: pointer;"><?= $iconCek_2 ?>
+                              </span>
+                            </td>
+                            <td class="text-center" style="width: 5%;">
+                              <?= $data->skor_total ?>
+                            </td>
+                            <td class="text-center" style="width: 5%;">
+                              <?= $data->tipologi ?>
+                            </td>
+                          <?php endif; ?>
                           <td class="text-center text-white" style="width: 5%;">
                             <span class="badge 
                               <?php
-                              if ($data->id_status_penilaian == '4') echo 'badge-success';
+                              if ($data->id_status_penilaian == '6') echo 'bg-blue-grey bg-darken-4';
+                              elseif ($data->id_status_penilaian == '5') echo 'badge-primary';
+                              elseif ($data->id_status_penilaian == '4') echo 'badge-success';
                               elseif ($data->id_status_penilaian == '3') echo 'badge-danger';
                               elseif ($data->id_status_penilaian == '2') echo 'badge-warning';
                               elseif ($data->id_status_penilaian == '1') echo 'badge-info';
@@ -173,20 +203,36 @@
                               style="font-size: 1em; padding: 8px 14px; border-radius: 20px; letter-spacing: 0.5px; width: 100%;">
                               <i class="fa 
                                 <?php
-                                if ($data->id_status_penilaian == '4') echo 'fa-check-circle';
+                                if ($data->id_status_penilaian == '6') echo 'fa-rotate-left';
+                                elseif ($data->id_status_penilaian == '5') echo 'fa-paper-plane';
+                                elseif ($data->id_status_penilaian == '4') echo 'fa-check-circle';
                                 elseif ($data->id_status_penilaian == '3') echo 'fa-times-circle';
                                 elseif ($data->id_status_penilaian == '2') echo 'fa-hourglass-half';
                                 elseif ($data->id_status_penilaian == '1') echo 'fa-spinner fa-spin';
                                 else echo 'fa-question-circle';
                                 ?>"
                                 aria-hidden="true" style="margin-right: 6px;"></i>
-                              <?= $data->nm_status ?>
+                              <?= $data->nm_status ?? 'Fasilitator Belum Input' ?>
                             </span>
                           </td>
                           <td class="text-center" style="width: 10%;">
-                            <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#validasiModal<?= $data->id_penilaian_tipologi ?>" title="Validasi">
-                              <i class="la la-pencil"></i>
-                            </button>
+                            <?php if (in_array($data->id_status_penilaian, ['2', '3', '4', '5'])) : ?>
+                              <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#validasiModal<?= $data->id_penilaian_tipologi ?>" title="Validasi">
+                                <i class="la la-pencil"></i>
+                              </button>
+                            <?php endif; ?>
+
+                            <?php if ($data->id_status_penilaian == '5') : ?>
+                              <a href="<?= base_url() ?>admin/validator/kirim-nilai/<?= safe_url_encrypt($periode) . '/' . safe_url_encrypt($data->id_penilaian_tipologi) ?>" class="btn btn-success btn-sm waves-effect waves-light kirim-nilai" type="button" data-toggle="tooltip" data-placement="top" data-original-title="Proses Nilai yang sudah divalidasi" data-namapt="<?= $data->nama_pt ?>">
+                                <i class="la la-paper-plane"></i>
+                              </a>
+                            <?php endif; ?>
+
+                            <?php if ($data->id_status_penilaian == '4') : ?>
+                              <a href="<?= base_url() ?>admin/validator/ubah-status-penilaian/<?= safe_url_encrypt($data->id_penilaian_tipologi) ?>" class="btn btn-warning btn-sm waves-effect waves-light ubah-status-penilaian" type="button" data-toggle="tooltip" data-placement="top" data-original-title="Ubah status penilaian yang sudah valid" data-namapt="<?= $data->nama_pt ?>">
+                                <i class="la la-edit"></i>
+                              </a>
+                            <?php endif; ?>
 
                             <!-- awal modal penilaian validator -->
                             <div class="modal fade text-left" id="validasiModal<?= $data->id_penilaian_tipologi ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" style="display: none;">
@@ -201,10 +247,6 @@
                                         <span style="margin-right: 25px;">
                                           <i class="fa fa-calendar" style="color: #007bff;"></i>
                                           <b>Periode:</b> <span style="color: #343a40;"><?= $isi_periode ?></span>
-                                        </span>
-                                        <span style="margin-right: 25px;">
-                                          <i class="fa fa-user" style="color: #007bff;"></i>
-                                          <b>Fasilitator:</b> <span style="color: #343a40;"><?= $fas->nama ?></span>
                                         </span>
                                       </div>
                                       <div>
@@ -350,7 +392,9 @@
                                     ?>
                                       <button type="button" onclick="alert('<?= $dabk->pesan ?>')" class="btn btn-danger"><i class="la la-ban"></i> Validasi Ditutup</button>
                                     <?php } else { ?>
-                                      <button type="submit" class="btn btn-primary">Simpan Validasi</button>
+                                      <?php if (in_array($data->id_status_penilaian, ['2', '5'])) : ?>
+                                        <button type="submit" class="btn btn-primary">Simpan Validasi sebagai Draft</button>
+                                      <?php endif; ?>
                                     <?php } ?>
 
                                     <button type="button" class="btn grey btn-secondary" data-dismiss="modal">Tutup</button>
@@ -361,7 +405,7 @@
                             </div>
                             <!-- akhir modal penilaian validator -->
 
-                            <a href="<?= base_url() ?>rwy-validator/<?= safe_url_encrypt($data->id_penilaian_tipologi) ?>" class="btn btn-dark btn-sm waves-effect waves-light" type="button" target="_blank" title="Riwayat Penilaian"><i class="la la-history"></i> </a>
+                            <a href="<?= base_url() ?>rwy-validator/<?= safe_url_encrypt($data->id_penilaian_tipologi) ?>" class="btn btn-dark btn-sm waves-effect waves-light" type="button" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="Riwayat Penilaian"><i class="la la-history"></i> </a>
 
                           </td>
                         </tr>
@@ -533,5 +577,63 @@
 
     // Tambahkan ke item yang diklik
     $(this).addClass('active-item');
+  });
+
+  $(document).on('click', '.kirim-nilai', function(event) {
+    event.preventDefault(); // Cegah aksi default link
+    // console.log($('#kirim-nilai').attr('href'));
+
+    const buka_tutup = '<?= $buka_tutup ?>';
+    if (buka_tutup === 'tutup') {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: 'Proses nilai sudah ditutup.',
+        confirmButtonColor: '#dc3545'
+      });
+    }
+
+    if ($(this).attr('data-content') === 'semua nilai') {
+      var pesan = 'Apakah anda yakin ingin memproses semua nilai yang sudah divalidasi?';
+    } else {
+      var pesan = 'Apakah anda yakin ingin memproses nilai ' + $(this).attr('data-namapt') + '?';
+    }
+
+    Swal.fire({
+      title: 'Proses Nilai?',
+      text: pesan,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, proses!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Redirect ke URL kirim-nilai
+        window.location.href = $(this).attr('href');
+      }
+    });
+
+  });
+
+  $(document).on('click', '.ubah-status-penilaian', function(event) {
+    event.preventDefault(); // Cegah aksi default link
+    let pesan = 'Apakah anda yakin ingin mengubah status nilai ' + $(this).attr('data-namapt') + '?'
+    Swal.fire({
+      title: 'Ubah Status Penilaian?',
+      text: pesan,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, proses!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Redirect ke URL kirim-nilai
+        window.location.href = $(this).attr('href');
+      }
+    });
   });
 </script>
