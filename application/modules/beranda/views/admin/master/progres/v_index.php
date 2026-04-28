@@ -14,8 +14,11 @@
       <div class="row">
         <div class="col-lg-8 col-md-6 col-sm-12 mx-auto">
           <div class="card">
-            <div class="card-header">
-              <h4 class="card-title" id="heading-buttons1">Progres Penilaian</h4>
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h4 class="card-title1" id="heading-buttons1">Progres Penilaian</h4>
+              <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-upload-template-led">
+                <i class="la la-upload"></i> Upload Template LED
+              </button>
             </div>
             <div class="dropdown-divider"></div>
             <div class="card-content">
@@ -94,6 +97,57 @@
   </div>
 </div>
 <!-- END: Content-->
+
+<div class="modal fade" id="modal-upload-template-led" tabindex="-1" role="dialog" aria-labelledby="modalUploadTemplateLedLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <?= form_open_multipart('admin/upload-template-led') ?>
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalUploadTemplateLedLabel">Upload Template LED</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb-0">
+          <label for="file-template-led">Pilih File Template LED</label>
+          <input type="file" class="form-control" id="file-template-led" name="file_template_led" accept=".doc,.docx" required>
+        </div>
+
+        <?php
+        $template_led_name = '';
+        $template_led_url = '';
+
+        if (isset($template_file) && $template_file !== null && $template_file !== '') {
+          $template_led_name = basename($template_file);
+          $template_led_url = preg_match('/^https?:\/\//i', $template_file) ? $template_file : base_url($template_file);
+        }
+
+        if ($template_led_name !== '' && $template_led_url !== ''):
+        ?>
+          <div class="alert alert-dark mt-1 mb-0" role="alert">
+            <strong>Template saat ini:</strong><br>
+            <?php if ($template_led_url !== ''): ?>
+              <a href="<?= $template_led_url ?>" class="text-info" target="_blank" rel="noopener noreferrer"><?= $template_led_name ?></a>
+              <span>(Uploaded: <?= $date_modified ?>)</span>
+            <?php else: ?>
+              <?= $template_led_name ?>
+            <?php endif; ?>
+          </div>
+        <?php else: ?>
+          <div class="alert alert-danger mt-1 mb-0" role="alert">
+            Belum ada template yang pernah diupload.
+          </div>
+        <?php endif; ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </div>
+      <?= form_close() ?>
+    </div>
+  </div>
+</div>
 
 <?= $this->load->view('admin/v_footer') ?>
 

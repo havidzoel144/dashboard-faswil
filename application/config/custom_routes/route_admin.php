@@ -2,6 +2,7 @@
 
 $route['admin/dashboard'] = 'beranda/admin/dashboard';
 $route['admin/ubah-password'] = 'beranda/admin/ubahPassword';
+$route['admin/upload-template-led'] = 'beranda/admin/uploadTemplateLed';
 
 //MANAGE BUKA TUTUP
 $route['admin/buka-tutup']      = 'beranda/bukaTutup';
@@ -83,3 +84,10 @@ $route['import_pt_awal']        = 'beranda/Sinkronpt/import_pt_awal';
 $route['admin/evaluasi-360'] = 'beranda/evaluasi';
 $route['admin/evaluasi-360/detail/(:any)'] = 'beranda/evaluasi/detail/$1';
 $route['admin/evaluasi-360/simpan'] = 'beranda/evaluasi/simpan';
+
+// ROUTE PT
+$route['admin/pt/upload-led'] = 'beranda/pt/uploadLed';
+$route['admin/pt/upload-led/simpan'] = 'beranda/pt/simpanUploadLed';
+$route['admin/pt/lihat-file-led/(:num)/(:num)'] = 'beranda/pt/lihatFileLed/$1/$2';
+$route['admin/pt/upload-led/hapus'] = 'beranda/pt/hapusUploadLed';
+$route['admin/pt/upload-led/kirim-permanen'] = 'beranda/pt/kirimUploadLedPermanen';

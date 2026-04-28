@@ -463,4 +463,32 @@ class Admin extends MX_Controller
     $this->session->set_flashdata('success', 'Password berhasil diubah.');
     redirect($_SERVER['HTTP_REFERER']);
   }
+
+  public function uploadTemplateLed()
+  {
+    $this->only_for_roles(['2']);
+
+    $config['upload_path'] = './uploads/';
+    $config['allowed_types'] = 'doc|docx';
+    $config['max_size'] = 2048; // Maksimal ukuran file dalam KB
+    $config['file_name'] = 'template_led';
+    $config['overwrite'] = true;
+
+    $this->upload->initialize($config);
+
+    if (!$this->upload->do_upload('file_template_led')) {
+      $error = $this->upload->display_errors();
+      $this->session->set_flashdata('error', 'Gagal mengupload file: ' . $error);
+      redirect($_SERVER['HTTP_REFERER']);
+    } else {
+      $data = $this->upload->data();
+      $file_path = 'uploads/' . $data['file_name'];
+
+      // Simpan path file ke database jika diperlukan
+      // Contoh: $this->db->insert('template_led', ['file_path' => $file_path]);
+
+      $this->session->set_flashdata('success', 'File berhasil diupload: ' . basename($file_path));
+      redirect($_SERVER['HTTP_REFERER']);
+    }
+  }
 }

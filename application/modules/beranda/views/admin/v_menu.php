@@ -60,7 +60,7 @@
                                     <span class="fonticon-wrap">
                                         <i class="la la-pencil"></i>
                                     </span>
-                                    <span data-i18n="Data PT">Penilaian Tipologi</span>
+                                    <span data-i18n="Penilaian Tipologi">Penilaian Tipologi</span>
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -70,7 +70,7 @@
                                     <span class="fonticon-wrap">
                                         <i class="la la-edit"></i>
                                     </span>
-                                    <span data-i18n="Data Prodi">Validasi Nilai</span>
+                                    <span data-i18n="Validasi Nilai">Validasi Nilai</span>
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -80,7 +80,17 @@
                                     <span class="fonticon-wrap">
                                         <i class="la la-tasks"></i>
                                     </span>
-                                    <span data-i18n="Data Prodi">Evaluasi 360</span>
+                                    <span data-i18n="Evaluasi 360">Evaluasi 360</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if (has_role([6])) : ?>
+                            <li data-menu="" class="<?= $upload_led ?>">
+                                <a class="dropdown-item" href="<?= base_url('admin/pt/upload-led') ?>">
+                                    <span class="fonticon-wrap">
+                                        <i class="la la-tasks"></i>
+                                    </span>
+                                    <span data-i18n="Upload LED">Upload LED</span>
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -90,7 +100,7 @@
                                     <span class="fonticon-wrap">
                                         <i class="la la-th-list"></i>
                                     </span>
-                                    <span data-i18n="Data Prodi">Data Penjaminan Mutu</span>
+                                    <span data-i18n="Data Penjaminan Mutu">Data Penjaminan Mutu</span>
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -117,7 +127,7 @@
 
 
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-            <a class="mr-1" href="https://lldikti3.kemdikbud.go.id/">
+            <a class="mr-1" href="https://lldikti3.kemdiktisaintek.go.id/">
                 <button class="btn btn-warning-dashboard"><i class="la la-home"></i> Halaman Utama</button>
             </a>
             <a href="<?= base_url() ?>">

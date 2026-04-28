@@ -27,10 +27,24 @@ class Progres extends MX_Controller
 
   public function index()
   {
+    $upload_path = FCPATH . 'uploads' . DIRECTORY_SEPARATOR;
+    $template_file = null;
+    $date_modified = null;
+
+    if (is_dir($upload_path)) {
+      $template_path = $upload_path . 'template_led.docx';
+      if (file_exists($template_path)) {
+        $template_file = base_url('uploads/template_led.docx');
+        $date_modified = date('Y-m-d H:i:s', filemtime($template_path));
+      }
+    }
+
     $data = [
       'master' => 'active',
       'progres' => 'active',
       'data_periode' => $this->Periode_model->get_all_data_periode(),
+      'template_file' => $template_file,
+      'date_modified' => $date_modified,
     ];
 
     $this->load->view("admin/master/progres/v_index", $data);
