@@ -374,10 +374,10 @@ class Progres extends MX_Controller
       $id_awal = $this->input->post('idFasilitator');
       $id_pengganti = $this->input->post('idFasilitatorPengganti');
       $perguruan_tinggi = $this->input->post('PTFaswil');
-      } else if ($tipe === 'validator') {
-        $id_awal = $this->input->post('idValidator');
-        $id_pengganti = $this->input->post('idValidatorPengganti');
-        $perguruan_tinggi = $this->input->post('PTValidator');
+    } else if ($tipe === 'validator') {
+      $id_awal = $this->input->post('idValidator');
+      $id_pengganti = $this->input->post('idValidatorPengganti');
+      $perguruan_tinggi = $this->input->post('PTValidator');
     } else {
       echo json_encode([
         'status' => 'error',

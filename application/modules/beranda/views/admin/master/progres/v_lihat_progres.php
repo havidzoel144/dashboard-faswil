@@ -812,8 +812,10 @@
 
       $('#selectFasilitator').val('').trigger('change');
       $('#selectFasilitatorPengganti').val('').trigger('change');
+      $('#selectFasilitatorPengganti').prop('disabled', true);
       $('#selectValidator').val('').trigger('change');
       $('#selectValidatorPengganti').val('').trigger('change');
+      $('#selectValidatorPengganti').prop('disabled', true);
 
       /* tampilkan sesuai tipe */
       if (role === 'fasilitator') {
@@ -867,6 +869,12 @@
 
   $(document).on('click', '.btn-ganti-faswil-validator', function(event) {
     event.preventDefault();
+    $('.role-option').removeClass('active');
+    $('#grupFasilitator, #grupFasilitatorPengganti, #grupValidator, #grupValidatorPengganti, #grupPTFaswil').hide();
+    $('#selectFasilitator').val('').trigger('change');
+    $('#selectFasilitatorPengganti').val('').trigger('change');
+    $('#selectValidator').val('').trigger('change');
+    $('#selectValidatorPengganti').val('').trigger('change');
 
     const periode = $(this).data('periode');
     const keterangan = $(this).data('keterangan');
@@ -880,15 +888,16 @@
         '<?= $this->security->get_csrf_token_name(); ?>': '<?= $this->security->get_csrf_hash(); ?>'
       },
       success: function(response) {
-        $('#selectFasilitator').html('<option value="">-- Pilih Fasilitator --</option>');
-        $('#selectValidator').html('<option value="">-- Pilih Validator --</option>');
-        $('#selectFasilitatorPengganti').html('<option value="">-- Pilih Fasilitator Pengganti --</option>');
-        $('#selectValidatorPengganti').html('<option value="">-- Pilih Validator Pengganti --</option>');
+        $('#selectFasilitator').val('').trigger('change');
+        $('#selectValidator').val('').trigger('change');
+        $('#selectFasilitatorPengganti').val('').trigger('change');
+        $('#selectValidatorPengganti').val('').trigger('change');
 
         if (response.all_fasilitators) {
           response.all_fasilitators.forEach(function(item) {
             $('#selectFasilitator').append('<option value="' + item.id + '">' + item.nama + '</option>');
             $('#selectFasilitatorPengganti').append('<option value="' + item.id + '">' + item.nama + '</option>');
+            $('#selectFasilitatorPengganti').prop('disabled', true);
           });
         }
 
@@ -896,6 +905,7 @@
           response.all_validators.forEach(function(item) {
             $('#selectValidator').append('<option value="' + item.id + '">' + item.nama + '</option>');
             $('#selectValidatorPengganti').append('<option value="' + item.id + '">' + item.nama + '</option>');
+            $('#selectValidatorPengganti').prop('disabled', true);
           });
         }
 
@@ -909,6 +919,13 @@
   $(document).on('change', '#selectFasilitator', function() {
     const periode = $('#periodePenilaian').val();
     const idFasilitator = $(this).val();
+
+    // ⛔ STOP kalau kosong
+    if (!idFasilitator) {
+      $('#grupPTFaswil').hide();
+      $('#catatanFaswil').addClass('d-none');
+      return;
+    }
 
     $.ajax({
       url: '<?= site_url('admin/get-pt-binaan-fasilitator') ?>',
@@ -933,10 +950,19 @@
           });
           $('#grupPTFaswil').show();
           $('#catatanFaswil').removeClass('d-none');
+          $('#selectFasilitatorPengganti').prop('disabled', false);
         } else {
+          Swal.fire({
+            title: 'Informasi',
+            text: 'Tidak ada PT binaan untuk fasilitator yang dipilih',
+            icon: 'info',
+            confirmButtonText: 'OK'
+          });
           $('#selectPTFaswil').html('<option value="">-- Pilih Perguruan Tinggi --</option>');
           $('#grupPTFaswil').hide();
           $('#catatanFaswil').addClass('d-none');
+          $('#selectFasilitatorPengganti').val('').trigger('change');
+          $('#selectFasilitatorPengganti').prop('disabled', true);
         }
       }
     });
@@ -945,6 +971,13 @@
   $(document).on('change', '#selectValidator', function() {
     const periode = $('#periodePenilaian').val();
     const idValidator = $(this).val();
+
+    // ⛔ STOP kalau kosong
+    if (!idValidator) {
+      $('#grupPTValidator').hide();
+      $('#catatanValidator').addClass('d-none');
+      return;
+    }
 
     $.ajax({
       url: '<?= site_url('admin/get-pt-binaan-validator') ?>',
@@ -969,10 +1002,19 @@
           });
           $('#grupPTValidator').show();
           $('#catatanValidator').removeClass('d-none');
+          $('#selectValidatorPengganti').prop('disabled', false);
         } else {
+          Swal.fire({
+            title: 'Informasi',
+            text: 'Tidak ada PT binaan untuk validator yang dipilih',
+            icon: 'info',
+            confirmButtonText: 'OK'
+          });
           $('#selectPTValidator').html('<option value="">-- Pilih Perguruan Tinggi --</option>');
           $('#grupPTValidator').hide();
           $('#catatanValidator').addClass('d-none');
+          $('#selectValidatorPengganti').val('').trigger('change');
+          $('#selectValidatorPengganti').prop('disabled', true);
         }
       }
     });

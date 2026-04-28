@@ -155,7 +155,7 @@ class Penilaian_model extends CI_Model
 
   public function prosesNilai($periode, $id_penilaian, $validator_id)
   {
-    $this->db->select('id_penilaian_tipologi, cek_1, cek_2, cek_3, cek_4');
+    $this->db->select('id_penilaian_tipologi, cek_1a, cek_1b, cek_2');
     $this->db->from('penilaian_tipologi');
     $this->db->where('periode', $periode);
     $this->db->where('validator_id', $validator_id);
@@ -172,26 +172,12 @@ class Penilaian_model extends CI_Model
       return false;
     }
 
-    $this->db->trans_begin();
-
     foreach ($rows as $row) {
 
-      if ($row->cek_1 == "0" || $row->cek_2 == "0" || $row->cek_3 == "0" || $row->cek_4 == "0") {
+      if ($row->cek_1a == "0" || $row->cek_1b == "0" || $row->cek_2 == "0") {
         $status = 3; // revisi validator
       } else {
         $status = 4; // valid
-      }
-
-      $riwayatValidasi = $this->db->select('*')
-        ->from('rwy_penilaian_validator')
-        ->where('id_penilaian_tipologi', $row->id_penilaian_tipologi)
-        ->order_by('id_rwy_pen_val', 'DESC')->limit(1)->get()->row();
-
-      if ($riwayatValidasi) {
-        $this->db->where('id_rwy_pen_val', $riwayatValidasi->id_rwy_pen_val);
-        $this->db->update('rwy_penilaian_validator', [
-          'id_status_penilaian' => $status
-        ]);
       }
 
       $this->db->where('id_penilaian_tipologi', $row->id_penilaian_tipologi);
@@ -199,13 +185,6 @@ class Penilaian_model extends CI_Model
         'id_status_penilaian' => $status
       ]);
     }
-
-    if ($this->db->trans_status() === false) {
-      $this->db->trans_rollback();
-      return false;
-    }
-
-    $this->db->trans_commit();
 
     return true;
   }
@@ -243,7 +222,7 @@ class Penilaian_model extends CI_Model
     }
 
     // Ambil data penilaian
-    $data = $this->db->select('periode, kode_pt, nama_pt, skor_1, skor_2, skor_3, skor_4, skor_total, tipologi')
+    $data = $this->db->select('periode, kode_pt, nama_pt, skor_1a, skor_1b, skor_2, skor_1_bobot, skor_2_bobot, skor_total, tipologi')
       ->from('penilaian_tipologi')
       ->where('periode', $periode)
       ->get()
@@ -270,10 +249,11 @@ class Penilaian_model extends CI_Model
         'periode' => $row['periode'],
         'kode_pt' => $row['kode_pt'],
         'nama_pt' => $row['nama_pt'],
-        'skor_1' => $row['skor_1'],
+        'skor_1a' => $row['skor_1a'],
+        'skor_1b' => $row['skor_1b'],
         'skor_2' => $row['skor_2'],
-        'skor_3' => $row['skor_3'],
-        'skor_4' => $row['skor_4'],
+        'skor_1_bobot' => $row['skor_1_bobot'],
+        'skor_2_bobot' => $row['skor_2_bobot'],
         'skor_total' => $row['skor_total'],
         'tipologi' => $row['tipologi'],
         'akreditasi_institusi' => $row['akreditasi_institusi'],
@@ -329,7 +309,7 @@ class Penilaian_model extends CI_Model
     }
 
     // Ambil data penilaian
-    $data = $this->db->select('periode, kode_pt, nama_pt, skor_1, skor_2, skor_3, skor_4, skor_total, tipologi')
+    $data = $this->db->select('periode, kode_pt, nama_pt, skor_1a, skor_1b, skor_2, skor_1_bobot, skor_2_bobot, skor_total, tipologi')
       ->from('penilaian_tipologi')
       ->where('periode', $periode)
       ->where('id_penilaian_tipologi', $penilaian_id)
@@ -358,10 +338,11 @@ class Penilaian_model extends CI_Model
         'periode' => $row['periode'],
         'kode_pt' => $row['kode_pt'],
         'nama_pt' => $row['nama_pt'],
-        'skor_1' => $row['skor_1'],
+        'skor_1a' => $row['skor_1a'],
+        'skor_1b' => $row['skor_1b'],
         'skor_2' => $row['skor_2'],
-        'skor_3' => $row['skor_3'],
-        'skor_4' => $row['skor_4'],
+        'skor_1_bobot' => $row['skor_1_bobot'],
+        'skor_2_bobot' => $row['skor_2_bobot'],
         'skor_total' => $row['skor_total'],
         'tipologi' => $row['tipologi'],
         'akreditasi_institusi' => $row['akreditasi_institusi'],

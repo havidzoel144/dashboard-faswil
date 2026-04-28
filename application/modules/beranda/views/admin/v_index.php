@@ -378,7 +378,11 @@
                         if (!empty($progres_penilaian)) { // Cek apakah array progres_penilaian tidak kosong
                           foreach ($progres_penilaian as $data) {
                             $row_class = '';
-                            if ($data->id_status_penilaian == '4') {
+                            if ($data->id_status_penilaian == '6') {
+                              $row_class = 'table-dark text-dark'; // abu
+                            } elseif ($data->id_status_penilaian == '5') {
+                              $row_class = 'table-primary'; // ungu
+                            } elseif ($data->id_status_penilaian == '4') {
                               $row_class = 'table-success'; // hijau
                             } elseif ($data->id_status_penilaian == '3') {
                               $row_class = 'table-danger'; // kuning
@@ -411,7 +415,11 @@
                                 $warna_badge = $data->id_status_penilaian == '4' ? 'badge-success' : (
                                   $data->id_status_penilaian == '3' ? 'badge-danger' : (
                                     $data->id_status_penilaian == '2' ? 'badge-warning' : (
-                                      $data->id_status_penilaian == '1' ? 'badge-info' : 'badge-secondary'
+                                      $data->id_status_penilaian == '1' ? 'badge-info' : (
+                                        $data->id_status_penilaian == '5' ? 'badge-primary' : (
+                                          $data->id_status_penilaian == '6' ? 'bg-blue-grey bg-darken-4' : 'badge-secondary'
+                                        )
+                                      )
                                     )
                                   )
                                 );
@@ -419,7 +427,11 @@
                                 $icon = $data->id_status_penilaian == '4' ? 'fa-check-circle' : (
                                   $data->id_status_penilaian == '3' ? 'fa-times-circle' : (
                                     $data->id_status_penilaian == '2' ? 'fa-hourglass-half' : (
-                                      $data->id_status_penilaian == '1' ? 'fa-spinner fa-spin' : 'fa-question-circle'
+                                      $data->id_status_penilaian == '1' ? 'fa-spinner fa-spin' : (
+                                        $data->id_status_penilaian == '5' ? 'fa-paper-plane' : (
+                                          $data->id_status_penilaian == '6' ? 'fa-rotate-left' : 'fa-question-circle'
+                                        )
+                                      )
                                     )
                                   )
                                 );

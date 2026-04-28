@@ -30,7 +30,16 @@ $route['admin/plotting-fasilitator/(:any)'] = 'beranda/fasilitator/plottingFasil
 $route['admin/simpan-plotting-fasilitator'] = 'beranda/fasilitator/simpanPlottingFasilitator';
 $route['admin/hapus-plotting/(:any)'] = 'beranda/fasilitator/hapusPlotting/$1';
 
-// PENILAIAN TIPOLOGI FASILITATOR
+// PENILAIAN TIPOLOGI FASILITATOR VERSI 3.0
+$route['admin/penilaian-tipologi'] = 'beranda/penilaian_30';
+$route['admin/input-skor/(:any)'] = 'beranda/penilaian_30/inputSkor/$1';
+$route['admin/lihat-skor/(:any)'] = 'beranda/penilaian_30/inputSkor/$1';
+$route['admin/get-penilaian'] = 'beranda/penilaian_30/getPenilaian';
+$route['admin/simpan-skor'] = 'beranda/penilaian_30/simpanSkor';
+$route['admin/riwayat-penilaian/(:any)'] = 'beranda/penilaian_30/riwayatPenilaian/$1';
+$route['admin/kirim-nilai/(:any)/(:any)'] = 'beranda/penilaian_30/kirimNilai/$1/$2';
+
+// PENILAIAN TIPOLOGI FASILITATOR VERSI 4.1
 $route['admin/penilaian-tipologi'] = 'beranda/penilaian';
 $route['admin/input-skor/(:any)'] = 'beranda/penilaian/inputSkor/$1';
 $route['admin/lihat-skor/(:any)'] = 'beranda/penilaian/inputSkor/$1';
@@ -47,6 +56,7 @@ $route['simpan_validasi'] = 'beranda/validator/simpan_validasi';
 $route['rwy-validator/(:any)'] = 'beranda/validator/rwy_validator/$1';
 $route['daftar-fasilitator/(:any)'] = 'beranda/validator/daftar_fasilitator/$1';
 $route['penilaian-validator/(:any)'] = 'beranda/validator/penilaian_validator/$1';
+$route['admin/validator/get-data-penilaian/(:any)'] = 'beranda/validator/getDataPenilaian/$1';
 
 // PROGRES PENILAIAN
 $route['admin/progres-penilaian'] = 'beranda/progres';

@@ -14,13 +14,15 @@
             <li class="nav-item <?= $belmawa ?>" data-menu="">
                 <a class="nav-link" href="<?= base_url() ?>belmawa" data-toggle=""><i class="la la-sitemap"></i><span data-i18n="Dashboard">Belmawa</span></a>
             </li>
-            <li class="nav-item <?= $pm ?>" data-menu="">
-                <a class="nav-link" href="<?= base_url() ?>penjaminan_mutu" data-toggle=""><i class="la la-server"></i><span data-i18n="Dashboard">Penjaminan Mutu</span></a>
-            </li>
+            <?php if (false) : ?>
+                <li class="nav-item <?= $pm ?>" data-menu="">
+                    <a class="nav-link" href="<?= base_url() ?>penjaminan_mutu" data-toggle=""><i class="la la-server"></i><span data-i18n="Dashboard">Penjaminan Mutu</span></a>
+                </li>
+            <?php endif; ?>
         </ul>
 
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-            <a class="mr-1" href="https://lldikti3.kemdikbud.go.id/">
+            <a class="mr-1" href="https://lldikti3.kemdiktisaintek.go.id/">
                 <button class="btn btn-warning-dashboard"><i class="la la-home"></i> Halaman Utama</button>
             </a>
             <?php if ($this->session->userdata('logged_in')): ?>

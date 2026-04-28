@@ -63,14 +63,14 @@
                         <canvas id="doughnutChart"></canvas>
                       </div>
 
-                      <div class="col-8 d-flex flex-column justify-content-center p-2" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important; border-radius: 10px;">
+                      <div class="col-8 d-flex flex-column justify-content-center" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important; border-radius: 10px;">
 
                         <h1 class="text-white align-self-center mb-2 text-bold-700">Tipologi SPMI</h1>
                         <p class="text-white text-justify px-2 font-medium-1">
-                          Dalam rangka menyesuaikan kebijakan penjaminan mutu pendidikan tinggi berdasarkan Permendiktisaintek No. 39 Tahun 2025, LLDikti Wilayah III melaksanakan fasilitasi serta verifikasi dan evaluasi implementasi SPMI di perguruan tinggi. Pemetaan tipologi SPMI merupakan bagian dari pola pembinaan LLDikti yang dilakukan melalui verifikasi dan validasi implementasi SPMI perguruan tinggi melalui laman <a href="https://spmi.kemdiktisaintek.go.id" class="text-white text-bold-700" target="_blank" rel="noreferrer"><u>https://spmi.kemdiktisaintek.go.id,</u></a> sebagai dasar pemberian fasilitasi yang sesuai dengan tingkat tipologi, serta pelaksanaan pemantauan dan evaluasi secara periodik.
+                          Dalam rangka menjalankan amanat Permendikbudristek No. 53 Tahun 2023 tentang Penjaminan Mutu Pendidikan Tinggi, dimana LLDikti diberikan tugas untuk melakukan fasilitasi pengembangan dan implementasi SPMI, serta melaksanakan verifikasi dan evaluasi SPMI di perguruan tinggi. maka LLDikti Wilayah III mengembangkan sebuah Pola Pembinaan SPMI yang dimulai dengan pemetaan tipologi SPMI, verifikasi-validasi yang berkelanjutan, pemberian fasilitasi yang sesuai dengan tingkat tipologi, serta pelaksanaan pemantauan dan evaluasi secara periodik.
                         </p>
                         <p class="text-white text-justify px-2 font-medium-1">
-                          Pola pembinaan SPMI diselaraskan dengan sasaran budaya mutu pada mekanisme akreditasi institusi (IAPT 4.1) yang mencakup aspek masukan, proses, luaran, dan dampak, meliputi keberfungsian standar dan tata kelola SPMI, implementasi siklus PPEPP, ketersediaan laporan dan pengelolaan data, serta capaian akreditasi program studi sebagai bentuk pengakuan mutu.
+                          Pengukuran pada pemetaan tipologi SPMI menggunakan butir-butir penilaian penjaminan mutu yang menjadi syarat perlu dalam mekanisme akreditasi institusi, sehingga hasilnya dapat menjadi refleksi dan evaluasi bagi perguruan tinggi dalam memperbaiki tata kelola dan penjaminan mutu internal.
                         </p>
                         <p class="text-white text-justify px-2 font-medium-1">
                           Lebih lanjut tentang Pola Pembinaan SPMI, dapat diunduh pada tautan <a href="http://lldikti3.kemdikbud.go.id/wp-content/uploads/2024/07/pola_pembinaan_spmi_ll3-Revisi-1.pdf" class="text-white text-bold-700" target="_blank" rel="noreferrer"><u>berikut.</u></a>
@@ -117,27 +117,30 @@
                           <table id="tabel-penjaminan-mutu" class="table table-striped table-bordered" style="width: 100%;">
                             <thead>
                               <tr style="background-color: #563BFF; color: #ffffff">
-                                <th class="text-center" rowspan="2">#</th>
-                                <th class="text-center" rowspan="2" style="width: 10%;">Periode <span class="text-danger" data-toggle="popover" data-content="Periode 1 : Januari - Juni <br> Periode 2 : Juli - November" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                                <th class="text-center" rowspan="2">Kode PT</th>
-                                <th class="text-center" rowspan="2">Nama PT</th>
-                                <th class="text-center" colspan="4">Butir Penilaian</th>
-                                <th class="text-center" rowspan="2">
+                                <th class="text-center" rowspan="3">#</th>
+                                <th class="text-center" rowspan="3" style="width: 10%;">Periode <span class="text-danger" data-toggle="popover" data-content="Periode 1 : Januari - Juni <br> Periode 2 : Juli - November" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
+                                <th class="text-center" rowspan="3">Kode PT</th>
+                                <th class="text-center" rowspan="3">Nama PT</th>
+                                <th class="text-center" colspan="3">Butir Penilaian</th>
+                                <th class="text-center" rowspan="3">
                                   Skor <br> Total <br>
-                                  <span class="text-danger" data-toggle="popover" data-content="Skor Total = Skor 1 + Skor 2 + Skor 3 + Skor 4" data-trigger="hover" data-original-title="Formula Perhitungan"><i class="la la-info-circle"></i></span>
+                                  <span class="text-danger" data-toggle="popover" data-content="Skor Total =((Skor 1a+(2*Skor 1b))/3)x2,22)+(Skor 2 x 2,78)" data-trigger="hover" data-original-title="Formula Perhitungan"><i class="la la-info-circle"></i></span>
                                 </th>
-                                <th class="text-center" rowspan="2">
+                                <th class="text-center" rowspan="3">
                                   Tipologi
-                                  <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 : 8; <br> Tipologi 2 : 6-7; <br> Tipologi 3 : 4-5; <br> Tipologi 4 : < 4;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
+                                  <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 rentang Nilai Terbobot : 17,5 < n ≤ 20; <br> Tipologi 2 rentang Nilai Terbobot : 15 < n ≤ 17,5; <br> Tipologi 3 rentang Nilai Terbobot : 10 ≤ n ≤ 15; <br> Tipologi 4 Nilai Terbobot : < 10;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
                                 </th>
-                                <!-- <th class="text-center" rowspan="2">Akreditasi <br> Institusi</th>
-                                <th class="text-center" rowspan="2">Persentase <br> Prodi <br> Terakreditasi</th> -->
+                                <!-- <th class="text-center" rowspan="3">Akreditasi <br> Institusi</th>
+                                <th class="text-center" rowspan="3">Persentase <br> Prodi <br> Terakreditasi</th> -->
                               </tr>
                               <tr style="background-color: #563BFF; color: #ffffff">
-                                <th class="text-center text-wrap">Skor 1 <span class="text-danger" data-toggle="popover" data-content="Sistem Penjaminan Mutu Internal yang dikembangkan Perguruan Tinggi, mencakup: <br> 1. Standar Pendidikan Tinggi (akademik dan non akademik) yang melampauai SN Dikti dan sesuai fokus misi PT, telah ditetapkan oleh perguruan tinggi serta telah disosialisasikan ke seluruh pemangku kepentingan. <br> 2. Sistem Tatakelola Perguruan Tinggi dalam mengimplementasikan SPMI, mencakup minimal: SOP implementasi SPMI, keberfungsian SPMI di berbagai tingkat (pelaksana dan sistem implementasi) yang akuntabel, transparan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 3. Sistem Evaluasi Pemenuhan Standar Pendidikan Tinggi yang transparan, akuntabel, mapan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 4. Sistem Peningkatan Mutu Berkelanjutan yang telah diimplementasikan secara efektif dan efisien paling sedikit selama 3 tahun." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                                <th class="text-center text-wrap">Skor 2 <span class="text-danger" data-toggle="popover" data-content="Implementasi siklus  penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan (PPEPP) dalam bidang akademik dan non-akademik, paling sedikit selama 3 tahun secara konsisten, berkelanjutan dan terbukti efektif, dan terdiri atas: <br> 1. Penetapan Standar Pendidikan Tinggi  yang sesuai misi perguruan tinggi, yaitu perancangan, perumusan, dan pengesahan standar PT. <br> 2. Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan standar oleh semua pihak yang bertanggungjawab agar isi standar tercapai. <br> 3. Evaluasi Pemenuhan Standar Pendidikan Tinggi, yaitu evaluasi kesesuaian pelaksanaan standar dengan standar yang telah ditetapkan dan cara pemenuhannya. <br> 4. Pengendalian Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan koreksi bila terjadi penyimpangan terhadap isi dan/atau pelaksanaan standar, mempertahan pelaksanaan yang telah memenuhi standar dan sedapat mungkin meningkatkan kualitas pelaksanaannya. <br> 5. Peningkatan Standar Pendidikan Tinggi, yaitu evaluasi isi standar dan peningkatan  mutu isi standar secara berkala dan berkelanjutan." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                                <th class="text-center text-wrap">Skor 3 <span class="text-danger" data-toggle="popover" data-content="Laporan implementasi SPMI dan kinerja perguruan tinggi secara berkala, sistematis,  dan pengelolaan data serta informasi terkait implementasi SPMI melalui PD Dikti, mencakup: <br> 1. Laporan semesteran/tahunan tentang implementasi SPMI dan kinerja perguruan tinggi yang menerus bertambah baik dalam bentuk digital/sistem/hardcopy paling sedikit selama 3 tahun terakhir secara sistematis. <br> 2. Keberfungsian sistem pengelolaan data dan informasi  terkait implementasi SPMI melalui PD Dikti yang transparan, akuntabel, valid dan berintegritas." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                                <th class="text-center text-wrap">Skor 4 <span class="text-danger" data-toggle="popover" data-content="Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: <br> 1. PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%. <br> 2. PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
+                                <th class="text-center" colspan="2">Butir 1 <br> (Bobot 2,22)</th>
+                                <th class="text-center">Butir 2 <br> (Bobot 2,78)</th>
+                              </tr>
+                              <tr style="background-color: #563BFF; color: #ffffff">
+                                <th class="text-center text-wrap">Skor 1a <span class="text-danger" data-toggle="popover" data-content="Ketersediaan dokumen formal SPMI yang dibuktikan dengan keberadaan 5 aspek sebagai berikut: <br> (1) organ/fungsi spmi, <br> (2) dokumen SPMI <br> (3) auditor internal <br> (4) hasil audit <br> (5) bukti tndak lanjut" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
+                                <th class="text-center text-wrap">Skor 1b <span class="text-danger" data-toggle="popover" data-content="Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM yang mengagendakan unsur-unsur <br> (1) hasil audit internal <br> (2) umpan balik <br> (3) kinerja proses dan kesesuaian produk <br> (4) status tindakan pencegahan dan perbaikan <br> (5) tindak lanjut dari tinjauan sebelumnya <br> (6) perubahan yang dapat mempengaruhi sistem manajemen mutu <br> (7) rekomendasi peningkatan" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
+                                <th class="text-center text-wrap">Skor 2 <span class="text-danger" data-toggle="popover" data-content="Efektivitas pelaksanaan penjaminan mutu yang memenuhi 4 aspek sbb: <br> 1. keberadaan dokumen formal penetapan standar mutu <br> 2. standar mutu dilaksanakan secara konsisten <br> 3. minitoring evaluasi dan pengendalian terhadap standar mutu yang telah ditetapkan <br> 4. hasilnya ditindaklanjuti untuk perbaikan dan peningkatan mutu" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
                               </tr>
                             </thead>
                             <tbody></tbody>
@@ -324,18 +327,15 @@
     const t = item?.tipologi;
     return t !== null && t !== undefined && String(t).trim() !== '' && String(t).toLowerCase() !== 'null';
   });
-  const isDataKosong = data_tipologi.length === 0;
-  const labels = isDataKosong ? ['Data Kosong'] : data_tipologi.map(item => item.tipologi); // Ambil semua nama tipologi
-  const jumlah = isDataKosong ? [0] : data_tipologi.map(item => parseInt(item.jumlah_tipologi)); // Ambil jumlah_tipologi sebagai angka
-  const $total_data = isDataKosong ? [0] : data_tipologi.map(item => parseInt(item.total_data)); // Ambil total_data sebagai angka
-  const $periode = isDataKosong ? [''] : data_tipologi.map(item => item.periode); // Ambil periode
-  const $prd = !isDataKosong ? ($periode[0].slice(-1) == 1 ? $periode[0].substring(0, 4) + ' Periode 1' : $periode[0].substring(0, 4) + ' Periode 2') : '';
+  const labels = data_tipologi.map(item => item.tipologi); // Ambil semua nama tipologi
+  const jumlah = data_tipologi.map(item => parseInt(item.jumlah_tipologi)); // Ambil jumlah_tipologi sebagai angka
+  const $total_data = data_tipologi.map(item => parseInt(item.total_data)); // Ambil jumlah_tipologi sebagai angka
+  const $periode = data_tipologi.map(item => item.periode); // Ambil jumlah_tipologi sebagai angka
+  const $prd = $periode[0].slice(-1) == 1 ? $periode[0].substring(0, 4) + ' Periode 1' : $periode[0].substring(0, 4) + ' Periode 2';
 
   // Tambahkan array persentase dengan menghitung persentase dari jumlah_tipologi
-  const percentages = isDataKosong ? [100] : data_tipologi.map(item => {
-    const total = parseInt(item.total_data) || 0;
-    const jml = parseInt(item.jumlah_tipologi) || 0;
-    const percentage = total > 0 ? (jml / total) * 100 : 0;
+  const percentages = data_tipologi.map(item => {
+    const percentage = (parseInt(item.jumlah_tipologi) / item.total_data) * 100;
     return percentage.toFixed(1); // Membatasi 1 digit setelah koma
   });
 
@@ -350,9 +350,9 @@
       // data: [data_tipologi.tipologi_1, data_tipologi.tipologi_2, data_tipologi.tipologi_3, data_tipologi.tipologi_4],
       data: percentages,
       jumlah: jumlah,
-      backgroundColor: isDataKosong ? ['#D3D3D3'] : ['#0796B7', '#0000CD', '#FFA360', '#00008B'],
+      backgroundColor: ['#0796B7', '#0000CD', '#FFA360', '#00008B'],
       // backgroundColor: ['rgba(0, 128, 0, 0.2)', 'rgba(255, 255, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(255, 0, 0, 0.2)'],
-      hoverBackgroundColor: isDataKosong ? ['#C0C0C0'] : ['#046980', '#00008F', '#B27243', '#000061'],
+      hoverBackgroundColor: ['#046980', '#00008F', '#B27243', '#000061'],
       // hoverBackgroundColor: ['rgba(0, 128, 0, 0.2)', 'rgba(255, 255, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(255, 0, 0, 0.2)']
       borderWidth: 4,
       borderColor: 'white',
@@ -371,7 +371,7 @@
           generateLabels: (chart) => {
             const datasets = chart.data.datasets;
             return datasets[0].data.map((data, i) => ({
-              text: isDataKosong ? `${chart.data.labels[i]}` : `${chart.data.labels[i]}: ${datasets[0].jumlah[i]} PT`,
+              text: `${chart.data.labels[i]}: ${datasets[0].jumlah[i]} PT`,
               fillStyle: datasets[0].backgroundColor[i],
               strokeStyle: datasets[0].backgroundColor[i],
               index: i
@@ -383,7 +383,6 @@
         enabled: true, // Mengaktifkan tooltip saat hover
         callbacks: {
           label: function(tooltipItem) {
-            if (isDataKosong) return 'Data Kosong';
             const index = tooltipItem.dataIndex;
             const value = (tooltipItem.dataset['jumlah'][index]);
             const label = tooltipItem.label; // Ambil label (Tipologi 1, 2, dst.)
@@ -394,7 +393,7 @@
       },
       title: {
         display: true, // Menampilkan judul
-        text: isDataKosong ? 'Distribusi Tipologi - Data Kosong' : 'Distribusi Tipologi ' + $prd, // Teks judul
+        text: 'Distribusi Tipologi ' + $prd, // Teks judul
         font: {
           size: 18, // Ukuran font judul
         }
@@ -405,7 +404,6 @@
         anchor: 'center', // Posisi label
         align: 'center', // Penyelarasan label
         formatter: (value, context) => {
-          if (isDataKosong) return 'Data Kosong';
           const label = context.chart.data.labels[context.dataIndex];
           const jumlah = (context.chart.data.datasets[0].jumlah[context.dataIndex]);
           // return `${label}: ${jumlah} (${value}%)`; // Format teks label
@@ -418,17 +416,15 @@
             type: 'doughnutLabel',
             content: ({
               chart
-            }) => isDataKosong ? ['Data Kosong'] : ['Total',
+            }) => ['Total',
               $total_data[0],
             ],
-            font: isDataKosong ? [{
-              size: 28
-            }] : [{
+            font: [{
               size: 40
             }, {
               size: 30
             }],
-            color: isDataKosong ? ['#666'] : ['black', 'red']
+            color: ['black', 'red']
           }
         }
       }

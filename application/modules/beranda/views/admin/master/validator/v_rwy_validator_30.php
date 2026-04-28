@@ -124,10 +124,9 @@
                                     <thead>
                                         <tr style="background-color: #563BFF; color: #ffffff">
                                             <th class="text-center">#</th>
-                                            <th class="text-center">Skor/<br>validasi 1</th>
+                                            <th class="text-center">Skor/<br>validasi 1a</th>
+                                            <th class="text-center">Skor/<br>validasi 1b</th>
                                             <th class="text-center">Skor/<br>validasi 2</th>
-                                            <th class="text-center">Skor/<br>validasi 3</th>
-                                            <th class="text-center">Skor/<br>validasi 4</th>
                                             <th class="text-center" style="width: 25%;">Catatan <br>Fasilitator</th>
                                             <th class="text-center" style="width: 25%;">Catatan <br>Validator</th>
                                             <th class="text-center" style="width: 25%;">Catatan <br>Keseluruhan</th>
@@ -141,10 +140,17 @@
                                             <tr>
                                                 <td class="text-center" style="font-size:1.05em;"><?= $no++ ?></td>
                                                 <td class="text-center" style="font-size:1.05em;">
-                                                    <span class="badge badge-primary" style="font-size:1em;"><?= $v->skor_1 ?></span>
+                                                    <span class="badge badge-primary" style="font-size:1em;"><?= $v->skor_1a ?></span>
                                                     <br>
-                                                    <span class="badge <?= ($v->cek_1 == 1) ? 'badge-success' : 'badge-danger' ?>" style="font-size:1em;">
-                                                        <?= ($v->cek_1 == 1) ? 'Valid' : 'Tidak Valid' ?>
+                                                    <span class="badge <?= ($v->cek_1a == 1) ? 'badge-success' : 'badge-danger' ?>" style="font-size:1em;">
+                                                        <?= ($v->cek_1a == 1) ? 'Valid' : 'Tidak Valid' ?>
+                                                    </span>
+                                                </td>
+                                                <td class="text-center" style="font-size:1.05em;">
+                                                    <span class="badge badge-primary" style="font-size:1em;"><?= $v->skor_1b ?></span>
+                                                    <br>
+                                                    <span class="badge <?= ($v->cek_1b == 1) ? 'badge-success' : 'badge-danger' ?>" style="font-size:1em;">
+                                                        <?= ($v->cek_1b == 1) ? 'Valid' : 'Tidak Valid' ?>
                                                     </span>
                                                 </td>
                                                 <td class="text-center" style="font-size:1.05em;">
@@ -152,20 +158,6 @@
                                                     <br>
                                                     <span class="badge <?= ($v->cek_2 == 1) ? 'badge-success' : 'badge-danger' ?>" style="font-size:1em;">
                                                         <?= ($v->cek_2 == 1) ? 'Valid' : 'Tidak Valid' ?>
-                                                    </span>
-                                                </td>
-                                                <td class="text-center" style="font-size:1.05em;">
-                                                    <span class="badge badge-primary" style="font-size:1em;"><?= $v->skor_3 ?></span>
-                                                    <br>
-                                                    <span class="badge <?= ($v->cek_3 == 1) ? 'badge-success' : 'badge-danger' ?>" style="font-size:1em;">
-                                                        <?= ($v->cek_3 == 1) ? 'Valid' : 'Tidak Valid' ?>
-                                                    </span>
-                                                </td>
-                                                <td class="text-center" style="font-size:1.05em;">
-                                                    <span class="badge badge-primary" style="font-size:1em;"><?= $v->skor_4 ?></span>
-                                                    <br>
-                                                    <span class="badge <?= ($v->cek_4 == 1) ? 'badge-success' : 'badge-danger' ?>" style="font-size:1em;">
-                                                        <?= ($v->cek_4 == 1) ? 'Valid' : 'Tidak Valid' ?>
                                                     </span>
                                                 </td>
                                                 <td>
@@ -196,13 +188,11 @@
                                                             }
                                                         }
                                                     }
-                                                    echo renderCatatanFasilitator('1', $v->catatan_1, $v->id);
+                                                    echo renderCatatanFasilitator('1a', $v->catatan_1a, $v->id);
+                                                    echo "<br>";
+                                                    echo renderCatatanFasilitator('1b', $v->catatan_1b, $v->id);
                                                     echo "<br>";
                                                     echo renderCatatanFasilitator('2', $v->catatan_2, $v->id);
-                                                    echo "<br>";
-                                                    echo renderCatatanFasilitator('3', $v->catatan_3, $v->id);
-                                                    echo "<br>";
-                                                    echo renderCatatanFasilitator('4', $v->catatan_4, $v->id);
                                                     ?>
                                                 </td>
                                                 <td>
@@ -233,13 +223,11 @@
                                                             }
                                                         }
                                                     }
-                                                    echo renderCatatanValidator('1', $v->catatan_1_validator, $v->id);
+                                                    echo renderCatatanValidator('1a', $v->catatan_1a_validator, $v->id);
+                                                    echo "<br>";
+                                                    echo renderCatatanValidator('1b', $v->catatan_1b_validator, $v->id);
                                                     echo "<br>";
                                                     echo renderCatatanValidator('2', $v->catatan_2_validator, $v->id);
-                                                    echo "<br>";
-                                                    echo renderCatatanValidator('3', $v->catatan_3_validator, $v->id);
-                                                    echo "<br>";
-                                                    echo renderCatatanValidator('4', $v->catatan_4_validator, $v->id);
                                                     ?>
                                                 </td>
                                                 <td>
@@ -280,9 +268,6 @@
                                                     // Pilih warna badge berdasarkan id_status_penilaian
                                                     $badgeClass = 'badge-secondary';
                                                     switch ($v->id_status_penilaian) {
-                                                        case 5: // Valid
-                                                            $badgeClass = 'badge-secondary';
-                                                            break;
                                                         case 4: // Valid
                                                             $badgeClass = 'badge-success';
                                                             break;

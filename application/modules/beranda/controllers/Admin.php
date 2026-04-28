@@ -401,6 +401,12 @@ class Admin extends MX_Controller
     $data['jml_belum_input'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), function ($item) {
       return !isset($item->id_status_penilaian) || $item->id_status_penilaian === null;
     }));
+    $data['jml_draft_validator'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 5;
+    }));
+    $data['jml_menunggu_approval_admin'] = count(array_filter($this->Penilaian_model->get_data_penilaian_by_periode($periode->kode), function ($item) {
+      return isset($item->id_status_penilaian) && $item->id_status_penilaian == 6;
+    }));
 
     // echo json_encode(($data['penilaian_tipologi']));exit;
     $this->load->view("admin/v_index", $data);

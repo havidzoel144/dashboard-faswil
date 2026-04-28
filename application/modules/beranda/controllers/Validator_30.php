@@ -174,66 +174,76 @@ class Validator extends MX_Controller
   function simpan_validasi()
   {
     $user_id                = $this->session->userdata('user_id');
-    $periode                = $this->input->post('periode');
 
     // Ambil data dari POST
+    $fasilitator_id                = $this->input->post("fasilitator_id", true);
+    $periode                       = $this->input->post("periode", true);
     $id_penilaian_tipologi         = $this->input->post("id_penilaian_tipologi", true);
-    $cek_1                         = $this->input->post("cek_1", true);
+    $cek_1a                        = $this->input->post("cek_1a", true);
+    $cek_1b                        = $this->input->post("cek_1b", true);
     $cek_2                         = $this->input->post("cek_2", true);
-    $cek_3                         = $this->input->post("cek_3", true);
-    $cek_4                         = $this->input->post("cek_4", true);
-    $catatan_1_validator           = $this->input->post("catatan_1_validator", true);
+    $catatan_1a                    = $this->input->post("catatan_1a", true);
+    $catatan_1b                    = $this->input->post("catatan_1b", true);
+    $catatan_2                     = $this->input->post("catatan_2", true);
+    $catatan_keseluruhan           = $this->input->post("catatan_keseluruhan", true);
+    $catatan_1a_validator          = $this->input->post("catatan_1a_validator", true);
+    $catatan_1b_validator          = $this->input->post("catatan_1b_validator", true);
     $catatan_2_validator           = $this->input->post("catatan_2_validator", true);
-    $catatan_3_validator           = $this->input->post("catatan_3_validator", true);
-    $catatan_4_validator           = $this->input->post("catatan_4_validator", true);
     $catatan_keseluruhan_validator = $this->input->post("catatan_keseluruhan_validator", true);
+    $skor_1a                       = $this->input->post("skor_1a", true);
+    $skor_1b                       = $this->input->post("skor_1b", true);
+    $skor_2                        = $this->input->post("skor_2", true);
+    $skor_1_bobot                  = $this->input->post("skor_1_bobot", true);
+    $skor_2_bobot                  = $this->input->post("skor_2_bobot", true);
+    $skor_total                    = $this->input->post("skor_total", true);
     $id_status_penilaian           = 5; // default draft validator
+
+    // die("$catatan_keseluruhan");
+
+    // if ($cek_1a == "0" || $cek_1b == "0" || $cek_2 == "0") {
+    //   $id_status_penilaian = 3; // revisi validator
+    // } else {
+    //   $id_status_penilaian = 4; // valid
+    // }
 
     // Mulai transaksi database
     $this->db->trans_start();
 
     // Siapkan data untuk disimpan
     $data = [
-      'cek_1' => $cek_1,
+      'cek_1a' => $cek_1a,
+      'cek_1b' => $cek_1b,
       'cek_2' => $cek_2,
-      'cek_3' => $cek_3,
-      'cek_4' => $cek_4,
-      'catatan_1_validator' => $catatan_1_validator,
+      'catatan_1a_validator' => $catatan_1a_validator,
+      'catatan_1b_validator' => $catatan_1b_validator,
       'catatan_2_validator' => $catatan_2_validator,
-      'catatan_3_validator' => $catatan_3_validator,
-      'catatan_4_validator' => $catatan_4_validator,
       'catatan_keseluruhan_validator' => $catatan_keseluruhan_validator,
-      'id_status_penilaian' => $id_status_penilaian,
-      'updated_at' => date('Y-m-d H:i:s')
+      'id_status_penilaian' => $id_status_penilaian
     ];
     $this->db->where('id_penilaian_tipologi', $id_penilaian_tipologi);
     $this->db->update('penilaian_tipologi', $data);
 
-    $data_penilaian = $this->db->get_where('penilaian_tipologi', ['id_penilaian_tipologi' => $id_penilaian_tipologi])->row();
-
     $this->db->insert('rwy_penilaian_validator', [
-      'cek_1' => $data_penilaian->cek_1,
-      'cek_2' => $data_penilaian->cek_2,
-      'cek_3' => $data_penilaian->cek_3,
-      'cek_4' => $data_penilaian->cek_4,
-      'catatan_1' => $data_penilaian->catatan_1,
-      'catatan_2' => $data_penilaian->catatan_2,
-      'catatan_3' => $data_penilaian->catatan_3,
-      'catatan_4' => $data_penilaian->catatan_4,
-      'catatan_keseluruhan' => $data_penilaian->catatan_keseluruhan,
-      'id_penilaian_tipologi' => $data_penilaian->id_penilaian_tipologi,
-      'id_status_penilaian' => $data_penilaian->id_status_penilaian,
+      'cek_1a' => $cek_1a,
+      'cek_1b' => $cek_1b,
+      'cek_2' => $cek_2,
+      'catatan_1a' => $catatan_1a,
+      'catatan_1b' => $catatan_1b,
+      'catatan_2' => $catatan_2,
+      'catatan_keseluruhan' => $catatan_keseluruhan,
+      'id_penilaian_tipologi' => $id_penilaian_tipologi,
+      'id_status_penilaian' => $id_status_penilaian,
       'validator_id' => $user_id,
-      'catatan_1_validator' => $data_penilaian->catatan_1_validator,
-      'catatan_2_validator' => $data_penilaian->catatan_2_validator,
-      'catatan_3_validator' => $data_penilaian->catatan_3_validator,
-      'catatan_4_validator' => $data_penilaian->catatan_4_validator,
-      'catatan_keseluruhan_validator' => $data_penilaian->catatan_keseluruhan_validator,
-      'skor_1' => $data_penilaian->skor_1,
-      'skor_2' => $data_penilaian->skor_2,
-      'skor_3' => $data_penilaian->skor_3,
-      'skor_4' => $data_penilaian->skor_4,
-      'skor_total' => $data_penilaian->skor_total
+      'catatan_1a_validator' => $catatan_1a_validator,
+      'catatan_1b_validator' => $catatan_1b_validator,
+      'catatan_2_validator' => $catatan_2_validator,
+      'skor_1a' => $skor_1a,
+      'skor_1b' => $skor_1b,
+      'skor_2' => $skor_2,
+      'skor_1_bobot' => $skor_1_bobot,
+      'skor_2_bobot' => $skor_2_bobot,
+      'skor_total' => $skor_total,
+      'catatan_keseluruhan_validator' => $catatan_keseluruhan_validator
     ]);
 
     // Selesaikan transaksi database
@@ -276,8 +286,6 @@ class Validator extends MX_Controller
     $data['da']   = $val->row();
     $data['val']  = $val->result();
 
-    // echo json_encode($data);exit;
-
     $this->load->view("admin/master/validator/v_rwy_validator", $data);
   }
 
@@ -317,18 +325,6 @@ class Validator extends MX_Controller
       redirect($_SERVER['HTTP_REFERER']);
     } else {
       redirect('admin/penilaian-tipologi');
-    }
-  }
-
-  public function getDataPenilaian($enc_id_penilaian)
-  {
-    $id_penilaian = safe_url_decrypt($enc_id_penilaian);
-    $penilaian = $this->Penilaian_model->get_data_penilaian_by_id($id_penilaian);
-
-    if ($penilaian) {
-      echo json_encode(['status' => 'success', 'data' => $penilaian]);
-    } else {
-      echo json_encode(['status' => 'error', 'message' => 'Data penilaian tidak ditemukan']);
     }
   }
 }
