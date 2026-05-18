@@ -25,6 +25,7 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/forms/toggle/switchery.min.css">
 
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/extensions/raty/jquery.raty.css">
     <!-- Tambahkan Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- END: Vendor CSS-->
@@ -115,6 +116,8 @@
             /* Default: hitam */
         }
 
+        .bg-dark .kode_pt,
+        .bg-dark .nama_pt,
         .bg-success .kode_pt,
         .bg-success .nama_pt,
         .bg-danger .kode_pt,
@@ -122,9 +125,49 @@
         .bg-warning .kode_pt,
         .bg-warning .nama_pt,
         .bg-info .kode_pt,
-        .bg-info .nama_pt {
+        .bg-info .nama_pt,
+        .bg-primary .kode_pt,
+        .bg-primary .nama_pt {
             color: #fff !important;
             /* Jika status: putih */
+        }
+
+        /* Status 6: Dark */
+        .list-group-item.bg-dark:hover,
+        .list-group-item.bg-dark:focus,
+        .list-group-item.bg-dark:hover .badge,
+        .list-group-item.bg-dark:focus .badge {
+            background-color: rgb(33, 37, 41) !important;
+            color: #fff !important;
+            transition: none;
+        }
+
+        .list-group-item.bg-dark.active-item,
+        .list-group-item.bg-dark.active,
+        .list-group-item.bg-dark.active-item .badge,
+        .list-group-item.bg-dark.active .badge {
+            background-color: #212529 !important;
+            color: #fff !important;
+            transition: none;
+        }
+
+        /* Status 5: Primary */
+        .list-group-item.bg-primary:hover,
+        .list-group-item.bg-primary:focus,
+        .list-group-item.bg-primary:hover .badge,
+        .list-group-item.bg-primary:focus .badge {
+            background-color: rgb(77, 15, 113) !important;
+            color: #fff !important;
+            transition: none;
+        }
+
+        .list-group-item.bg-primary.active-item,
+        .list-group-item.bg-primary.active,
+        .list-group-item.bg-primary.active-item .badge,
+        .list-group-item.bg-primary.active .badge {
+            background-color: #722ca7 !important;
+            color: #fff !important;
+            transition: none;
         }
 
         /* Status 4: Success */
@@ -204,14 +247,14 @@
         }
 
         /* Default (tanpa status) */
-        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info):hover,
-        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning):focus {
+        .list-group-item:not(.bg-dark):not(.bg-primary):not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info):hover,
+        .list-group-item:not(.bg-dark):not(.bg-primary):not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info):focus {
             background-color: #e2e6ea !important;
             color: #212529 !important;
         }
 
-        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info).active-item,
-        .list-group-item:not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info).active {
+        .list-group-item:not(.bg-dark):not(.bg-primary):not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info).active-item,
+        .list-group-item:not(.bg-dark):not(.bg-primary):not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info).active {
             background-color: rgba(107, 161, 214, 0.51) !important;
             color: #212529 !important;
         }

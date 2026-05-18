@@ -1,187 +1,281 @@
 <!DOCTYPE html>
-<html class="loading" lang="en" data-textdirection="ltr">
-<!-- BEGIN: Head-->
+<html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-  <meta name="description" content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard.">
-  <meta name="keywords" content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
-  <meta name="author" content="PIXINVENT">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Login Dashboard LLDIKTI</title>
-  <link rel="apple-touch-icon" href="<?= base_url() ?>app-assets/images/ico/apple-icon-120.png">
-  <link rel="shortcut icon" type="image/x-icon" href="<?= base_url() ?>app-assets/images/logo/tut_wuri_handayani.png">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/fonts/material-icons/material-icons.css">
 
-  <!-- BEGIN: Vendor CSS-->
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/material-vendors.min.css">
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/forms/icheck/icheck.css">
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/forms/icheck/custom.css">
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/vendors/css/extensions/toastr.css">
-  <!-- END: Vendor CSS-->
+  <link rel="shortcut icon" href="<?= base_url() ?>app-assets/images/logo/tut_wuri_handayani.png">
 
-  <!-- BEGIN: Theme CSS-->
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/css/material.css">
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/css/components.css">
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/css/bootstrap-extended.css">
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/css/material-extended.css">
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/css/material-colors.css">
-  <!-- END: Theme CSS-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- BEGIN: Page CSS-->
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/css/core/menu/menu-types/material-vertical-menu-modern.css">
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/css/pages/login-register.css">
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>app-assets/css/plugins/extensions/toastr.css">
-  <!-- END: Page CSS-->
+  <link rel="stylesheet" href="<?= base_url() ?>app-assets/vendors/css/extensions/toastr.css">
 
-  <!-- BEGIN: Custom CSS-->
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/style.css">
-  <!-- END: Custom CSS-->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <style>
-    #flash-message {
-      transition: opacity 0.5s ease;
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
 
-    /* Ganti warna background untuk toastr success */
-    .toast-success {
-      background-color: #28a745 !important;
-      /* Hijau Bootstrap misalnya */
-      color: #fff !important;
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      overflow: hidden;
+    }
+
+    /* animated background */
+
+    .bg-shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: .5;
+    }
+
+    .shape1 {
+      width: 400px;
+      height: 400px;
+      background: #6dd5ed;
+      top: -100px;
+      left: -100px;
+    }
+
+    .shape2 {
+      width: 350px;
+      height: 350px;
+      background: #ff9a9e;
+      bottom: -120px;
+      right: -120px;
+    }
+
+    /* login card */
+
+    .login-container {
+      width: 380px;
+      z-index: 2;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, .95);
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, .25);
+      backdrop-filter: blur(10px);
+      animation: fadeIn .8s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* logo */
+
+    .logo {
+      display: block;
+      margin: auto;
+      width: 70px;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      text-align: center;
+      font-weight: 600;
+      font-size: 22px;
+      color: #2a5298;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    /* form */
+
+    .form-group {
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .form-control {
+      width: 100%;
+      height: 45px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      padding-left: 40px;
+      font-size: 14px;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #2a5298;
+      box-shadow: 0 0 0 2px rgba(42, 82, 152, .15);
+    }
+
+    .icon {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      font-size: 18px;
+      color: #2a5298;
+    }
+
+    /* show password */
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      cursor: pointer;
+      color: #777;
+    }
+
+    /* button */
+
+    .btn-login {
+      width: 100%;
+      height: 45px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2a5298, #1e3c72);
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: .5px;
+      cursor: pointer;
+      transition: .3s;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, .25);
+    }
+
+    /* footer */
+
+    .footer {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 12px;
+      color: #999;
     }
   </style>
 
 </head>
-<!-- END: Head-->
 
-<!-- BEGIN: Body-->
+<body>
 
-<body class="vertical-layout vertical-menu-modern material-vertical-layout material-layout vertical-collapsed-menu 1-column   menu-collapsed blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
-  <!-- BEGIN: Content-->
-  <div class="app-content content">
-    <div class="content-header row">
-    </div>
-    <div class="content-overlay"></div>
-    <div class="content-wrapper">
-      <div class="content-body">
-        <section class="row flexbox-container">
-          <div class="col-12 d-flex align-items-center justify-content-center">
-            <div class="col-lg-4 col-md-8 col-10 box-shadow-2 p-0">
-              <div class="card border-grey border-lighten-3 m-0">
-                <div class="card-header border-0">
-                  <!-- <?php if ($this->session->flashdata('success')) : ?>
-                    <div class="alert alert-success alert-dismissible fade show" id="flash-message">
-                      <?= $this->session->flashdata('success'); ?>
-                      <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    </div>
-                  <?php endif; ?>
+  <div class="bg-shape shape1"></div>
+  <div class="bg-shape shape2"></div>
 
-                  <?php if ($this->session->flashdata('error')) : ?>
-                    <div class="alert alert-danger alert-dismissible fade show" id="flash-message">
-                      <?= $this->session->flashdata('error'); ?>
-                      <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    </div>
-                  <?php endif; ?> -->
+  <div class="login-container">
 
-                  <div class="card-title text-center">
-                    <div class="p-1">
-                      <img class="brand-logo pb-1" alt="modern admin logo" src="<?= base_url() ?>app-assets/images/logo/tut_wuri_handayani.png" width="50px">
-                      <h3 class="brand-text">Dashboard LLDIKTI III</h3>
-                    </div>
-                  </div>
-                  <h6 class="card-subtitle line-on-side text-muted text-center font-small-3"><span>Login to DASHBOARD LLDIKTI III</span>
-                  </h6>
-                </div>
-                <div class="card-content">
-                  <div class="card-body">
-                    <!-- <form class="form-horizontal form-simple" action="<?= base_url('postLogin') ?>" method="POST" novalidate> -->
-                    <?php echo form_open(base_url('postLogin'), array('class' => 'form-horizontal', 'role' => 'form')); ?>
-                    <fieldset class="form-group position-relative has-icon-left mb-1">
-                      <input type="text" class="form-control" id="user-name" name="username" placeholder="Username" required>
-                      <div class="form-control-position">
-                        <i class="la la-user"></i>
-                      </div>
-                    </fieldset>
-                    <fieldset class="form-group position-relative has-icon-left">
-                      <input type="password" class="form-control" id="user-password" name="password" placeholder=" Password" required>
-                      <div class="form-control-position">
-                        <i class="la la-key"></i>
-                      </div>
-                    </fieldset>
-                    <button type="submit" class="btn btn-info btn-block"><i class="ft-unlock"></i> Login</button>
-                    <!-- </form> -->
-                    <?php echo form_close(); ?>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+    <div class="login-card">
 
+      <img src="<?= base_url() ?>app-assets/images/logo/tut_wuri_handayani.png" class="logo">
+
+      <div class="title">Dashboard LLDIKTI III</div>
+      <div class="subtitle">Sistem Penilaian Tipologi Perguruan Tinggi</div>
+
+      <?php echo form_open(base_url('postLogin'), ['id' => 'loginForm']); ?>
+
+      <div class="form-group">
+        <i class="icon">👤</i>
+        <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
       </div>
+
+      <div class="form-group">
+        <i class="icon">🔒</i>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        <span class="toggle-password">👁</span>
+      </div>
+
+      <button type="submit" class="btn-login" id="loginBtn">
+        Login
+      </button>
+
+      <?php echo form_close(); ?>
+
+      <div class="footer">
+        © <?= date('Y') ?> LLDIKTI III
+      </div>
+
     </div>
+
   </div>
-  <!-- END: Content-->
 
 
-  <!-- BEGIN: Vendor JS-->
-  <script src="<?= base_url() ?>app-assets/vendors/js/material-vendors.min.js"></script>
-  <!-- BEGIN Vendor JS-->
-
-  <!-- BEGIN: Page Vendor JS-->
-  <script src="<?= base_url() ?>app-assets/vendors/js/forms/icheck/icheck.min.js"></script>
-  <script src="<?= base_url() ?>app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
   <script src="<?= base_url() ?>app-assets/vendors/js/extensions/toastr.min.js"></script>
-  <!-- END: Page Vendor JS-->
-
-  <!-- BEGIN: Theme JS-->
-  <script src="<?= base_url() ?>app-assets/js/core/app-menu.js"></script>
-  <script src="<?= base_url() ?>app-assets/js/core/app.js"></script>
-  <!-- END: Theme JS-->
-
-  <!-- BEGIN: Page JS-->
-  <script src="<?= base_url() ?>app-assets/js/scripts/pages/material-app.js"></script>
-  <script src="<?= base_url() ?>app-assets/js/scripts/forms/form-login-register.js"></script>
-  <script src="<?= base_url() ?>app-assets/js/scripts/extensions/toastr.js"></script>
-  <!-- END: Page JS-->
 
   <script>
-    $(document).ready(function() {
-      toastr.options = {
-        "closeButton": true,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "timeOut": "4000",
-        "showDuration": "300",
-        "hideDuration": "300"
-      };
+    /* show password */
 
-      <?php if ($this->session->flashdata('success')) : ?>
-        toastr.success("<?= $this->session->flashdata('success'); ?>");
-      <?php endif; ?>
+    $('.toggle-password').click(function() {
 
-      <?php if ($this->session->flashdata('error')) : ?>
-        toastr.error("<?= $this->session->flashdata('error'); ?>");
-      <?php endif; ?>
+      let input = $('#password');
 
-      <?php if ($this->session->flashdata('warning')) : ?>
-        toastr.warning("<?= $this->session->flashdata('warning'); ?>");
-      <?php endif; ?>
+      if (input.attr('type') === 'password') {
+        input.attr('type', 'text');
+        $(this).text('👁‍🗨');
+      } else {
+        input.attr('type', 'password');
+        $(this).text('👁');
+      }
 
-      <?php if ($this->session->flashdata('info')) : ?>
-        toastr.info("<?= $this->session->flashdata('info'); ?>");
-      <?php endif; ?>
-
-      // Sembunyikan alert flash message setelah 3 detik (3000 ms)
-      setTimeout(function() {
-        $('#flash-message').fadeOut('slow');
-      }, 2000); // 3 detik
     });
+
+    /* loading button */
+
+    $('#loginForm').submit(function() {
+
+      $('#loginBtn').text('Signing in...');
+      $('#loginBtn').prop('disabled', true);
+
+    });
+
+    /* toastr */
+
+    toastr.options = {
+      closeButton: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      timeOut: "4000"
+    };
+
+    <?php if ($this->session->flashdata('success')) : ?>
+      toastr.success("<?= $this->session->flashdata('success'); ?>");
+    <?php endif; ?>
+
+    <?php if ($this->session->flashdata('error')) : ?>
+      toastr.error("<?= $this->session->flashdata('error'); ?>");
+    <?php endif; ?>
+
+    <?php if ($this->session->flashdata('warning')) : ?>
+      toastr.warning("<?= $this->session->flashdata('warning'); ?>");
+    <?php endif; ?>
+
+    <?php if ($this->session->flashdata('info')) : ?>
+      toastr.info("<?= $this->session->flashdata('info'); ?>");
+    <?php endif; ?>
   </script>
 
 </body>
-<!-- END: Body-->
 
 </html>

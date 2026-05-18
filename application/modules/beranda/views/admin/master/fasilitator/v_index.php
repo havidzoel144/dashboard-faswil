@@ -20,6 +20,19 @@
             <div class="dropdown-divider"></div>
             <div class="card-content">
               <div class="card-body">
+                <div class="alert border-0 shadow-sm mb-2" role="alert" style="background: linear-gradient(135deg, #eef4ff 0%, #f8fbff 100%); border-left: 5px solid #563BFF !important; border-radius: 12px; padding: 1rem 1.25rem;">
+                  <div class="d-flex align-items-start">
+                    <div class="mr-1" style="font-size: 1.5rem; color: #563BFF; line-height: 1;">
+                      <i class="la la-info-circle"></i>
+                    </div>
+                    <div>
+                      <div style="font-weight: 700; color: #2f2f2f; margin-bottom: 0.25rem;">Informasi Penilaian</div>
+                      <div style="color: #5f6470; font-size: 0.95rem; line-height: 1.6;">
+                        Penilaian menggunakan <strong>IAPT 3.0</strong> hingga <strong>Periode 2025-2</strong>, dan mulai <strong>Periode 2026-1</strong> menggunakan <strong>IAPT 4.1</strong>.
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <div class="table-responsive">
                   <table id="tabel-periode" class="table table-striped table-bordered">
@@ -58,8 +71,8 @@
                             </td>
                             <td class="text-center" style="width: 8%;">
                               <a href="<?= base_url('admin/plotting-fasilitator/') . safe_url_encrypt($data['kode']) ?>">
-                                <button class="btn btn-primary btn-sm" type="button" data-toggle="tooltip" title="Plotting Fasilitator">
-                                  Plotting Fasilitator
+                                <button class="btn <?= ($data['status'] == '1' && substr($data['kode'], 0, 4) == date('Y')) ? 'btn-primary' : 'btn-dark' ?> btn-sm w-100" type="button" data-toggle="tooltip" title="<?= $data['status'] == '1' ? 'Plotting Fasilitator' : 'Lihat Plotting' ?>">
+                                  <?= ($data['status'] == '1' && substr($data['kode'], 0, 4) == date('Y')) ? 'Plotting Fasilitator' : 'Lihat Plotting' ?>
                                 </button>
                               </a>
                             </td>

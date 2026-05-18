@@ -1,166 +1,166 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <title><?= $nama_pt; ?>/</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <title>Laporan Penilaian Tipologi <?= htmlspecialchars($progres_penilaian->nama_pt); ?></title>
+
+  <style>
+    body {
+      font-family: DejaVu Sans, Arial, sans-serif;
+      font-size: 12px;
+      color: #333;
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 3px solid #337ab7;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .header h2 {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .header small {
+      color: #777;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    .table th {
+      text-align: left;
+      width: 35%;
+      background: #f2f2f2;
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    .table td {
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .section-title {
+      background: #337ab7;
+      color: #fff;
+      padding: 6px 10px;
+      font-weight: bold;
+      margin-top: 20px;
+      margin-bottom: 0;
+    }
+
+    .status {
+      padding: 5px 10px;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 11px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .status-valid {
+      background: #28a745;
+    }
+
+    .status-revisi {
+      background: #dc3545;
+    }
+
+    .status-proses {
+      background: #f0ad4e;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 11px;
+      text-align: right;
+      color: #666;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="panel panel-primary">
-      <div class="panel-heading text-center">
-        <h3 class="panel-title text-uppercase">Detail Penilaian Tipologi</h3>
-      </div>
-      <div class="panel-body">
-        <table class="table table-striped table-bordered">
-          <tbody>
-            <style>
-              .table th {
-                text-transform: uppercase;
-                background-color: #f5f5f5;
-                color: #333;
-                vertical-align: middle !important;
-                font-weight: bold;
-              }
+  <div class="header">
+    <h2>Laporan Penilaian Tipologi</h2>
+    <small>Sistem Penilaian Tipologi Perguruan Tinggi</small>
+  </div>
 
-              .table td {
-                background-color: #fff;
-                vertical-align: middle !important;
-              }
+  <div class="section-title">Informasi Perguruan Tinggi</div>
+  <table class="table">
+    <tr>
+      <th>Kode PT</th>
+      <td><?= htmlspecialchars($progres_penilaian->kode_pt); ?></td>
+    </tr>
+    <tr>
+      <th>Nama PT</th>
+      <td><?= htmlspecialchars($progres_penilaian->nama_pt); ?></td>
+    </tr>
+    <tr>
+      <th>Periode</th>
+      <td><?= htmlspecialchars($progres_penilaian->keterangan); ?></td>
+    </tr>
+    <tr>
+      <th>Tipologi</th>
+      <td><?= htmlspecialchars($progres_penilaian->tipologi); ?></td>
+    </tr>
+    <tr>
+      <th>Nama Fasilitator</th>
+      <td><?= htmlspecialchars($progres_penilaian->nama_fasilitator); ?></td>
+    </tr>
+    <tr>
+      <th>Nama Validator</th>
+      <td><?= htmlspecialchars($progres_penilaian->nama_validator); ?></td>
+    </tr>
+  </table>
 
-              .panel-primary {
-                border-color: #337ab7;
-                box-shadow: 0 2px 8px rgba(51, 122, 183, 0.1);
-              }
+  <div class="section-title">Hasil Penilaian</div>
 
-              .panel-heading {
-                background: linear-gradient(90deg, #337ab7 0%, #5bc0de 100%);
-                color: #fff !important;
-                border-bottom: 2px solid #286090;
-              }
+  <table class="table">
+    <tr>
+      <th>Skor Total</th>
+      <td><strong><?= htmlspecialchars($progres_penilaian->skor_total); ?></strong></td>
+    </tr>
+    <tr>
+      <th>Status</th>
+      <td>
+        <?php
+        $status_class = "status-proses";
 
-              .label {
-                font-size: 13px;
-                padding: 6px 12px;
-                border-radius: 12px;
-              }
+        if ($progres_penilaian->id_status == 1 || $progres_penilaian->id_status == 4) {
+          $status_class = "status-valid";
+        }
 
-              .table-striped>tbody>tr:nth-of-type(odd)>td,
-              .table-striped>tbody>tr:nth-of-type(odd)>th {
-                background-color: #f9f9f9;
-              }
+        if ($progres_penilaian->id_status == 3) {
+          $status_class = "status-revisi";
+        }
+        ?>
+        <span class="status <?= $status_class ?>">
+          <?= strtoupper($progres_penilaian->nm_status); ?>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <th>Catatan Keseluruhan</th>
+      <td><?= nl2br(htmlspecialchars($progres_penilaian->catatan_keseluruhan)); ?></td>
+    </tr>
+  </table>
 
-              .success th,
-              .success td {
-                background-color: #dff0d8 !important;
-              }
-
-              .info th,
-              .info td {
-                background-color: #d9edf7 !important;
-              }
-
-              .primary th,
-              .primary td {
-                background-color: #bce8f1 !important;
-              }
-            </style>
-            <tr>
-              <th>KODE PT</th>
-              <td><?= htmlspecialchars($progres_penilaian->kode_pt); ?></td>
-            </tr>
-            <tr>
-              <th style="width: 35%;">NAMA PT</th>
-              <td><?= htmlspecialchars($progres_penilaian->nama_pt); ?></td>
-            </tr>
-            <tr>
-              <th>PERIODE</th>
-              <td><?= htmlspecialchars($progres_penilaian->keterangan); ?></td>
-            </tr>
-            <tr class="info">
-              <th>SKOR TOTAL</th>
-              <td><?= htmlspecialchars($progres_penilaian->skor_total); ?></td>
-            </tr>
-            <tr>
-              <th>CATATAN 1A</th>
-              <td><?= nl2br(htmlspecialchars($progres_penilaian->catatan_1a)); ?></td>
-            </tr>
-            <tr>
-              <th>CATATAN 1B</th>
-              <td><?= nl2br(htmlspecialchars($progres_penilaian->catatan_1b)); ?></td>
-            </tr>
-            <tr>
-              <th>CATATAN 2</th>
-              <td><?= nl2br(htmlspecialchars($progres_penilaian->catatan_2)); ?></td>
-            </tr>
-            <tr>
-              <th>CATATAN KESELURUHAN</th>
-              <td><?= nl2br(htmlspecialchars($progres_penilaian->catatan_keseluruhan)); ?></td>
-            </tr>
-            <tr class="success">
-              <th>CATATAN 1A VALIDATOR</th>
-              <td><?= nl2br(htmlspecialchars($progres_penilaian->catatan_1a_validator)); ?></td>
-            </tr>
-            <tr class="success">
-              <th>CATATAN 1B VALIDATOR</th>
-              <td><?= nl2br(htmlspecialchars($progres_penilaian->catatan_1b_validator)); ?></td>
-            </tr>
-            <tr class="success">
-              <th>CATATAN 2 VALIDATOR</th>
-              <td><?= nl2br(htmlspecialchars($progres_penilaian->catatan_2_validator)); ?></td>
-            </tr>
-            <tr class="success">
-              <th>CATATAN KESELURUHAN VALIDATOR</th>
-              <td><?= nl2br(htmlspecialchars($progres_penilaian->catatan_keseluruhan_validator)); ?></td>
-            </tr>
-            <tr>
-              <th>TIPOLOGI</th>
-              <td><?= htmlspecialchars($progres_penilaian->tipologi); ?></td>
-            </tr>
-            <tr>
-              <th>NAMA FASILITATOR</th>
-              <td><?= htmlspecialchars($progres_penilaian->nama_fasilitator); ?></td>
-            </tr>
-            <tr>
-              <th>NAMA VALIDATOR</th>
-              <td><?= htmlspecialchars($progres_penilaian->nama_validator); ?></td>
-            </tr>
-            <tr>
-              <th>STATUS</th>
-              <td>
-                <?php
-                if (isset($progres_penilaian->id_status)) {
-                  if ($progres_penilaian->id_status == '1') {
-                    echo '<span class="label label-success">' . strtoupper($progres_penilaian->nm_status) . '</span>';
-                  } elseif ($progres_penilaian->id_status == '2') {
-                    echo '<span class="label label-warning">' . strtoupper($progres_penilaian->nm_status) . '</span>';
-                  } elseif ($progres_penilaian->id_status == '3') {
-                    echo '<span class="label label-danger">' . strtoupper($progres_penilaian->nm_status) . '</span>';
-                  } elseif ($progres_penilaian->id_status == '4') {
-                    echo '<span class="label label-success">' . strtoupper($progres_penilaian->nm_status) . '</span>';
-                  }
-                }
-                ?>
-              </td>
-            </tr>
-            <tr>
-              <th>TANGGAL CETAK</th>
-              <td>
-                <?php
-                date_default_timezone_set('Asia/Jakarta');
-                echo date('d-m-Y H:i:s');
-                ?>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="footer">
+    Dicetak pada :
+    <?php
+    date_default_timezone_set('Asia/Jakarta');
+    echo date('d-m-Y H:i:s');
+    ?>
   </div>
 </body>
 

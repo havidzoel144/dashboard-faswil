@@ -7,7 +7,7 @@ class Fasilitator extends MX_Controller
   {
     parent::__construct();
     $this->load->library(['javascript']);
-    $this->load->model(['User_model', 'Periode_model', 'Penilaian_model']);
+    $this->load->model(['User_model', 'Periode_model', 'Penilaian_model', 'Penilaian30_model']);
     date_default_timezone_set("Asia/Jakarta");
 
     if (!$this->session->userdata('username')) {
@@ -35,15 +35,21 @@ class Fasilitator extends MX_Controller
     $periode        = safe_url_decrypt($enc_periode);
     $periode_dipilih = $this->Periode_model->get_periode_by_kode($periode);
 
+    if (substr($periode, 0, 4) > '2025') :
+      $modelPenilaian = $this->Penilaian_model;
+    else :
+      $modelPenilaian = $this->Penilaian30_model;
+    endif;
+
     $data = [
       'master' => 'active',
       'fasilitator' => 'active',
       'periode_dipilih' => $periode_dipilih,
       'data_user_fasilitator' => $this->User_model->get_users_with_fasilitator_role(),
       'data_user_validator' => $this->User_model->get_users_with_validator_role(),
-      'data_plotting_fasilitator' => $this->Penilaian_model->get_data_penilaian_by_periode($periode),
-      // 'data_perguruan_tinggi' => $this->Penilaian_model->get_pt_not_plot($periode_dipilih->kode),
-      'data_perguruan_tinggi' => $this->Penilaian_model->get_data_pt_for_select($periode_dipilih->kode),
+      'data_plotting_fasilitator' => $modelPenilaian->get_data_penilaian_by_periode($periode),
+      // 'data_perguruan_tinggi' => $modelPenilaian->get_pt_not_plot($periode_dipilih->kode),
+      'data_perguruan_tinggi' => $modelPenilaian->get_data_pt_for_select($periode_dipilih->kode),
     ];
 
     // echo json_encode($data['periode_dipilih']);exit;

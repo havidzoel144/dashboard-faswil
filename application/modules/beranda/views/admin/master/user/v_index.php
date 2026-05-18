@@ -63,9 +63,11 @@
                               </div>
                             </td>
                             <td class="text-center" style="width: 10%;">
-                              <button class="btn btn-dark btn-sm waves-effect waves-light" type="button" onclick="confirmResetPassword('<?= $data->id ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Reset Password"><i class="la la-key"></i></button>
-                              <button class="btn btn-primary btn-sm waves-effect waves-light" type="button" onclick='openEditModal("<?= $data->id ?>", "<?= addslashes($data->nama) ?>", "<?= addslashes($data->username) ?>", "<?= addslashes($data->email) ?>", <?= json_encode($data->role_id) ?>, "<?= $data->status ?>")' data-toggle="tooltip" data-placement="top" data-original-title="Ubah Data"><i class="la la-edit"></i></button>
-                              <button class="btn btn-danger btn-sm waves-effect waves-light" type="button" onclick="confirmDelete('<?= $data->id ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Hapus Data"><i class="la la-trash"></i></button>
+                              <div class="btn-group btn-group-sm" role="group" aria-label="Aksi pengguna">
+                                <button class="btn btn-dark waves-effect waves-light" type="button" onclick="confirmResetPassword('<?= $data->id ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Reset Password"><i class="la la-key"></i></button>
+                                <button class="btn btn-primary waves-effect waves-light" type="button" onclick='openEditModal("<?= $data->id ?>", "<?= addslashes($data->nama) ?>", "<?= addslashes($data->username) ?>", "<?= addslashes($data->email) ?>", <?= json_encode($data->role_id) ?>, "<?= $data->status ?>")' data-toggle="tooltip" data-placement="top" data-original-title="Ubah Data"><i class="la la-edit"></i></button>
+                                <button class="btn btn-danger waves-effect waves-light" type="button" onclick="confirmDelete('<?= $data->id ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Hapus Data"><i class="la la-trash"></i></button>
+                              </div>
                             </td>
 
                           </tr>
@@ -107,21 +109,21 @@
       <?php echo form_open(site_url('admin/simpan-user'), array('class' => 'form-horizontal', 'role' => 'form')); ?>
       <div class="modal-body">
         <fieldset class="form-group d-flex justify-content-center align-items-center mb-1">
-          <div class="row w-100">
-            <div class="col-6 pr-1">
-                <button type="button" class="btn w-100 d-flex align-items-center justify-content-center" id="btn-input-manual"
-                style="height: 40px; background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%); color: #fff; border-radius: 20px; font-size: 1.2em; box-shadow: 0 2px 8px rgba(255,152,0,0.2); transition: background 0.3s;">
-                <i class="la la-keyboard-o mr-1"></i>
-                <span style="font-size: 1em;">Input Manual</span>
-                </button>
-            </div>
-            <div class="col-6 pl-1">
-              <button type="button" class="btn w-100 d-flex align-items-center justify-content-center" id="btn-ambil-dosen"
-                style="height: 40px; background: linear-gradient(135deg, #00c9ff 0%, #92fe9d 100%); color: #000; border-radius: 20px; font-size: 1.2em; box-shadow: 0 2px 8px rgba(0,201,255,0.2); transition: background 0.3s;">
-                <i class="la la-user-plus mr-1"></i>
-                <span style="font-size: 1em;">Ambil Data Dosen</span>
+          <div class="btn-group w-100" role="group">
+            <button type="button" class="btn btn-primary flex-fill d-flex align-items-center justify-content-center" id="btn-input-manual">
+              <i class="la la-keyboard-o mr-1"></i>
+              <span>Input Manual</span>
+            </button>
+            <button type="button" class="btn btn-info flex-fill d-flex align-items-center justify-content-center" id="btn-ambil-dosen">
+              <i class="la la-user-plus mr-1"></i>
+              <span>Ambil Data Dosen</span>
+            </button>
+            <?php if (!in_array('1', array_column($this->session->userdata('roles'), 'role_id'))): ?>
+              <button type="button" class="btn btn-dark flex-fill d-flex align-items-center justify-content-center" id="btn-ambil-pt">
+                <i class="la la-building mr-1"></i>
+                <span>Ambil Data PT</span>
               </button>
-            </div>
+            <?php endif; ?>
           </div>
         </fieldset>
         <fieldset class="form-group">
@@ -131,6 +133,9 @@
         <fieldset class="form-group">
           <label for="username">Username</label>
           <input type="text" class="form-control square" id="username" name="username" placeholder="Masukkan Username" disabled>
+          <small class="form-text" style="color: #dc3545; font-weight: 600; display: block; margin-top: 0.5rem; padding: 0.5rem; background-color: #ffe5e5; border-left: 3px solid #dc3545; border-radius: 3px;">
+            <i class="la la-info-circle mr-1"></i><strong>Password default:</strong> admin123
+          </small>
         </fieldset>
         <fieldset class="form-group">
           <label for="email">Email</label>
@@ -139,11 +144,6 @@
         <fieldset class="form-group">
           <label for="role">Role</label>
           <select class="select2 form-control" aria-hidden="true" multiple="multiple" name="role_id[]" id="role" style="width:100%;" disabled>
-            <?php foreach ($data_role as $role) : ?>
-              <?php if (in_array($role->id, $allowed_ids)) : ?>
-                <option value="<?= $role->id ?>"><?= ucwords($role->nama_role) ?></option>
-              <?php endif; ?>
-            <?php endforeach; ?>
           </select>
         </fieldset>
         <fieldset class="form-group">
@@ -192,11 +192,6 @@
         <fieldset class="form-group">
           <label for="edit-role">Role</label>
           <select class="select2 form-control" aria-hidden="true" multiple="multiple" name="role_id[]" id="edit-role" style="width:100%;">
-            <?php foreach ($data_role as $role) : ?>
-              <?php if (in_array($role->id, $allowed_ids)) : ?>
-                <option value="<?= $role->id ?>"><?= ucwords($role->nama_role) ?></option>
-              <?php endif; ?>
-            <?php endforeach; ?>
           </select>
         </fieldset>
         <fieldset class="form-group">
@@ -234,7 +229,7 @@
                 <th class="text-center">NIDN</th>
                 <th class="text-center">Nama Dosen</th>
                 <th class="text-center">Nama PT</th>
-                <th class="text-center"">Aksi</th>
+                <th class="text-center">Aksi</th>
               </tr>
             </thead>
           </table>
@@ -245,10 +240,39 @@
 </div>
 <!-- Modal Data Dosen -->
 
+<!-- Modal Data PT -->
+<div class=" modal fade" id="modal-pt" tabindex="-1" role="dialog" aria-labelledby="modalPTLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalPTLabel">Pilih Data PT</h5>
+        <button type="button" class="close btn-close-pt" aria-label="Close" style="color: #000;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped" id="tabel-pt" style="width: 100%;">
+            <thead>
+              <tr>
+                <th class="text-center">Kode PT</th>
+                <th class="text-center">Nama PT</th>
+                <th class="text-center">Aksi</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Data Pt -->
+
 <?= $this->load->view('admin/v_footer') ?>
 
 <!-- BEGIN: Page Vendor JS-->
-<script src="<?= base_url() ?>app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+<script src=" <?= base_url() ?>app-assets/vendors/js/tables/datatable/datatables.min.js">
+</script>
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Page JS-->
@@ -332,6 +356,38 @@
       return item.trim(); // hapus spasi
     });
 
+    // Set role options berdasarkan role_id
+    let roleOptions = <?= json_encode($data_role) ?>;
+
+    $('#edit-role').empty();
+
+    // Cek apakah roleArray mengandung id 6 atau 7
+    let hasRolePT = roleArray.some(id => id == '6' || id == '7');
+    let hasRoleSuperadmin = roleArray.some(id => id == '1' || id == '2' || id == '3'); // Cek role superadmin (1, 2, 3)
+
+    if (hasRolePT) {
+      // Jika ada role 6 atau 7, tampilkan hanya role 6 dan 7
+      $.each(roleOptions, function(index, role) {
+        if (role.id == 6 && roleArray.includes('6')) {
+          $('#edit-role').append('<option value="' + role.id + '">PT ' + role.nama_role.charAt(0).toUpperCase() + role.nama_role.slice(1) + '</option>');
+        } else if (role.id == 7 && roleArray.includes('7')) {
+          $('#edit-role').append('<option value="' + role.id + '">PT ' + role.nama_role.charAt(0).toUpperCase() + role.nama_role.slice(1) + '</option>');
+        }
+      });
+    } else if (hasRoleSuperadmin) {
+      // Jika ada role 1, tampilkan hanya role 1
+      $.each(roleOptions, function(index, role) {
+        $('#edit-role').append('<option value="' + role.id + '">' + role.nama_role.charAt(0).toUpperCase() + role.nama_role.slice(1) + '</option>');
+      });
+    } else {
+      // Jika tidak ada role 6 atau 7, tampilkan hanya role 4 dan 5
+      $.each(roleOptions, function(index, role) {
+        if (role.id == 4 || role.id == 5) {
+          $('#edit-role').append('<option value="' + role.id + '">' + role.nama_role.charAt(0).toUpperCase() + role.nama_role.slice(1) + '</option>');
+        }
+      });
+    }
+
     // Set nilai select2 multiple
     $('#edit-role').val(roleArray).trigger('change');
 
@@ -359,7 +415,7 @@
       title: "Reset Password",
       // text: "Apakah anda yakin ingin mereset password akun ini?",
       html: `Apakah anda yakin ingin mereset password akun ini? <br>
-            Password standar adalah <b>123456</b>`,
+            Password standar adalah <b>admin123</b>`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -489,8 +545,7 @@
             return json.data; // data harus ada untuk DataTables
           }
         },
-        columns: [
-          {
+        columns: [{
             data: 'nidn',
             className: 'text-center',
             width: '12%'
@@ -526,6 +581,58 @@
     }
   }
 
+  function initTabelPT() {
+    if (!$.fn.DataTable.isDataTable('#tabel-pt')) {
+      tabelPT = $('#tabel-pt').DataTable({
+        processing: true,
+        serverSide: true,
+        pageLength: 10,
+        autoWidth: false, // tambahkan ini
+        ajax: {
+          url: '<?= base_url('admin/ajax-get-pt') ?>',
+          type: 'POST',
+          data: function(d) {
+            // Ambil token terbaru dari variabel global
+            d[csrfName] = csrfHash;
+          },
+          dataSrc: function(json) {
+            // Update token setelah respon
+            csrfHash = json.csrfHash;
+            return json.data; // data harus ada untuk DataTables
+          }
+        },
+        columns: [{
+            data: 'kode_pt',
+            className: 'text-center',
+            width: '12%'
+          },
+          {
+            data: 'nama_pt',
+            width: '50%'
+          },
+          {
+            data: null,
+            orderable: false,
+            searchable: false,
+            className: 'text-center',
+            width: '3%',
+            render: function(data, type, row) {
+              return `<button type="button" class="btn btn-primary round btn-sm pilih-pt"
+          data-kode-pt="${row.kode_pt ? row.kode_pt : ''}"
+          data-nama-pt="${row.nama_pt ? row.nama_pt.replace(/"/g, '&quot;') : ''}"">
+          Pilih
+              </button>`;
+            }
+          }
+        ],
+        destroy: true,
+        language: {
+          emptyTable: "Data perguruan tinggi tidak tersedia"
+        }
+      });
+    }
+  }
+
   $('#btn-ambil-dosen').on('click', function() {
     $('#modal-dosen').modal({
       backdrop: 'static',
@@ -540,6 +647,20 @@
     }
   });
 
+  $('#btn-ambil-pt').on('click', function() {
+    $('#modal-pt').modal({
+      backdrop: 'static',
+      keyboard: false
+    }).modal('show');
+
+    // Inisialisasi DataTable jika belum, reload jika sudah
+    if (!$.fn.DataTable.isDataTable('#tabel-pt')) {
+      initTabelPT();
+    } else {
+      tabelPT.ajax.reload(null, false);
+    }
+  });
+
   // Event delegation untuk tombol pilih pada hasil ajax
   $(document).on('click', '.pilih-dosen', function() {
     var nidn = $(this).data('nidn');
@@ -550,14 +671,67 @@
     $('#modal-dosen').modal('hide');
     $('#nama, #email, #username, #role, #status-switch').prop('disabled', false);
 
-    
-    if (nidn !== ''){
-      console.log('nidn:', nidn);
+    if (nidn !== '') {
       $('#username').prop('readonly', true); // Set username readonly
     } else {
       $('#username').prop('readonly', false); // Set username editable
     }
 
+    // Hancurkan opsi role yang sudah ada, lalu isi dengan role untuk Dosen (id 4 dan 5)
+    $('#role').empty();
+    var data_role = <?= json_encode($data_role) ?>;
+    $.each(data_role, function(index, role) {
+      if (role.id == 4 || role.id == 5) {
+        $('#role').append('<option value="' + role.id + '">' + role.nama_role.charAt(0).toUpperCase() + role.nama_role.slice(1) + '</option>');
+      } else if (role.id == 1 || role.id == 2 || role.id == 3) {
+        $('#role').append('<option value="' + role.id + '">' + role.nama_role.charAt(0).toUpperCase() + role.nama_role.slice(1) + '</option>');
+      }
+    });
+    // Remove multiple attribute dan reinitialize select2
+    $('#role').attr('name', 'role_id[]').attr('multiple', 'multiple');
+    $('#role').select2({
+      placeholder: "Silakan pilih role user (bisa pilih lebih dari 1)",
+      allowClear: true,
+      dropdownParent: $('#form-tambah-data')
+    });
+    $('#role').val(null).trigger('change'); // Kosongkan select2
+    $('#status-switch').prop('checked', true).trigger('change'); // Set status ke Aktif
+    $('#nama').focus(); // Fokus ke input nama
+    $('#btn-simpan').removeClass('d-none'); // Tampilkan tombol simpan
+  });
+
+  $(document).on('click', '.pilih-pt', function() {
+    var kode_pt = $(this).data('kode-pt');
+    var nama_pt = $(this).data('nama-pt');
+    $('#nama').val(nama_pt);
+    $('#username').val(kode_pt);
+    $('#email').focus();
+    $('#modal-pt').modal('hide');
+    $('#nama, #email, #username, #role, #status-switch').prop('disabled', false);
+
+    if (kode_pt !== '') {
+      $('#username').prop('readonly', true); // Set username readonly
+    } else {
+      $('#username').prop('readonly', false); // Set username editable
+    }
+
+    // Hancurkan opsi role yang sudah ada, lalu isi dengan role untuk PT (id 6 dan 7)
+    $('#role').empty();
+    $('#role').append('<option value="">Silakan pilih role user</option>');
+    var data_role = <?= json_encode($data_role) ?>;
+    var userRoles = <?= json_encode(array_column($this->session->userdata('roles'), 'role_id')) ?>;
+    $.each(data_role, function(index, role) {
+      if ((userRoles.includes('2') && role.id == 6) || (userRoles.includes('3') && role.id == 7)) {
+        $('#role').append('<option value="' + role.id + '">PT ' + role.nama_role.charAt(0).toUpperCase() + role.nama_role.slice(1) + '</option>');
+      }
+    });
+    // Remove multiple attribute dan reinitialize select2
+    $('#role').attr('name', 'role_id[]').removeAttr('multiple');
+    $('#role').select2({
+      placeholder: "Silakan pilih role user",
+      allowClear: true,
+      dropdownParent: $('#form-tambah-data')
+    });
     $('#role').val(null).trigger('change'); // Kosongkan select2
     $('#status-switch').prop('checked', true).trigger('change'); // Set status ke Aktif
     $('#nama').focus(); // Fokus ke input nama
@@ -574,13 +748,56 @@
   $('.btn-close-dosen').on('click', function() {
     $('#modal-dosen').modal('hide');
   });
-  
+
+  $('.btn-close-pt').on('click', function() {
+    $('#modal-pt').modal('hide');
+  });
+
   $('#btn-input-manual').on('click', function() {
     $('#nama, #username, #email, #role, #status-switch').prop('disabled', false);
     $('#nama, #username, #email').val(''); // Kosongkan input
+    // Hancurkan opsi role yang sudah ada, lalu isi dengan role untuk Dosen (id 4 dan 5)
+    $('#role').empty();
+    var data_role = <?= json_encode($data_role) ?>;
+    $.each(data_role, function(index, role) {
+      if (role.id == 4 || role.id == 5) {
+        $('#role').append('<option value="' + role.id + '">' + role.nama_role.charAt(0).toUpperCase() + role.nama_role.slice(1) + '</option>');
+      } else if (role.id == 1 || role.id == 2 || role.id == 3) {
+        $('#role').append('<option value="' + role.id + '">' + role.nama_role.charAt(0).toUpperCase() + role.nama_role.slice(1) + '</option>');
+      }
+    });
+    // Remove multiple attribute dan reinitialize select2
+    $('#role').attr('name', 'role_id[]').attr('multiple', 'multiple');
+    $('#role').select2({
+      placeholder: "Silakan pilih role user (bisa pilih lebih dari 1)",
+      allowClear: true,
+      dropdownParent: $('#form-tambah-data')
+    });
     $('#role').val(null).trigger('change'); // Kosongkan select2
     $('#status-switch').prop('checked', true).trigger('change'); // Set status ke Aktif
     $('#nama').focus(); // Fokus ke input nama
     $('#btn-simpan').removeClass('d-none'); // Tampilkan tombol simpan
+  });
+
+  $('#role').on('change', function() {
+    const selectedValues = $(this).val();
+    const username = $('#username').val();
+    const baseUsername = username.includes('_') ? username.split('_')[0] : username;
+    if (selectedValues && (selectedValues.includes('6') || selectedValues.includes('7'))) {
+      const data_role = <?= json_encode($data_role) ?>;
+      let roleLabel = '';
+      $.each(data_role, function(index, role) {
+        if (role.id == 6 && selectedValues.includes('6')) {
+          roleLabel = role.nama_role;
+          return false; // Break loop
+        } else if (role.id == 7 && selectedValues.includes('7')) {
+          roleLabel = role.nama_role;
+          return false; // Break loop
+        }
+      });
+      if (roleLabel && baseUsername) {
+        $('#username').val(baseUsername + '_' + roleLabel);
+      }
+    }
   });
 </script>

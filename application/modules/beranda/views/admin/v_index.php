@@ -1,5 +1,153 @@
 <?= $this->load->view('admin/v_header') ?>
 
+<style>
+  @media (max-width: 575.98px) {
+    .display-4 {
+      font-size: 2rem;
+    }
+
+    .card-title {
+      font-size: 0.95rem !important;
+    }
+  }
+
+  .card .rounded-circle {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .card {
+    transition: all .2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+  }
+
+  .stat-card {
+    position: relative;
+    padding: 22px 24px;
+    border-radius: 16px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    overflow: hidden;
+    /* cursor: pointer; */
+    transition: all .35s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .18);
+  }
+
+  .stat-icon {
+    font-size: 36px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .2);
+    margin-right: 16px;
+  }
+
+  .stat-icon i {
+    font-size: 2.5rem !important;
+  }
+
+  .stat-content h3 {
+    font-size: 34px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .stat-content p {
+    margin: 0;
+    opacity: .9;
+    font-size: 14px;
+  }
+
+  .stat-arrow {
+    font-size: 22px;
+    opacity: .7;
+  }
+
+  /* Gradient Colors */
+
+  .stat-grey {
+    background: linear-gradient(135deg, #9e9e9e, #616161);
+  }
+
+  .stat-blue {
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+  }
+
+  .stat-orange {
+    background: linear-gradient(135deg, #ffb74d, #fb8c00);
+  }
+
+  .stat-red {
+    background: linear-gradient(135deg, #ef5350, #c62828);
+  }
+
+  .stat-purple {
+    background: linear-gradient(135deg, #ab47bc, #7b1fa2);
+  }
+
+  .stat-green {
+    background: linear-gradient(135deg, #66bb6a, #2e7d32);
+  }
+
+  .stat-dark {
+    background: linear-gradient(135deg, #546e7a, #263238);
+  }
+
+  .role-option {
+    border: 2px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .25s ease;
+  }
+
+  .role-option:hover {
+    border-color: #007bff;
+    transform: translateY(-2px);
+  }
+
+  .role-option.active {
+    border-color: #007bff;
+    background: #eef5ff;
+  }
+
+  .role-option i {
+    font-size: 22px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .form-section {
+    display: none;
+    animation: fadeIn .3s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
 <?= $this->load->view('admin/v_menu') ?>
 
 <!-- BEGIN: Content-->
@@ -51,7 +199,7 @@
                   $count = count($role_names);
                   foreach ($role_names as $idx => $role) {
                     // Tampilkan badge nama role
-                    echo '<span class="badge" style="background: #ffb347; color: #1e3c72; font-size:1em; box-shadow: 0 2px 8px rgba(255,179,71,0.12);">' . $role . '</span>';
+                    echo '<span class="badge" style="background: #ffb347; color: #1e3c72; font-size:1em; box-shadow: 0 2px 8px rgba(255,179,71,0.12);">' . ($role == 'Penjamu' ? 'PT ' . $role : $role) . '</span>';
                     // Tambahkan pemisah jika lebih dari satu role
                     if ($count > 1 && $idx < $count - 1) {
                       // Jika sebelum role terakhir, gunakan ' dan ', selain itu gunakan koma
@@ -78,7 +226,7 @@
                   </span>
                 </div>
                 <h6 class="card-title mb-1 text-info font-weight-bold" style="font-size: 1.05rem;">Jumlah Fasilitator</h6>
-                <span class="display-4 font-weight-bold text-info"><?= $jumlah_fasilitator ?></span>
+                <span class="display-4 font-weight-bold text-info counter"><?= $jumlah_fasilitator ?></span>
               </div>
             </div>
           </div>
@@ -91,7 +239,7 @@
                   </span>
                 </div>
                 <h6 class="card-title mb-1 text-secondary font-weight-bold" style="font-size: 1.05rem;">Jumlah Validator</h6>
-                <span class="display-4 font-weight-bold text-secondary"><?= $jumlah_validator ?></span>
+                <span class="display-4 font-weight-bold text-secondary counter"><?= $jumlah_validator ?></span>
               </div>
             </div>
           </div>
@@ -104,75 +252,100 @@
                   </span>
                 </div>
                 <h6 class="card-title mb-1 text-dark font-weight-bold" style="font-size: 1.05rem;">Jumlah Perguruan Tinggi</h6>
-                <span class="display-4 font-weight-bold text-dark"><?= $jumlah_pt ?></span>
+                <span class="display-4 font-weight-bold text-dark counter"><?= $jumlah_pt ?></span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="row d-flex justify-content-center">
-          <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-            <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #e3eaff 0%, #b2cfff 100%);">
-              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
-                <div class="mb-2">
-                  <span class="rounded-circle bg-primary bg-gradient d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
-                    <i class="la la-pencil text-white" style="font-size: 2rem;"></i>
-                  </span>
-                </div>
-                <h6 class="card-title mb-1 font-weight-bold" style="font-size: 1.05rem; color: #007bff;">Draft</h6>
-                <span class="display-4 font-weight-bold" style="color: #007bff;"><?= $jml_draft ?></span>
+        <div class="row g-4 dashboard-stats mb-2">
+          <div class="col-xl-3 col-lg-4 col-md-6 mb-1">
+            <div class="stat-card stat-grey">
+              <div class="stat-icon">
+                <i class="la la-user-times"></i>
+              </div>
+
+              <div class="stat-content">
+                <h3 class="counter"><?= $jml_belum_input ?></h3>
+                <p>Fasilitator Belum Input</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-            <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #fff4e3 0%, #ffb866 100%);">
-              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
-                <div class="mb-2">
-                  <span class="rounded-circle" style="background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%); display: flex; align-items: center; justify-content: center; width:48px;height:48px;">
-                    <i class="la la-hourglass-half text-white" style="font-size: 2rem;"></i>
-                  </span>
-                </div>
-                <h6 class="card-title mb-1 font-weight-bold" style="font-size: 1.05rem; color: #ff9800;">Menunggu Dinilai Validator</h6>
-                <span class="display-4 font-weight-bold" style="color: #ff9800;"><?= $jml_penilaian_validator ?></span>
+
+          <div class="col-xl-3 col-lg-4 col-md-6 mb-1">
+            <div class="stat-card stat-blue">
+              <div class="stat-icon">
+                <i class="la la-pencil"></i>
+              </div>
+
+              <div class="stat-content">
+                <h3 class="counter"><?= $jml_draft ?></h3>
+                <p>Draft Fasilitator</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-            <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #ffe3e3 0%, #ffb2b2 100%);">
-              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
-                <div class="mb-2">
-                  <span class="rounded-circle bg-danger bg-gradient d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
-                    <i class="la la-edit text-white" style="font-size: 2rem;"></i>
-                  </span>
-                </div>
-                <h6 class="card-title mb-1 font-weight-bold" style="font-size: 1.05rem; color: #dc3545;">Perlu Revisi</h6>
-                <span class="display-4 font-weight-bold" style="color: #dc3545;"><?= $jml_revisi_validator ?></span>
+
+          <div class="col-xl-3 col-lg-4 col-md-6 mb-1">
+            <div class="stat-card stat-orange">
+              <div class="stat-icon">
+                <i class="la la-hourglass-half"></i>
+              </div>
+
+              <div class="stat-content">
+                <h3 class="counter"><?= $jml_penilaian_validator ?></h3>
+                <p>Menunggu Validator</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-            <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #e3ffe3 0%, #b2ffb2 100%);">
-              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
-                <div class="mb-2">
-                  <span class="rounded-circle bg-success bg-gradient d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
-                    <i class="la la-check-circle text-white" style="font-size: 2rem;"></i>
-                  </span>
-                </div>
-                <h6 class="card-title mb-1 font-weight-bold" style="font-size: 1.05rem; color: #28a745;">Penilaian Valid</h6>
-                <span class="display-4 font-weight-bold" style="color: #28a745;"><?= $jml_valid ?></span>
+
+          <div class="col-xl-3 col-lg-4 col-md-6 mb-1">
+            <div class="stat-card stat-red">
+              <div class="stat-icon">
+                <i class="la la-edit"></i>
+              </div>
+
+              <div class="stat-content">
+                <h3 class="counter"><?= $jml_revisi_validator ?></h3>
+                <p>Perlu Revisi Fasilitator</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-            <div class="card shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #f0f0f0 0%, #cccccc 100%);">
-              <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
-                <div class="mb-2">
-                  <span class="rounded-circle bg-secondary bg-gradient d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
-                    <i class="la la-user-times text-white" style="font-size: 2rem;"></i>
-                  </span>
-                </div>
-                <h6 class="card-title mb-1 font-weight-bold" style="font-size: 1.05rem; color: #6c757d;">Fasilitator Belum Input</h6>
-                <span class="display-4 font-weight-bold" style="color: #6c757d;"><?= $jml_belum_input ?></span>
+
+          <div class="col-xl-3 col-lg-4 col-md-6 mb-1">
+            <div class="stat-card stat-purple">
+              <div class="stat-icon">
+                <i class="la la-bookmark"></i>
+              </div>
+
+              <div class="stat-content">
+                <h3 class="counter"><?= $jml_draft_validator ?></h3>
+                <p>Draft Validator</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6 mb-1">
+            <div class="stat-card stat-green">
+              <div class="stat-icon">
+                <i class="la la-check-circle"></i>
+              </div>
+
+              <div class="stat-content">
+                <h3 class="counter"><?= $jml_valid ?></h3>
+                <p>Penilaian Valid</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6 mb-1">
+            <div class="stat-card stat-dark">
+              <div class="stat-icon">
+                <i class="la la-shield"></i>
+              </div>
+
+              <div class="stat-content">
+                <h3 class="counter" style="color: white;"><?= $jml_menunggu_approval_admin ?></h3>
+                <p>Menunggu Approval</p>
               </div>
             </div>
           </div>
@@ -205,7 +378,11 @@
                         if (!empty($progres_penilaian)) { // Cek apakah array progres_penilaian tidak kosong
                           foreach ($progres_penilaian as $data) {
                             $row_class = '';
-                            if ($data->id_status_penilaian == '4') {
+                            if ($data->id_status_penilaian == '6') {
+                              $row_class = 'table-dark text-dark'; // abu
+                            } elseif ($data->id_status_penilaian == '5') {
+                              $row_class = 'table-primary'; // ungu
+                            } elseif ($data->id_status_penilaian == '4') {
                               $row_class = 'table-success'; // hijau
                             } elseif ($data->id_status_penilaian == '3') {
                               $row_class = 'table-danger'; // kuning
@@ -238,7 +415,11 @@
                                 $warna_badge = $data->id_status_penilaian == '4' ? 'badge-success' : (
                                   $data->id_status_penilaian == '3' ? 'badge-danger' : (
                                     $data->id_status_penilaian == '2' ? 'badge-warning' : (
-                                      $data->id_status_penilaian == '1' ? 'badge-info' : 'badge-secondary'
+                                      $data->id_status_penilaian == '1' ? 'badge-info' : (
+                                        $data->id_status_penilaian == '5' ? 'badge-primary' : (
+                                          $data->id_status_penilaian == '6' ? 'bg-blue-grey bg-darken-4' : 'badge-secondary'
+                                        )
+                                      )
                                     )
                                   )
                                 );
@@ -246,7 +427,11 @@
                                 $icon = $data->id_status_penilaian == '4' ? 'fa-check-circle' : (
                                   $data->id_status_penilaian == '3' ? 'fa-times-circle' : (
                                     $data->id_status_penilaian == '2' ? 'fa-hourglass-half' : (
-                                      $data->id_status_penilaian == '1' ? 'fa-spinner fa-spin' : 'fa-question-circle'
+                                      $data->id_status_penilaian == '1' ? 'fa-spinner fa-spin' : (
+                                        $data->id_status_penilaian == '5' ? 'fa-paper-plane' : (
+                                          $data->id_status_penilaian == '6' ? 'fa-rotate-left' : 'fa-question-circle'
+                                        )
+                                      )
                                     )
                                   )
                                 );
@@ -308,5 +493,22 @@
     setTimeout(function() {
       $('#flash-message').fadeOut('slow');
     }, 2000); // 3 detik
+  });
+
+  document.querySelectorAll('.counter').forEach(counter => {
+    let target = +counter.innerText;
+    let count = 0;
+    let speed = target / 50;
+
+    function update() {
+      count += speed;
+      if (count < target) {
+        counter.innerText = Math.floor(count);
+        requestAnimationFrame(update);
+      } else {
+        counter.innerText = target;
+      }
+    }
+    update();
   });
 </script>

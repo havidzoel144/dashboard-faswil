@@ -1,5 +1,17 @@
 <?= $this->load->view('admin/v_header') ?>
+<style>
+  .popover {
+    z-index: 1060 !important;
+  }
 
+  .popover-skor4 {
+    max-width: 80vw !important;
+    width: 600px;
+    overflow-y: auto;
+    /* muncul scroll kalau kepanjangan */
+    white-space: normal;
+  }
+</style>
 <?= $this->load->view('admin/v_menu') ?>
 
 <!-- BEGIN: Content-->
@@ -54,11 +66,15 @@
                     <?php if (!empty($data_pt_binaan)) : ?>
                       <?php foreach ($data_pt_binaan as $data) : ?>
                         <?php
-                        $is_disabled = ($data->id_status_penilaian == '4' || $data->id_status_penilaian == '2');
-                        $item_class = $data->id_status_penilaian == '4' ? 'bg-success text-white' : (
-                          $data->id_status_penilaian == '3' ? 'bg-danger text-white' : (
-                            $data->id_status_penilaian == '2' ? 'bg-warning text-dark' : (
-                              $data->id_status_penilaian == '1' ? 'bg-info text-white' : ''
+                        $is_disabled = ($data->id_status_penilaian == '4' || $data->id_status_penilaian == '2' || $data->id_status_penilaian == '5' || $data->id_status_penilaian == '6');
+                        $item_class = $data->id_status_penilaian == '6' ? 'bg-dark text-white' : (
+                          $data->id_status_penilaian == '5' ? 'bg-primary text-white' : (
+                            $data->id_status_penilaian == '4' ? 'bg-success text-white' : (
+                              $data->id_status_penilaian == '3' ? 'bg-danger text-white' : (
+                                $data->id_status_penilaian == '2' ? 'bg-warning text-dark' : (
+                                  $data->id_status_penilaian == '1' ? 'bg-info text-white' : ''
+                                )
+                              )
                             )
                           )
                         );
@@ -76,7 +92,17 @@
                               <p class="kode_pt" style="margin-bottom: 0;"><?= $data->kode_pt ?></p>
                             </div>
                             <div class="d-flex flex-column align-items-center justify-content-center" style="flex: 0 0 80px; min-width: 80px; min-height: 60px;">
-                              <?php if ($data->id_status_penilaian == '4'): ?>
+                              <?php if ($data->id_status_penilaian == '6'): ?>
+                                <i class="fa fa-rotate-left" style="font-size: 3em;"></i>
+                                <div>
+                                  <span class="badge bg-dark text-wrap" style="margin-top: 5px; font-size: 1em; white-space: wrap;"><?= $data->nm_status ?></span>
+                                </div>
+                              <?php elseif ($data->id_status_penilaian == '5'): ?>
+                                <i class="fa fa-paper-plane" style="font-size: 3em;"></i>
+                                <div>
+                                  <span class="badge bg-primary text-wrap" style="margin-top: 5px; font-size: 1em; white-space: wrap;"><?= $data->nm_status ?></span>
+                                </div>
+                              <?php elseif ($data->id_status_penilaian == '4'): ?>
                                 <i class="fa fa-check-circle" style="font-size: 3em;"></i>
                                 <div>
                                   <span class="badge bg-success text-wrap" style="margin-top: 5px; font-size: 1em; white-space: wrap;"><?= $data->nm_status ?></span>
@@ -152,77 +178,71 @@
                       <div class="row">
                         <div class="col-lg-3">
                           <fieldset class="form-group mb-1">
-                            <label for="skor-1a" class="label-required">
-                              Skor 1a
-                              <span class="text-danger" data-toggle="popover" data-content="<b>Skor 0 :</b> PT tidak menjalankan SPMI; <br> <b>Skor 1 :</b> PT telah menjalankan SPMI namun belum mencakup seluruhnya; <br> <b>Skor 2 :</b> PT telah menjalankan SPMI yang dibuktikan dengan keberadaan 5 aspek; <br> <b>Skor 3 :</b> PT telah menjalankan SPMI yang dibuktikan dengan keberadaan 5 aspek dan memiliki standar yang melampaui SN Dikti; <br> <b>Skor 4 :</b> PT telah menjalankan SPMI yang dibuktikan dengan keberadaan 5 aspek dan memiliki standar yang melampaui SN Dikti dan menerapkan SPMI berbasis resiko (risk based audit) atau inovasi lainnya" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                            <label for="skor-1" class="label-required">
+                              Skor 1
+                              <span class="text-danger" data-toggle="popover" data-content="0 = Tidak Memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Perguruan tinggi terbukti telah mengimplementasikan Sistem Penjaminan Mutu Internal yang  mencakup keempat aspek secara konsisten dan efektif dalam peningkatan mutu pendidikan secara berkelanjutan. <br> 1.5 = Perguruan tinggi terbukti telah mengimplementasikan Sistem Penjaminan Mutu Internal yang mencakup keempat aspek secara konsisten dan efektif dalam peningkatan mutu pendidikan secara berkelanjutan, serta telah menunjukkan adanya upaya pengembangan, namun belum sepenuhnya terbukti efektif <br> 2 = Syarat perlu status terakreditasi Unggul : Perguruan tinggi terbukti telah mengembangkan dan mengimplementasikan Sistem Penjaminan Mutu Internal yang  mencakup keempat aspek dan telah terbukti efektif dalam peningkatan mutu pendidikan secara berkelanjutan." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
                             </label>
-                            <input type="text" class="form-control square skor" id="skor-1a" name="skor_1a" maxlength="4" oninput="validateSkorInput(this)" onblur="validateSkorValue(this)" required>
+                            <select class="form-control square" id="skor-1" name="skor_1" required>
+                              <option value="">-- Pilih Skor --</option>
+                              <option value="0.0">0</option>
+                              <option value="1.0">1</option>
+                              <option value="1.5">1.5</option>
+                              <option value="2.0">2</option>
+                            </select>
+                            <div class="mt-1 lihat-narasi-led d-none">
+                              <small class="text-muted">
+                                <a href="javascript:void(0)" data-indikator="1" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 1" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
+                                  <i class="fa fa-search"></i> Narasi LED Indikator 1
+                                </a>
+                              </small>
+                            </div>
                           </fieldset>
                         </div>
                         <div class="col-lg-9">
                           <div class="row">
                             <div class="col-lg-12">
                               <fieldset class="form-group mb-1">
-                                <label for="catatan-1a" class="label-required">
-                                  Catatan Skor 1a
-                                  <span class="text-danger" data-toggle="popover" data-content="Ketersediaan dokumen formal SPMI yang dibuktikan dengan keberadaan 5 aspek sebagai berikut:<br> <b>(1) organ/fungsi spmi; <br> (2) dokumen SPMI; <br> (3) auditor internal; <br> (4) hasil audit; <br> (5) bukti tindak lanjut</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                <label for="catatan-1" class="label-required">
+                                  Catatan Skor 1
+                                  <span class="text-danger" data-toggle="popover" data-content="Sistem Penjaminan Mutu Internal yang dikembangkan Perguruan Tinggi, mencakup: <br> 1. Standar Pendidikan Tinggi (akademik dan non akademik) yang melampauai SN Dikti dan sesuai fokus misi PT, telah ditetapkan oleh perguruan tinggi serta telah disosialisasikan ke seluruh pemangku kepentingan. <br> 2. Sistem Tatakelola Perguruan Tinggi dalam mengimplementasikan SPMI, mencakup minimal: SOP implementasi SPMI, keberfungsian SPMI di berbagai tingkat (pelaksana dan sistem implementasi) yang akuntabel, transparan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 3. Sistem Evaluasi Pemenuhan Standar Pendidikan Tinggi yang transparan, akuntabel, mapan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 4. Sistem Peningkatan Mutu Berkelanjutan yang telah diimplementasikan secara efektif dan efisien paling sedikit selama 3 tahun." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
                                 </label>
-                                <textarea class="form-control textarea-catatan" name="catatan_1a" id="catatan-1a" placeholder="Indikator Penilaian : Ketersediaan dokumen formal SPMI yang dibuktikan dengan keberadaan 5 aspek sebagai berikut: (1) organ/fungsi spmi, (2) dokumen SPMI (3) auditor internal (4) hasil audit (5) bukti tindak lanjut" required></textarea>
+                                <textarea class="form-control textarea-catatan" name="catatan_1" id="catatan-1" placeholder="Indikator Penilaian : Sistem Penjaminan Mutu Internal yang dikembangkan Perguruan Tinggi, mencakup: 1. Standar Pendidikan Tinggi (akademik dan non akademik) yang melampauai SN Dikti dan sesuai fokus misi PT, telah ditetapkan oleh perguruan tinggi serta telah disosialisasikan ke seluruh pemangku kepentingan. 2. Sistem Tatakelola Perguruan Tinggi dalam mengimplementasikan SPMI, mencakup minimal: SOP implementasi SPMI, keberfungsian SPMI di berbagai tingkat (pelaksana dan sistem implementasi) yang akuntabel, transparan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. 3. Sistem Evaluasi Pemenuhan Standar Pendidikan Tinggi yang transparan, akuntabel, mapan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. 4. Sistem Peningkatan Mutu Berkelanjutan yang telah diimplementasikan secara efektif dan efisien paling sedikit selama 3 tahun." required></textarea>
                               </fieldset>
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-lg-12">
                               <fieldset class="form-group mb-1">
-                                <label for="catatan-1a-validator">Catatan Skor 1a Validator</label>
-                                <textarea class="form-control textarea-catatan" id="catatan-1a-validator" placeholder="Catatan skor 1a dari validator" disabled></textarea>
+                                <label for="catatan-1-validator">Catatan Skor 1 Validator</label>
+                                <textarea class="form-control textarea-catatan" id="catatan-1-validator" placeholder="Catatan skor 1 dari validator" disabled></textarea>
                               </fieldset>
                             </div>
                           </div>
                         </div>
                       </div>
-
-                      <div class="row">
-                        <div class="col-lg-3">
-                          <fieldset class="form-group mb-1">
-                            <label for="skor-1b" class="label-required">
-                              Skor 1b
-                              <span class="text-danger" data-toggle="popover" data-content="<b>Tidak ada Skor dibawah 2;</b> <br> <b>Skor 2 :</b> PT tidak memiliki bukti sahis terkait praktik baik pengembangan buday amutu di PT melalui RTM; <br> <b>Skor 3 :</b> PT memiliki bukti sahih terkait praktik baik pengembangan budaya mutu di PT melalui RTM yang mengagendakan pembahasan sebagian dari 7 unsur; <br> <b>Skor 4 :</b> PT memiliki bukti sahih terkait praktik baik pengembangan budaya mutu di PT melalui RTM yang mengagendakan pembahasan dari 7 unsur" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
-                            </label>
-                            <input type="text" class="form-control square skor" id="skor-1b" name="skor_1b" maxlength="4" oninput="validateSkorInput(this)" onblur="validateMinSkorValue(this)" required>
-                          </fieldset>
-                        </div>
-                        <div class="col-lg-9">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <fieldset class="form-group mb-1">
-                                <label for="catatan-1b" class="label-required">
-                                  Catatan Skor 1b
-                                  <span class="text-danger" data-toggle="popover" data-content="Ketersediaan bukti sahih terkait praktik baik pengembangan budaya mutu di perguruan tinggi melalui RTM yang mengagendakan unsur-unsur: <br> <b> (1) hasil audit internal; <br> (2) umpan balik; <br> (3) kinerja proses dan kesesuaian produk; <br> (4) status tindakan pencegahan dan perbaikan; <br> (5) tindak lanjut dari tinjauan sebelumnya; <br> (6) perubahan yang dapat mempengaruhi sistem manajemen mutu; <br> (7) rekomendasi peningkatan</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
-                                </label>
-                                <textarea class="form-control textarea-catatan" name="catatan_1b" id="catatan-1b" placeholder="Indikator Penilaian : Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM yang mengagendakan unsur-unsur (1) hasil audit internal (2) umpan balik (3) kinerja proses dan kesesuaian produk (4) status tindakan pencegahan dan perbaikan (5) tindak lanjut dari tinjauan sebelumnya (6) perubahan yang dapat mempengaruhi sistem manajemen mutu (7) rekomendasi peningkatan" required></textarea>
-                              </fieldset>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <fieldset class="form-group mb-1">
-                                <label for="catatan-1b-validator">Catatan Skor 1b Validator</label>
-                                <textarea class="form-control textarea-catatan" id="catatan-1b-validator" placeholder="Catatan skor 1b dari validator" disabled></textarea>
-                              </fieldset>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <hr>
 
                       <div class="row">
                         <div class="col-lg-3">
                           <fieldset class="form-group mb-1">
                             <label for="skor-2" class="label-required">
                               Skor 2
-                              <span class="text-danger" data-toggle="popover" data-content="<b>Skor 0 :</b> PT belum melaksanakan sistem penjaminan mutu; <br> <b>Skor 1 :</b> PT telah melaksanakan sistem penjaminan mutu namun belum efektif serta belum memenuhi seluruh aspek; <br> <b>Skor 2 :</b> PT telah melaksanakan sistem penjaminan mutu yang terbukti efektif memenuhi 4 aspek; <br> <b>Skor 3 :</b> PT telah melaksanakan sistem penjaminan mutu yang terbukti efektif memenuhi 4 aspek dan dilakukan review terhadap siklus penjamnan mutu; <br> <b>Skor 4 :</b> PT telah melaksanakan sistem penjaminan mutu yang terbukti efektif memenuhi 4 aspek dan dilakukan review terhadap siklus penjamnan mutu dan melibatkan reviewer eksternal" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                              <span class="text-danger" data-toggle="popover" data-content="0 = Tidak Memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Perguruan Tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tatakelola perguruan tinggi dalam bidang akademik dan non-akademik. <br> 1.5 = Perguruan tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian, dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tata kelola perguruan tinggi dalam bidang akademik dan non-akademik, serta sudah menunjukkan adanya upaya peningkatan mutu pendidikan tinggi yang memenuhi aspek berkelanjutan, efektif, dan konsisten. <br> 2 = Syarat perlu status terakreditasi Unggul : Perguruan Tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tatakelola perguruan tinggi dalam bidang akademik dan non-akademik  untuk meningkatkan mutu pendidikan tinggi secara berkelanjutan, efektif dan konsisten. " data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
                             </label>
-                            <input type="text" class="form-control square skor" id="skor-2" name="skor_2" maxlength="4" oninput="validateSkorInput(this)" onblur="validateSkorValue(this)" required>
+                            <select class="form-control square" id="skor-2" name="skor_2" required>
+                              <option value="">-- Pilih Skor --</option>
+                              <option value="0.0">0</option>
+                              <option value="1.0">1</option>
+                              <option value="1.5">1.5</option>
+                              <option value="2.0">2</option>
+                            </select>
+                            <div class="mt-1 lihat-narasi-led d-none">
+                              <small class="text-muted">
+                                <a href="javascript:void(0)" data-indikator="2" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 2" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
+                                  <i class="fa fa-search"></i> Narasi LED Indikator 2
+                                </a>
+                              </small>
+                            </div>
                           </fieldset>
                         </div>
                         <div class="col-lg-9">
@@ -231,9 +251,9 @@
                               <fieldset class="form-group mb-1">
                                 <label for="catatan-2" class="label-required">
                                   Catatan Skor 2
-                                  <span class="text-danger" data-toggle="popover" data-content="Efektivitas pelaksanaan penjaminan mutu yang memenuhi 4 aspek sbb: <br> <b> 1. keberadaan dokumen formal penetapan standar mutu; <br> 2. standar mutu dilaksanakan secara konsisten; <br> 3. minitoring evaluasi dan pengendalian terhadap standar mutu yang telah ditetapkan <br> 4. hasilnya ditindaklanjuti untuk perbaikan dan peningkatan mutu</b>" data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                  <span class="text-danger" data-toggle="popover" data-content="Implementasi siklus  penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan (PPEPP) dalam bidang akademik dan non-akademik, paling sedikit selama 3 tahun secara konsisten, berkelanjutan dan terbukti efektif, dan terdiri atas: <br> 1. Penetapan Standar Pendidikan Tinggi  yang sesuai misi perguruan tinggi, yaitu perancangan, perumusan, dan pengesahan standar PT. <br> 2. Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan standar oleh semua pihak yang bertanggungjawab agar isi standar tercapai. <br> 3. Evaluasi Pemenuhan Standar Pendidikan Tinggi, yaitu evaluasi kesesuaian pelaksanaan standar dengan standar yang telah ditetapkan dan cara pemenuhannya. <br> 4. Pengendalian Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan koreksi bila terjadi penyimpangan terhadap isi dan/atau pelaksanaan standar, mempertahan pelaksanaan yang telah memenuhi standar dan sedapat mungkin meningkatkan kualitas pelaksanaannya. <br> 5. Peningkatan Standar Pendidikan Tinggi, yaitu evaluasi isi standar dan peningkatan  mutu isi standar secara berkala dan berkelanjutan." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
                                 </label>
-                                <textarea class="form-control textarea-catatan" name="catatan_2" id="catatan-2" placeholder="Indikator Penilaian : Efektivitas pelaksanaan penjaminan mutu yang memenuhi 4 aspek sbb: 1. keberadaan dokumen formal penetapan standar mutu 2. standar mutu dilaksanakan secara konsisten 3. minitoring evaluasi dan pengendalian terhadap standar mutu yang telah ditetapkan 4. hasilnya ditindaklanjuti untuk perbaikan dan peningkatan mutu" required></textarea>
+                                <textarea class="form-control textarea-catatan" name="catatan_2" id="catatan-2" placeholder="Indikator Penilaian : Implementasi siklus  penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan (PPEPP) dalam bidang akademik dan non-akademik, paling sedikit selama 3 tahun secara konsisten, berkelanjutan dan terbukti efektif, dan terdiri atas: 1. Penetapan Standar Pendidikan Tinggi  yang sesuai misi perguruan tinggi, yaitu perancangan, perumusan, dan pengesahan standar PT. 2. Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan standar oleh semua pihak yang bertanggungjawab agar isi standar tercapai. 3. Evaluasi Pemenuhan Standar Pendidikan Tinggi, yaitu evaluasi kesesuaian pelaksanaan standar dengan standar yang telah ditetapkan dan cara pemenuhannya. 4. Pengendalian Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan koreksi bila terjadi penyimpangan terhadap isi dan/atau pelaksanaan standar, mempertahan pelaksanaan yang telah memenuhi standar dan sedapat mungkin meningkatkan kualitas pelaksanaannya. 5. Peningkatan Standar Pendidikan Tinggi, yaitu evaluasi isi standar dan peningkatan  mutu isi standar secara berkala dan berkelanjutan." required></textarea>
                               </fieldset>
                             </div>
                           </div>
@@ -242,6 +262,124 @@
                               <fieldset class="form-group mb-1">
                                 <label for="catatan-2-validator">Catatan Skor 2 Validator</label>
                                 <textarea class="form-control textarea-catatan" id="catatan-2-validator" placeholder="Catatan skor 2 dari validator" disabled></textarea>
+                              </fieldset>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-lg-3">
+                          <fieldset class="form-group mb-1">
+                            <label for="skor-3" class="label-required">
+                              Skor 3
+                              <span class="text-danger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Perguruan tinggi terbukti memililki laporan implementasi SPMI secara berkala dan lengkap yang mencakup kedua aspek, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi. <br> 1.5 = Perguruan tinggi terbukti memiliki laporan implementasi SPMI secara berkala dan lengkap yang mencakup kedua aspek, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi, namun belum sepenuhnya sistematis. <br> 2 = Perguruan tinggi terbukti memililki laporan implementasi SPMI secara berkala, sistematis, dan lengkap yang mencakup kedua aspek, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                            </label>
+                            <select class="form-control square" id="skor-3" name="skor_3" required>
+                              <option value="">-- Pilih Skor --</option>
+                              <option value="0.0">0</option>
+                              <option value="1.0">1</option>
+                              <option value="1.5">1.5</option>
+                              <option value="2.0">2</option>
+                            </select>
+                            <div class="mt-1 lihat-narasi-led d-none">
+                              <small class="text-muted">
+                                <a href="javascript:void(0)" data-indikator="3" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 3" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
+                                  <i class="fa fa-search"></i> Narasi LED Indikator 3
+                                </a>
+                              </small>
+                            </div>
+                          </fieldset>
+                        </div>
+                        <div class="col-lg-9">
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <fieldset class="form-group mb-1">
+                                <label for="catatan-3" class="label-required">
+                                  Catatan Skor 3
+                                  <span class="text-danger" data-toggle="popover" data-content="Laporan implementasi SPMI dan kinerja perguruan tinggi secara berkala, sistematis,  dan pengelolaan data serta informasi terkait implementasi SPMI melalui PD Dikti, mencakup: <br> 1. Laporan semesteran/tahunan tentang implementasi SPMI dan kinerja perguruan tinggi yang menerus bertambah baik dalam bentuk digital/sistem/hardcopy paling sedikit selama 3 tahun terakhir secara sistematis. <br> 2. Keberfungsian sistem pengelolaan data dan informasi  terkait implementasi SPMI melalui PD Dikti yang transparan, akuntabel, valid dan berintegritas." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                </label>
+                                <textarea class="form-control textarea-catatan" name="catatan_3" id="catatan-3" placeholder="Infikator Penilaian : Laporan implementasi SPMI dan kinerja perguruan tinggi secara berkala, sistematis,  dan pengelolaan data serta informasi terkait implementasi SPMI melalui PD Dikti, mencakup: 1. Laporan semesteran/tahunan tentang implementasi SPMI dan kinerja perguruan tinggi yang menerus bertambah baik dalam bentuk digital/sistem/hardcopy paling sedikit selama 3 tahun terakhir secara sistematis. 2. Keberfungsian sistem pengelolaan data dan informasi  terkait implementasi SPMI melalui PD Dikti yang transparan, akuntabel, valid dan berintegritas." required></textarea>
+                              </fieldset>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <fieldset class="form-group mb-1">
+                                <label for="catatan-3-validator">Catatan Skor 3 Validator</label>
+                                <textarea class="form-control textarea-catatan" id="catatan-3-validator" placeholder="Catatan skor 3 dari validator" disabled></textarea>
+                              </fieldset>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row mb-1">
+                        <div class="col-md-3 mb-1 mb-md-0">
+                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Total Prodi</small>
+                            <div class="font-weight-bold" id="total-prodi-aktif" style="font-size:1.05rem; color:#0f766e;">-</div>
+                          </div>
+                        </div>
+                        <div class="col-md-3 mb-1 mb-md-0">
+                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Jumlah Prodi Terakreditasi</small>
+                            <div class="font-weight-bold" id="prodi-terakreditasi" style="font-size:1.05rem; color:#0f766e;">-</div>
+                          </div>
+                        </div>
+                        <div class="col-md-3 mb-1 mb-md-0">
+                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Jumlah Prodi Unggul/A</small>
+                            <div class="font-weight-bold" id="prodi-unggul-atau-a" style="font-size:1.05rem; color:#0f766e;">-</div>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Persentase Prodi Unggul/A</small>
+                            <div class="font-weight-bold" id="persentase-prodi-unggul-atau-a" style="font-size:1.05rem; color:#0f766e;">-</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-3">
+                          <fieldset class="form-group mb-1">
+                            <label for="skor-4" class="label-required">
+                              Skor 4
+                              <span class="text-danger popover-skor4-trigger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Persentase PS terakreditasi 100%. <br> 1.5 = Syarat perlu status terakreditasi Unggul  (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>15% sd <20%</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>40% sd <50% (PTNBH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>20% sd <25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>30% sd <40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%.(PTS Vokasi)</li></ol> 2 = Syarat perlu status terakreditasi Unggul (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%.</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 50%.(PTN BH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.(PTS Vokasi)</li></ol>" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                            </label>
+                            <select class="form-control square" id="skor-4" name="skor_4" required>
+                              <option value="">-- Pilih Skor --</option>
+                              <option value="0.0">0</option>
+                              <option value="1.0">1</option>
+                              <option value="1.5">1.5</option>
+                              <option value="2.0">2</option>
+                            </select>
+                            <div class="mt-1 lihat-narasi-led d-none">
+                              <small class="text-muted">
+                                <a href="javascript:void(0)" data-indikator="4" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 4" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
+                                  <i class="fa fa-search"></i> Narasi LED Indikator 4
+                                </a>
+                              </small>
+                            </div>
+                          </fieldset>
+                        </div>
+                        <div class="col-lg-9">
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <fieldset class="form-group mb-1">
+                                <label for="catatan-4" class="label-required">
+                                  Catatan Skor 4
+                                  <span class="text-danger" data-toggle="popover" data-content="Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: <br> 1. PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%. <br> 2. PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                                </label>
+                                <textarea class="form-control textarea-catatan" name="catatan_4" id="catatan-4" placeholder="Indikator Penilaian : Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: 1. PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%. 2. PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%." required></textarea>
+                              </fieldset>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <fieldset class="form-group mb-1">
+                                <label for="catatan-4-validator">Catatan Skor 4 Validator</label>
+                                <textarea class="form-control textarea-catatan" id="catatan-4-validator" placeholder="Catatan skor 4 dari validator" disabled></textarea>
                               </fieldset>
                             </div>
                           </div>
@@ -297,6 +435,40 @@
         </div>
       <?php endif; ?>
 
+      <!-- MODAL NARASI -->
+      <div class="modal fade" id="modal-narasi-led" tabindex="-1" role="dialog" aria-labelledby="modalNarasiLedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-primary white">
+              <h5 class="modal-title text-white" id="modalNarasiLedLabel">Narasi LED</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group mb-0">
+                <label for="narasi-led-indikator">Isi Narasi LED</label>
+                <textarea class="form-control textarea-catatan" id="narasi-led-indikator" rows="18" placeholder="Narasi LED Indikator 1 akan ditampilkan di sini." readonly></textarea>
+              </div>
+              <div class="form-group mt-2 mb-0">
+                <label for="link-bukti-indikator">Link Bukti</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="link-bukti-indikator" placeholder="Link bukti indikator akan ditampilkan di sini." readonly>
+                  <div class="input-group-append">
+                    <a href="#" target="_blank" class="btn btn-info" id="btn-link-bukti-indikator">Buka Link</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- MODAL NARASI -->
+
       <!-- Basic Horizontal Timeline -->
       <div class="row mb-5">
         <div class="col-md-12 col-sm-12">
@@ -321,7 +493,7 @@
                       Penilaian sudah ditutup
                     </a>
                   <?php } else { ?>
-                    <a href="<?= base_url('admin/kirim-nilai/' . safe_url_encrypt($periode_dipilih->kode)) ?>" class="btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="Kirim semua nilai yang statusnya draft ke validator" id="kirim-nilai">
+                    <a href="<?= base_url('admin/kirim-nilai/' . safe_url_encrypt($periode_dipilih->kode) . '/' . safe_url_encrypt('semua')) ?>" class="btn btn-primary waves-effect waves-light kirim-nilai" data-toggle="tooltip" data-placement="top" title="Kirim semua nilai yang statusnya draft (penilaian fasilitator) ke validator" data-content="semua nilai">
                       Kirim Nilai ke Validator
                     </a>
                   <?php } ?>
@@ -334,30 +506,27 @@
                   <table id="tabel-penilaian" class="table table-striped table-bordered" width="100%">
                     <thead>
                       <tr style="background-color: #563BFF; color: #ffffff">
-                        <th class="text-center" rowspan="3">#</th>
-                        <th class="text-center" rowspan="3">Periode <span class="text-danger" data-toggle="popover" data-content="Periode 1 : Januari - Juni <br> Periode 2 : Juli - November" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                        <th class="text-center" rowspan="3">Kode PT</th>
-                        <th class="text-center" rowspan="3">Nama PT</th>
-                        <th class="text-center" colspan="3">Butir Penilaian</th>
-                        <th class="text-center" rowspan="3">
+                        <th class="text-center" rowspan="2">#</th>
+                        <th class="text-center" rowspan="2">Periode <span class="text-danger" data-toggle="popover" data-content="Periode 1 : Januari - Juni <br> Periode 2 : Juli - November" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
+                        <th class="text-center" rowspan="2">Kode PT</th>
+                        <th class="text-center" rowspan="2">Nama PT</th>
+                        <th class="text-center" colspan="4">Butir Penilaian</th>
+                        <th class="text-center" rowspan="2">
                           Skor <br> Total <br>
-                          <span class="text-danger" data-toggle="popover" data-content="Skor Total =((Skor 1a+(2*Skor 1b))/3)x2,22)+(Skor 2 x 2,78)" data-trigger="hover" data-original-title="Formula Perhitungan"><i class="la la-info-circle"></i></span>
+                          <span class="text-danger" data-toggle="popover" data-content="Skor Total = Skor 1 + Skor 2 + Skor 3 + Skor 4" data-trigger="hover" data-original-title="Formula Perhitungan"><i class="la la-info-circle"></i></span>
                         </th>
-                        <th class="text-center" rowspan="3">
+                        <th class="text-center" rowspan="2">
                           Tipologi
-                          <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 rentang Nilai Terbobot : 17,5 < n ≤ 20; <br> Tipologi 2 rentang Nilai Terbobot : 15 < n ≤ 17,5; <br> Tipologi 3 rentang Nilai Terbobot : 10 ≤ n ≤ 15; <br> Tipologi 4 Nilai Terbobot : < 10;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
+                          <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 : 8; <br> Tipologi 2 : 6-7,5; <br> Tipologi 3 : 4-5,5; <br> Tipologi 4 : < 4;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
                         </th>
-                        <th class="text-center" rowspan="3">Status</th>
-                        <th class="text-center" rowspan="3">Aksi</th>
+                        <th class="text-center" rowspan="2">Status</th>
+                        <th class="text-center" rowspan="2">Aksi</th>
                       </tr>
                       <tr style="background-color: #563BFF; color: #ffffff">
-                        <th class="text-center" colspan="2">Butir 1 <br> (Bobot 2,22)</th>
-                        <th class="text-center">Butir 2 <br> (Bobot 2,78)</th>
-                      </tr>
-                      <tr style="background-color: #563BFF; color: #ffffff">
-                        <th class="text-center text-wrap">Skor 1a <span class="text-danger" data-toggle="popover" data-content="Ketersediaan dokumen formal SPMI yang dibuktikan dengan keberadaan 5 aspek sebagai berikut: <br> (1) organ/fungsi spmi, <br> (2) dokumen SPMI <br> (3) auditor internal <br> (4) hasil audit <br> (5) bukti tndak lanjut" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                        <th class="text-center text-wrap">Skor 1b <span class="text-danger" data-toggle="popover" data-content="Ketersediaan bukti sahih terkait praktik baik  pengembangan budaya mutu di perguruan tinggi melalui RTM yang mengagendakan unsur-unsur <br> (1) hasil audit internal <br> (2) umpan balik <br> (3) kinerja proses dan kesesuaian produk <br> (4) status tindakan pencegahan dan perbaikan <br> (5) tindak lanjut dari tinjauan sebelumnya <br> (6) perubahan yang dapat mempengaruhi sistem manajemen mutu <br> (7) rekomendasi peningkatan" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                        <th class="text-center text-wrap">Skor 2 <span class="text-danger" data-toggle="popover" data-content="Efektivitas pelaksanaan penjaminan mutu yang memenuhi 4 aspek sbb: <br> 1. keberadaan dokumen formal penetapan standar mutu <br> 2. standar mutu dilaksanakan secara konsisten <br> 3. minitoring evaluasi dan pengendalian terhadap standar mutu yang telah ditetapkan <br> 4. hasilnya ditindaklanjuti untuk perbaikan dan peningkatan mutu" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
+                        <th class="text-center text-wrap">Skor 1 <span class="text-danger" data-toggle="popover" data-content="Sistem Penjaminan Mutu Internal yang dikembangkan Perguruan Tinggi, mencakup: <br> 1. Standar Pendidikan Tinggi (akademik dan non akademik) yang melampauai SN Dikti dan sesuai fokus misi PT, telah ditetapkan oleh perguruan tinggi serta telah disosialisasikan ke seluruh pemangku kepentingan. <br> 2. Sistem Tatakelola Perguruan Tinggi dalam mengimplementasikan SPMI, mencakup minimal: SOP implementasi SPMI, keberfungsian SPMI di berbagai tingkat (pelaksana dan sistem implementasi) yang akuntabel, transparan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 3. Sistem Evaluasi Pemenuhan Standar Pendidikan Tinggi yang transparan, akuntabel, mapan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 4. Sistem Peningkatan Mutu Berkelanjutan yang telah diimplementasikan secara efektif dan efisien paling sedikit selama 3 tahun." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
+                        <th class="text-center text-wrap">Skor 2 <span class="text-danger" data-toggle="popover" data-content="Implementasi siklus  penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan (PPEPP) dalam bidang akademik dan non-akademik, paling sedikit selama 3 tahun secara konsisten, berkelanjutan dan terbukti efektif, dan terdiri atas: <br> 1. Penetapan Standar Pendidikan Tinggi  yang sesuai misi perguruan tinggi, yaitu perancangan, perumusan, dan pengesahan standar PT. <br> 2. Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan standar oleh semua pihak yang bertanggungjawab agar isi standar tercapai. <br> 3. Evaluasi Pemenuhan Standar Pendidikan Tinggi, yaitu evaluasi kesesuaian pelaksanaan standar dengan standar yang telah ditetapkan dan cara pemenuhannya. <br> 4. Pengendalian Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan koreksi bila terjadi penyimpangan terhadap isi dan/atau pelaksanaan standar, mempertahan pelaksanaan yang telah memenuhi standar dan sedapat mungkin meningkatkan kualitas pelaksanaannya. <br> 5. Peningkatan Standar Pendidikan Tinggi, yaitu evaluasi isi standar dan peningkatan  mutu isi standar secara berkala dan berkelanjutan." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
+                        <th class="text-center text-wrap">Skor 3 <span class="text-danger" data-toggle="popover" data-content="Laporan implementasi SPMI dan kinerja perguruan tinggi secara berkala, sistematis,  dan pengelolaan data serta informasi terkait implementasi SPMI melalui PD Dikti, mencakup: <br> 1. Laporan semesteran/tahunan tentang implementasi SPMI dan kinerja perguruan tinggi yang menerus bertambah baik dalam bentuk digital/sistem/hardcopy paling sedikit selama 3 tahun terakhir secara sistematis. <br> 2. Keberfungsian sistem pengelolaan data dan informasi  terkait implementasi SPMI melalui PD Dikti yang transparan, akuntabel, valid dan berintegritas." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
+                        <th class="text-center text-wrap">Skor 4 <span class="text-danger" data-toggle="popover" data-content="Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: <br> 1. PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%. <br> 2. PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -372,7 +541,12 @@
                           }
 
                           $row_class = '';
-                          if ($data->id_status_penilaian == '4') {
+
+                          if ($data->id_status_penilaian == '6') {
+                            $row_class = 'table-secondary'; // abu-abu
+                          } elseif ($data->id_status_penilaian == '5') {
+                            $row_class = 'table-primary'; // ungu
+                          } elseif ($data->id_status_penilaian == '4') {
                             $row_class = 'table-success'; // hijau
                           } elseif ($data->id_status_penilaian == '3') {
                             $row_class = 'table-danger'; // kuning
@@ -387,38 +561,65 @@
                             <td class="text-center" style="width: 10%;"><?= $periode ?></td>
                             <td class="text-center" style="width: 5%;"><?= $data->kode_pt ?></td>
                             <td class="text-start" style="width: 20%;"><?= $data->nama_pt ?></td>
-                            <td class="text-center" style="width: 5%;">
-                              <?= $data->skor_1a ?>
-                              <?php
-                              $warna_1a = ($data->cek_1a == '1' && $data->skor_1a !== null) ? 'text-success' : 'text-danger';
-                              $iconCek_1a = ($data->cek_1a == '1' && $data->skor_1a !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_1a == '0' && $data->skor_1a !== null) ? '<i class="fa fa-times"></i>' : '');
-                              ?>
-                              <span class="<?= $warna_1a ?>" data-toggle="popover" data-content="<?= $data->catatan_1a_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 1a" style="cursor: pointer;"><?= $iconCek_1a ?></span>
-                            </td>
-                            <td class="text-center" style="width: 5%;">
-                              <?= $data->skor_1b ?>
-                              <?php
-                              $warna_1b = ($data->cek_1b == '1' && $data->skor_1b !== null) ? 'text-success' : 'text-danger';
-                              $iconCek_1b = ($data->cek_1b == '1' && $data->skor_1b !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_1b == '0' && $data->skor_1b !== null) ? '<i class="fa fa-times"></i>' : '');
-                              ?>
-                              <span class="<?= $warna_1b ?>" data-toggle="popover" data-content="<?= $data->catatan_1b_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 1b" style="cursor: pointer;"><?= $iconCek_1b ?></span>
-                            </td>
-                            <td class="text-center" style="width: 5%;">
-                              <?= $data->skor_2 ?>
-                              <?php
-                              $warna_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? 'text-success' : 'text-danger';
-                              $iconCek_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_2 == '0' && $data->skor_2 !== null) ? '<i class="fa fa-times"></i>' : '');
-                              ?>
-                              <span class="<?= $warna_2 ?>" data-toggle="popover" data-content="<?= $data->catatan_2_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 2" style="cursor: pointer;"><?= $iconCek_2 ?></span>
-                            </td>
-                            <td class="text-center" style="width: 5%;"><?= $data->skor_total ?></td>
-                            <td class="text-center" style="width: 5%;"><?= $data->tipologi ?></td>
+                            <?php if (in_array($data->id_status_penilaian, ['5', '6'])) : ?>
+                              <td class="text-center" colspan="6" style="width: 5%;">
+                                <?php if ($data->id_status_penilaian == '5') : ?>
+                                  <i class="fa fa-paper-plane" style="color: #007bff;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Nilai sudah divalidasi oleh validator, tetapi belum dipublish"></i>
+                                <?php elseif ($data->id_status_penilaian == '6') : ?>
+                                  <i class="fa fa-gear" style="color: #ff003c;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Menunggu approval admin"></i>
+                                <?php endif; ?>
+                              </td>
+                            <?php else : ?>
+                              <td class="text-center" style="width: 5%;">
+                                <?= $data->skor_1 ?>
+                                <?php
+                                $warna_1 = ($data->cek_1 == '1' && $data->skor_1 !== null) ? 'text-success' : 'text-danger';
+                                $iconCek_1 = ($data->cek_1 == '1' && $data->skor_1 !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_1 == '0' && $data->skor_1 !== null) ? '<i class="fa fa-times"></i>' : '');
+                                ?>
+                                <span class="<?= $warna_1 ?>" data-toggle="popover" data-content="<?= $data->catatan_1_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 1" style="cursor: pointer;"><?= $iconCek_1 ?></span>
+                              </td>
+                              <td class="text-center" style="width: 5%;">
+                                <?= $data->skor_2 ?>
+                                <?php
+                                $warna_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? 'text-success' : 'text-danger';
+                                $iconCek_2 = ($data->cek_2 == '1' && $data->skor_2 !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_2 == '0' && $data->skor_2 !== null) ? '<i class="fa fa-times"></i>' : '');
+                                ?>
+                                <span class="<?= $warna_2 ?>" data-toggle="popover" data-content="<?= $data->catatan_2_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 2" style="cursor: pointer;"><?= $iconCek_2 ?></span>
+                              </td>
+                              <td class="text-center" style="width: 5%;">
+                                <?= $data->skor_3 ?>
+                                <?php
+                                $warna_3 = ($data->cek_3 == '1' && $data->skor_3 !== null) ? 'text-success' : 'text-danger';
+                                $iconCek_3 = ($data->cek_3 == '1' && $data->skor_3 !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_3 == '0' && $data->skor_3 !== null) ? '<i class="fa fa-times"></i>' : '');
+                                ?>
+                                <span class="<?= $warna_3 ?>" data-toggle="popover" data-content="<?= $data->catatan_3_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 3" style="cursor: pointer;"><?= $iconCek_3 ?></span>
+                              </td>
+                              <td class="text-center" style="width: 5%;">
+                                <?= $data->skor_4 ?>
+                                <?php
+                                $warna_4 = ($data->cek_4 == '1' && $data->skor_4 !== null) ? 'text-success' : 'text-danger';
+                                $iconCek_4 = ($data->cek_4 == '1' && $data->skor_4 !== null) ? '<i class="fa fa-check"></i>' : (($data->cek_4 == '0' && $data->skor_4 !== null) ? '<i class="fa fa-times"></i>' : '');
+                                ?>
+                                <span class="<?= $warna_4 ?>" data-toggle="popover" data-content="<?= $data->catatan_4_validator ?>" data-trigger="hover" data-original-title="Catatan Validator 4" style="cursor: pointer;"><?= $iconCek_4 ?></span>
+                              </td>
+                              <td class="text-center" style="width: 5%;">
+                                <?= $data->skor_total ?>
+                              </td>
+                              <td class="text-center" style="width: 5%;">
+                                <?= $data->tipologi ?>
+                              </td>
+                            <?php endif; ?>
+
                             <td class="text-center" style="width: 5%;">
                               <?php
                               $warna_badge = $data->id_status_penilaian == '4' ? 'badge-success' : (
                                 $data->id_status_penilaian == '3' ? 'badge-danger' : (
                                   $data->id_status_penilaian == '2' ? 'badge-warning' : (
-                                    $data->id_status_penilaian == '1' ? 'badge-info' : 'badge-secondary'
+                                    $data->id_status_penilaian == '1' ? 'badge-info' : (
+                                      $data->id_status_penilaian == '5' ? 'badge-primary' : (
+                                        $data->id_status_penilaian == '6' ? 'bg-blue-grey bg-darken-4' : 'badge-secondary'
+                                      )
+                                    )
                                   )
                                 )
                               );
@@ -426,7 +627,11 @@
                               $icon = $data->id_status_penilaian == '4' ? 'fa-check-circle' : (
                                 $data->id_status_penilaian == '3' ? 'fa-times-circle' : (
                                   $data->id_status_penilaian == '2' ? 'fa-hourglass-half' : (
-                                    $data->id_status_penilaian == '1' ? 'fa-spinner fa-spin' : 'fa-question-circle'
+                                    $data->id_status_penilaian == '1' ? 'fa-spinner fa-spin' : (
+                                      $data->id_status_penilaian == '5' ? 'fa-paper-plane' : (
+                                        $data->id_status_penilaian == '6' ? 'fa-rotate-left' : 'fa-question-circle'
+                                      )
+                                    )
                                   )
                                 )
                               );
@@ -437,11 +642,18 @@
                               </span>
                             </td>
                             <td class="text-center" style="width: 8%;">
-                              <a href="<?= base_url('admin/riwayat-penilaian/' . safe_url_encrypt($data->id_penilaian_tipologi)) ?>" target="_blank">
-                                <button class="btn btn-dark btn-sm waves-effect waves-light" type="button" data-toggle="tooltip" data-placement="top" data-original-title="Riwayat Penilaian">
-                                  <i class="la la-history"></i>
-                                </button>
-                              </a>
+                              <div class="btn-group" role="group">
+                                <?php if ($data->id_status_penilaian == 1 && $periode_dipilih->status == '1') : ?>
+                                  <a href="<?= base_url('admin/kirim-nilai/' . safe_url_encrypt($periode_dipilih->kode) . '/' . safe_url_encrypt($data->id_penilaian_tipologi)) ?>" class="btn btn-primary btn-sm waves-effect waves-light kirim-nilai" data-toggle="tooltip" data-placement="top" title="Kirim Nilai ke Validator" data-namapt="<?= $data->nama_pt ?>">
+                                    <i class="la la-paper-plane"></i>
+                                  </a>
+                                <?php endif; ?>
+                                <a href="<?= base_url('admin/riwayat-penilaian/' . safe_url_encrypt($data->id_penilaian_tipologi)) ?>" target="_blank">
+                                  <button class="btn btn-dark btn-sm waves-effect waves-light" type="button" data-toggle="tooltip" data-placement="top" data-original-title="Riwayat Penilaian">
+                                    <i class="la la-history"></i>
+                                  </button>
+                                </a>
+                              </div>
                             </td>
                           </tr>
                         <?php
@@ -483,6 +695,57 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script type="text/javascript">
+  $('.narasi-indikator-led').on('click', function() {
+    let id_penilaian_tipologi = $('#id-penilaian-tipologi').val();
+    let narasi = 'narasi_' + $(this).data('indikator');
+    let bukti = 'bukti_' + $(this).data('indikator');
+
+    $.ajax({
+      url: '<?= base_url("admin/get-penilaian") ?>',
+      method: 'POST',
+      data: {
+        id_penilaian_tipologi: id_penilaian_tipologi,
+        [csrfName]: csrfHash
+      },
+      dataType: 'json',
+      success: function(response) {
+        if (response.form_led == null) {
+          return Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: "Narasi tidak tersedia.",
+            confirmButtonColor: '#dc3545'
+          });
+        }
+
+        const indikator = narasi.split('_')[1];
+        const indikatorMap = {
+          '1': { label: 'Sasaran Mutu Masukan', narasiKey: 'sasaran_mutu_masukan', buktiKey: 'tautan_sasaran_mutu_masukan' },
+          '2': { label: 'Sasaran Mutu Proses', narasiKey: 'sasaran_mutu_proses', buktiKey: 'tautan_sasaran_mutu_proses' },
+          '3': { label: 'Sasaran Mutu Luaran', narasiKey: 'sasaran_mutu_luaran', buktiKey: 'tautan_sasaran_mutu_luaran' },
+          '4': { label: 'Sasaran Mutu Dampak', narasiKey: 'sasaran_mutu_dampak', buktiKey: 'tautan_sasaran_mutu_dampak' }
+        };
+
+        let narasiValue = response.data[narasi] ? response.data[narasi] : '';
+        let buktiValue = response.data[bukti] ? response.data[bukti] : '';
+
+        if (indikatorMap[indikator]) {
+          narasiValue = response.form_led[indikatorMap[indikator].narasiKey] ? response.form_led[indikatorMap[indikator].narasiKey] : '';
+          buktiValue = response.form_led[indikatorMap[indikator].buktiKey] ? response.form_led[indikatorMap[indikator].buktiKey] : '';
+        }
+
+        $('#modalNarasiLedLabel').text((indikatorMap[indikator] ? indikatorMap[indikator].label : 'Indikator ' + indikator));
+        $('#narasi-led-indikator').val(narasiValue);
+        $('#link-bukti-indikator').val(buktiValue);
+        $('#btn-link-bukti-indikator').attr('href', buktiValue);
+        $('#modal-narasi-led').modal('show');
+      },
+      error: function(xhr) {
+        alert('Gagal mengambil data');
+      }
+    });
+  });
+
   $(document).ready(function() {
     var tabelPenilaian = $('#tabel-penilaian').DataTable();
 
@@ -503,13 +766,28 @@
     var ListPT = new List('list-pt', list_pt_options);
   });
 
+  $('.popover-skor4-trigger').popover('dispose');
+  $('.popover-skor4-trigger').popover({
+    html: true,
+    trigger: 'hover',
+    placement: 'auto',
+    template: `
+        <div class="popover popover-skor4" role="tooltip">
+            <div class="arrow"></div>
+            <h3 class="popover-header"></h3>
+            <div class="popover-body"></div>
+        </div>
+    `
+  });
+
   $(document).on('submit', '#form-input-skor', function(event) {
     // let nama_pt = document.getElementById('nama-pt').value;
     let kode_pt = $('#kode-pt').val();
     let nama_pt = $('#nama-pt').val();
-    let skor_1a = $('#skor-1a').val();
-    let skor_1b = $('#skor-1b').val();
+    let skor_1 = $('#skor-1').val();
     let skor_2 = $('#skor-2').val();
+    let skor_3 = $('#skor-3').val();
+    let skor_4 = $('#skor-4').val();
     let catatan_keseluruhan = $('#catatan-keseluruhan').val();
 
     // Cegah submit form langsung
@@ -524,7 +802,7 @@
       });
     }
 
-    if (skor_1a == '' || skor_1b == '' || skor_2 == '') {
+    if (skor_1 == '' || skor_2 == '' || skor_3 == '' || skor_4 == '') {
       return Swal.fire({
         icon: 'error',
         title: 'Gagal!',
@@ -553,69 +831,12 @@
       cancelButtonText: 'Batal'
     }).then((result) => {
       if (result.isConfirmed) {
+        $('#skor-1, #skor-2, #skor-3, #skor-4').removeAttr('disabled').prop('disabled', false);
         // Gunakan native submit agar event berjalan normal
         document.getElementById('form-input-skor').submit();
       }
     });
   });
-
-  function validateSkorInput(input) {
-    let val = input.value;
-
-    // Hapus semua kecuali angka dan titik
-    val = val.replace(/[^0-9.]/g, '');
-
-    // Hanya izinkan satu titik
-    const parts = val.split('.');
-    if (parts.length > 2) {
-      val = parts[0] + '.' + parts[1]; // buang titik kelebihan
-    }
-
-    // Optional: Batasi hanya 1 digit setelah titik
-    // val = val.replace(/^(\d+)\.(\d).*$/, '$1.$2');
-
-    input.value = val;
-  }
-
-  function validateSkorValue(input) {
-    const val = parseFloat(input.value.replace(',', '.'));
-    if (val > 4) {
-      return Swal.fire({
-        icon: 'warning',
-        title: 'Peringatan!',
-        text: 'Nilai maksimal adalah 4',
-        // confirmButtonColor: '#dc3545'
-      }).then(() => {
-        // Fokus ke input setelah Swal ditutup
-        input.value = '';
-      });
-    }
-  }
-
-  function validateMinSkorValue(input) {
-    const val = parseFloat(input.value.replace(',', '.'));
-    if (val < 2) {
-      return Swal.fire({
-        icon: 'warning',
-        title: 'Peringatan!',
-        text: 'Nilai minimal adalah 2',
-        // confirmButtonColor: '#dc3545'
-      }).then(() => {
-        // Fokus ke input setelah Swal ditutup
-        input.value = '';
-      });
-    } else if (val > 4) {
-      return Swal.fire({
-        icon: 'warning',
-        title: 'Peringatan!',
-        text: 'Nilai maksimal adalah 4',
-        // confirmButtonColor: '#dc3545'
-      }).then(() => {
-        // Fokus ke input setelah Swal ditutup
-        input.value = '';
-      });
-    }
-  }
 
   $(document).on('click', '.list-group-item', function() {
     // Hapus kelas aktif dari item lain
@@ -640,10 +861,6 @@
     var nama_pt = $(this).data('nama-pt');
     var kode_pt = $(this).data('kode-pt');
     var id_penilaian_tipologi = $(this).data('id-penilaian');
-    $('#nama-pt').val(nama_pt);
-    $('#kode-pt').val(kode_pt);
-    $('#id-penilaian-tipologi').val(id_penilaian_tipologi);
-    $('#skor-1a').focus();
     // Kirim ke backend via AJAX
     $.ajax({
       url: '<?= base_url("admin/get-penilaian") ?>',
@@ -654,26 +871,74 @@
       },
       dataType: 'json',
       success: function(response) {
-        $('#skor-1a').val(response.data.skor_1a);
-        $('#skor-1b').val(response.data.skor_1b);
+        if (response.form_led == null || response.form_led.status == '0') {
+          $('.lihat-narasi-led').addClass('d-none');
+          $('#total-prodi-aktif').text('-');
+          $('#prodi-terakreditasi').text('-');
+          $('#prodi-unggul-atau-a').text('-');
+          $('#persentase-prodi-unggul-atau-a').text('-');
+          return Swal.fire({
+            icon: 'error',
+            title: 'Tidak Dapat Melakukan Penilaian',
+            text: "PT belum mengisi/simpan permanen LED.",
+            confirmButtonColor: '#dc3545'
+          });
+        }
+
+        function ambilNilai(data, keys, defaultValue = '') {
+          for (let i = 0; i < keys.length; i++) {
+            if (data && data[keys[i]] !== undefined && data[keys[i]] !== null && data[keys[i]] !== '') {
+              return data[keys[i]];
+            }
+          }
+          return defaultValue;
+        }
+
+        const totalProdi = ambilNilai(response.persentase_prodi, ['total_prodi_aktif'], '0');
+        const prodiTerakreditasi = ambilNilai(response.persentase_prodi, ['prodi_terakreditasi'], '0');
+        const prodiUnggulA = ambilNilai(response.persentase_prodi, ['prodi_unggul_atau_a'], '0');
+        let persentaseUnggulA = ambilNilai(response.persentase_prodi, ['persentase_unggul_atau_a'], '0');
+
+        if (persentaseUnggulA !== '' && !String(persentaseUnggulA).includes('%')) {
+          const angkaPersentase = parseFloat(String(persentaseUnggulA).replace(',', '.'));
+          persentaseUnggulA = isNaN(angkaPersentase) ? persentaseUnggulA + '%' : angkaPersentase.toFixed(2) + '%';
+        }
+
+        $('#total-prodi-aktif').text(totalProdi);
+        $('#prodi-terakreditasi').text(prodiTerakreditasi);
+        $('#prodi-unggul-atau-a').text(prodiUnggulA);
+        $('#persentase-prodi-unggul-atau-a').text(persentaseUnggulA);
+
+        $('#nama-pt').val(nama_pt);
+        $('#kode-pt').val(kode_pt);
+        $('#id-penilaian-tipologi').val(id_penilaian_tipologi);
+        $('#skor-1').focus();
+        $('#skor-1').val(response.data.skor_1);
         $('#skor-2').val(response.data.skor_2);
-        $('#catatan-1a').val(response.data.catatan_1a);
-        $('#catatan-1b').val(response.data.catatan_1b);
+        $('#skor-3').val(response.data.skor_3);
+        $('#skor-4').val(response.data.skor_4);
+        $('#catatan-1').val(response.data.catatan_1);
         $('#catatan-2').val(response.data.catatan_2);
+        $('#catatan-3').val(response.data.catatan_3);
+        $('#catatan-4').val(response.data.catatan_4);
         $('#catatan-keseluruhan').val(response.data.catatan_keseluruhan);
-        $('#catatan-1a-validator').val(response.data.catatan_1a_validator);
-        $('#catatan-1b-validator').val(response.data.catatan_1b_validator);
+        $('#catatan-1-validator').val(response.data.catatan_1_validator);
         $('#catatan-2-validator').val(response.data.catatan_2_validator);
+        $('#catatan-3-validator').val(response.data.catatan_3_validator);
+        $('#catatan-4-validator').val(response.data.catatan_4_validator);
         $('#catatan-keseluruhan-validator').val(response.data.catatan_keseluruhan_validator);
         // $('#link-detail-penilaian').val(response.data.link_detail_penilaian)
 
         // Enable all skor fields by default
-        $('#skor-1a').prop('disabled', false);
-        $('#catatan-1a').prop('disabled', false);
-        $('#skor-1b').prop('disabled', false);
-        $('#catatan-1b').prop('disabled', false);
+        $('#skor-1').prop('disabled', false);
+        $('#catatan-1').prop('disabled', false);
         $('#skor-2').prop('disabled', false);
         $('#catatan-2').prop('disabled', false);
+        $('#skor-3').prop('disabled', false);
+        $('#catatan-3').prop('disabled', false);
+        $('#skor-4').prop('disabled', false);
+        $('#catatan-4').prop('disabled', false);
+        $('.lihat-narasi-led').removeClass('d-none');
 
         // Helper untuk set readonly dan style
         function setReadonly(selector, isReadonly) {
@@ -685,23 +950,38 @@
             });
         }
 
-        if (response.data.id_status_penilaian == 3) {
-          setReadonly('#skor-1a', response.data.cek_1a == 1);
-          setReadonly('#catatan-1a', response.data.cek_1a == 1);
-          setReadonly('#skor-1b', response.data.cek_1b == 1);
-          setReadonly('#catatan-1b', response.data.cek_1b == 1);
-          setReadonly('#skor-2', response.data.cek_2 == 1);
+        // Helper untuk set disabled dan style
+        function setDisabled(selector, isDisabled) {
+          $(selector).prop('disabled', isDisabled)
+            .css({
+              'box-shadow': isDisabled ? '0 0 0 1px #28a745' : '0 0 0 1px #dc3545',
+              'cursor': isDisabled ? 'not-allowed' : 'pointer',
+              'background-color': isDisabled ? '#b5e49fff' : '#ffd6d6'
+            });
+        }
+
+        if (response.data.id_status_penilaian == 3 || (response.data.id_status_penilaian == 1 && (response.data.cek_1 == 1 || response.data.cek_2 == 1 || response.data.cek_3 == 1 || response.data.cek_4 == 1))) {
+          setDisabled('#skor-1', response.data.cek_1 == 1);
+          setReadonly('#catatan-1', response.data.cek_1 == 1);
+          setDisabled('#skor-2', response.data.cek_2 == 1);
           setReadonly('#catatan-2', response.data.cek_2 == 1);
+          setDisabled('#skor-3', response.data.cek_3 == 1);
+          setReadonly('#catatan-3', response.data.cek_3 == 1);
+          setDisabled('#skor-4', response.data.cek_4 == 1);
+          setReadonly('#catatan-4', response.data.cek_4 == 1);
         } else {
           // Kembalikan ke style awal (editable, style default)
-          $('#skor-1a, #catatan-1a, #skor-1b, #catatan-1b, #skor-2, #catatan-2').prop('readonly', false)
+          $('#skor-1, #catatan-1, #skor-2, #catatan-2, #skor-3, #catatan-3, #skor-4, #catatan-4').prop('readonly', false)
             .css({
               'box-shadow': '',
               'cursor': '',
               'background-color': ''
             });
         }
-
+        $('#skor-4').val(response.skoring_prodi.skor.toFixed(1));
+        $('#skor-4').prop('disabled', true).css({
+          'cursor': 'not-allowed',
+        });
       },
       error: function(xhr) {
         alert('Gagal mengambil data');
@@ -709,13 +989,29 @@
     });
   });
 
-  $(document).on('click', '#kirim-nilai', function(event) {
+  $(document).on('click', '.kirim-nilai', function(event) {
     event.preventDefault(); // Cegah aksi default link
     // console.log($('#kirim-nilai').attr('href'));
 
+    const buka_tutup = '<?= $buka_tutup ?>';
+    if (buka_tutup === 'tutup') {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: 'Penilaian sudah ditutup, tidak bisa mengirim nilai ke validator',
+        confirmButtonColor: '#dc3545'
+      });
+    }
+
+    if ($(this).attr('data-content') === 'semua nilai') {
+      var pesan = 'Apakah anda yakin ingin mengirim semua nilai yang statusnya draft (penilaian fasilitator) ke validator?';
+    } else {
+      var pesan = 'Apakah anda yakin ingin mengirim nilai ' + $(this).attr('data-namapt') + ' ke validator?';
+    }
+
     Swal.fire({
       title: 'Kirim Nilai?',
-      text: "Apakah anda yakin ingin mengirim semua nilai yang statusnya draft ke validator?",
+      text: pesan,
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -728,6 +1024,5 @@
         window.location.href = $(this).attr('href');
       }
     });
-
   });
 </script>

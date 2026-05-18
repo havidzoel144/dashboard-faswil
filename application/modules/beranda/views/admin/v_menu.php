@@ -38,15 +38,81 @@
                 </li>
             <?php endif; ?>
 
-            <?php if (has_role([5])) : ?>
+            <?php if (has_role([5]) && false) : ?>
                 <li class="nav-item <?= $cek_penilaian ?>" data-menu="">
                     <a class="nav-link" href="<?= base_url() ?>admin/validator"><i class="la la-edit"></i><span data-i18n="Validasi Nilai">Validasi Nilai</span></a>
                 </li>
             <?php endif; ?>
 
-            <?php if (has_role([4])) : ?>
+            <?php if (has_role([4]) && false) : ?>
                 <li class="nav-item <?= $penilaian ?>" data-menu="">
                     <a class="nav-link" href="<?= base_url() ?>admin/penilaian-tipologi"><i class="la la-pencil"></i><span data-i18n="Penilaian Tipologi">Penilaian Tipologi</span></a>
+                </li>
+            <?php endif; ?>
+
+            <?php if (has_role([1, 2, 4, 5, 6])) : ?>
+                <li class="dropdown nav-item" data-menu="dropdown">
+                    <a class="dropdown-toggle nav-link <?= $penjaminan_mutu ?>" href="#" data-toggle="dropdown" aria-expanded="false"><i class="la la-angle-down"></i><span data-i18n="Penjaminan Mutu">Penjaminan Mutu </span></a>
+                    <ul class="dropdown-menu">
+                        <?php if (has_role([4])) : ?>
+                            <li data-menu="" class="<?= $penilaian ?>">
+                                <a class="dropdown-item" href="<?= base_url('admin/penilaian-tipologi') ?>">
+                                    <span class="fonticon-wrap">
+                                        <i class="la la-pencil"></i>
+                                    </span>
+                                    <span data-i18n="Penilaian Tipologi">Penilaian Tipologi</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if (has_role([5])) : ?>
+                            <li data-menu="" class="<?= $cek_penilaian ?>">
+                                <a class="dropdown-item" href="<?= base_url('admin/validator') ?>">
+                                    <span class="fonticon-wrap">
+                                        <i class="la la-edit"></i>
+                                    </span>
+                                    <span data-i18n="Validasi Nilai">Validasi Nilai</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if (has_role([2, 4, 6]) && false) : ?>
+                            <li data-menu="" class="<?= $evaluasi_360 ?>">
+                                <a class="dropdown-item" href="<?= base_url('admin/evaluasi-360') ?>">
+                                    <span class="fonticon-wrap">
+                                        <i class="la la-tasks"></i>
+                                    </span>
+                                    <span data-i18n="Evaluasi 360">Evaluasi 360</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if (has_role([6])) : ?>
+                            <li data-menu="" class="<?= $pengisian_led ?>">
+                                <a class="dropdown-item" href="<?= base_url('admin/pt/pengisian-led') ?>">
+                                    <span class="fonticon-wrap">
+                                        <i class="la la-tasks"></i>
+                                    </span>
+                                    <span data-i18n="Pengisian LED">Pengisian LED</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if (has_role([1, 2, 6])) : ?>
+                            <li data-menu="" class="<?= $pm ?>">
+                                <a class="dropdown-item" href="<?= base_url('admin/penjaminan-mutu') ?>">
+                                    <span class="fonticon-wrap">
+                                        <i class="la la-th-list"></i>
+                                    </span>
+                                    <span data-i18n="Data Penjaminan Mutu IAPT 4.1">Data Penjaminan Mutu IAPT 4.1</span>
+                                </a>
+                            </li>
+                            <li data-menu="" class="<?= $pm_30 ?>">
+                                <a class="dropdown-item" href="<?= base_url('admin/penjaminan-mutu-30') ?>">
+                                    <span class="fonticon-wrap">
+                                        <i class="la la-th-list"></i>
+                                    </span>
+                                    <span data-i18n="Data Penjaminan Mutu IAPT 3.0">Data Penjaminan Mutu IAPT 3.0</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
                 </li>
             <?php endif; ?>
 
@@ -56,7 +122,7 @@
                 </li>
             <?php endif; ?>
 
-            <?php if (has_role([1, 2])) : ?>
+            <?php if (has_role([1, 2]) && false) : ?>
                 <li class="nav-item <?= $pm ?>" data-menu="">
                     <a class="nav-link" href="<?= base_url() ?>admin/penjaminan-mutu"><i class="la la-th-list"></i><span data-i18n="Penjaminan Mutu">Penjaminan Mutu</span></a>
                 </li>
@@ -69,11 +135,11 @@
 
 
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-            <a class="mr-1" href="https://lldikti3.kemdikbud.go.id/">
+            <a class="mr-1" href="https://lldikti3.kemdiktisaintek.go.id/">
                 <button class="btn btn-warning-dashboard"><i class="la la-home"></i> Halaman Utama</button>
             </a>
             <a href="<?= base_url() ?>">
-                <button class="btn btn-dashboard"><i class="la la-dashboard"></i> Halaman Dashboard</button>
+                <button class="btn btn-dashboard"><i class="la la-dashboard"></i> Dashboard</button>
             </a>
         </ul>
     </div>

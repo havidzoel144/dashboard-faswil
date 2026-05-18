@@ -137,9 +137,10 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Skor<br>1a</th>
-                                            <th>Skor<br>1b</th>
+                                            <th>Skor<br>1</th>
                                             <th>Skor<br>2</th>
+                                            <th>Skor<br>3</th>
+                                            <th>Skor<br>4</th>
                                             <th style="width: 28%;">Catatan <br>Fasilitator</th>
                                             <th style="width: 28%;">Catatan <br>Keseluruhan</th>
                                             <th>Tanggal & Waktu <br> Penilaian</th>
@@ -150,9 +151,10 @@
                                         <?php foreach ($val as $v) { ?>
                                             <tr>
                                                 <td><?= $no++ ?></td>
-                                                <td><span class="badge badge-primary" style="font-size:1em;"><?= $v->skor_1a ?></span></td>
-                                                <td><span class="badge badge-info" style="font-size:1em;"><?= $v->skor_1b ?></span></td>
-                                                <td><span class="badge badge-success" style="font-size:1em;"><?= $v->skor_2 ?></span></td>
+                                                <td><span class="badge badge-primary" style="font-size:1em;"><?= $v->skor_1 ?></span></td>
+                                                <td><span class="badge badge-info" style="font-size:1em;"><?= $v->skor_2 ?></span></td>
+                                                <td><span class="badge badge-success" style="font-size:1em;"><?= $v->skor_3 ?></span></td>
+                                                <td><span class="badge badge-warning" style="font-size:1em;"><?= $v->skor_4 ?></span></td>
                                                 <td style="text-align:left;">
                                                     <?php
                                                     if (!function_exists('renderCatatanFasilitator')) {
@@ -180,9 +182,10 @@
                                                             }
                                                         }
                                                     }
-                                                    echo renderCatatanFasilitator('1a', $v->catatan_1a, $v->id);
-                                                    echo renderCatatanFasilitator('1b', $v->catatan_1b, $v->id);
+                                                    echo renderCatatanFasilitator('1', $v->catatan_1, $v->id);
                                                     echo renderCatatanFasilitator('2', $v->catatan_2, $v->id);
+                                                    echo renderCatatanFasilitator('3', $v->catatan_3, $v->id);
+                                                    echo renderCatatanFasilitator('4', $v->catatan_4, $v->id);
                                                     ?>
                                                 </td>
                                                 <td style="text-align:left;">

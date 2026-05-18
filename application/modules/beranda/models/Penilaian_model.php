@@ -141,13 +141,73 @@ class Penilaian_model extends CI_Model
     return $this->db->delete('penilaian_tipologi', ['id_penilaian_tipologi' => $id]);
   }
 
-  public function kirimNilai($periode, $fasilitator_id)
+  public function kirimNilai($periode, $id_penilaian, $fasilitator_id)
   {
     // Update status_penilaian menjadi 2 untuk penilaian_tipologi yang statusnya 1 pada periode dan fasilitator ini
     $this->db->where('periode', $periode);
+    if ($id_penilaian !== 'semua') {
+      $this->db->where('id_penilaian_tipologi', $id_penilaian);
+    }
     $this->db->where('fasilitator_id', $fasilitator_id);
     $this->db->where('id_status_penilaian', '1');
     return $this->db->update('penilaian_tipologi', ['id_status_penilaian' => 2]);
+  }
+
+  public function prosesNilai($periode, $id_penilaian, $validator_id)
+  {
+    $this->db->select('id_penilaian_tipologi, cek_1, cek_2, cek_3, cek_4');
+    $this->db->from('penilaian_tipologi');
+    $this->db->where('periode', $periode);
+    $this->db->where('validator_id', $validator_id);
+    $this->db->where('id_status_penilaian', 5);
+
+    if ($id_penilaian !== 'semua') {
+      $this->db->where('id_penilaian_tipologi', $id_penilaian);
+    }
+
+    $query = $this->db->get();
+    $rows = $query->result();
+
+    if (!$rows) {
+      return false;
+    }
+
+    $this->db->trans_begin();
+
+    foreach ($rows as $row) {
+
+      if ($row->cek_1 == "0" || $row->cek_2 == "0" || $row->cek_3 == "0" || $row->cek_4 == "0") {
+        $status = 3; // revisi validator
+      } else {
+        $status = 4; // valid
+      }
+
+      $riwayatValidasi = $this->db->select('*')
+        ->from('rwy_penilaian_validator')
+        ->where('id_penilaian_tipologi', $row->id_penilaian_tipologi)
+        ->order_by('id_rwy_pen_val', 'DESC')->limit(1)->get()->row();
+
+      if ($riwayatValidasi) {
+        $this->db->where('id_rwy_pen_val', $riwayatValidasi->id_rwy_pen_val);
+        $this->db->update('rwy_penilaian_validator', [
+          'id_status_penilaian' => $status
+        ]);
+      }
+
+      $this->db->where('id_penilaian_tipologi', $row->id_penilaian_tipologi);
+      $this->db->update('penilaian_tipologi', [
+        'id_status_penilaian' => $status
+      ]);
+    }
+
+    if ($this->db->trans_status() === false) {
+      $this->db->trans_rollback();
+      return false;
+    }
+
+    $this->db->trans_commit();
+
+    return true;
   }
 
   public function publish_penilaian_by_periode($periode)
@@ -183,7 +243,7 @@ class Penilaian_model extends CI_Model
     }
 
     // Ambil data penilaian
-    $data = $this->db->select('periode, kode_pt, nama_pt, skor_1a, skor_1b, skor_2, skor_1_bobot, skor_2_bobot, skor_total, tipologi')
+    $data = $this->db->select('periode, kode_pt, nama_pt, skor_1, skor_2, skor_3, skor_4, skor_total, tipologi')
       ->from('penilaian_tipologi')
       ->where('periode', $periode)
       ->get()
@@ -210,11 +270,10 @@ class Penilaian_model extends CI_Model
         'periode' => $row['periode'],
         'kode_pt' => $row['kode_pt'],
         'nama_pt' => $row['nama_pt'],
-        'skor_1a' => $row['skor_1a'],
-        'skor_1b' => $row['skor_1b'],
+        'skor_1' => $row['skor_1'],
         'skor_2' => $row['skor_2'],
-        'skor_1_bobot' => $row['skor_1_bobot'],
-        'skor_2_bobot' => $row['skor_2_bobot'],
+        'skor_3' => $row['skor_3'],
+        'skor_4' => $row['skor_4'],
         'skor_total' => $row['skor_total'],
         'tipologi' => $row['tipologi'],
         'akreditasi_institusi' => $row['akreditasi_institusi'],
@@ -270,7 +329,7 @@ class Penilaian_model extends CI_Model
     }
 
     // Ambil data penilaian
-    $data = $this->db->select('periode, kode_pt, nama_pt, skor_1a, skor_1b, skor_2, skor_1_bobot, skor_2_bobot, skor_total, tipologi')
+    $data = $this->db->select('periode, kode_pt, nama_pt, skor_1, skor_2, skor_3, skor_4, skor_total, tipologi')
       ->from('penilaian_tipologi')
       ->where('periode', $periode)
       ->where('id_penilaian_tipologi', $penilaian_id)
@@ -299,11 +358,10 @@ class Penilaian_model extends CI_Model
         'periode' => $row['periode'],
         'kode_pt' => $row['kode_pt'],
         'nama_pt' => $row['nama_pt'],
-        'skor_1a' => $row['skor_1a'],
-        'skor_1b' => $row['skor_1b'],
+        'skor_1' => $row['skor_1'],
         'skor_2' => $row['skor_2'],
-        'skor_1_bobot' => $row['skor_1_bobot'],
-        'skor_2_bobot' => $row['skor_2_bobot'],
+        'skor_3' => $row['skor_3'],
+        'skor_4' => $row['skor_4'],
         'skor_total' => $row['skor_total'],
         'tipologi' => $row['tipologi'],
         'akreditasi_institusi' => $row['akreditasi_institusi'],
@@ -323,5 +381,127 @@ class Penilaian_model extends CI_Model
       return false;
     }
     return true;
+  }
+
+  public function ubahStatusPenilaian($id_penilaian, $status_penilaian = null)
+  {
+    // Update status_penilaian menjadi 4 untuk penilaian_tipologi yang statusnya 6 pada periode dan validator ini ATAU 
+    // Update status_penilaian menjadi 6 untuk penilaian_tipologi yang statusnya 5 pada periode dan validator ini 
+    $this->db->where('id_penilaian_tipologi', $id_penilaian);
+    if ($status_penilaian === 'valid') {
+      $this->db->where('id_status_penilaian', '4');
+      return $this->db->update('penilaian_tipologi', ['id_status_penilaian' => 6]);
+    } else if ($status_penilaian === 'menunggu') {
+      $this->db->where('id_status_penilaian', '6');
+      return $this->db->update('penilaian_tipologi', ['id_status_penilaian' => 5]);
+    }
+  }
+
+  public function updateFaswilValidator($tipe, $periode, $id_awal, $id_pengganti, $perguruan_tinggi)
+  {
+    if ($tipe === 'fasilitator') {
+      // Cek apakah ada fasilitator dengan id_awal di periode tersebut
+      $check = $this->db->where('periode', $periode)
+        ->where('fasilitator_id', $id_awal)
+        ->get('penilaian_tipologi')
+        ->num_rows();
+
+      if ($check === 0) {
+        echo json_encode([
+          'status' => 'error',
+          'message' => 'Fasilitator tidak diplotting pada periode ini.'
+        ]);
+        // return false;
+      }
+
+      $data = [
+        'fasilitator_id' => $id_pengganti
+      ];
+
+      if (!empty($perguruan_tinggi)) {
+        $this->db->where_in('kode_pt', $perguruan_tinggi);
+      }
+
+      $this->db->where('periode', $periode);
+      $this->db->where('fasilitator_id', $id_awal);
+      return $this->db->update('penilaian_tipologi', $data);
+    } else if ($tipe === 'validator') {
+      // Cek apakah ada validator dengan id_awal di periode tersebut
+      $check = $this->db->where('periode', $periode)
+        ->where('validator_id', $id_awal)
+        ->get('penilaian_tipologi')
+        ->num_rows();
+
+      if ($check === 0) {
+        echo json_encode([
+          'status' => 'error',
+          'message' => 'Validator tidak diplotting pada periode ini.'
+        ]);
+        // return false;
+      }
+
+      $data = [
+        'validator_id' => $id_pengganti
+      ];
+
+      if (!empty($perguruan_tinggi)) {
+        $this->db->where_in('kode_pt', $perguruan_tinggi);
+      }
+
+      $this->db->where('periode', $periode);
+      $this->db->where('validator_id', $id_awal);
+      return $this->db->update('penilaian_tipologi', $data);
+    }
+  }
+
+  public function getPtBinaanFasilitatorByPeriode($periode, $fasilitator_id)
+  {
+    $this->db->select('kode_pt, nama_pt');
+    $this->db->from('penilaian_tipologi');
+    $this->db->where('periode', $periode);
+    $this->db->where('fasilitator_id', $fasilitator_id);
+    $this->db->order_by('nama_pt', 'ASC');
+    return $query = $this->db->get()->result_array();
+    // return array_column($query->result_array(), 'kode_pt');
+  }
+
+  public function getPtBinaanValidatorByPeriode($periode, $validator_id)
+  {
+    $this->db->select('kode_pt, nama_pt');
+    $this->db->from('penilaian_tipologi');
+    $this->db->where('periode', $periode);
+    $this->db->where('validator_id', $validator_id);
+    $this->db->order_by('nama_pt', 'ASC');
+    return $query = $this->db->get()->result_array();
+    // return array_column($query->result_array(), 'kode_pt');
+  }
+
+  public function is_penilaian_published($periode)
+  {
+    $query = $this->db
+      ->select('kode_pt')
+      ->from('data_penjaminan_mutu_30')
+      ->where('periode', $periode)
+      ->get()
+      ->result_array();
+
+    return array_column($query, 'kode_pt');
+  }
+  
+  public function statistikProdi($kode_pt)
+  {
+    $this->db->select('kode_pt');
+    $this->db->select('nm_pt');
+    $this->db->select('COUNT(CASE WHEN nm_stat_prodi = "Aktif" THEN 1 END) AS total_prodi_aktif');
+    $this->db->select('COUNT(CASE WHEN nm_stat_prodi = "Aktif" AND akreditasi_prodi <> "-" AND akreditasi_prodi <> "" AND akreditasi_prodi <> "Tidak Terakreditasi" THEN 1 END) AS prodi_terakreditasi');
+    $this->db->select('COUNT(CASE WHEN nm_stat_prodi = "Aktif" AND (akreditasi_prodi = "Unggul" OR akreditasi_prodi = "A") THEN 1 END) AS prodi_unggul_atau_a');
+
+    $this->db->select('(COUNT(CASE WHEN nm_stat_prodi = "Aktif" AND (akreditasi_prodi = "Unggul" OR akreditasi_prodi = "A") THEN 1 END) / COUNT(CASE WHEN nm_stat_prodi = "Aktif" THEN 1 END)) * 100 AS persentase_unggul_atau_a');
+
+    $this->db->from('data_prodi');
+    $this->db->where('kode_pt', $kode_pt);
+
+    $data = $this->db->get()->row_array();
+    return $data;
   }
 }

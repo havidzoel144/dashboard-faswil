@@ -70,14 +70,14 @@
                         <canvas id="doughnutChart"></canvas>
                       </div>
 
-                      <div class="col-8 d-flex flex-column justify-content-center" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important; border-radius: 10px;">
+                      <div class="col-8 d-flex flex-column justify-content-center p-2" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important; border-radius: 10px;">
 
                         <h1 class="text-white align-self-center mb-2 text-bold-700">Tipologi SPMI</h1>
                         <p class="text-white text-justify px-2 font-medium-1">
-                          Dalam rangka menjalankan amanat Permendikbudristek No. 53 Tahun 2023 tentang Penjaminan Mutu Pendidikan Tinggi, dimana LLDikti diberikan tugas untuk melakukan fasilitasi pengembangan dan implementasi SPMI, serta melaksanakan verifikasi dan evaluasi SPMI di perguruan tinggi. maka LLDikti Wilayah III mengembangkan sebuah Pola Pembinaan SPMI yang dimulai dengan pemetaan tipologi SPMI, verifikasi-validasi yang berkelanjutan, pemberian fasilitasi yang sesuai dengan tingkat tipologi, serta pelaksanaan pemantauan dan evaluasi secara periodik.
+                          Dalam rangka menyesuaikan kebijakan penjaminan mutu pendidikan tinggi berdasarkan Permendiktisaintek No. 39 Tahun 2025, LLDikti Wilayah III melaksanakan fasilitasi serta verifikasi dan evaluasi implementasi SPMI di perguruan tinggi. Pemetaan tipologi SPMI merupakan bagian dari pola pembinaan LLDikti yang dilakukan melalui verifikasi dan validasi implementasi SPMI perguruan tinggi melalui laman <a href="https://spmi.kemdiktisaintek.go.id" class="text-white text-bold-700" target="_blank" rel="noreferrer"><u>https://spmi.kemdiktisaintek.go.id,</u></a> sebagai dasar pemberian fasilitasi yang sesuai dengan tingkat tipologi, serta pelaksanaan pemantauan dan evaluasi secara periodik.
                         </p>
                         <p class="text-white text-justify px-2 font-medium-1">
-                          Pengukuran pada pemetaan tipologi SPMI menggunakan butir-butir penilaian penjaminan mutu yang menjadi syarat perlu dalam mekanisme akreditasi institusi, sehingga hasilnya dapat menjadi refleksi dan evaluasi bagi perguruan tinggi dalam memperbaiki tata kelola dan penjaminan mutu internal.
+                          Pola pembinaan SPMI diselaraskan dengan sasaran budaya mutu pada mekanisme akreditasi institusi (IAPT 4.1) yang mencakup aspek masukan, proses, luaran, dan dampak, meliputi keberfungsian standar dan tata kelola SPMI, implementasi siklus PPEPP, ketersediaan laporan dan pengelolaan data, serta capaian akreditasi program studi sebagai bentuk pengakuan mutu.
                         </p>
                         <p class="text-white text-justify px-2 font-medium-1">
                           Lebih lanjut tentang Pola Pembinaan SPMI, dapat diunduh pada tautan <a href="http://lldikti3.kemdikbud.go.id/wp-content/uploads/2024/07/pola_pembinaan_spmi_ll3-Revisi-1.pdf" class="text-white text-bold-700" target="_blank" rel="noreferrer"><u>berikut.</u></a>
@@ -128,8 +128,8 @@
                                   Tipologi
                                   <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 rentang Nilai Terbobot : 17,5 < n ≤ 20; <br> Tipologi 2 rentang Nilai Terbobot : 15 < n ≤ 17,5; <br> Tipologi 3 rentang Nilai Terbobot : 10 ≤ n ≤ 15; <br> Tipologi 4 Nilai Terbobot : < 10;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
                                 </th>
-                                <th class="text-center" rowspan="3">Akreditasi <br> Institusi</th>
-                                <th class="text-center" rowspan="3">Persentase <br> Prodi <br> Terakreditasi</th>
+                                <!-- <th class="text-center" rowspan="3">Akreditasi <br> Institusi</th>
+                                <th class="text-center" rowspan="3">Persentase <br> Prodi <br> Terakreditasi</th> -->
                               </tr>
                               <tr style="background-color: #563BFF; color: #ffffff">
                                 <th class="text-center" colspan="2">Butir 1 <br> (Bobot 2,22)</th>
