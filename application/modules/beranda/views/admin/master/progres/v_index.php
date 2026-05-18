@@ -15,10 +15,12 @@
         <div class="col-lg-8 col-md-6 col-sm-12 mx-auto">
           <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-              <h4 class="card-title1" id="heading-buttons1">Progres Penilaian</h4>
-              <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-upload-template-led">
-                <i class="la la-upload"></i> Upload Template LED
-              </button>
+              <h4 class="card-title" id="heading-buttons1">Progres Penilaian</h4>
+              <?php if (false) : ?>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-upload-template-led">
+                  <i class="la la-upload"></i> Upload Template LED
+                </button>
+              <?php endif; ?>
             </div>
             <div class="dropdown-divider"></div>
             <div class="card-content">
@@ -65,7 +67,10 @@
                                   <i class="la la-eye"></i>
                                 </button>
                               </a>
-                              <a href="<?= base_url('admin/export-nilai-excel/') . safe_url_encrypt($data['kode']) ?>">
+                              <?php
+                              $url = substr($data['kode'], 0, 4) > '2025' ? 'admin/export-nilai-excel' : 'admin/export-nilai-excel-30';
+                              ?>
+                              <a href="<?= base_url($url) . '/' . safe_url_encrypt($data['kode']) ?>">
                                 <button class="btn btn-dark btn-sm" type="button" data-toggle="tooltip" title="Export Excel">
                                   <i class="la la-file-excel-o"></i>
                                 </button>

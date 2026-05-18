@@ -1,5 +1,17 @@
 <?= $this->load->view('admin/v_header') ?>
+<style>
+  .popover {
+    z-index: 1060 !important;
+  }
 
+  .popover-skor4 {
+    max-width: 80vw !important;
+    width: 600px;
+    overflow-y: auto;
+    /* muncul scroll kalau kepanjangan */
+    white-space: normal;
+  }
+</style>
 <?= $this->load->view('admin/v_menu') ?>
 
 <!-- BEGIN: Content-->
@@ -102,7 +114,7 @@
                       </th>
                       <th class="text-center" rowspan="2">
                         Tipologi
-                        <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 : 8; <br> Tipologi 2 : 6-7; <br> Tipologi 3 : 4-5; <br> Tipologi 4 : < 4;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
+                        <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 : 8; <br> Tipologi 2 : 6-7,5; <br> Tipologi 3 : 4-5,5; <br> Tipologi 4 : < 4;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
                       </th>
                       <th class="text-center" rowspan="2">Status</th>
                       <th class="text-center" rowspan="2">Aksi</th>
@@ -314,11 +326,17 @@
           <div class="card-body bg-light">
             <div class="form-group row">
               <div class="col-sm-2">
-                <label class="col-form-label text-left" style="display: block; text-align: left;">Skor 1</label>
+                <label class="col-form-label text-left" style="display: block; text-align: left;">
+                  Skor 1
+                  <span class="text-danger" data-toggle="popover" data-content="0 = Tidak Memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Perguruan tinggi terbukti telah mengimplementasikan Sistem Penjaminan Mutu Internal yang  mencakup keempat aspek secara konsisten dan efektif dalam peningkatan mutu pendidikan secara berkelanjutan. <br> 1.5 = Perguruan tinggi terbukti telah mengimplementasikan Sistem Penjaminan Mutu Internal yang mencakup keempat aspek secara konsisten dan efektif dalam peningkatan mutu pendidikan secara berkelanjutan, serta telah menunjukkan adanya upaya pengembangan, namun belum sepenuhnya terbukti efektif <br> 2 = Syarat perlu status terakreditasi Unggul : Perguruan tinggi terbukti telah mengembangkan dan mengimplementasikan Sistem Penjaminan Mutu Internal yang  mencakup keempat aspek dan telah terbukti efektif dalam peningkatan mutu pendidikan secara berkelanjutan." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                </label>
                 <input type="text" class="form-control square skor border rounded bg-white font-weight-bold text-center" style="height: 83px;" id="skor-1" readonly>
               </div>
               <div class="col-sm-10">
-                <label class="col-form-label text-left" style="display: block; text-align: left;">Catatan Fasilitator Skor 1</label>
+                <label class="col-form-label text-left" style="display: block; text-align: left;">
+                  Catatan Fasilitator Skor 1
+                  <span class="text-danger" data-toggle="popover" data-content="Sistem Penjaminan Mutu Internal yang dikembangkan Perguruan Tinggi, mencakup: <br> 1. Standar Pendidikan Tinggi (akademik dan non akademik) yang melampauai SN Dikti dan sesuai fokus misi PT, telah ditetapkan oleh perguruan tinggi serta telah disosialisasikan ke seluruh pemangku kepentingan. <br> 2. Sistem Tatakelola Perguruan Tinggi dalam mengimplementasikan SPMI, mencakup minimal: SOP implementasi SPMI, keberfungsian SPMI di berbagai tingkat (pelaksana dan sistem implementasi) yang akuntabel, transparan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 3. Sistem Evaluasi Pemenuhan Standar Pendidikan Tinggi yang transparan, akuntabel, mapan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 4. Sistem Peningkatan Mutu Berkelanjutan yang telah diimplementasikan secara efektif dan efisien paling sedikit selama 3 tahun." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                </label>
                 <textarea class="form-control textarea-catatan" id="catatan-1" rows="3" readonly></textarea>
               </div>
             </div>
@@ -339,11 +357,17 @@
 
             <div class=" form-group row">
               <div class="col-sm-2">
-                <label class="col-form-label text-left" style="display: block; text-align: left;">Skor 2</label>
+                <label class="col-form-label text-left" style="display: block; text-align: left;">
+                  Skor 2
+                  <span class="text-danger" data-toggle="popover" data-content="0 = Tidak Memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Perguruan Tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tatakelola perguruan tinggi dalam bidang akademik dan non-akademik. <br> 1.5 = Perguruan tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian, dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tata kelola perguruan tinggi dalam bidang akademik dan non-akademik, serta sudah menunjukkan adanya upaya peningkatan mutu pendidikan tinggi yang memenuhi aspek berkelanjutan, efektif, dan konsisten. <br> 2 = Syarat perlu status terakreditasi Unggul : Perguruan Tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tatakelola perguruan tinggi dalam bidang akademik dan non-akademik  untuk meningkatkan mutu pendidikan tinggi secara berkelanjutan, efektif dan konsisten. " data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                </label>
                 <input type="text" class="form-control square skor border rounded bg-white font-weight-bold text-center" style="height: 83px;" id="skor-2" readonly>
               </div>
               <div class=" col-sm-10">
-                <label class="col-form-label text-left" style="display: block; text-align: left;">Catatan Fasilitator Skor 2</label>
+                <label class="col-form-label text-left" style="display: block; text-align: left;">
+                  Catatan Fasilitator Skor 2
+                  <span class="text-danger" data-toggle="popover" data-content="Implementasi siklus  penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan (PPEPP) dalam bidang akademik dan non-akademik, paling sedikit selama 3 tahun secara konsisten, berkelanjutan dan terbukti efektif, dan terdiri atas: <br> 1. Penetapan Standar Pendidikan Tinggi  yang sesuai misi perguruan tinggi, yaitu perancangan, perumusan, dan pengesahan standar PT. <br> 2. Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan standar oleh semua pihak yang bertanggungjawab agar isi standar tercapai. <br> 3. Evaluasi Pemenuhan Standar Pendidikan Tinggi, yaitu evaluasi kesesuaian pelaksanaan standar dengan standar yang telah ditetapkan dan cara pemenuhannya. <br> 4. Pengendalian Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan koreksi bila terjadi penyimpangan terhadap isi dan/atau pelaksanaan standar, mempertahan pelaksanaan yang telah memenuhi standar dan sedapat mungkin meningkatkan kualitas pelaksanaannya. <br> 5. Peningkatan Standar Pendidikan Tinggi, yaitu evaluasi isi standar dan peningkatan  mutu isi standar secara berkala dan berkelanjutan." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                </label>
                 <textarea class="form-control textarea-catatan" id="catatan-2" rows="3" readonly></textarea>
               </div>
             </div>
@@ -364,11 +388,17 @@
 
             <div class=" form-group row">
               <div class="col-sm-2">
-                <label class="col-form-label text-left" style="display: block; text-align: left;">Skor 3</label>
+                <label class="col-form-label text-left" style="display: block; text-align: left;">
+                  Skor 3
+                  <span class="text-danger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Perguruan tinggi terbukti memililki laporan implementasi SPMI secara berkala dan lengkap yang mencakup kedua aspek, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi. <br> 1.5 = Perguruan tinggi terbukti memiliki laporan implementasi SPMI secara berkala dan lengkap yang mencakup kedua aspek, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi, namun belum sepenuhnya sistematis. <br> 2 = Perguruan tinggi terbukti memililki laporan implementasi SPMI secara berkala, sistematis, dan lengkap yang mencakup kedua aspek, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                </label>
                 <input type="text" class="form-control square skor border rounded bg-white font-weight-bold text-center" style="height: 83px;" id="skor-3" readonly>
               </div>
               <div class=" col-sm-10">
-                <label class="col-form-label text-left" style="display: block; text-align: left;">Catatan Fasilitator Skor 3</label>
+                <label class="col-form-label text-left" style="display: block; text-align: left;">
+                  Catatan Fasilitator Skor 3
+                  <span class="text-danger" data-toggle="popover" data-content="Laporan implementasi SPMI dan kinerja perguruan tinggi secara berkala, sistematis,  dan pengelolaan data serta informasi terkait implementasi SPMI melalui PD Dikti, mencakup: <br> 1. Laporan semesteran/tahunan tentang implementasi SPMI dan kinerja perguruan tinggi yang menerus bertambah baik dalam bentuk digital/sistem/hardcopy paling sedikit selama 3 tahun terakhir secara sistematis. <br> 2. Keberfungsian sistem pengelolaan data dan informasi  terkait implementasi SPMI melalui PD Dikti yang transparan, akuntabel, valid dan berintegritas." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                </label>
                 <textarea class="form-control textarea-catatan" id="catatan-3" rows="3" readonly></textarea>
               </div>
             </div>
@@ -389,11 +419,17 @@
 
             <div class=" form-group row">
               <div class="col-sm-2">
-                <label class="col-form-label text-left" style="display: block; text-align: left;">Skor 4</label>
+                <label class="col-form-label text-left" style="display: block; text-align: left;">
+                  Skor 4
+                  <span class="text-danger popover-skor4-trigger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Persentase PS terakreditasi 100%. <br> 1.5 = Syarat perlu status terakreditasi Unggul  (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>15% sd <20%</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>40% sd <50% (PTNBH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>20% sd <25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>30% sd <40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%.(PTS Vokasi)</li></ol> 2 = Syarat perlu status terakreditasi Unggul (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%.</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 50%.(PTN BH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.(PTS Vokasi)</li></ol>" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                </label>
                 <input type="text" class="form-control square skor border rounded bg-white font-weight-bold text-center" style="height: 83px;" id="skor-4" readonly>
               </div>
               <div class=" col-sm-10">
-                <label class="col-form-label text-left" style="display: block; text-align: left;">Catatan Fasilitator Skor 4</label>
+                <label class="col-form-label text-left" style="display: block; text-align: left;">
+                  Catatan Fasilitator Skor 4
+                  <span class="text-danger" data-toggle="popover" data-content="Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: <br> 1. PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%. <br> 2. PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                </label>
                 <textarea class="form-control textarea-catatan" id="catatan-4" rows="3" readonly></textarea>
               </div>
             </div>
@@ -467,6 +503,21 @@
       $btnDraft.removeClass('d-none');
     }
   }
+
+  $('.popover-skor4-trigger').popover('dispose');
+  $('.popover-skor4-trigger').popover({
+    html: true,
+    trigger: 'hover',
+    container: '#validasiModal',
+    placement: 'auto',
+    template: `
+        <div class="popover popover-skor4" role="tooltip">
+            <div class="arrow"></div>
+            <h3 class="popover-header"></h3>
+            <div class="popover-body"></div>
+        </div>
+    `
+  });
 
   $(document).ready(function() {
     var tabelPenilaian = $('#tabel-penilaian').DataTable();

@@ -1,5 +1,9 @@
 <?= $this->load->view('admin/v_header.php') ?>
-
+<style>
+  #chartTipologi {
+    height: 500px !important;
+  }
+</style>
 <?= $this->load->view('admin/v_menu.php') ?>
 
 <!-- BEGIN: Content-->
@@ -19,51 +23,28 @@
               <h4 class="card-title">Data Penjaminan Mutu</h4>
               <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
               <div class="heading-elements">
-                <ul class="list-inline mb-0">
-                  <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                  <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                </ul>
               </div>
             </div>
 
             <div class="card-content collapse show">
               <div class="card-body card-dashboard">
-                <div class="row">
-                  <div class="col-12">
-                    <!-- <?php if ($this->session->flashdata('success')) : ?>
-                      <div class="alert alert-success alert-dismissible fade show" id="flash-message">
-                        <?= $this->session->flashdata('success'); ?>
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                      </div>
-                    <?php endif; ?>
-
-                    <?php if ($this->session->flashdata('error')) : ?>
-                      <div class="alert alert-danger alert-dismissible fade show" id="flash-message">
-                        <?= $this->session->flashdata('error'); ?>
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                      </div>
-                    <?php endif; ?> -->
-                  </div>
-                </div>
-
-                <ul class="nav nav-tabs nav-underline no-hover-bg nav-justified nav-tabs-material">
-                  <li class="nav-item">
-                    <a class="nav-link waves-effect waves-dark active" id="periode-aktif-tab" data-toggle="tab" href="#periode-aktif" aria-controls="periode-aktif" aria-expanded="true">Periode Aktif</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link waves-effect waves-dark" id="riwayat-spmi-tab" data-toggle="tab" href="#riwayat-spmi" aria-controls="riwayat-spmi" aria-expanded="false">Riwayat SPMI</a>
-                  </li>
-                  <div class="nav-tabs-indicator" style="left: 0px; right: 457.875px;"></div>
-                </ul>
-
                 <div class="tab-content px-1 pt-1">
                   <div role="tabpanel" class="tab-pane active" id="periode-aktif" aria-labelledby="periode-aktif-tab" aria-expanded="true">
                     <div class="row mb-2">
-                      <div class="col-4">
-                        <canvas id="doughnutChart"></canvas>
+                      <div class="col-6">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <button id="btnPanLeft" class="btn btn-primary btn-sm">
+                            ← Previous
+                          </button>
+                          <div id="periodeInfo" class="font-weight-bold"></div>
+                          <button id="btnPanRight" class="btn btn-primary btn-sm">
+                            Next →
+                          </button>
+                        </div>
+                        <canvas id="chartTipologi"></canvas>
                       </div>
 
-                      <div class="col-8 d-flex flex-column justify-content-center p-2" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important; border-radius: 10px;">
+                      <div class="col-6 d-flex flex-column justify-content-center p-2" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important; border-radius: 10px;">
 
                         <h1 class="text-white align-self-center mb-2 text-bold-700">Tipologi SPMI</h1>
                         <p class="text-white text-justify px-2 font-medium-1">
@@ -77,143 +58,16 @@
                         </p>
                       </div>
                     </div>
-
-                    <div class="row">
-
-                      <div class="col-12 d-flex flex-column justify-content-center" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important; border-radius: 10px;">
-                        <h4 class="text-center text-white mt-2"><i class="ft ft-filter"> Filter Pencarian </i></h4>
-                        <hr>
-
-                        <div class="table-search-row mb-1">
-                          <div class="form-group row">
-                            <div class="col-md-3">
-                              <label class="text-right text-white" for="">Kode / Nama Perguruan Tinggi</label>
-                            </div>
-                            <div class="col-md-8">
-                              <select class="select2 form-control select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true" name="kode_pt" id="kode_pt" style="width: 100%;">
-                                <option value="">Silakan pilih Kode / Nama PT</option>
-                                <?php foreach ($kode_nama_pt as $item) { ?>
-                                  <option value="<?= $item['kode_pt'] ?>"><?= $item['kode_pt'] ?> - <?= $item['nm_pt'] ?></option>
-                                <?php } ?>
-                              </select>
-                              <!-- <input type="text" name="kode_pt" class="form-control border-bottom" placeholder="Masukkan Kode / Nama PT"> -->
-                            </div>
-                            <div class="col-md-1"></div>
-                          </div>
-
-                          <?php if (has_role([2])) : ?>
-                            <div class="form-group row d-flex justify-content-center">
-                              <button type="button" class="btn btn-dark mb-1 waves-effect waves-light" data-toggle="modal" data-backdrop="false" data-target="#backdrop">Import Data</button>
-                              <a href="<?= base_url('uploads/template_penjaminan_mutu.xlsx') ?>" class="btn btn-success mb-1 waves-effect waves-light">Download Template</a>
-                              <!-- Tombol untuk truncate tabel -->
-                              <button type="button" class="btn btn-danger mb-1 waves-effect waves-light" data-toggle="modal" data-backdrop="false" data-target="#backdropHapus">Hapus Data</button>
-                            </div>
-                          <?php endif; ?>
-                        </div>
-                      </div>
-
-                      <form class="form form-horizontal" style="width: 100%;">
-                        <div class="form-body">
-                          <table id="tabel-penjaminan-mutu" class="table table-striped table-bordered" style="width: 100%;">
-                            <thead>
-                              <tr style="background-color: #563BFF; color: #ffffff">
-                                <th class="text-center" rowspan="2">#</th>
-                                <th class="text-center" rowspan="2" style="width: 10%;">Periode <span class="text-danger" data-toggle="popover" data-content="Periode 1 : Januari - Juni <br> Periode 2 : Juli - November" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                                <th class="text-center" rowspan="2">Kode PT</th>
-                                <th class="text-center" rowspan="2">Nama PT</th>
-                                <th class="text-center" colspan="4">Butir Penilaian</th>
-                                <th class="text-center" rowspan="2">
-                                  Skor <br> Total <br>
-                                  <span class="text-danger" data-toggle="popover" data-content="Skor Total = Skor 1 + Skor 2 + Skor 3 + Skor 4" data-trigger="hover" data-original-title="Formula Perhitungan"><i class="la la-info-circle"></i></span>
-                                </th>
-                                <th class="text-center" rowspan="2">
-                                  Tipologi
-                                  <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 : 8; <br> Tipologi 2 : 6-7; <br> Tipologi 3 : 4-5; <br> Tipologi 4 : < 4;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
-                                </th>
-                                <!-- <th class="text-center" rowspan="2">Akreditasi <br> Institusi</th>
-                                <th class="text-center" rowspan="2">Persentase <br> Prodi <br> Terakreditasi</th> -->
-                              </tr>
-                              <tr style="background-color: #563BFF; color: #ffffff">
-                                <th class="text-center text-wrap">Skor 1 <span class="text-danger" data-toggle="popover" data-content="Sistem Penjaminan Mutu Internal yang dikembangkan Perguruan Tinggi, mencakup: <br> 1. Standar Pendidikan Tinggi (akademik dan non akademik) yang melampauai SN Dikti dan sesuai fokus misi PT, telah ditetapkan oleh perguruan tinggi serta telah disosialisasikan ke seluruh pemangku kepentingan. <br> 2. Sistem Tatakelola Perguruan Tinggi dalam mengimplementasikan SPMI, mencakup minimal: SOP implementasi SPMI, keberfungsian SPMI di berbagai tingkat (pelaksana dan sistem implementasi) yang akuntabel, transparan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 3. Sistem Evaluasi Pemenuhan Standar Pendidikan Tinggi yang transparan, akuntabel, mapan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 4. Sistem Peningkatan Mutu Berkelanjutan yang telah diimplementasikan secara efektif dan efisien paling sedikit selama 3 tahun." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                                <th class="text-center text-wrap">Skor 2 <span class="text-danger" data-toggle="popover" data-content="Implementasi siklus  penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan (PPEPP) dalam bidang akademik dan non-akademik, paling sedikit selama 3 tahun secara konsisten, berkelanjutan dan terbukti efektif, dan terdiri atas: <br> 1. Penetapan Standar Pendidikan Tinggi  yang sesuai misi perguruan tinggi, yaitu perancangan, perumusan, dan pengesahan standar PT. <br> 2. Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan standar oleh semua pihak yang bertanggungjawab agar isi standar tercapai. <br> 3. Evaluasi Pemenuhan Standar Pendidikan Tinggi, yaitu evaluasi kesesuaian pelaksanaan standar dengan standar yang telah ditetapkan dan cara pemenuhannya. <br> 4. Pengendalian Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan koreksi bila terjadi penyimpangan terhadap isi dan/atau pelaksanaan standar, mempertahan pelaksanaan yang telah memenuhi standar dan sedapat mungkin meningkatkan kualitas pelaksanaannya. <br> 5. Peningkatan Standar Pendidikan Tinggi, yaitu evaluasi isi standar dan peningkatan  mutu isi standar secara berkala dan berkelanjutan." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                                <th class="text-center text-wrap">Skor 3 <span class="text-danger" data-toggle="popover" data-content="Laporan implementasi SPMI dan kinerja perguruan tinggi secara berkala, sistematis,  dan pengelolaan data serta informasi terkait implementasi SPMI melalui PD Dikti, mencakup: <br> 1. Laporan semesteran/tahunan tentang implementasi SPMI dan kinerja perguruan tinggi yang menerus bertambah baik dalam bentuk digital/sistem/hardcopy paling sedikit selama 3 tahun terakhir secara sistematis. <br> 2. Keberfungsian sistem pengelolaan data dan informasi  terkait implementasi SPMI melalui PD Dikti yang transparan, akuntabel, valid dan berintegritas." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                                <th class="text-center text-wrap">Skor 4 <span class="text-danger" data-toggle="popover" data-content="Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: <br> 1. PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%. <br> 2. PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span></th>
-                              </tr>
-                            </thead>
-                            <tbody></tbody>
-                          </table>
-                        </div>
-                      </form>
-                    </div>
-
-                  </div>
-
-                  <div class="tab-pane" id="riwayat-spmi" role="tabpanel" aria-labelledby="riwayat-spmi-tab" aria-expanded="false">
-                    <div class="row mb-2">
-                      <div class="col-5 pr-2">
-                        <div class="row">
-                          <div class="col-12" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important;">
-                            <h4 class="text-center text-white mt-2"><i class="ft ft-filter"> Filter Pencarian </i></h4>
-                            <hr>
-
-                            <div class="form-group row">
-                              <div class="col-12">
-                                <select class="select2 form-control select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true" name="kode_pt_riwayat" id="kode_pt_riwayat" style="width: 100%;">
-                                  <option value="">Silakan pilih Kode / Nama PT</option>
-                                  <?php foreach ($kode_nama_pt as $item) { ?>
-                                    <option value="<?= $item['kode_pt'] ?>"><?= $item['kode_pt'] ?> - <?= $item['nm_pt'] ?></option>
-                                  <?php } ?>
-                                </select>
-                              </div>
-                              <div class="col-md-1"></div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="row">
-                          <div class="col-12">
-                            <div id="chartLegends" style="margin-top: 20px;" class="">
-                              <div class="d-flex justify-content-around flex-column">
-                                <div style="display: flex; align-items: center; font-weight: bold;">
-                                  <div style="width: 40px; height: 40px; background-color: rgba(0, 128, 0, 0.2); margin-right: 10px;">
-                                  </div>
-                                  <p>Tipologi 1: 17.5 < n ≤ 20</p>
-                                </div>
-                                <div style="display: flex; align-items: center; font-weight: bold; margin-top: 5px;">
-                                  <div style="width: 40px; height: 40px; background-color: rgba(255, 255, 0, 0.2); margin-right: 10px;">
-                                  </div>
-                                  <p>Tipologi 2: 15 < n ≤ 17.5 </p>
-                                </div>
-                                <div style="display: flex; align-items: center; font-weight: bold; margin-top: 5px;">
-                                  <div style="width: 40px; height: 40px; background-color: rgba(255, 165, 0, 0.2); margin-right: 10px;">
-                                  </div>
-                                  <p>Tipologi 3: 10 ≤ n ≤ 15</p>
-                                </div>
-                                <div style="display: flex; align-items: center; font-weight: bold; margin-top: 5px;">
-                                  <div style="width: 40px; height: 40px; background-color: rgba(255, 0, 0, 0.2); margin-right: 10px;">
-                                  </div>
-                                  <p>Tipologi 4: n < 10</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-7">
-                        <div class="form-group row d-flex justify-content-center pb-1">
-                          <div class="col-12" style="border: 1px solid black;">
-                            <!-- Canvas untuk Chart -->
-                            <canvas id="lineChart" width="400" height="200" class="d-none"></canvas>
-                            <div id="chartMessage" style="text-align: center; font-size: 18px; color: gray; padding-top: 200px;" class="">Chart akan tampil setelah pilih Perguruan Tinggi</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
 
-
+                <?php if (false) : ?>
+                  <div class="row">
+                    <div class="col-4 mx-auto">
+                      <canvas id="doughnutChart"></canvas>
+                    </div>
+                  </div>
+                <?php endif; ?>
               </div>
             </div>
           </div>
@@ -224,79 +78,6 @@
   </div>
 </div>
 <!-- END: Content-->
-
-<!-- MODAL OMPORT START -->
-<div class="modal fade text-left" id="backdrop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel4">IMPORT DATA PENJAMINAN MUTU</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- <form action="<?= base_url('admin/import-penjaminan-mutu') ?>" method="POST" enctype="multipart/form-data" id="form-import-data"> -->
-      <?php echo form_open_multipart(base_url('admin/import-penjaminan-mutu'), array('class' => 'form-horizontal', 'role' => 'form', 'id' => 'form-import-data')); ?>
-      <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
-      <div class="modal-body">
-        <fieldset class="form-group">
-          <label for="periode">Periode</label>
-          <select class="select2 form-control select2-hidden-accessible" name="periode" id="periode">
-            <option value="">Silakan pilih periode</option>
-            <?php foreach ($periode as $item) { ?>
-              <option value="<?= $item['periode']; ?>"><?= substr($item['periode'], 0, 4) . ' -- ' . $item['bulan']; ?></option>
-            <?php } ?>
-          </select>
-        </fieldset>
-        <fieldset class="form-group">
-          <label for="import">Upload File</label>
-          <input type="file" class="form-control-file" id="exampleInputFile" name="file_excel" accept=".xlsx, .xls">
-        </fieldset>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" id="import-data">Import</button>
-        <button type="button" class="btn grey btn-secondary" data-dismiss="modal">Tutup</button>
-      </div>
-      <?php echo form_close(); ?>
-      <!-- </form> -->
-    </div>
-  </div>
-</div>
-<!-- MODAL OMPORT END -->
-
-<!-- MODAL HAPUS DATA START -->
-<div class="modal fade text-left" id="backdropHapus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel4">HAPUS DATA PENJAMINAN MUTU</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- <form action="<?= base_url('admin/hapus-data-penjaminan-mutu') ?>" method="POST" enctype="multipart/form-data" id="form-hapus-data"> -->
-      <?php echo form_open_multipart(base_url('admin/hapus-data-penjaminan-mutu'), array('class' => 'form-horizontal', 'role' => 'form', 'id' => 'form-hapus-data')); ?>
-      <div class="modal-body">
-        <fieldset class="form-group">
-          <label for="periode">Periode</label>
-          <select class="select2 form-control select2-hidden-accessible" name="periode" id="periode-hapus">
-            <option value="">Silakan pilih periode</option>
-            <?php foreach ($periode as $item) { ?>
-              <option value="<?= $item['periode']; ?>"><?= substr($item['periode'], 0, 4) . ' -- ' . $item['bulan']; ?></option>
-            <?php } ?>
-          </select>
-        </fieldset>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-danger" id="hapus-data">Hapus</button>
-        <button type="button" class="btn grey btn-secondary" data-dismiss="modal">Tutup</button>
-      </div>
-      <?php echo form_close(); ?>
-      <!-- </form> -->
-    </div>
-  </div>
-</div>
-<!-- MODAL HAPUS DATA END -->
 
 <?= $this->load->view('admin/v_footer') ?>
 
@@ -315,136 +96,329 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
 
 <script type="text/javascript">
-  // Mendefinisikan data untuk chart
   var data_tipologi = <?= json_encode($data); ?>;
+  /*
+  |--------------------------------------------------------------------------
+  | DATA
+  |--------------------------------------------------------------------------
+  */
+  const dataLabels = <?= json_encode($labels); ?>;
+  const dataCapaianPT = <?= json_encode($capaian_pt); ?>;
+  const dataRataNasional = <?= json_encode($rata_rata_per_periode); ?>;
+  /*
+  |--------------------------------------------------------------------------
+  | SKOR NOL
+  |--------------------------------------------------------------------------
+  */
+  const skorNol = <?= json_encode($skor_nol) ?> || {};  
 
-  // Membuat array untuk data dan labels
-  // Filter data: ambil semua tipologi kecuali null/kosong
-  data_tipologi = (data_tipologi || []).filter(item => {
-    const t = item?.tipologi;
-    return t !== null && t !== undefined && String(t).trim() !== '' && String(t).toLowerCase() !== 'null';
+  /*
+  |--------------------------------------------------------------------------
+  | FORMAT LABEL PERIODE
+  |--------------------------------------------------------------------------
+  | 20261 => 1/2026
+  | 20262 => 2/2026
+  */
+  function formatPeriode(periode) {
+    periode = periode.toString();
+
+    const tahun = periode.substring(0, 4);
+    const semester = periode.substring(4);
+
+    return semester + '/' + tahun;
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | ARRAY UNTUK CHART
+  |--------------------------------------------------------------------------
+  */
+
+  // labels chart
+  const labels = dataLabels.map(function(item) {
+    return formatPeriode(item);
   });
-  const isDataKosong = data_tipologi.length === 0;
-  const labels = isDataKosong ? ['Data Kosong'] : data_tipologi.map(item => item.tipologi); // Ambil semua nama tipologi
-  const jumlah = isDataKosong ? [0] : data_tipologi.map(item => parseInt(item.jumlah_tipologi)); // Ambil jumlah_tipologi sebagai angka
-  const $total_data = isDataKosong ? [0] : data_tipologi.map(item => parseInt(item.total_data)); // Ambil total_data sebagai angka
-  const $periode = isDataKosong ? [''] : data_tipologi.map(item => item.periode); // Ambil periode
-  const $prd = !isDataKosong ? ($periode[0].slice(-1) == 1 ? $periode[0].substring(0, 4) + ' Periode 1' : $periode[0].substring(0, 4) + ' Periode 2') : '';
 
-  // Tambahkan array persentase dengan menghitung persentase dari jumlah_tipologi
-  const percentages = isDataKosong ? [100] : data_tipologi.map(item => {
-    const total = parseInt(item.total_data) || 0;
-    const jml = parseInt(item.jumlah_tipologi) || 0;
-    const percentage = total > 0 ? (jml / total) * 100 : 0;
-    return percentage.toFixed(1); // Membatasi 1 digit setelah koma
+  // capaian PT
+  const capaianPT = dataCapaianPT.map(function(item) {
+    return parseFloat(item);
   });
 
-  // Mendapatkan elemen canvas
-  const canvas = document.getElementById('doughnutChart');
+  // rata-rata nasional
+  const rataNasional = dataRataNasional.map(function(item) {
+    return parseFloat(item);
+  });
 
-  // Membuat objek data dengan konfigurasi chart
-  const data = {
-    // labels: ['Tipologi 1', 'Tipologi 2', 'Tipologi 3', 'Tipologi 4'],
-    labels: labels,
-    datasets: [{
-      // data: [data_tipologi.tipologi_1, data_tipologi.tipologi_2, data_tipologi.tipologi_3, data_tipologi.tipologi_4],
-      data: percentages,
-      jumlah: jumlah,
-      backgroundColor: isDataKosong ? ['#D3D3D3'] : ['#0796B7', '#0000CD', '#FFA360', '#00008B'],
-      // backgroundColor: ['rgba(0, 128, 0, 0.2)', 'rgba(255, 255, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(255, 0, 0, 0.2)'],
-      hoverBackgroundColor: isDataKosong ? ['#C0C0C0'] : ['#046980', '#00008F', '#B27243', '#000061'],
-      // hoverBackgroundColor: ['rgba(0, 128, 0, 0.2)', 'rgba(255, 255, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(255, 0, 0, 0.2)']
-      borderWidth: 4,
-      borderColor: 'white',
-      hoverBorderColor: 'black'
-    }]
-  };
+  /*
+  |--------------------------------------------------------------------------
+  | STATUS PT TIDAK MEMENUHI
+  |--------------------------------------------------------------------------
+  */
+  const skorNolStatus = dataLabels.map(function(periode) {
+    // jika array ada isi -> true
+    return (
+      skorNol[periode] &&
+      skorNol[periode].length > 0
+    );
+  });
 
-  // Opsi tambahan untuk kustomisasi chart
-  const options = {
-    responsive: true, // Membuat chart responsif sesuai ukuran kontainer
-    plugins: {
-      legend: {
-        display: true, // Menampilkan legenda
-        position: 'top', // Posisi legenda (top, bottom, left, right)
-        labels: {
-          generateLabels: (chart) => {
-            const datasets = chart.data.datasets;
-            return datasets[0].data.map((data, i) => ({
-              text: isDataKosong ? `${chart.data.labels[i]}` : `${chart.data.labels[i]}: ${datasets[0].jumlah[i]} PT`,
-              fillStyle: datasets[0].backgroundColor[i],
-              strokeStyle: datasets[0].backgroundColor[i],
-              index: i
-            }))
-          }
+  console.log(skorNolStatus);
+  
+
+  /*
+  |--------------------------------------------------------------------------
+  | GLOBAL VARIABLE
+  |--------------------------------------------------------------------------
+  */
+  let lineChart = null;
+  const visibleDataCount = labels.length > 4 ? 4 : labels.length; // jumlah data yang ditampilkan saat awal
+  const panStep = 1;
+  let xMin = 0;
+  let xMax = visibleDataCount - 1;
+
+  /*
+  |--------------------------------------------------------------------------
+  | DATASET
+  |--------------------------------------------------------------------------
+  */
+  function getChartData() {
+    return {
+      labels: labels,
+      datasets: [
+        // CAPAIAN PT
+        {
+          label: 'Capaian PT',
+          data: capaianPT,
+          borderColor: '#3366cc',
+          // warna titik per data
+          pointBackgroundColor: skorNolStatus.map(function(item) {
+            return item ? '#dc3545' : '#3366cc';
+          }),
+
+          // border titik
+          pointBorderColor: skorNolStatus.map(function(item) {
+            return item ? '#dc3545' : '#3366cc';
+          }),
+
+          // ukuran titik
+          pointRadius: skorNolStatus.map(function(item) {
+            return item ? 8 : 5;
+          }),
+
+          // hover titik
+          pointHoverRadius: skorNolStatus.map(function(item) {
+            return item ? 10 : 8;
+          }),
+          backgroundColor: '#3366cc',
+          borderWidth: 3,
+          tension: 0,
+          fill: false,
+          // pointRadius: 5,
+          // pointHoverRadius: 8
+        },
+
+        // RATA NASIONAL
+        {
+          label: 'Rata-rata Nasional',
+          data: rataNasional,
+          borderColor: '#f57c00',
+          backgroundColor: '#f57c00',
+          borderWidth: 3,
+          tension: 0.3,
+          fill: false,
+          pointRadius: 5,
+          pointHoverRadius: 8
+        },
+
+        // AMBANG BATAS
+        {
+          label: 'Ambang Terpenuhi',
+          data: labels.map(() => 4),
+          borderColor: 'red',
+          borderWidth: 2,
+          borderDash: [10, 5],
+          pointRadius: 0,
+          fill: false
         }
-      },
-      tooltip: {
-        enabled: true, // Mengaktifkan tooltip saat hover
-        callbacks: {
-          label: function(tooltipItem) {
-            if (isDataKosong) return 'Data Kosong';
-            const index = tooltipItem.dataIndex;
-            const value = (tooltipItem.dataset['jumlah'][index]);
-            const label = tooltipItem.label; // Ambil label (Tipologi 1, 2, dst.)
-            const percentage = tooltipItem.raw; // Ambil persentase
-            return `${label}: ${value} (${percentage}%)`;
-          }
-        }
-      },
-      title: {
-        display: true, // Menampilkan judul
-        text: isDataKosong ? 'Distribusi Tipologi - Data Kosong' : 'Distribusi Tipologi ' + $prd, // Teks judul
-        font: {
-          size: 18, // Ukuran font judul
-        }
-      },
-      datalabels: {
-        color: '#000', // Warna label
-        backgroundColor: 'white',
-        anchor: 'center', // Posisi label
-        align: 'center', // Penyelarasan label
-        formatter: (value, context) => {
-          if (isDataKosong) return 'Data Kosong';
-          const label = context.chart.data.labels[context.dataIndex];
-          const jumlah = (context.chart.data.datasets[0].jumlah[context.dataIndex]);
-          // return `${label}: ${jumlah} (${value}%)`; // Format teks label
-          return `${jumlah} (${value}%)`; // Format teks label
-        }
-      },
-      annotation: {
-        annotations: {
-          dLabel: {
-            type: 'doughnutLabel',
-            content: ({
-              chart
-            }) => isDataKosong ? ['Data Kosong'] : ['Total',
-              $total_data[0],
-            ],
-            font: isDataKosong ? [{
-              size: 28
-            }] : [{
-              size: 40
-            }, {
-              size: 30
-            }],
-            color: isDataKosong ? ['#666'] : ['black', 'red']
+      ]
+    };
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | UPDATE BUTTON
+  |--------------------------------------------------------------------------
+  */
+  function updateNavigationButtons() {
+    // Disable tombol kiri
+    $('#btnPanLeft').prop(
+      'disabled',
+      xMin <= 0
+    );
+    // Disable tombol kanan
+    $('#btnPanRight').prop(
+      'disabled',
+      xMax >= labels.length - 1
+    );
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | UPDATE INFO PERIODE
+  |--------------------------------------------------------------------------
+  */
+  function updatePeriodeInfo() {
+    $('#periodeInfo').html(
+      labels[xMin] + ' - ' + labels[xMax]
+    );
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | RENDER CHART
+  |--------------------------------------------------------------------------
+  */
+  function createChart() {
+    lineChart = new Chart(
+      document.getElementById('chartTipologi'), {
+        type: 'line',
+        data: getChartData(),
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          },
+          plugins: {
+            legend: {
+              position: 'bottom'
+            },
+            title: {
+              display: true,
+              text: 'Tipologi SPMI'
+            },
+            zoom: {
+              pan: {
+                enabled: true,
+                mode: 'x',
+                threshold: 10,
+              },
+              zoom: {
+                wheel: {
+                  enabled: false
+                },
+                pinch: {
+                  enabled: false
+                },
+                mode: 'x',
+              },
+              limits: {
+                x: {
+                  minRange: visibleDataCount
+                }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                afterLabel: function(context) {
+                  // hanya dataset capaian PT
+                  if (context.dataset.label !== 'Capaian PT') {
+                    return '';
+                  }
+                  const isTidakMemenuhi =
+                    skorNolStatus[context.dataIndex];
+                  if (isTidakMemenuhi) {
+                    return '⚠ PT Tidak Memenuhi';
+                  }
+                  return '';
+                }
+              }
+            },
+          },
+          scales: {
+            x: {
+              offset: true,
+              min: xMin,
+              max: xMax,
+              title: {
+                display: true,
+                text: 'Periode'
+              }
+            },
+            y: {
+              offset: true,
+              min: 0,
+              max: 8,
+              ticks: {
+                stepSize: 1
+              },
+              title: {
+                display: true,
+                text: 'Skor'
+              }
+            }
           }
         }
       }
-    },
-    animation: {
-      animateScale: true, // Mengaktifkan animasi skala
-      animateRotate: true // Mengaktifkan animasi rotasi
-    },
-    cutout: '50%', // Ukuran lubang di tengah chart
-  };
+    );
+    updateNavigationButtons();
+    updatePeriodeInfo();
+  }
 
-  // Membuat chart doughnut
-  new Chart(canvas, {
-    type: 'doughnut',
-    data: data,
-    options: options, // Menambahkan opsi di sini
-    plugins: [ChartDataLabels] // Tambahkan plugin datalabels di sini
+  function updateChartRange() {
+    lineChart.options.scales.x.min = xMin;
+    lineChart.options.scales.x.max = xMax;
+    // UPDATE TANPA ANIMASI
+    lineChart.update('quiet');
+    updateNavigationButtons();
+    updatePeriodeInfo();
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | PAN LEFT
+  |--------------------------------------------------------------------------
+  */
+  function panLeft() {
+    if (xMin - panStep >= 0) {
+      xMin -= panStep;
+      xMax -= panStep;
+      updateChartRange();
+    }
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | PAN RIGHT
+  |--------------------------------------------------------------------------
+  */
+  function panRight() {
+    if (xMax + panStep < labels.length) {
+      xMin += panStep;
+      xMax += panStep;
+      updateChartRange();
+    }
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | EVENT BUTTON
+  |--------------------------------------------------------------------------
+  */
+  $('#btnPanLeft').on('click', function(e) {
+    e.preventDefault();
+    panLeft();
   });
+  $('#btnPanRight').on('click', function(e) {
+    e.preventDefault();
+    panRight();
+  });
+
+  /*
+  |--------------------------------------------------------------------------
+  | INIT
+  |--------------------------------------------------------------------------
+  */
+  createChart();
 </script>

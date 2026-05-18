@@ -475,4 +475,33 @@ class Penilaian_model extends CI_Model
     return $query = $this->db->get()->result_array();
     // return array_column($query->result_array(), 'kode_pt');
   }
+
+  public function is_penilaian_published($periode)
+  {
+    $query = $this->db
+      ->select('kode_pt')
+      ->from('data_penjaminan_mutu_30')
+      ->where('periode', $periode)
+      ->get()
+      ->result_array();
+
+    return array_column($query, 'kode_pt');
+  }
+  
+  public function statistikProdi($kode_pt)
+  {
+    $this->db->select('kode_pt');
+    $this->db->select('nm_pt');
+    $this->db->select('COUNT(CASE WHEN nm_stat_prodi = "Aktif" THEN 1 END) AS total_prodi_aktif');
+    $this->db->select('COUNT(CASE WHEN nm_stat_prodi = "Aktif" AND akreditasi_prodi <> "-" AND akreditasi_prodi <> "" AND akreditasi_prodi <> "Tidak Terakreditasi" THEN 1 END) AS prodi_terakreditasi');
+    $this->db->select('COUNT(CASE WHEN nm_stat_prodi = "Aktif" AND (akreditasi_prodi = "Unggul" OR akreditasi_prodi = "A") THEN 1 END) AS prodi_unggul_atau_a');
+
+    $this->db->select('(COUNT(CASE WHEN nm_stat_prodi = "Aktif" AND (akreditasi_prodi = "Unggul" OR akreditasi_prodi = "A") THEN 1 END) / COUNT(CASE WHEN nm_stat_prodi = "Aktif" THEN 1 END)) * 100 AS persentase_unggul_atau_a');
+
+    $this->db->from('data_prodi');
+    $this->db->where('kode_pt', $kode_pt);
+
+    $data = $this->db->get()->row_array();
+    return $data;
+  }
 }

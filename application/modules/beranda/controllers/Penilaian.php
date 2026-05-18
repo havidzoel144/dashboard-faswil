@@ -6,7 +6,7 @@ class Penilaian extends MX_Controller
   function __construct()
   {
     parent::__construct();
-    $this->load->library(['javascript']);
+    $this->load->library(['javascript', 'Skoring_akreditasi']);
     $this->load->model(['Periode_model', 'Penilaian_model']);
     date_default_timezone_set("Asia/Jakarta");
 
@@ -76,19 +76,26 @@ class Penilaian extends MX_Controller
   public function getPenilaian()
   {
     if ($this->input->is_ajax_request()) {
-      // $periode = $this->input->post('periode');
-      // $kode_pt = $this->input->post('kode_pt');
-      // $fasilitator_id = $this->input->post('fasilitator_id');
       $id_penilaian_tipologi = $this->input->post('id_penilaian_tipologi');
-
-      // $hasil = $this->Penilaian_model->getPenilaian($periode, $kode_pt, $fasilitator_id);
       $hasil = $this->Penilaian_model->getPenilaian($id_penilaian_tipologi);
+      $kode_pt = $hasil->kode_pt;
+      $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+      $skoring_prodi = $this->skoring_akreditasi->hitung([
+        'jumlah_prodi_aktif' => $persentase_prodi['total_prodi_aktif'],
+        'prodi_terakreditasi' => $persentase_prodi['prodi_terakreditasi'],
+        'persentase_unggul_atau_a' => $persentase_prodi['persentase_unggul_atau_a'],
+        'jenis_pt' => 'PTS'
+      ]);
+      $form_led = $this->db->query("SELECT * FROM form_led WHERE id_penilaian_tipologi = '$id_penilaian_tipologi'")->row();
 
       if (!empty($hasil)) {
         echo json_encode([
           'success' => true,
           'data' => $hasil,
-          'csrfHash' => $this->security->get_csrf_hash() // ← penting
+          'persentase_prodi' => $persentase_prodi,
+          'skoring_prodi' => $skoring_prodi,
+          'csrfHash' => $this->security->get_csrf_hash(), // ← penting
+          'form_led' => $form_led
         ]);
       } else {
         echo json_encode([
@@ -177,9 +184,9 @@ class Penilaian extends MX_Controller
   {
     if ($nilai_terbobot == 8.0) {
       return "Tipologi 1";
-    } elseif ($nilai_terbobot >= 6.0 && $nilai_terbobot <= 7.0) {
+    } elseif ($nilai_terbobot >= 6.0 && $nilai_terbobot <= 7.5) {
       return "Tipologi 2";
-    } elseif ($nilai_terbobot >= 4.0 && $nilai_terbobot <= 5.0) {
+    } elseif ($nilai_terbobot >= 4.0 && $nilai_terbobot <= 5.5) {
       return "Tipologi 3";
     } elseif ($nilai_terbobot < 4.0) {
       return "Tipologi 4";
@@ -240,5 +247,23 @@ class Penilaian extends MX_Controller
     } else {
       redirect('admin/penilaian-tipologi');
     }
+  }
+
+  public function persentaseProdi()
+  {
+    $kode_pt = "031065";
+    $data = $this->Penilaian_model->statistikProdi($kode_pt);
+    // echo json_encode($data);
+
+    $hasil = $this->skoring_akreditasi->hitung([
+      'jumlah_prodi_aktif' => $data['total_prodi_aktif'],
+      'prodi_terakreditasi' => $data['prodi_terakreditasi'],
+      // 'prodi_terakreditasi' => $data['total_prodi_aktif'], // untuk testing semua prodi terakreditasi
+      'persentase_unggul_atau_a' => $data['persentase_unggul_atau_a'],
+      'jenis_pt' => 'PTS'
+    ]);
+
+    echo '<pre>';
+    print_r($hasil);
   }
 }

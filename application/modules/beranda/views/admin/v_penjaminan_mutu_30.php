@@ -16,7 +16,7 @@
         <div class="col-xl-12">
           <div class="card">
             <div class="card-header">
-              <h4 class="card-title">Data Penjaminan Mutu</h4>
+              <h4 class="card-title">Data Penjaminan Mutu IAPT 3.0</h4>
               <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
               <div class="heading-elements">
                 <ul class="list-inline mb-0">
@@ -101,7 +101,7 @@
                             <div class="col-md-1"></div>
                           </div>
 
-                          <?php if (has_role([2])) : ?>
+                          <?php if (has_role([200])) : ?>
                             <div class="form-group row d-flex justify-content-center">
                               <button type="button" class="btn btn-dark mb-1 waves-effect waves-light" data-toggle="modal" data-backdrop="false" data-target="#backdrop">Import Data</button>
                               <a href="<?= base_url('uploads/template_penjaminan_mutu.xlsx') ?>" class="btn btn-success mb-1 waves-effect waves-light">Download Template</a>
@@ -310,7 +310,7 @@
 <!-- BEGIN: Page JS-->
 <script src="<?= base_url() ?>app-assets/js/scripts/tables/datatables/datatable-basic.js"></script>
 <!-- END: Page JS-->
-<script src="<?= base_url() ?>assets/js_tampil/data_penjaminan_mutu.js"></script>
+<script src="<?= base_url() ?>assets/js_tampil/data_penjaminan_mutu_30.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

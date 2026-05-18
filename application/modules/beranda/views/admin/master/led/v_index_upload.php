@@ -19,13 +19,6 @@
     white-space: nowrap;
     padding-right: 6rem;
   }
-
-  #label-file-logo {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding-right: 6rem;
-  }
 </style>
 
 <?= $this->load->view('admin/v_menu') ?>
@@ -42,11 +35,8 @@
       <div class="row">
         <div class="col-lg-8 col-md-6 col-sm-12 mx-auto">
           <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-header">
               <h4 class="card-title" id="heading-buttons1"><?= $judul ?></h4>
-              <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-upload-logo">
-                <i class="fa fa-upload"></i> Upload Logo PT
-              </button>
             </div>
             <div class="dropdown-divider"></div>
             <div class="card-content">
@@ -89,64 +79,43 @@
                             <td class="text-center" style="width: 15%;">
                               <?php
                               $disabled = '';
-                              $notAllowed = '';
-                              if ($data['kode_pt'] == null) {
+                              $notAllowed = "";
+                              if ($data['kode_pt'] == null && $data['file_led'] == null) {
                                 $warna_btn = 'btn-danger';
                                 $tooltip_text = 'Belum plotting fasilitator untuk periode ' . $data['kode'];
                                 $icon_btn = 'la la-times';
                                 $label_btn = 'Belum Plotting';
                                 $disabled = 'disabled';
                                 $notAllowed = "style='cursor: not-allowed;'";
-                              } else if ($data['kode_pt'] != null && ($data['status_led'] == '0' || $data['status_led'] == null)) {
+                              } else if ($data['kode_pt'] != null && ($data['file_led'] == null || $data['tgl_upload_led'] == null)) {
                                 $warna_btn = 'btn-primary';
-                                $tooltip_text = 'Silakan isi LED untuk periode ' . $data['kode'];
-                                $icon_btn = 'la la-edit';
-                                $label_btn = 'Pengisian LED';
-                              } else if ($data['kode_pt'] != null && $data['status_led'] == '1') {
-                                $warna_btn = 'btn-warning';
+                                $tooltip_text = 'Upload LED untuk periode ' . $data['kode'];
+                                $icon_btn = 'la la-upload';
+                                $label_btn = 'Belum upload LED';
+                                if ($data['tgl_upload_led'] == null) {
+                                  $simpanPermanen = 1;
+                                }
+                              } else if ($data['kode_pt'] != null && $data['file_led'] != null && $data['tgl_upload_led'] != null) {
                                 $warna_btn = 'btn-success';
-                                $tooltip_text = 'LED sudah simpan permanen untuk periode ' . $data['kode'];
+                                $tooltip_text = 'Lihat file LED';
                                 $icon_btn = 'la la-check';
-                                $label_btn = 'LED Terisi';
+                                $label_btn = 'Sudah upload LED';
                               }
                               ?>
-                              <div class="btn-group" role="group" aria-label="Aksi LED">
-                                <a href="<?= base_url('admin/pt/form-pengisian-led/' . safe_url_encrypt($data['kode'])) ?>">
-                                  <button
-                                    class="btn <?= $warna_btn ?> btn-sm"
-                                    type="button"
-                                    data-toggle="tooltip"
-                                    title="<?= $tooltip_text ?>"
-                                    <?= $disabled . ' ' . $notAllowed ?>>
-                                    <i class="<?= $icon_btn ?>"></i>
-                                    <?= $label_btn ?>
-                                  </button>
-                                </a>
-                                <?php if ($data['status_led'] == '1'): ?>
-                                  <a href="<?= base_url('admin/pt/unduh-laporan-led/' . safe_url_encrypt($data['id_penilaian_tipologi'])) ?>">
-                                    <button
-                                      class="btn btn-dark btn-sm"
-                                      type="button"
-                                      data-toggle="tooltip"
-                                      title="Unduh Laporan LED untuk periode <?= $data['kode'] ?>"
-                                      <?= $disabled . ' ' . $notAllowed ?>>
-                                      <i class="la la-file"></i>
-                                    </button>
-                                  </a>
-                                <?php endif; ?>
-                                <?php if ($data['periode_dpm'] != null): ?>
-                                  <a href="<?= base_url('admin/pt/unduh-sertifikat/' . safe_url_encrypt($data['kode'])) ?>">
-                                    <button
-                                      class="btn btn-info btn-sm"
-                                      type="button"
-                                      data-toggle="tooltip"
-                                      title="Unduh Sertifikat LED untuk periode <?= $data['kode'] ?>"
-                                      <?= $disabled . ' ' . $notAllowed ?>>
-                                      <i class="la la-download"></i>
-                                    </button>
-                                  </a>
-                                <?php endif; ?>
-                              </div>
+                              <button
+                                class="btn <?= $warna_btn ?> btn-sm btn-upload-led w-100"
+                                type="button"
+                                data-toggle="tooltip"
+                                title="<?= $tooltip_text ?>"
+                                data-kode="<?= $data['kode'] ?>"
+                                data-kode-pt="<?= $data['kode_pt'] ?>"
+                                data-keterangan="<?= $data['keterangan'] ?>"
+                                data-file-led="<?= $data['file_led'] ?>"
+                                data-uploaded="<?= $data['tgl_upload_led'] ?>"
+                                <?= $disabled . ' ' . $notAllowed ?>>
+                                <i class="<?= $icon_btn ?>"></i>
+                                <?= $label_btn ?>
+                              </button>
                             </td>
                           </tr>
                         <?php
@@ -171,57 +140,6 @@
   </div>
 </div>
 <!-- END: Content-->
-
-<!-- Modal Upload Logo PT -->
-<div class="modal fade" id="modal-upload-logo" tabindex="-1" role="dialog" aria-labelledby="modalUploadLogoLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-primary">
-        <h5 class="modal-title text-white" id="modalUploadLogoLabel">Upload Logo PT</h5>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <?php
-        $logo_pt_existing = '';
-        if (!empty($logo_pt)) {
-          $logo_pt_existing = $logo_pt;
-        }
-
-        if (!empty($logo_pt_existing)) {
-          $logo_src = base_url('admin/pt/logo/' . urlencode(safe_url_encrypt($logo_pt_existing['nama_logo'])));
-        }
-        ?>
-
-        <?php if (!empty($logo_pt_existing)): ?>
-          <div class="mb-2 text-center">
-            <small class="d-block text-muted mb-1">Logo PT saat ini</small>
-            <img src="<?= $logo_src ?>" alt="Logo PT" class="img-fluid rounded border" style="max-height: 140px;">
-          </div>
-        <?php endif; ?>
-
-        <?= form_open_multipart('admin/pt/upload-logo', ['id' => 'form-upload-logo']) ?>
-        <label for="file-logo">Pilih file logo</label>
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" id="file-logo" name="file_logo" accept=".png, .jpg, .jpeg, .svg" required>
-          <label class="custom-file-label" for="file-logo" id="label-file-logo">Pilih file...</label>
-        </div>
-        <small class="form-text text-muted">Format yang diizinkan: .png, .jpg, .jpeg, .svg (maksimal 2MB)</small>
-
-        <div class="d-flex justify-content-end mt-2">
-          <div class="btn-group" role="group" aria-label="Aksi Upload Logo">
-            <button type="submit" class="btn btn-primary">
-              <i class="la la-upload"></i> Upload
-            </button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-          </div>
-        </div>
-        <?= form_close() ?>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Modal Upload LED -->
 <div class="modal fade" id="modal-upload-led" tabindex="-1" role="dialog" aria-labelledby="modalUploadLedLabel" aria-hidden="true">
@@ -453,24 +371,6 @@
       $('#label-file-led')
         .text(formatFileLabel(fileName))
         .attr('title', fileName);
-    });
-
-    // Tampilkan nama file logo yang dipilih
-    $('#file-logo').on('change', function() {
-      var fileName = this.files && this.files.length ? this.files[0].name : 'Pilih file...';
-      $('#label-file-logo')
-        .text(formatFileLabel(fileName))
-        .attr('title', fileName);
-    });
-
-    // Validasi sederhana upload logo
-    $('#form-upload-logo').on('submit', function(e) {
-      var fileInput = $('#file-logo')[0];
-      if (!fileInput.files || !fileInput.files.length) {
-        e.preventDefault();
-        alert('Silakan pilih file logo terlebih dahulu.');
-        return false;
-      }
     });
 
     // Validasi sederhana sebelum submit

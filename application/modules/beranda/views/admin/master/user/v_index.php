@@ -63,9 +63,11 @@
                               </div>
                             </td>
                             <td class="text-center" style="width: 10%;">
-                              <button class="btn btn-dark btn-sm waves-effect waves-light" type="button" onclick="confirmResetPassword('<?= $data->id ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Reset Password"><i class="la la-key"></i></button>
-                              <button class="btn btn-primary btn-sm waves-effect waves-light" type="button" onclick='openEditModal("<?= $data->id ?>", "<?= addslashes($data->nama) ?>", "<?= addslashes($data->username) ?>", "<?= addslashes($data->email) ?>", <?= json_encode($data->role_id) ?>, "<?= $data->status ?>")' data-toggle="tooltip" data-placement="top" data-original-title="Ubah Data"><i class="la la-edit"></i></button>
-                              <button class="btn btn-danger btn-sm waves-effect waves-light" type="button" onclick="confirmDelete('<?= $data->id ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Hapus Data"><i class="la la-trash"></i></button>
+                              <div class="btn-group btn-group-sm" role="group" aria-label="Aksi pengguna">
+                                <button class="btn btn-dark waves-effect waves-light" type="button" onclick="confirmResetPassword('<?= $data->id ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Reset Password"><i class="la la-key"></i></button>
+                                <button class="btn btn-primary waves-effect waves-light" type="button" onclick='openEditModal("<?= $data->id ?>", "<?= addslashes($data->nama) ?>", "<?= addslashes($data->username) ?>", "<?= addslashes($data->email) ?>", <?= json_encode($data->role_id) ?>, "<?= $data->status ?>")' data-toggle="tooltip" data-placement="top" data-original-title="Ubah Data"><i class="la la-edit"></i></button>
+                                <button class="btn btn-danger waves-effect waves-light" type="button" onclick="confirmDelete('<?= $data->id ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Hapus Data"><i class="la la-trash"></i></button>
+                              </div>
                             </td>
 
                           </tr>
@@ -786,10 +788,10 @@
       let roleLabel = '';
       $.each(data_role, function(index, role) {
         if (role.id == 6 && selectedValues.includes('6')) {
-          roleLabel = role.nama_role.charAt(0).toUpperCase() + role.nama_role.slice(1);
+          roleLabel = role.nama_role;
           return false; // Break loop
         } else if (role.id == 7 && selectedValues.includes('7')) {
-          roleLabel = role.nama_role.charAt(0).toUpperCase() + role.nama_role.slice(1);
+          roleLabel = role.nama_role;
           return false; // Break loop
         }
       });

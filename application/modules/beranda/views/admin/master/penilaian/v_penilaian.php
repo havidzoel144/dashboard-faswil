@@ -1,5 +1,17 @@
 <?= $this->load->view('admin/v_header') ?>
+<style>
+  .popover {
+    z-index: 1060 !important;
+  }
 
+  .popover-skor4 {
+    max-width: 80vw !important;
+    width: 600px;
+    overflow-y: auto;
+    /* muncul scroll kalau kepanjangan */
+    white-space: normal;
+  }
+</style>
 <?= $this->load->view('admin/v_menu') ?>
 
 <!-- BEGIN: Content-->
@@ -177,6 +189,13 @@
                               <option value="1.5">1.5</option>
                               <option value="2.0">2</option>
                             </select>
+                            <div class="mt-1 lihat-narasi-led d-none">
+                              <small class="text-muted">
+                                <a href="javascript:void(0)" data-indikator="1" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 1" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
+                                  <i class="fa fa-search"></i> Narasi LED Indikator 1
+                                </a>
+                              </small>
+                            </div>
                           </fieldset>
                         </div>
                         <div class="col-lg-9">
@@ -202,6 +221,7 @@
                         </div>
                       </div>
                       <hr>
+
                       <div class="row">
                         <div class="col-lg-3">
                           <fieldset class="form-group mb-1">
@@ -216,6 +236,13 @@
                               <option value="1.5">1.5</option>
                               <option value="2.0">2</option>
                             </select>
+                            <div class="mt-1 lihat-narasi-led d-none">
+                              <small class="text-muted">
+                                <a href="javascript:void(0)" data-indikator="2" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 2" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
+                                  <i class="fa fa-search"></i> Narasi LED Indikator 2
+                                </a>
+                              </small>
+                            </div>
                           </fieldset>
                         </div>
                         <div class="col-lg-9">
@@ -255,6 +282,13 @@
                               <option value="1.5">1.5</option>
                               <option value="2.0">2</option>
                             </select>
+                            <div class="mt-1 lihat-narasi-led d-none">
+                              <small class="text-muted">
+                                <a href="javascript:void(0)" data-indikator="3" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 3" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
+                                  <i class="fa fa-search"></i> Narasi LED Indikator 3
+                                </a>
+                              </small>
+                            </div>
                           </fieldset>
                         </div>
                         <div class="col-lg-9">
@@ -280,12 +314,38 @@
                         </div>
                       </div>
                       <hr>
+                      <div class="row mb-1">
+                        <div class="col-md-3 mb-1 mb-md-0">
+                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Total Prodi</small>
+                            <div class="font-weight-bold" id="total-prodi-aktif" style="font-size:1.05rem; color:#0f766e;">-</div>
+                          </div>
+                        </div>
+                        <div class="col-md-3 mb-1 mb-md-0">
+                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Jumlah Prodi Terakreditasi</small>
+                            <div class="font-weight-bold" id="prodi-terakreditasi" style="font-size:1.05rem; color:#0f766e;">-</div>
+                          </div>
+                        </div>
+                        <div class="col-md-3 mb-1 mb-md-0">
+                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Jumlah Prodi Unggul/A</small>
+                            <div class="font-weight-bold" id="prodi-unggul-atau-a" style="font-size:1.05rem; color:#0f766e;">-</div>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Persentase Prodi Unggul/A</small>
+                            <div class="font-weight-bold" id="persentase-prodi-unggul-atau-a" style="font-size:1.05rem; color:#0f766e;">-</div>
+                          </div>
+                        </div>
+                      </div>
                       <div class="row">
                         <div class="col-lg-3">
                           <fieldset class="form-group mb-1">
                             <label for="skor-4" class="label-required">
                               Skor 4
-                              <span class="text-danger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Persentase PS terakreditasi 100%. <br> 1.5 = Syarat perlu status terakreditasi Unggul  (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>15% sd <20%</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>40% sd <50% (PTNBH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>20% sd <25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>30% sd <40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%.(PTS Vokasi)</li></ol> 2 = Syarat perlu status terakreditasi Unggul (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%.</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 50%.(PTN BH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.(PTS Vokasi)</li></ol>" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                              <span class="text-danger popover-skor4-trigger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Persentase PS terakreditasi 100%. <br> 1.5 = Syarat perlu status terakreditasi Unggul  (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>15% sd <20%</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>40% sd <50% (PTNBH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>20% sd <25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>30% sd <40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%.(PTS Vokasi)</li></ol> 2 = Syarat perlu status terakreditasi Unggul (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%.</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 50%.(PTN BH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.(PTS Vokasi)</li></ol>" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
                             </label>
                             <select class="form-control square" id="skor-4" name="skor_4" required>
                               <option value="">-- Pilih Skor --</option>
@@ -294,6 +354,13 @@
                               <option value="1.5">1.5</option>
                               <option value="2.0">2</option>
                             </select>
+                            <div class="mt-1 lihat-narasi-led d-none">
+                              <small class="text-muted">
+                                <a href="javascript:void(0)" data-indikator="4" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 4" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
+                                  <i class="fa fa-search"></i> Narasi LED Indikator 4
+                                </a>
+                              </small>
+                            </div>
                           </fieldset>
                         </div>
                         <div class="col-lg-9">
@@ -368,6 +435,40 @@
         </div>
       <?php endif; ?>
 
+      <!-- MODAL NARASI -->
+      <div class="modal fade" id="modal-narasi-led" tabindex="-1" role="dialog" aria-labelledby="modalNarasiLedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-primary white">
+              <h5 class="modal-title text-white" id="modalNarasiLedLabel">Narasi LED</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group mb-0">
+                <label for="narasi-led-indikator">Isi Narasi LED</label>
+                <textarea class="form-control textarea-catatan" id="narasi-led-indikator" rows="18" placeholder="Narasi LED Indikator 1 akan ditampilkan di sini." readonly></textarea>
+              </div>
+              <div class="form-group mt-2 mb-0">
+                <label for="link-bukti-indikator">Link Bukti</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="link-bukti-indikator" placeholder="Link bukti indikator akan ditampilkan di sini." readonly>
+                  <div class="input-group-append">
+                    <a href="#" target="_blank" class="btn btn-info" id="btn-link-bukti-indikator">Buka Link</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- MODAL NARASI -->
+
       <!-- Basic Horizontal Timeline -->
       <div class="row mb-5">
         <div class="col-md-12 col-sm-12">
@@ -416,7 +517,7 @@
                         </th>
                         <th class="text-center" rowspan="2">
                           Tipologi
-                          <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 : 8; <br> Tipologi 2 : 6-7; <br> Tipologi 3 : 4-5; <br> Tipologi 4 : < 4;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
+                          <span class="text-danger" data-toggle="popover" data-content="Tipologi 1 : 8; <br> Tipologi 2 : 6-7,5; <br> Tipologi 3 : 4-5,5; <br> Tipologi 4 : < 4;" data-trigger="hover" data-original-title="Ketentuan Tipologi" data-html="true"><i class="la la-info-circle"></i></span>
                         </th>
                         <th class="text-center" rowspan="2">Status</th>
                         <th class="text-center" rowspan="2">Aksi</th>
@@ -594,6 +695,57 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script type="text/javascript">
+  $('.narasi-indikator-led').on('click', function() {
+    let id_penilaian_tipologi = $('#id-penilaian-tipologi').val();
+    let narasi = 'narasi_' + $(this).data('indikator');
+    let bukti = 'bukti_' + $(this).data('indikator');
+
+    $.ajax({
+      url: '<?= base_url("admin/get-penilaian") ?>',
+      method: 'POST',
+      data: {
+        id_penilaian_tipologi: id_penilaian_tipologi,
+        [csrfName]: csrfHash
+      },
+      dataType: 'json',
+      success: function(response) {
+        if (response.form_led == null) {
+          return Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: "Narasi tidak tersedia.",
+            confirmButtonColor: '#dc3545'
+          });
+        }
+
+        const indikator = narasi.split('_')[1];
+        const indikatorMap = {
+          '1': { label: 'Sasaran Mutu Masukan', narasiKey: 'sasaran_mutu_masukan', buktiKey: 'tautan_sasaran_mutu_masukan' },
+          '2': { label: 'Sasaran Mutu Proses', narasiKey: 'sasaran_mutu_proses', buktiKey: 'tautan_sasaran_mutu_proses' },
+          '3': { label: 'Sasaran Mutu Luaran', narasiKey: 'sasaran_mutu_luaran', buktiKey: 'tautan_sasaran_mutu_luaran' },
+          '4': { label: 'Sasaran Mutu Dampak', narasiKey: 'sasaran_mutu_dampak', buktiKey: 'tautan_sasaran_mutu_dampak' }
+        };
+
+        let narasiValue = response.data[narasi] ? response.data[narasi] : '';
+        let buktiValue = response.data[bukti] ? response.data[bukti] : '';
+
+        if (indikatorMap[indikator]) {
+          narasiValue = response.form_led[indikatorMap[indikator].narasiKey] ? response.form_led[indikatorMap[indikator].narasiKey] : '';
+          buktiValue = response.form_led[indikatorMap[indikator].buktiKey] ? response.form_led[indikatorMap[indikator].buktiKey] : '';
+        }
+
+        $('#modalNarasiLedLabel').text((indikatorMap[indikator] ? indikatorMap[indikator].label : 'Indikator ' + indikator));
+        $('#narasi-led-indikator').val(narasiValue);
+        $('#link-bukti-indikator').val(buktiValue);
+        $('#btn-link-bukti-indikator').attr('href', buktiValue);
+        $('#modal-narasi-led').modal('show');
+      },
+      error: function(xhr) {
+        alert('Gagal mengambil data');
+      }
+    });
+  });
+
   $(document).ready(function() {
     var tabelPenilaian = $('#tabel-penilaian').DataTable();
 
@@ -612,6 +764,20 @@
     };
 
     var ListPT = new List('list-pt', list_pt_options);
+  });
+
+  $('.popover-skor4-trigger').popover('dispose');
+  $('.popover-skor4-trigger').popover({
+    html: true,
+    trigger: 'hover',
+    placement: 'auto',
+    template: `
+        <div class="popover popover-skor4" role="tooltip">
+            <div class="arrow"></div>
+            <h3 class="popover-header"></h3>
+            <div class="popover-body"></div>
+        </div>
+    `
   });
 
   $(document).on('submit', '#form-input-skor', function(event) {
@@ -705,14 +871,43 @@
       },
       dataType: 'json',
       success: function(response) {
-        if (response.data.file_led == null) {
+        if (response.form_led == null || response.form_led.status == '0') {
+          $('.lihat-narasi-led').addClass('d-none');
+          $('#total-prodi-aktif').text('-');
+          $('#prodi-terakreditasi').text('-');
+          $('#prodi-unggul-atau-a').text('-');
+          $('#persentase-prodi-unggul-atau-a').text('-');
           return Swal.fire({
             icon: 'error',
             title: 'Tidak Dapat Melakukan Penilaian',
-            text: "PT belum mengunggah file LED.",
+            text: "PT belum mengisi/simpan permanen LED.",
             confirmButtonColor: '#dc3545'
           });
         }
+
+        function ambilNilai(data, keys, defaultValue = '') {
+          for (let i = 0; i < keys.length; i++) {
+            if (data && data[keys[i]] !== undefined && data[keys[i]] !== null && data[keys[i]] !== '') {
+              return data[keys[i]];
+            }
+          }
+          return defaultValue;
+        }
+
+        const totalProdi = ambilNilai(response.persentase_prodi, ['total_prodi_aktif'], '0');
+        const prodiTerakreditasi = ambilNilai(response.persentase_prodi, ['prodi_terakreditasi'], '0');
+        const prodiUnggulA = ambilNilai(response.persentase_prodi, ['prodi_unggul_atau_a'], '0');
+        let persentaseUnggulA = ambilNilai(response.persentase_prodi, ['persentase_unggul_atau_a'], '0');
+
+        if (persentaseUnggulA !== '' && !String(persentaseUnggulA).includes('%')) {
+          const angkaPersentase = parseFloat(String(persentaseUnggulA).replace(',', '.'));
+          persentaseUnggulA = isNaN(angkaPersentase) ? persentaseUnggulA + '%' : angkaPersentase.toFixed(2) + '%';
+        }
+
+        $('#total-prodi-aktif').text(totalProdi);
+        $('#prodi-terakreditasi').text(prodiTerakreditasi);
+        $('#prodi-unggul-atau-a').text(prodiUnggulA);
+        $('#persentase-prodi-unggul-atau-a').text(persentaseUnggulA);
 
         $('#nama-pt').val(nama_pt);
         $('#kode-pt').val(kode_pt);
@@ -743,6 +938,7 @@
         $('#catatan-3').prop('disabled', false);
         $('#skor-4').prop('disabled', false);
         $('#catatan-4').prop('disabled', false);
+        $('.lihat-narasi-led').removeClass('d-none');
 
         // Helper untuk set readonly dan style
         function setReadonly(selector, isReadonly) {
@@ -782,7 +978,10 @@
               'background-color': ''
             });
         }
-
+        $('#skor-4').val(response.skoring_prodi.skor.toFixed(1));
+        $('#skor-4').prop('disabled', true).css({
+          'cursor': 'not-allowed',
+        });
       },
       error: function(xhr) {
         alert('Gagal mengambil data');
@@ -826,6 +1025,4 @@
       }
     });
   });
-
-  $('')
 </script>

@@ -169,12 +169,14 @@
                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
 
                 <div class="d-flex align-items-center">
-                  <button class="btn btn-success btn-ganti-faswil-validator" type="button" data-toggle="tooltip" title="Ganti Faswil / Validator" data-periode="<?= safe_url_encrypt($periode_dipilih->kode) ?>" data-keterangan="<?= $periode_dipilih->keterangan ?>">
-                    <i class="la la-refresh"></i> Ganti Faswil / Validator
-                  </button>
-                  <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-plotting-fasilitator="false" data-target="#plotting-fasilitator">
-                    <i class="la la-plus"></i> Plotting Fasilitator
-                  </button>
+                  <?php if ($periode_dipilih->status == '1' && substr($periode_dipilih->kode, 0, 4) == date('Y')) : ?>
+                    <button class="btn btn-success btn-ganti-faswil-validator" type="button" data-toggle="tooltip" title="Ganti Faswil / Validator" data-periode="<?= safe_url_encrypt($periode_dipilih->kode) ?>" data-keterangan="<?= $periode_dipilih->keterangan ?>">
+                      <i class="la la-refresh"></i> Ganti Faswil / Validator
+                    </button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-plotting-fasilitator="false" data-target="#plotting-fasilitator">
+                      <i class="la la-plus"></i> Plotting Fasilitator
+                    </button>
+                  <?php endif; ?>
                   <?php echo form_close(); ?>
                   <a href="<?= base_url('admin/plotting-fasilitator') ?>">
                     <button type="button" class="btn btn-dark waves-effect waves-light">
@@ -195,7 +197,9 @@
                         <th class="text-center">Perguruan Tinggi</th>
                         <th class="text-center">Periode</th>
                         <th class="text-center">Nama Validator</th>
-                        <th class="text-center">Aksi</th>
+                        <?php if ($periode_dipilih->status == '1' && substr($periode_dipilih->kode, 0, 4) == date('Y')) : ?>
+                          <th class="text-center">Aksi</th>
+                        <?php endif; ?>
                       </tr>
                     </thead>
                     <tbody>
@@ -210,11 +214,12 @@
                             <td class="text-start" style="width: 20%;"><?= $data->nama_pt ?></td>
                             <td class="text-start" style="width: 13%;"><?= $data->keterangan ?></td>
                             <td class="text-start" style="width: 10%;"><?= $data->nama_validator == NULL ? '<div class="badge badge-danger">Belum ada validator</div>' : $data->nama_validator ?></td>
-                            <td class="text-center" style="width: 5%;">
-                              <!-- <button class="btn btn-primary btn-sm waves-effect waves-light" type="button" onclick='openEditModal("<?= $data->id ?>", "<?= addslashes($data->nama) ?>", "<?= addslashes($data->username) ?>", "<?= addslashes($data->email) ?>", <?= json_encode($data->role_id) ?>, "<?= $data->status ?>")' data-toggle="tooltip" data-placement="top" data-original-title="Ubah Data"><i class="la la-edit"></i></button> -->
-                              <button class="btn btn-danger btn-sm waves-effect waves-light" type="button" onclick="confirmDelete('<?= safe_url_encrypt($data->id_penilaian_tipologi) ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Hapus Data"><i class="la la-trash"></i></button>
-                            </td>
-
+                            <?php if ($periode_dipilih->status == '1' && substr($periode_dipilih->kode, 0, 4) == date('Y')) : ?>
+                              <td class="text-center" style="width: 5%;">
+                                <!-- <button class="btn btn-primary btn-sm waves-effect waves-light" type="button" onclick='openEditModal("<?= $data->id ?>", "<?= addslashes($data->nama) ?>", "<?= addslashes($data->username) ?>", "<?= addslashes($data->email) ?>", <?= json_encode($data->role_id) ?>, "<?= $data->status ?>")' data-toggle="tooltip" data-placement="top" data-original-title="Ubah Data"><i class="la la-edit"></i></button> -->
+                                <button class="btn btn-danger btn-sm waves-effect waves-light" type="button" onclick="confirmDelete('<?= safe_url_encrypt($data->id_penilaian_tipologi) ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Hapus Data"><i class="la la-trash"></i></button>
+                              </td>
+                            <?php endif; ?>
                           </tr>
                         <?php
                         }

@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Penjaminan_mutu extends MX_Controller
+class Penjaminan_mutu_30 extends MX_Controller
 {
     function __construct()
     {
         parent::__construct();
         // Load library untuk memanipulasi view
         $this->load->library('javascript');
-        $this->load->model('Data_penjaminan_mutu');
+        $this->load->model('Data_penjaminan_mutu_30');
     }
 
     function index()
@@ -16,22 +16,15 @@ class Penjaminan_mutu extends MX_Controller
         $data['pm'] = "active";
         $data['kode_nama_pt'] = $this->db->query("SELECT `kode_pt`, `nm_pt` FROM `data_prodi` GROUP BY `kode_pt`, `nm_pt` ORDER BY CASE WHEN LOCATE(' ', `nm_pt`) > 0 THEN LEFT(`nm_pt`, LOCATE(' ', `nm_pt`) - 1) ELSE `nm_pt` END DESC, CASE WHEN LOCATE(' ', `nm_pt`) > 0 THEN SUBSTRING(`nm_pt`, LOCATE(' ', `nm_pt`) + 1)ELSE '' END ASC")->result_array();
 
-        $data['data_penjaminan_mutu'] = $this->db->query("SELECT * FROM `data_penjaminan_mutu`")->result_array();
-        $data['tg'] = $this->db->query("SELECT tgl_update FROM data_penjaminan_mutu")->row();
-
-        // $data['data'] = array(
-        //     'tipologi_1' => $this->db->query("SELECT * FROM data_penjaminan_mutu WHERE tipologi = 'Tipologi 1' AND periode = $this->getPeriode()")->num_rows(),
-        //     'tipologi_2' => $this->db->query("SELECT * FROM data_penjaminan_mutu WHERE tipologi = 'Tipologi 2' AND periode = $this->getPeriode()")->num_rows(),
-        //     'tipologi_3' => $this->db->query("SELECT * FROM data_penjaminan_mutu WHERE tipologi = 'Tipologi 3' AND periode = $this->getPeriode()")->num_rows(),
-        //     'tipologi_4' => $this->db->query("SELECT * FROM data_penjaminan_mutu WHERE tipologi = 'Tipologi 4' AND periode = $this->getPeriode()")->num_rows(),
-        // );
+        $data['data_penjaminan_mutu'] = $this->db->query("SELECT * FROM `data_penjaminan_mutu_30`")->result_array();
+        $data['tg'] = $this->db->query("SELECT tgl_update FROM data_penjaminan_mutu_30")->row();
 
         $this->db->select_max('periode');
-        $query = $this->db->get('data_penjaminan_mutu');
+        $query = $this->db->get('data_penjaminan_mutu_30');
         $periode_max = $query->row_array(); // Ambil hasil sebagai array
         $prd = $periode_max['periode'];
 
-        $data['data'] = $this->db->query("SELECT COUNT(a.`tipologi`) AS jumlah_tipologi, a.`tipologi`, a.`periode`,(SELECT COUNT(*) FROM `data_penjaminan_mutu` AS b WHERE b.periode = '$prd') AS total_data, ROUND( ( COUNT(a.`tipologi`) / (SELECT COUNT(*) FROM `data_penjaminan_mutu` AS b WHERE b.periode = '$prd') * 100 ), 1) AS persentase FROM `data_penjaminan_mutu` AS a WHERE a.`periode` = '$prd' GROUP BY a.`tipologi`, a.`periode`;")->result();
+        $data['data'] = $this->db->query("SELECT COUNT(a.`tipologi`) AS jumlah_tipologi, a.`tipologi`, a.`periode`,(SELECT COUNT(*) FROM `data_penjaminan_mutu_30` AS b WHERE b.periode = '$prd') AS total_data, ROUND( ( COUNT(a.`tipologi`) / (SELECT COUNT(*) FROM `data_penjaminan_mutu_30` AS b WHERE b.periode = '$prd') * 100 ), 1) AS persentase FROM `data_penjaminan_mutu_30` AS a WHERE a.`periode` = '$prd' GROUP BY a.`tipologi`, a.`periode`;")->result();
 
         $data['tg'] = $this->db->query("SELECT tgl_update FROM data_pt")->row();
 
@@ -43,7 +36,7 @@ class Penjaminan_mutu extends MX_Controller
         $referer = $this->input->server('HTTP_REFERER');
         // Cek apakah referer berasal dari halaman yang diizinkan
         if (strpos($referer, base_url()) !== false) {
-            $this->load->model('Data_penjaminan_mutu');
+            $this->load->model('Data_penjaminan_mutu_30');
 
             $draw   = $this->input->post('draw');
             $start  = $this->input->post('start');
@@ -58,7 +51,7 @@ class Penjaminan_mutu extends MX_Controller
 
             // $periode = $this->input->post('periode');
             $this->db->select_max('periode');
-            $query = $this->db->get('data_penjaminan_mutu');
+            $query = $this->db->get('data_penjaminan_mutu_30');
             $periode_max = $query->row_array(); // Ambil hasil sebagai array
             $periode = $periode_max['periode'];
 
@@ -66,8 +59,8 @@ class Penjaminan_mutu extends MX_Controller
             // echo json_encode($periode);
             // exit;
 
-            // $list = $this->Data_penjaminan_mutu->getData($start, $length, $search, $columnSearch, $order, $periode);
-            $list = $this->Data_penjaminan_mutu->getData($start, $length, $search, $columnSearch, $order);
+            // $list = $this->Data_penjaminan_mutu_30->getData($start, $length, $search, $columnSearch, $order, $periode);
+            $list = $this->Data_penjaminan_mutu_30->getData($start, $length, $search, $columnSearch, $order);
             $data = array();
             $no   = $start;
             foreach ($list as $t) {
@@ -79,10 +72,9 @@ class Penjaminan_mutu extends MX_Controller
                 $row[] = '<center>' . $periode_post . '</center>';
                 $row[] = '<center>' . $t->kode_pt . '</center>';
                 $row[] = $t->nama_pt;
-                $row[] = '<center>' . $t->skor_1 . '</center>';
+                $row[] = '<center>' . $t->skor_1a . '</center>';
+                $row[] = '<center>' . $t->skor_1b . '</center>';
                 $row[] = '<center>' . $t->skor_2 . '</center>';
-                $row[] = '<center>' . $t->skor_3 . '</center>';
-                $row[] = '<center>' . $t->skor_4 . '</center>';
                 $row[] = '<center>' . $t->skor_total . '</center>';
                 $row[] = '<center>' . $t->tipologi . '</center>';
                 // $row[] = '<center>' . $t->akreditasi_institusi . '</center>';
@@ -93,8 +85,8 @@ class Penjaminan_mutu extends MX_Controller
 
             $response = [
                 'draw' => intval($draw),
-                'recordsTotal' => $this->Data_penjaminan_mutu->getTotalRecords($periode),
-                'recordsFiltered' => $this->Data_penjaminan_mutu->getFilteredRecords($search, $columnSearch, $periode),
+                'recordsTotal' => $this->Data_penjaminan_mutu_30->getTotalRecords($periode),
+                'recordsFiltered' => $this->Data_penjaminan_mutu_30->getFilteredRecords($search, $columnSearch, $periode),
                 'data' => $data,
                 'csrfHash' => $this->security->get_csrf_hash() // ← penting
             ];
@@ -111,7 +103,7 @@ class Penjaminan_mutu extends MX_Controller
         if ($this->input->is_ajax_request()) {
             $kode_pt = $this->input->post('kode_pt'); // Ambil data POST
 
-            $data_pemutu = $this->Data_penjaminan_mutu->getDataPemutu($kode_pt);
+            $data_pemutu = $this->Data_penjaminan_mutu_30->getDataPemutu($kode_pt);
 
             // Format respons JSON
             if (!empty($data_pemutu)) {

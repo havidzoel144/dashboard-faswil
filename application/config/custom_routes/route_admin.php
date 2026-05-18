@@ -48,6 +48,7 @@ $route['admin/get-penilaian'] = 'beranda/penilaian/getPenilaian';
 $route['admin/simpan-skor'] = 'beranda/penilaian/simpanSkor';
 $route['admin/riwayat-penilaian/(:any)'] = 'beranda/penilaian/riwayatPenilaian/$1';
 $route['admin/kirim-nilai/(:any)/(:any)'] = 'beranda/penilaian/kirimNilai/$1/$2';
+$route['admin/persentase-prodi'] = 'beranda/penilaian/persentaseProdi';
 
 // PENILAIAN VALIDATOR
 $route['admin/validator'] = 'beranda/validator';
@@ -63,7 +64,9 @@ $route['admin/validator/get-data-penilaian/(:any)'] = 'beranda/validator/getData
 $route['admin/progres-penilaian'] = 'beranda/progres';
 $route['admin/lihat-progres/(:any)'] = 'beranda/progres/lihatProgres/$1';
 $route['admin/export-nilai-pdf/(:any)'] = 'beranda/progres/exportNilaiPdf/$1';
+$route['admin/export-nilai-pdf-30/(:any)'] = 'beranda/progres/exportNilaiPdf30/$1';
 $route['admin/export-nilai-excel/(:any)'] = 'beranda/progres/exportNilaiExcel/$1';
+$route['admin/export-nilai-excel-30/(:any)'] = 'beranda/progres/exportNilaiExcel30/$1';
 $route['admin/publish-penilaian'] = 'beranda/progres/publishPenilaian';
 $route['admin/publish-penilaian-pt'] = 'beranda/progres/publishPenilaianPt';
 $route['admin/ubah-status-penilaian/(:any)'] = 'beranda/progres/ubahStatusPenilaian/$1';
@@ -86,6 +89,14 @@ $route['admin/evaluasi-360/detail/(:any)'] = 'beranda/evaluasi/detail/$1';
 $route['admin/evaluasi-360/simpan'] = 'beranda/evaluasi/simpan';
 
 // ROUTE PT
+$route['admin/pt/pengisian-led'] = 'beranda/pt/pengisianLed';
+$route['admin/pt/form-pengisian-led/(:any)'] = 'beranda/pt/formPengisianLed/$1';
+$route['admin/pt/simpan-led'] = 'beranda/pt/simpanLed';
+$route['admin/pt/simpan-permanen'] = 'beranda/pt/simpanPermanen';
+$route['admin/pt/unduh-laporan-led/(:any)'] = 'beranda/pt/unduhLaporanLed/$1';
+$route['admin/pt/unduh-sertifikat/(:any)'] = 'beranda/pt/unduhSertifikat/$1';
+$route['admin/pt/upload-logo'] = 'beranda/pt/uploadLogo';
+$route['admin/pt/logo/(:any)'] = 'beranda/pt/logo/$1';
 $route['admin/pt/upload-led'] = 'beranda/pt/uploadLed';
 $route['admin/pt/upload-led/simpan'] = 'beranda/pt/simpanUploadLed';
 $route['admin/pt/lihat-file-led/(:num)/(:num)'] = 'beranda/pt/lihatFileLed/$1/$2';

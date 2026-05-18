@@ -74,7 +74,7 @@
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (has_role([2, 4, 6])) : ?>
+                        <?php if (has_role([2, 4, 6]) && false) : ?>
                             <li data-menu="" class="<?= $evaluasi_360 ?>">
                                 <a class="dropdown-item" href="<?= base_url('admin/evaluasi-360') ?>">
                                     <span class="fonticon-wrap">
@@ -85,22 +85,30 @@
                             </li>
                         <?php endif; ?>
                         <?php if (has_role([6])) : ?>
-                            <li data-menu="" class="<?= $upload_led ?>">
-                                <a class="dropdown-item" href="<?= base_url('admin/pt/upload-led') ?>">
+                            <li data-menu="" class="<?= $pengisian_led ?>">
+                                <a class="dropdown-item" href="<?= base_url('admin/pt/pengisian-led') ?>">
                                     <span class="fonticon-wrap">
                                         <i class="la la-tasks"></i>
                                     </span>
-                                    <span data-i18n="Upload LED">Upload LED</span>
+                                    <span data-i18n="Pengisian LED">Pengisian LED</span>
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (has_role([1, 2])) : ?>
+                        <?php if (has_role([1, 2, 6])) : ?>
                             <li data-menu="" class="<?= $pm ?>">
                                 <a class="dropdown-item" href="<?= base_url('admin/penjaminan-mutu') ?>">
                                     <span class="fonticon-wrap">
                                         <i class="la la-th-list"></i>
                                     </span>
-                                    <span data-i18n="Data Penjaminan Mutu">Data Penjaminan Mutu</span>
+                                    <span data-i18n="Data Penjaminan Mutu IAPT 4.1">Data Penjaminan Mutu IAPT 4.1</span>
+                                </a>
+                            </li>
+                            <li data-menu="" class="<?= $pm_30 ?>">
+                                <a class="dropdown-item" href="<?= base_url('admin/penjaminan-mutu-30') ?>">
+                                    <span class="fonticon-wrap">
+                                        <i class="la la-th-list"></i>
+                                    </span>
+                                    <span data-i18n="Data Penjaminan Mutu IAPT 3.0">Data Penjaminan Mutu IAPT 3.0</span>
                                 </a>
                             </li>
                         <?php endif; ?>

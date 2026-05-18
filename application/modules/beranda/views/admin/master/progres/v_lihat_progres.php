@@ -297,64 +297,66 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-12">
-            <?php
-            // Ambil tanggal dan waktu sekarang
-            $now = new DateTime();
+        <?php if ($periode_dipilih->status == '1' && substr($periode_dipilih->kode, 0, 4) == date('Y')) : ?>
+          <div class="row">
+            <div class="col-12">
+              <?php
+              // Ambil tanggal dan waktu sekarang
+              $now = new DateTime();
 
-            // Ambil data periode dari $buka_tutup[0]
-            $mulai = new DateTime($buka_tutup[0]->mulai_tgl . ' ' . $buka_tutup[0]->mulai_waktu);
-            $akhir = new DateTime($buka_tutup[0]->akhir_tgl . ' ' . $buka_tutup[0]->akhir_waktu);
+              // Ambil data periode dari $buka_tutup[0]
+              $mulai = new DateTime($buka_tutup[0]->mulai_tgl . ' ' . $buka_tutup[0]->mulai_waktu);
+              $akhir = new DateTime($buka_tutup[0]->akhir_tgl . ' ' . $buka_tutup[0]->akhir_waktu);
 
-            // Tentukan status periode
-            if ($now < $mulai) {
-              $label = '<span class="badge badge-secondary ml-2">Belum Dibuka</span>';
-            } elseif ($now >= $mulai && $now <= $akhir) {
-              $label = '<span class="badge badge-success ml-2">Sedang Berlangsung</span>';
-            } else {
-              $label = '<span class="badge badge-danger ml-2">Sudah Lewat</span>';
-            }
-            ?>
-            <div class="alert alert-info alert-dismissible fade show" role="alert" style="background: linear-gradient(90deg, #e3f2fd 0%, #bbdefb 100%); color: #1565c0; border: 1px solid #90caf9;">
-              <strong style="display: inline-block; width: 220px; border-right: 1px solid #90caf9;">Periode <?= $buka_tutup[0]->jenis ?></strong>
-              <?= $label ?>
-              <span style="font-weight: 500;">
-                <?= $buka_tutup[0]->mulai_tgl . ' ' . $buka_tutup[0]->mulai_waktu . ' s/d ' . $buka_tutup[0]->akhir_tgl . ' ' . $buka_tutup[0]->akhir_waktu ?>
-              </span>
+              // Tentukan status periode
+              if ($now < $mulai) {
+                $label = '<span class="badge badge-secondary ml-2">Belum Dibuka</span>';
+              } elseif ($now >= $mulai && $now <= $akhir) {
+                $label = '<span class="badge badge-success ml-2">Sedang Berlangsung</span>';
+              } else {
+                $label = '<span class="badge badge-danger ml-2">Sudah Lewat</span>';
+              }
+              ?>
+              <div class="alert alert-info alert-dismissible fade show" role="alert" style="background: linear-gradient(90deg, #e3f2fd 0%, #bbdefb 100%); color: #1565c0; border: 1px solid #90caf9;">
+                <strong style="display: inline-block; width: 220px; border-right: 1px solid #90caf9;">Periode <?= $buka_tutup[0]->jenis ?></strong>
+                <?= $label ?>
+                <span style="font-weight: 500;">
+                  <?= $buka_tutup[0]->mulai_tgl . ' ' . $buka_tutup[0]->mulai_waktu . ' s/d ' . $buka_tutup[0]->akhir_tgl . ' ' . $buka_tutup[0]->akhir_waktu ?>
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
 
-        <div class="row">
-          <div class="col-12">
-            <?php
-            // Ambil tanggal dan waktu sekarang
-            $now2 = new DateTime();
+          <div class="row">
+            <div class="col-12">
+              <?php
+              // Ambil tanggal dan waktu sekarang
+              $now2 = new DateTime();
 
-            // Ambil data periode dari $buka_tutup[1]
-            $mulai2 = new DateTime($buka_tutup[1]->mulai_tgl . ' ' . $buka_tutup[1]->mulai_waktu);
-            $akhir2 = new DateTime($buka_tutup[1]->akhir_tgl . ' ' . $buka_tutup[1]->akhir_waktu);
+              // Ambil data periode dari $buka_tutup[1]
+              $mulai2 = new DateTime($buka_tutup[1]->mulai_tgl . ' ' . $buka_tutup[1]->mulai_waktu);
+              $akhir2 = new DateTime($buka_tutup[1]->akhir_tgl . ' ' . $buka_tutup[1]->akhir_waktu);
 
-            // Tentukan status periode
-            if ($now2 < $mulai2) {
-              $label2 = '<span class="badge badge-secondary ml-2">Belum Dibuka</span>';
-            } elseif ($now2 >= $mulai2 && $now2 <= $akhir2) {
-              $label2 = '<span class="badge badge-success ml-2">Sedang Berlangsung</span>';
-            } else {
-              $label2 = '<span class="badge badge-danger ml-2">Sudah Lewat</span>';
-            }
-            ?>
-            <div class="alert alert-warning alert-dismissible fade show" role="alert" style="background: linear-gradient(90deg, #fffde7 0%, #ffe082 100%); color: #ff9800; border: 1px solid #ffd54f;">
-              <strong style="display: inline-block; width: 220px; border-right: 1px solid #ffd54f;">Periode <?= $buka_tutup[1]->jenis ?></strong>
-              <?= $label2 ?>
-              <span style="font-weight: 500;">
-                <?= $buka_tutup[1]->mulai_tgl . ' ' . $buka_tutup[1]->mulai_waktu . ' s/d ' . $buka_tutup[1]->akhir_tgl . ' ' . $buka_tutup[1]->akhir_waktu ?>
-              </span>
+              // Tentukan status periode
+              if ($now2 < $mulai2) {
+                $label2 = '<span class="badge badge-secondary ml-2">Belum Dibuka</span>';
+              } elseif ($now2 >= $mulai2 && $now2 <= $akhir2) {
+                $label2 = '<span class="badge badge-success ml-2">Sedang Berlangsung</span>';
+              } else {
+                $label2 = '<span class="badge badge-danger ml-2">Sudah Lewat</span>';
+              }
+              ?>
+              <div class="alert alert-warning alert-dismissible fade show" role="alert" style="background: linear-gradient(90deg, #fffde7 0%, #ffe082 100%); color: #ff9800; border: 1px solid #ffd54f;">
+                <strong style="display: inline-block; width: 220px; border-right: 1px solid #ffd54f;">Periode <?= $buka_tutup[1]->jenis ?></strong>
+                <?= $label2 ?>
+                <span style="font-weight: 500;">
+                  <?= $buka_tutup[1]->mulai_tgl . ' ' . $buka_tutup[1]->mulai_waktu . ' s/d ' . $buka_tutup[1]->akhir_tgl . ' ' . $buka_tutup[1]->akhir_waktu ?>
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        <?php endif; ?>
 
         <div class="row mb-3">
           <div class="col-12">
@@ -365,14 +367,16 @@
                   <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
 
                   <div class="d-flex align-items-center">
-                    <button class="btn btn-success btn-ganti-faswil-validator" type="button" data-toggle="tooltip" title="Ganti Faswil / Validator" data-periode="<?= safe_url_encrypt($periode_dipilih->kode) ?>" data-keterangan="<?= $periode_dipilih->keterangan ?>">
-                      <i class="la la-refresh"></i> Ganti Faswil / Validator
-                    </button>
-                    <?php echo form_open(site_url('admin/publish-penilaian'), array('class' => 'form-horizontal', 'role' => 'form', 'id' => 'form-publish-penilaian')); ?>
-                    <input type="hidden" name="periode" value="<?= safe_url_encrypt($periode_dipilih->kode) ?>">
-                    <button type="submit" class="btn btn-primary waves-effect waves-light" id="btn-publish" data-toggle="tooltip" title="Publish Semua Penilaian">
-                      <i class="la la-send"></i> Publish Penilaian
-                    </button>
+                    <?php if ($periode_dipilih->status == '1' && substr($periode_dipilih->kode, 0, 4) == date('Y')) : ?>
+                      <button class="btn btn-success btn-ganti-faswil-validator" type="button" data-toggle="tooltip" title="Ganti Faswil / Validator" data-periode="<?= safe_url_encrypt($periode_dipilih->kode) ?>" data-keterangan="<?= $periode_dipilih->keterangan ?>">
+                        <i class="la la-refresh"></i> Ganti Faswil / Validator
+                      </button>
+                      <?php echo form_open(site_url('admin/publish-penilaian'), array('class' => 'form-horizontal m-0', 'role' => 'form', 'id' => 'form-publish-penilaian')); ?>
+                      <input type="hidden" name="periode" value="<?= safe_url_encrypt($periode_dipilih->kode) ?>">
+                      <button type="submit" class="btn btn-primary waves-effect waves-light" id="btn-publish" data-toggle="tooltip" title="Publish Semua Penilaian">
+                        <i class="la la-send"></i> Publish Penilaian
+                      </button>
+                    <?php endif; ?>
                     <?php echo form_close(); ?>
                     <a href="<?= base_url('admin/progres-penilaian') ?>">
                       <button type="button" class="btn btn-dark waves-effect waves-light">
@@ -475,16 +479,26 @@
                                   <?php endif; ?>
 
                                   <?php if ($data->id_status_penilaian == '4') : ?>
-                                    <a href="<?= base_url('admin/export-nilai-pdf/') . safe_url_encrypt($data->id_penilaian_tipologi) ?>" target="_blank" style="margin-right: 1px;">
+                                    <?php
+                                    $url = substr($periode_dipilih->kode, 0, 4) > '2025' ? 'admin/export-nilai-pdf' : 'admin/export-nilai-pdf-30';
+                                    ?>
+                                    <a href="<?= base_url($url) . '/' . safe_url_encrypt($data->id_penilaian_tipologi) ?>" target="_blank" style="margin-right: 1px;">
                                       <button class="btn btn-primary btn-sm" type="button" data-toggle="tooltip" title="Export PDF">
                                         <i class="la la-file-pdf-o"></i>
                                       </button>
                                     </a>
                                   <?php endif; ?>
 
-                                  <button class="btn btn-dark btn-sm btn-publish-nilai-pt" type="button" data-toggle="tooltip" title="Publish Nilai" data-id="<?= safe_url_encrypt($data->id_penilaian_tipologi) ?>" data-periode="<?= safe_url_encrypt($periode_dipilih->kode) ?>" data-kode="<?= safe_url_encrypt($data->kode_pt) ?>" data-nama="<?= $data->nama_pt ?>">
-                                    <i class="la la-upload"></i>
-                                  </button>
+                                  <?php $sudah_dipublikasikan = isset($penilaian_sudah_dipublikasikan) && in_array($data->kode_pt, $penilaian_sudah_dipublikasikan); ?>
+                                  <?php if ($sudah_dipublikasikan) : ?>
+                                    <button class="btn btn-success btn-sm" type="button" data-toggle="tooltip" title="Nilai Sudah Dipublikasikan">
+                                      <i class="la la-check"></i>
+                                    </button>
+                                  <?php else : ?>
+                                    <button class="btn btn-dark btn-sm btn-publish-nilai-pt" type="button" data-toggle="tooltip" title="Publish Nilai" data-id="<?= safe_url_encrypt($data->id_penilaian_tipologi) ?>" data-periode="<?= safe_url_encrypt($periode_dipilih->kode) ?>" data-kode="<?= safe_url_encrypt($data->kode_pt) ?>" data-nama="<?= $data->nama_pt ?>">
+                                      <i class="la la-upload"></i>
+                                    </button>
+                                  <?php endif; ?>
                                 </div>
                               </td>
                             </tr>

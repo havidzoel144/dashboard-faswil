@@ -1,14 +1,20 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Penilaian_model extends CI_Model
+class Penilaian30_model extends CI_Model
 {
+
+  public function __construct()
+  {
+    parent::__construct();
+    $this->tabel = 'penilaian_tipologi_30';
+  }
 
   public function get_all_data_penilaian()
   {
     // Cari user berdasarkan username
     $this->db->select('pt.*, uf.nama as nama_fasilitator, uv.nama as nama_validator, p.keterangan');
-    $this->db->from('penilaian_tipologi pt');
+    $this->db->from($this->tabel . ' pt');
     $this->db->join('users uf', 'uf.id = pt.fasilitator_id', 'left');
     $this->db->join('users uv', 'uv.id = pt.validator_id', 'left');
     $this->db->join('periode p', 'p.kode = pt.periode', 'left');
@@ -20,7 +26,7 @@ class Penilaian_model extends CI_Model
   {
     // Buat subquery (ambil kode_pt yang sudah ada di periode ini)
     $subquery = $this->db->select('kode_pt')
-      ->from('penilaian_tipologi')
+      ->from($this->tabel)
       ->where('periode', $periode_aktif)
       ->get_compiled_select();
 
@@ -41,7 +47,7 @@ class Penilaian_model extends CI_Model
 
     // Ambil kode_pt yang sudah diplot
     $this->db->select('kode_pt');
-    $this->db->from('penilaian_tipologi');
+    $this->db->from($this->tabel);
     $this->db->where('periode', $periode_aktif);
     $query_plotted = $this->db->get();
     $plotted_pts = array_column($query_plotted->result_array(), 'kode_pt'); // tetap array biasa
@@ -71,7 +77,7 @@ class Penilaian_model extends CI_Model
   {
     // Cari user berdasarkan username
     $this->db->select('pt.*, uf.nama as nama_fasilitator, uv.nama as nama_validator, p.keterangan, sp.nm_status');
-    $this->db->from('penilaian_tipologi pt');
+    $this->db->from($this->tabel . ' pt');
     $this->db->join('users uf', 'uf.id = pt.fasilitator_id', 'left');
     $this->db->join('users uv', 'uv.id = pt.validator_id', 'left');
     $this->db->join('periode p', 'p.kode = pt.periode', 'left');
@@ -90,14 +96,14 @@ class Penilaian_model extends CI_Model
     // $this->db->where('fasilitator_id', $fasilitator_id);
     // $this->db->where('periode', $periode);
     $this->db->where('id_penilaian_tipologi', $id_penilaian_tipologi);
-    $this->db->update('penilaian_tipologi', $data);
+    $this->db->update($this->tabel, $data);
   }
 
   public function get_data_penilaian_by_periode($periode)
   {
     // Cari user berdasarkan username
     $this->db->select('pt.*, uf.nama as nama_fasilitator, uv.nama as nama_validator, p.keterangan, sp.nm_status');
-    $this->db->from('penilaian_tipologi pt');
+    $this->db->from($this->tabel . ' pt');
     $this->db->join('users uf', 'uf.id = pt.fasilitator_id', 'left');
     $this->db->join('users uv', 'uv.id = pt.validator_id', 'left');
     $this->db->join('periode p', 'p.kode = pt.periode', 'left');
@@ -111,7 +117,7 @@ class Penilaian_model extends CI_Model
   public function getPenilaian($id_penilaian_tipologi)
   {
     $this->db->select('pt.*, uf.nama as nama_fasilitator, uv.nama as nama_validator, p.keterangan');
-    $this->db->from('penilaian_tipologi pt');
+    $this->db->from($this->tabel . ' pt');
     $this->db->join('users uf', 'uf.id = pt.fasilitator_id', 'left');
     $this->db->join('users uv', 'uv.id = pt.validator_id', 'left');
     $this->db->join('periode p', 'p.kode = pt.periode', 'left');
@@ -126,7 +132,7 @@ class Penilaian_model extends CI_Model
   public function get_data_penilaian_by_id($id)
   {
     $this->db->select('pt.*, uf.nama as nama_fasilitator, uv.nama as nama_validator, p.keterangan, sp.id_status, sp.nm_status');
-    $this->db->from('penilaian_tipologi pt');
+    $this->db->from($this->tabel . ' pt');
     $this->db->join('users uf', 'uf.id = pt.fasilitator_id', 'left');
     $this->db->join('users uv', 'uv.id = pt.validator_id', 'left');
     $this->db->join('periode p', 'p.kode = pt.periode', 'left');
@@ -138,7 +144,7 @@ class Penilaian_model extends CI_Model
 
   public function delete_penilaian_by_id($id)
   {
-    return $this->db->delete('penilaian_tipologi', ['id_penilaian_tipologi' => $id]);
+    return $this->db->delete($this->tabel, ['id_penilaian_tipologi' => $id]);
   }
 
   public function kirimNilai($periode, $id_penilaian, $fasilitator_id)
@@ -150,13 +156,13 @@ class Penilaian_model extends CI_Model
     }
     $this->db->where('fasilitator_id', $fasilitator_id);
     $this->db->where('id_status_penilaian', '1');
-    return $this->db->update('penilaian_tipologi', ['id_status_penilaian' => 2]);
+    return $this->db->update($this->tabel, ['id_status_penilaian' => 2]);
   }
 
   public function prosesNilai($periode, $id_penilaian, $validator_id)
   {
     $this->db->select('id_penilaian_tipologi, cek_1a, cek_1b, cek_2');
-    $this->db->from('penilaian_tipologi');
+    $this->db->from($this->tabel);
     $this->db->where('periode', $periode);
     $this->db->where('validator_id', $validator_id);
     $this->db->where('id_status_penilaian', 5);
@@ -181,7 +187,7 @@ class Penilaian_model extends CI_Model
       }
 
       $this->db->where('id_penilaian_tipologi', $row->id_penilaian_tipologi);
-      $this->db->update('penilaian_tipologi', [
+      $this->db->update($this->tabel, [
         'id_status_penilaian' => $status
       ]);
     }
@@ -223,7 +229,7 @@ class Penilaian_model extends CI_Model
 
     // Ambil data penilaian
     $data = $this->db->select('periode, kode_pt, nama_pt, skor_1a, skor_1b, skor_2, skor_1_bobot, skor_2_bobot, skor_total, tipologi')
-      ->from('penilaian_tipologi')
+      ->from($this->tabel)
       ->where('periode', $periode)
       ->get()
       ->result_array();
@@ -310,7 +316,7 @@ class Penilaian_model extends CI_Model
 
     // Ambil data penilaian
     $data = $this->db->select('periode, kode_pt, nama_pt, skor_1a, skor_1b, skor_2, skor_1_bobot, skor_2_bobot, skor_total, tipologi')
-      ->from('penilaian_tipologi')
+      ->from($this->tabel)
       ->where('periode', $periode)
       ->where('id_penilaian_tipologi', $penilaian_id)
       ->where('kode_pt', $kode_pt)
@@ -371,10 +377,10 @@ class Penilaian_model extends CI_Model
     $this->db->where('id_penilaian_tipologi', $id_penilaian);
     if ($status_penilaian === 'valid') {
       $this->db->where('id_status_penilaian', '4');
-      return $this->db->update('penilaian_tipologi', ['id_status_penilaian' => 6]);
+      return $this->db->update($this->tabel, ['id_status_penilaian' => 6]);
     } else if ($status_penilaian === 'menunggu') {
       $this->db->where('id_status_penilaian', '6');
-      return $this->db->update('penilaian_tipologi', ['id_status_penilaian' => 5]);
+      return $this->db->update($this->tabel, ['id_status_penilaian' => 5]);
     }
   }
 
@@ -384,7 +390,7 @@ class Penilaian_model extends CI_Model
       // Cek apakah ada fasilitator dengan id_awal di periode tersebut
       $check = $this->db->where('periode', $periode)
         ->where('fasilitator_id', $id_awal)
-        ->get('penilaian_tipologi')
+        ->get($this->tabel)
         ->num_rows();
 
       if ($check === 0) {
@@ -405,12 +411,12 @@ class Penilaian_model extends CI_Model
 
       $this->db->where('periode', $periode);
       $this->db->where('fasilitator_id', $id_awal);
-      return $this->db->update('penilaian_tipologi', $data);
+      return $this->db->update($this->tabel, $data);
     } else if ($tipe === 'validator') {
       // Cek apakah ada validator dengan id_awal di periode tersebut
       $check = $this->db->where('periode', $periode)
         ->where('validator_id', $id_awal)
-        ->get('penilaian_tipologi')
+        ->get($this->tabel)
         ->num_rows();
 
       if ($check === 0) {
@@ -431,14 +437,14 @@ class Penilaian_model extends CI_Model
 
       $this->db->where('periode', $periode);
       $this->db->where('validator_id', $id_awal);
-      return $this->db->update('penilaian_tipologi', $data);
+      return $this->db->update($this->tabel, $data);
     }
   }
 
   public function getPtBinaanFasilitatorByPeriode($periode, $fasilitator_id)
   {
     $this->db->select('kode_pt, nama_pt');
-    $this->db->from('penilaian_tipologi');
+    $this->db->from($this->tabel);
     $this->db->where('periode', $periode);
     $this->db->where('fasilitator_id', $fasilitator_id);
     $this->db->order_by('nama_pt', 'ASC');
@@ -449,11 +455,23 @@ class Penilaian_model extends CI_Model
   public function getPtBinaanValidatorByPeriode($periode, $validator_id)
   {
     $this->db->select('kode_pt, nama_pt');
-    $this->db->from('penilaian_tipologi');
+    $this->db->from($this->tabel);
     $this->db->where('periode', $periode);
     $this->db->where('validator_id', $validator_id);
     $this->db->order_by('nama_pt', 'ASC');
     return $query = $this->db->get()->result_array();
     // return array_column($query->result_array(), 'kode_pt');
+  }
+
+  public function is_penilaian_published($periode)
+  {
+    $query = $this->db
+      ->select('kode_pt')
+      ->from('data_penjaminan_mutu_30')
+      ->where('periode', $periode)
+      ->get()
+      ->result_array();
+
+    return array_column($query, 'kode_pt');
   }
 }
