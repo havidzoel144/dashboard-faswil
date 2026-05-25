@@ -17,6 +17,9 @@ $route['admin/hapus-user/(:num)'] = 'beranda/user/hapusUser/$1';
 $route['admin/reset-password-user/(:num)'] = 'beranda/user/resetPassword/$1';
 $route['admin/ajax-get-dosen'] = 'beranda/user/ajaxGetDosen';
 $route['admin/ajax-get-pt'] = 'beranda/user/ajaxGetPT';
+$route['admin/get-statistik-user-pt'] = 'beranda/user/getStatistikUserPt';
+$route['admin/generate-user-pt'] = 'beranda/user/generateUserPt';
+$route['admin/detail-user-pt'] = 'beranda/user/getDetailUserPt';
 
 // MANAGE PERIODE
 $route['admin/data-periode'] = 'beranda/periode';

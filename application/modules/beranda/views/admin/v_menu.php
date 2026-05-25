@@ -90,7 +90,7 @@
                                     <span class="fonticon-wrap">
                                         <i class="la la-tasks"></i>
                                     </span>
-                                    <span data-i18n="Pengisian LED">Pengisian LED</span>
+                                    <span data-i18n="Pengisian Laporan Implementasi SPMI">Pengisian Laporan Implementasi SPMI</span>
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -100,7 +100,7 @@
                                     <span class="fonticon-wrap">
                                         <i class="la la-th-list"></i>
                                     </span>
-                                    <span data-i18n="Data Penjaminan Mutu IAPT 4.1">Data Penjaminan Mutu IAPT 4.1</span>
+                                    <span data-i18n="Penilaian SPMI Terkini">Penilaian SPMI Terkini</span>
                                 </a>
                             </li>
                             <li data-menu="" class="<?= $pm_30 ?>">
@@ -108,7 +108,7 @@
                                     <span class="fonticon-wrap">
                                         <i class="la la-th-list"></i>
                                     </span>
-                                    <span data-i18n="Data Penjaminan Mutu IAPT 3.0">Data Penjaminan Mutu IAPT 3.0</span>
+                                    <span data-i18n="Penilaian SPMI 2024 – 2025">Penilaian SPMI 2024 – 2025</span>
                                 </a>
                             </li>
                         <?php endif; ?>

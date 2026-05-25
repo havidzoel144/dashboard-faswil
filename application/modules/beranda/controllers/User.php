@@ -364,4 +364,155 @@ class User extends MX_Controller
       show_error('Permintaan tidak valid', 400);
     }
   }
+
+  public function getStatistikUserPt()
+  {
+    $pt = $this->db->select('kode_pt,nama_pt')
+      ->get('data_pt')
+      ->result_array();
+
+    $total_pt = count($pt);
+
+    $sudah_ada = 0;
+    $belum_ada = 0;
+
+    foreach ($pt as $row) {
+
+      $username = $row['kode_pt'] . '_penjamu';
+
+      $cek = $this->db
+        ->where('username', $username)
+        ->count_all_results('users');
+
+      if ($cek > 0) {
+        $sudah_ada++;
+      } else {
+        $belum_ada++;
+      }
+    }
+
+    return $this->output
+      ->set_content_type('application/json')
+      ->set_output(json_encode([
+        'status' => true,
+        'total_pt' => $total_pt,
+        'sudah_ada' => $sudah_ada,
+        'belum_ada' => $belum_ada,
+      ]));
+  }
+
+  public function generateUserPt()
+  {
+    if ($this->input->is_ajax_request()) {
+      $pt = $this->db
+        ->select('kode_pt,nama_pt')
+        ->get('data_pt')
+        ->result_array();
+
+      $berhasil = 0;
+      $skip = 0;
+
+      foreach ($pt as $row) {
+        $username = $row['kode_pt'] . '_penjamu';
+
+        // cek apakah username sudah ada
+        $cek = $this->db
+          ->where('username', $username)
+          ->get('users')
+          ->row_array();
+
+        if ($cek) {
+          $skip++;
+          continue;
+        }
+
+        // mulai transaction
+        $this->db->trans_start();
+
+        $insert = [
+          'nama' => $row['nama_pt'],
+          'username' => $username,
+          'password' => password_hash('admin123', PASSWORD_DEFAULT),
+          'status' => '1',
+        ];
+
+        // insert users
+        $this->db->insert('users', $insert);
+
+        // ambil id user yang baru dibuat
+        $user_id = $this->db->insert_id();
+
+        // insert role
+        $this->db->insert('user_roles', [
+          'user_id' => $user_id,
+          'role_id' => 6
+        ]);
+
+        // selesai transaction
+        $this->db->trans_complete();
+
+        // cek berhasil/gagal
+        if ($this->db->trans_status() === FALSE) {
+          log_message('error', 'Gagal generate user PT: ' . $username);
+          continue;
+        }
+
+        $berhasil++;
+      }
+
+      return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode([
+          'status' => true,
+          'message' => 'Generate user selesai.',
+          'berhasil' => $berhasil,
+          'skip' => $skip,
+        ]));
+    } else {
+      show_error('Permintaan tidak valid', 400);
+    }
+  }
+
+  public function getDetailUserPt()
+  {
+    $type = $this->input->get('type');
+
+    $pt = $this->db
+      ->select('kode_pt,nama_pt')
+      ->get('data_pt')
+      ->result_array();
+
+    $result = [];
+
+    foreach ($pt as $row) {
+
+      $username = $row['kode_pt'] . '_penjamu';
+
+      $cek = $this->db
+        ->where('username', $username)
+        ->get('users')
+        ->row_array();
+
+      $exists = $cek ? true : false;
+
+      if (
+        ($type == 'sudah' && $exists) ||
+        ($type == 'belum' && !$exists)
+      ) {
+
+        $result[] = [
+          'kode_pt' => $row['kode_pt'],
+          'nama_pt' => $row['nama_pt'],
+          'username' => $username,
+        ];
+      }
+    }
+
+    return $this->output
+      ->set_content_type('application/json')
+      ->set_output(json_encode([
+        'status' => true,
+        'data' => $result
+      ]));
+  }
 }

@@ -23,6 +23,7 @@ $route['admin/penjaminan-mutu-30'] = 'beranda/admin/penjaminan_mutu_30';
 $route['admin/import-penjaminan-mutu'] = 'beranda/admin/import_penjaminan_mutu';
 $route['admin/download-template-penjaminan-mutu'] = 'beranda/admin/download_template_penjaminan_mutu';
 $route['admin/hapus-data-penjaminan-mutu'] = 'beranda/admin/hapus_penjaminan_mutu';
+$route['admin/get-penjaminan-mutu-pt'] = 'beranda/admin/get_penjaminan_mutu_pt';
 
 // grafik dinamis
 $route['get-data-pt'] = 'beranda/penjaminan_mutu/get_data_pt';

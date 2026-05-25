@@ -7,7 +7,9 @@ class Data_penjaminan_mutu_30 extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('data_penjaminan_mutu_30 a');
-        $this->db->where('a.kode_pt', explode('_', $this->session->userdata('username'))[0]);
+        if (has_role(['6'])) {
+            $this->db->where('a.kode_pt', explode('_', $this->session->userdata('username'))[0]);
+        }
         $this->db->order_by("MID(kode_pt, 3, 2) = '10' DESC, MID(kode_pt, 3, 2) IN ('30', '31', '32') DESC");
 
         return $this->db->get()->num_rows();
@@ -18,7 +20,9 @@ class Data_penjaminan_mutu_30 extends CI_Model
         // Query untuk menghitung jumlah rekord hasil join dengan pencarian
         $this->db->select('*');
         $this->db->from('data_penjaminan_mutu_30 a');
-        $this->db->where('a.kode_pt', explode('_', $this->session->userdata('username'))[0]);
+        if (has_role(['6'])) {
+            $this->db->where('a.kode_pt', explode('_', $this->session->userdata('username'))[0]);
+        }
         $this->db->order_by("MID(kode_pt, 3, 2) = '10' DESC, MID(kode_pt, 3, 2) IN ('30', '31', '32') DESC");
 
         // Hanya tambahkan pencarian umum jika $search tidak kosong
@@ -43,7 +47,9 @@ class Data_penjaminan_mutu_30 extends CI_Model
     {
         $this->db->select('a.*');
         $this->db->from('data_penjaminan_mutu_30 a');
-        $this->db->where('a.kode_pt', explode('_', $this->session->userdata('username'))[0]);
+        if (has_role(['6'])) {
+            $this->db->where('a.kode_pt', explode('_', $this->session->userdata('username'))[0]);
+        }
         // $this->db->order_by("MID(kode_pt, 3, 2) = '10' DESC, MID(kode_pt, 3, 2) IN ('30', '31', '32') DESC");
         $this->db->order_by("periode ASC, MID(kode_pt, 3, 2) = '10' DESC, MID(kode_pt, 3, 2) IN ('30', '31', '32') DESC");
 

@@ -134,13 +134,13 @@ $tglAkhirAptIndonesia = tanggal_indonesia($data->tanggal_akhir_apt ?? $data->tgl
       text-align: justify;
     }
 
-    table.identitas {
+    table.identitas, table.lembar-pengesahan {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
     }
 
-    table.identitas td {
+    table.identitas td, table.lembar-pengesahan td {
       padding: 5px 0;
       vertical-align: top;
     }
@@ -213,6 +213,68 @@ $tglAkhirAptIndonesia = tanggal_indonesia($data->tanggal_akhir_apt ?? $data->tgl
 
   <div class="page-number"></div>
 
+  <!-- LEMBAR PENGESAHAN -->
+  <div class="section-title center">
+    LEMBAR PENGESAHAN
+  </div>
+
+  <table class="lembar-pengesahan" style="width:100%; margin-top:40px;">
+    <tr>
+      <td colspan="3" style="text-align: center;">Lamporan Implementasi Sistem Manajemen Mutu Internal (SPMI)</td>
+    </tr>
+
+    <tr>
+      <td colspan="3" style="text-align: center;"><b><?= $data->nama_pt; ?></b></td>
+    </tr>
+
+    <tr>
+      <td colspan="3">Laporan ini telah diperiksa dan disahkan sebagai dokumen pelaksanaan implementasi Sistem Penjaminan Mutu Internal (SPMI) pada:</td>
+    </tr>
+
+    <tr>
+      <td width="180px">Nama Perguruan Tinggi</td>
+      <td width="10px">:</td>
+      <td><?= $data->nama_pt; ?></td>
+    </tr>
+
+    <tr>
+      <td>Alamat Perguruan Tinggi</td>
+      <td>:</td>
+      <td><?= $data->alamat; ?></td>
+    </tr>
+
+    <tr>
+      <td>Periode Pelaksanaan</td>
+      <td>:</td>
+      <td>Semester <?= substr($data->periode, 4, 1); ?> Tahun <?= substr($data->periode, 0, 4); ?> </td>
+    </tr>
+
+    <tr>
+      <td>Disahkan di</td>
+      <td>:</td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>Tanggal</td>
+      <td>:</td>
+      <td></td>
+    </tr>
+  </table>
+
+  <table style="width:100%; margin-top:40px;">
+    <tr>
+      <td width="50%" style="text-align: center;">Disusun Oleh</td>
+      <td width="50%" style="text-align: center;">Disahkan Oleh</td>
+    </tr>
+    <tr>
+      <td style="text-align: center; height: 200px !important;">(..................................)</td>
+      <td style="text-align: center; height: 200px !important;">(..................................)</td>
+    </tr>
+  </table>
+
+  <div class="page-break"></div>
+
   <!-- DAFTAR ISI -->
   <div class="section-title center">DAFTAR ISI</div>
 
@@ -267,12 +329,6 @@ $tglAkhirAptIndonesia = tanggal_indonesia($data->tanggal_akhir_apt ?? $data->tgl
       <td>Tanggal SK Pendirian PT</td>
       <td>:</td>
       <td><?= $tglSkPendirianIndonesia; ?></td>
-    </tr>
-
-    <tr>
-      <td>Pejabat Penandatangan</td>
-      <td>:</td>
-      <td><?= $data->pejabat_penandatangan; ?></td>
     </tr>
 
     <tr>
@@ -400,11 +456,35 @@ $tglAkhirAptIndonesia = tanggal_indonesia($data->tanggal_akhir_apt ?? $data->tgl
   </div>
 
   <p>
-    <strong>Tautan Dokumen Pendukung :</strong><br>
-    <a href="<?= $data->tautan_sasaran_mutu_dampak; ?>" class="tautan">
-      <?= $data->tautan_sasaran_mutu_dampak; ?>
-    </a>
+    <strong>Data Akreditasi Program Studi (Sumber PDDikti per tanggal <?= date('d', strtotime($persentase_prodi['tgl_update'])) . ' ' . ['Jan' => 'Januari', 'Feb' => 'Februari', 'Mar' => 'Maret', 'Apr' => 'April', 'May' => 'Mei', 'Jun' => 'Juni', 'Jul' => 'Juli', 'Aug' => 'Agustus', 'Sep' => 'September', 'Oct' => 'Oktober', 'Nov' => 'November', 'Dec' => 'Desember'][date('M', strtotime($persentase_prodi['tgl_update']))] . ' ' . date('Y', strtotime($persentase_prodi['tgl_update'])) ?>) :</strong><br>
   </p>
+
+  <table style="width:100%; border-collapse:collapse; margin-top:8px;">
+    <thead>
+      <tr>
+        <th style="border:1px solid #bdeed8; background:#ecfdf5; color:#0f766e; text-align:left; padding:8px;">Indikator</th>
+        <th style="border:1px solid #bdeed8; background:#ecfdf5; color:#0f766e; text-align:right; padding:8px;">Nilai</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border:1px solid #bdeed8; padding:8px;">Jumlah Prodi</td>
+        <td style="border:1px solid #bdeed8; padding:8px; text-align:right;"><?= number_format($persentase_prodi['total_prodi_aktif'], 0, ',', '.') ?></td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #bdeed8; padding:8px;">Jumlah Prodi Terakreditasi</td>
+        <td style="border:1px solid #bdeed8; padding:8px; text-align:right;"><?= number_format($persentase_prodi['prodi_terakreditasi'], 0, ',', '.') ?></td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #bdeed8; padding:8px;">Jumlah Prodi Unggul/A</td>
+        <td style="border:1px solid #bdeed8; padding:8px; text-align:right;"><?= number_format(isset($persentase_prodi['prodi_unggul_atau_a']) ? $persentase_prodi['prodi_unggul_atau_a'] : (isset($persentase_prodi['jumlah_prodi_unggul_atau_a']) ? $persentase_prodi['jumlah_prodi_unggul_atau_a'] : 0), 0, ',', '.') ?></td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #bdeed8; padding:8px;">Persentase Prodi Unggul/A</td>
+        <td style="border:1px solid #bdeed8; padding:8px; text-align:right;"><?= number_format($persentase_prodi['persentase_unggul_atau_a'], 2, ',', '.') ?>%</td>
+      </tr>
+    </tbody>
+  </table>
 
   <div class="page-break"></div>
 

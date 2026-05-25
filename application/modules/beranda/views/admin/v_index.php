@@ -187,7 +187,7 @@
             <div class="card-body py-4">
               <h1 class="display-4 font-weight-bold mb-3" style="letter-spacing: 1px; color: #fff;">
                 Selamat Datang,
-                <span class="badge" style="background: #f8f9fa; color: #2a5298; font-size:1.2em; box-shadow: 0 2px 8px rgba(30,60,114,0.12);">
+                <span class="badge" style="background: #f8f9fa; color: #2a5298; font-size:1.2em; box-shadow: 0 2px 8px rgba(30,60,114,0.12); white-space: normal; word-break: break-word; display: inline-block; max-width: 100%;">
                   <?= $this->session->userdata('nama') ?>
                 </span>
               </h1>

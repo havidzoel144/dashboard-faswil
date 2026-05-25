@@ -1,4 +1,9 @@
 $(document).ready(function () {
+  $("#filterPerguruanTinggi").selelect2({
+    placeholder: "Pilih Perguruan Tinggi",
+    allowClear: true,
+    width: "100%",
+  });
   // Membuat array untuk data dan labels
   // Filter data: ambil semua tipologi kecuali null/kosong
   data_tipologi = (data_tipologi || []).filter((item) => {

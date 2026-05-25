@@ -15,17 +15,22 @@
         <div class="row">
           <div class="col-lg-10 col-md-6 col-sm-12 mx-auto">
             <div class="card" style="margin-bottom: 80px;">
-              <div class="card-header" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); border-radius: 6px 6px 0 0; padding: 1.25rem 1.5rem;">
-                <div class="content-header-left col-md-12 col-12 mb-0 d-flex align-items-center justify-content-start">
+              <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); border-radius: 6px 6px 0 0; padding: 1.25rem 1.5rem;">
+                <div class="content-header-left mb-0 d-flex align-items-center justify-content-start flex-grow-1 pr-2">
                   <span class="d-inline-flex align-items-center justify-content-center mr-1" style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.2);">
                     <i class="la la-file-text-o" style="font-size:1.8em;color:#fff;"></i>
                   </span>
                   <div class="text-center">
                     <h3 class="content-header-title mb-0" style="font-size:1.4rem;color:#fff;font-weight:700;letter-spacing:0.5px;">
-                      Form Pengisian Laporan Evaluasi Diri (LED)
+                      Form Pengisian Laporan Implementasi SPMI
                     </h3>
                     <small style="color:rgba(255,255,255,0.75);font-size:0.85rem;">Silakan lengkapi seluruh indikator dengan narasi dan bukti pendukung</small>
                   </div>
+                </div>
+                <div class="ml-auto">
+                  <a href="<?= base_url('admin/pt/pengisian-led') ?>" class="d-inline-flex align-items-center justify-content-center mr-1" style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.2);" data-toggle="tooltip" data-placement="top" title="Kembali">
+                    <i class="la la-arrow-left" style="font-size:1.8em;color:#fff;"></i>
+                  </a>
                 </div>
               </div>
               <div class="card-content">
@@ -206,7 +211,49 @@
       return empty;
     }
 
-    var narasiFields = document.querySelectorAll('.narasi-led-200, .narasi-led-500');
+    function getFieldDisplayName(field, index) {
+      if (!field) {
+        return 'Narasi ' + (index + 1);
+      }
+
+      if (field.id) {
+        var label = document.querySelector('label[for="' + field.id + '"]');
+        if (label) {
+          var labelText = (label.textContent || '').trim();
+          if (labelText) {
+            return labelText;
+          }
+        }
+      }
+
+      if (field.getAttribute('placeholder')) {
+        var placeholder = (field.getAttribute('placeholder') || '').trim();
+        if (placeholder) {
+          return placeholder;
+        }
+      }
+
+      if (field.name) {
+        return field.name;
+      }
+
+      return 'Narasi ' + (index + 1);
+    }
+
+    function getEmptyNarasiFields(fields) {
+      var emptyFields = [];
+      fields.forEach(function(field, index) {
+        if (!((field.value || '').trim())) {
+          emptyFields.push({
+            element: field,
+            name: getFieldDisplayName(field, index)
+          });
+        }
+      });
+      return emptyFields;
+    }
+
+    var narasiFields = document.querySelectorAll('.narasi-led-200, .narasi-led-500, .textarea-catatan');
     var isPermanenInput = document.getElementById('is_permanen');
     var isLocked = isPermanenInput && isPermanenInput.value === '1';
 
@@ -381,6 +428,22 @@
 
     initAutoSave();
 
+    var allInputs = formLed.querySelectorAll('input, textarea, select');
+    allInputs.forEach(function(field) {
+      field.addEventListener('input', function() {
+        var value = (field.value || '').trim();
+        if (field.type === 'url') {
+          if (isValidUrlValue(value)) {
+            field.classList.remove('is-invalid');
+          }
+        } else {
+          if (value !== '') {
+            field.classList.remove('is-invalid');
+          }
+        }
+      });
+    });
+
     if (formLed) {
       formLed.addEventListener('submit', function(e) {
         if (isLocked) {
@@ -440,16 +503,70 @@
         }
 
         if (submitType === 'permanen') {
-          if (hasEmptyNarasi(narasiFields)) {
+          var emptyNarasiFields = getEmptyNarasiFields(narasiFields);
+          if (emptyNarasiFields.length > 0) {
             e.preventDefault();
+
+            emptyNarasiFields.forEach(function(item) {
+              if (item.element) {
+                item.element.classList.add('is-invalid');
+              }
+            });
+
+            var firstEmptyField = emptyNarasiFields[0] && emptyNarasiFields[0].element ?
+              emptyNarasiFields[0].element :
+              null;
+            if (firstEmptyField) {
+              // cari tab-pane parent
+              var parentTabPane = firstEmptyField.closest('.tab-pane');
+              if (parentTabPane) {
+                var tabPaneId = parentTabPane.getAttribute('id');
+                // cari tombol/tab navigation
+                var relatedTabButton = document.querySelector(
+                  '[data-toggle="tab"][href="#' + tabPaneId + '"]'
+                );
+                if (relatedTabButton) {
+                  // aktifkan tab bootstrap
+                  $(relatedTabButton).tab('show');
+                  // tunggu tab selesai tampil
+                  setTimeout(function() {
+                    firstEmptyField.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'center'
+                    });
+                    firstEmptyField.focus();
+                  }, 300);
+                } else {
+                  // fallback
+                  firstEmptyField.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                  });
+                  firstEmptyField.focus();
+                }
+              } else {
+                // fallback jika tidak ada tab
+                firstEmptyField.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'center'
+                });
+                firstEmptyField.focus();
+              }
+            }
+
+            var emptyFieldListText = emptyNarasiFields.map(function(item, idx) {
+              return (idx + 1) + '. ' + item.name;
+            }).join('\n');
+
+            var warningText = 'Simpan permanen hanya bisa dilakukan jika semua narasi indikator sudah terisi.\n\nField yang belum diisi:\n' + emptyFieldListText;
             if (typeof Swal !== 'undefined') {
               Swal.fire({
                 icon: 'warning',
                 title: 'Validasi Gagal',
-                text: 'Simpan permanen hanya bisa dilakukan jika semua narasi indikator sudah terisi.'
+                text: warningText
               });
             } else {
-              alert('Simpan permanen hanya bisa dilakukan jika semua narasi indikator sudah terisi.');
+              alert(warningText);
             }
             return;
           }

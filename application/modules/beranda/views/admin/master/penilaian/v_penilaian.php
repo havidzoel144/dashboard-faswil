@@ -176,6 +176,31 @@
                       </div>
 
                       <div class="row">
+                        <div class="col-lg-12">
+                          <fieldset class="form-group mb-1">
+                            <label>Akses Dokumen Laporan Implementasi SPMI</label>
+                            <div class="d-flex flex-wrap" style="gap:8px;">
+                              <button type="button" class="btn btn-info btn-sm btn-modal-bab" data-bab="identitas" data-toggle="modal" data-target="#modal-bab-led" style="cursor: not-allowed;" disabled>
+                                Identitas PT
+                              </button>
+                              <button type="button" class="btn btn-primary btn-sm btn-modal-bab" data-bab="1" data-toggle="modal" data-target="#modal-bab-led" style="cursor: not-allowed;" disabled>
+                                BAB 1
+                              </button>
+                              <button type="button" class="btn btn-success btn-sm btn-modal-bab" data-bab="2" data-toggle="modal" data-target="#modal-bab-led" style="cursor: not-allowed;" disabled>
+                                BAB 2
+                              </button>
+                              <button type="button" class="btn btn-danger btn-sm btn-modal-bab" data-bab="3" data-toggle="modal" data-target="#modal-bab-led" style="cursor: not-allowed;" disabled>
+                                BAB 3
+                              </button>
+                              <button type="button" class="btn btn-warning btn-sm btn-modal-bab" data-bab="4" data-toggle="modal" data-target="#modal-bab-led" style="cursor: not-allowed;" disabled>
+                                BAB 4
+                              </button>
+                            </div>
+                          </fieldset>
+                        </div>
+                      </div>
+
+                      <div class="row">
                         <div class="col-lg-3">
                           <fieldset class="form-group mb-1">
                             <label for="skor-1" class="label-required">
@@ -347,8 +372,8 @@
                               Skor 4
                               <span class="text-danger popover-skor4-trigger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Persentase PS terakreditasi 100%. <br> 1.5 = Syarat perlu status terakreditasi Unggul  (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>15% sd <20%</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>40% sd <50% (PTNBH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>20% sd <25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>30% sd <40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%.(PTS Vokasi)</li></ol> 2 = Syarat perlu status terakreditasi Unggul (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%.</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 50%.(PTN BH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.(PTS Vokasi)</li></ol>" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
                             </label>
-                            <select class="form-control square" id="skor-4" name="skor_4" required>
-                              <option value="">-- Pilih Skor --</option>
+                            <select class="form-control square" id="skor-4" name="skor_4" required disabled>
+                              <option value="">-- Skor Tampil Otomatis --</option>
                               <option value="0.0">0</option>
                               <option value="1.0">1</option>
                               <option value="1.5">1.5</option>
@@ -364,17 +389,6 @@
                           </fieldset>
                         </div>
                         <div class="col-lg-9">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <fieldset class="form-group mb-1">
-                                <label for="catatan-4" class="label-required">
-                                  Catatan Skor 4
-                                  <span class="text-danger" data-toggle="popover" data-content="Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: <br> 1. PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%. <br> 2. PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
-                                </label>
-                                <textarea class="form-control textarea-catatan" name="catatan_4" id="catatan-4" placeholder="Indikator Penilaian : Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: 1. PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%. 2. PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%." required></textarea>
-                              </fieldset>
-                            </div>
-                          </div>
                           <div class="row">
                             <div class="col-lg-12">
                               <fieldset class="form-group mb-1">
@@ -468,6 +482,30 @@
         </div>
       </div>
       <!-- MODAL NARASI -->
+
+      <!-- MODAL BAB LED -->
+      <div class="modal fade" id="modal-bab-led" tabindex="-1" role="dialog" aria-labelledby="modalBabLedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-primary white">
+              <h5 class="modal-title text-white" id="modalBabLedLabel">Dokumen LED</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-info mb-1" id="modal-bab-led-info">
+                Pilih PT terlebih dahulu untuk menampilkan data.
+              </div>
+              <div id="modal-bab-led-content"></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- MODAL BAB LED -->
 
       <!-- Basic Horizontal Timeline -->
       <div class="row mb-5">
@@ -695,6 +733,150 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script type="text/javascript">
+  $(document).on('click', '.btn-modal-bab', function() {
+    const bab = $(this).data('bab');
+    const idPenilaian = $('#id-penilaian-tipologi').val();
+
+    const titleMap = {
+      'identitas': 'Identitas PT',
+      '1': 'BAB 1',
+      '2': 'BAB 2',
+      '3': 'BAB 3',
+      '4': 'BAB 4'
+    };
+
+    $('#modalBabLedLabel').text(titleMap[bab] ? titleMap[bab] : 'Dokumen LED');
+    $('#modal-bab-led-content').html('');
+
+    if (!idPenilaian) {
+      $('#modal-bab-led-info').removeClass('d-none').text('Silakan pilih perguruan tinggi terlebih dahulu.');
+      return;
+    }
+
+    $.ajax({
+      url: '<?= base_url("admin/get-penilaian") ?>',
+      method: 'POST',
+      data: {
+        id_penilaian_tipologi: idPenilaian,
+        [csrfName]: csrfHash
+      },
+      dataType: 'json',
+      success: function(response) {
+        console.log(response);
+
+        if (!response.form_led) {
+          $('#modal-bab-led-info').removeClass('d-none').text('Data LED tidak tersedia.');
+          return;
+        }
+
+        let konten = '';
+
+        if (bab === 'identitas') {
+          const kodePt = response.form_led && response.form_led.kode_pt ? response.form_led.kode_pt : '';
+          const namaPt = response.form_led && response.form_led.nama_pt ? response.form_led.nama_pt : '';
+          const alamat = response.form_led && response.form_led.alamat ? response.form_led.alamat : '';
+          const tgl_sk_pendirian_pt = response.form_led && response.form_led.tgl_sk_pendirian_pt ? response.form_led.tgl_sk_pendirian_pt : '';
+          const tahun_pertama_terima_mhs = response.form_led && response.form_led.tahun_pertama_terima_mhs ? response.form_led.tahun_pertama_terima_mhs : '';
+          const akreditasi_pt = response.form_led && response.form_led.akreditasi_pt ? response.form_led.akreditasi_pt : '';
+          const tgl_akhir_apt = response.form_led && response.form_led.tgl_akhir_apt ? response.form_led.tgl_akhir_apt : '';
+          konten =
+            '<table class="table table-bordered table-sm mb-0" style="table-layout: fixed; width: 100%; font-size: 16px;">' +
+            '<tbody>' +
+            '<tr><th style="width: 35%;">Kode PT</th><td style="white-space: normal; word-break: break-word; overflow-wrap: anywhere;">' + (kodePt ? kodePt : '-') + '</td></tr>' +
+            '<tr><th style="width: 35%;">Nama PT</th><td style="white-space: normal; word-break: break-word; overflow-wrap: anywhere;">' + (namaPt ? namaPt : '-') + '</td></tr>' +
+            '<tr><th style="width: 35%;">Alamat</th><td style="white-space: normal; word-break: break-word; overflow-wrap: anywhere;">' + (alamat ? alamat : '-') + '</td></tr>' +
+            '<tr><th style="width: 35%;">Tanggal SK Pendirian PT</th><td style="white-space: normal; word-break: break-word; overflow-wrap: anywhere;">' + (tgl_sk_pendirian_pt ? tgl_sk_pendirian_pt : '-') + '</td></tr>' +
+            '<tr><th style="width: 35%;">Tahun Pertama Terima MHS</th><td style="white-space: normal; word-break: break-word; overflow-wrap: anywhere;">' + (tahun_pertama_terima_mhs ? tahun_pertama_terima_mhs : '-') + '</td></tr>' +
+            '<tr><th style="width: 35%;">Akreditasi PT</th><td style="white-space: normal; word-break: break-word; overflow-wrap: anywhere;">' + (akreditasi_pt ? akreditasi_pt : '-') + '</td></tr>' +
+            '<tr><th style="width: 35%;">Tanggal Akhir APT</th><td style="white-space: normal; word-break: break-word; overflow-wrap: anywhere;">' + (tgl_akhir_apt ? tgl_akhir_apt : '-') + '</td></tr>' +
+            '</tbody>' +
+            '</table>';
+        } else if (bab === 1) {
+          const dasar_penyusunan = response.form_led && response.form_led.dasar_penyusunan ? response.form_led.dasar_penyusunan : '';
+          const mekanisme_kerja_penyusunan_laporan = response.form_led && response.form_led.mekanisme_kerja_penyusunan_laporan ? response.form_led.mekanisme_kerja_penyusunan_laporan : '';
+          konten =
+            '<div style="white-space: normal; word-break: break-word; overflow-wrap: anywhere; font-size: 16px;">' +
+            '<div><strong>Dasar Penyusunan:</strong><br>' +
+            (dasar_penyusunan ? dasar_penyusunan : '-') +
+            '</div>' +
+            '<hr>' +
+            '<div><strong>Mekanisme Kerja Penyusunan Laporan:</strong><br>' +
+            (mekanisme_kerja_penyusunan_laporan ? mekanisme_kerja_penyusunan_laporan : '-') +
+            '</div>' +
+            '</div>';
+        } else if (bab === 2) {
+          const penetapan_diferensiasi = response.form_led && response.form_led.penetapan_diferensiasi ? response.form_led.penetapan_diferensiasi : '';
+          konten =
+            '<div style="white-space: normal; word-break: break-word; overflow-wrap: anywhere; font-size: 16px;">' +
+            '<div><strong>Penetapan Diferensiasi:</strong><br>' +
+            (penetapan_diferensiasi ? penetapan_diferensiasi : '-') +
+            '</div>' +
+            '</div>';
+        } else if (bab === 3) {
+          const sasaran_mutu_masukan = response.form_led && response.form_led.sasaran_mutu_masukan ? response.form_led.sasaran_mutu_masukan : '';
+          const tautan_sasaran_mutu_masukan = response.form_led && response.form_led.tautan_sasaran_mutu_masukan ? response.form_led.tautan_sasaran_mutu_masukan : '';
+          const sasaran_mutu_proses = response.form_led && response.form_led.sasaran_mutu_proses ? response.form_led.sasaran_mutu_proses : '';
+          const tautan_sasaran_mutu_proses = response.form_led && response.form_led.tautan_sasaran_mutu_proses ? response.form_led.tautan_sasaran_mutu_proses : '';
+          const sasaran_mutu_luaran = response.form_led && response.form_led.sasaran_mutu_luaran ? response.form_led.sasaran_mutu_luaran : '';
+          const tautan_sasaran_mutu_luaran = response.form_led && response.form_led.tautan_sasaran_mutu_luaran ? response.form_led.tautan_sasaran_mutu_luaran : '';
+          const sasaran_mutu_dampak = response.form_led && response.form_led.sasaran_mutu_dampak ? response.form_led.sasaran_mutu_dampak : '';
+          const tautan_sasaran_mutu_dampak = response.form_led && response.form_led.tautan_sasaran_mutu_dampak ? response.form_led.tautan_sasaran_mutu_dampak : '';
+          konten =
+            '<div style="white-space: normal; word-break: break-word; overflow-wrap: anywhere; font-size: 16px;">' +
+            '<div><strong>Sasaran Mutu Masukan:</strong><br>' +
+            (sasaran_mutu_masukan ? sasaran_mutu_masukan : '-') +
+            '</div>' +
+            '<hr>' +
+            '<div><strong>Tautan Sasaran Mutu Masukan:</strong><br>' +
+            '<a href="' + (tautan_sasaran_mutu_masukan ? tautan_sasaran_mutu_masukan : '#') + '" target="_blank">' +
+            (tautan_sasaran_mutu_masukan ? tautan_sasaran_mutu_masukan : '-') + '</a>' +
+            '</div>' +
+            '<hr>' +
+            '<div><strong>Sasaran Mutu Proses:</strong><br>' +
+            (sasaran_mutu_proses ? sasaran_mutu_proses : '-') +
+            '</div>' +
+            '<hr>' +
+            '<div><strong>Tautan Sasaran Mutu Proses:</strong><br>' +
+            '<a href="' + (tautan_sasaran_mutu_proses ? tautan_sasaran_mutu_proses : '#') + '" target="_blank">' +
+            (tautan_sasaran_mutu_proses ? tautan_sasaran_mutu_proses : '-') + '</a>' +
+            '</div>' +
+            '<hr>' +
+            '<div><strong>Sasaran Mutu Luaran:</strong><br>' +
+            (sasaran_mutu_luaran ? sasaran_mutu_luaran : '-') +
+            '</div>' +
+            '<hr>' +
+            '<div><strong>Tautan Sasaran Mutu Luaran:</strong><br>' +
+            '<a href="' + (tautan_sasaran_mutu_luaran ? tautan_sasaran_mutu_luaran : '#') + '" target="_blank">' +
+            (tautan_sasaran_mutu_luaran ? tautan_sasaran_mutu_luaran : '-') + '</a>' +
+            '</div>' +
+            '<hr>' +
+            '<div><strong>Sasaran Mutu Dampak:</strong><br>' +
+            (sasaran_mutu_dampak ? sasaran_mutu_dampak : '-') +
+            '</div>' +
+            '</div>';
+        } else if (bab === 4) {
+          const narasi_bab4 = response.form_led && response.form_led.narasi_bab4 ? response.form_led.narasi_bab4 : '';
+          konten =
+            '<div style="white-space: normal; word-break: break-word; overflow-wrap: anywhere; font-size: 16px;">' +
+            '<div><strong>Penetapan Diferensiasi:</strong><br>' +
+            (narasi_bab4 ? narasi_bab4 : '-') +
+            '</div>' +
+            '</div>';
+        }
+
+        if (!konten) {
+          $('#modal-bab-led-info').removeClass('d-none').text('Konten untuk ' + (titleMap[bab] ? titleMap[bab] : 'dokumen') + ' belum tersedia.');
+        } else {
+          $('#modal-bab-led-info').addClass('d-none').text('');
+          $('#modal-bab-led-content').html('<pre>' + konten + '</pre>');
+        }
+      },
+      error: function() {
+        $('#modal-bab-led-info').removeClass('d-none').text('Gagal mengambil data.');
+      }
+    });
+  });
+
   $('.narasi-indikator-led').on('click', function() {
     let id_penilaian_tipologi = $('#id-penilaian-tipologi').val();
     let narasi = 'narasi_' + $(this).data('indikator');
@@ -720,10 +902,26 @@
 
         const indikator = narasi.split('_')[1];
         const indikatorMap = {
-          '1': { label: 'Sasaran Mutu Masukan', narasiKey: 'sasaran_mutu_masukan', buktiKey: 'tautan_sasaran_mutu_masukan' },
-          '2': { label: 'Sasaran Mutu Proses', narasiKey: 'sasaran_mutu_proses', buktiKey: 'tautan_sasaran_mutu_proses' },
-          '3': { label: 'Sasaran Mutu Luaran', narasiKey: 'sasaran_mutu_luaran', buktiKey: 'tautan_sasaran_mutu_luaran' },
-          '4': { label: 'Sasaran Mutu Dampak', narasiKey: 'sasaran_mutu_dampak', buktiKey: 'tautan_sasaran_mutu_dampak' }
+          '1': {
+            label: 'Sasaran Mutu Masukan',
+            narasiKey: 'sasaran_mutu_masukan',
+            buktiKey: 'tautan_sasaran_mutu_masukan'
+          },
+          '2': {
+            label: 'Sasaran Mutu Proses',
+            narasiKey: 'sasaran_mutu_proses',
+            buktiKey: 'tautan_sasaran_mutu_proses'
+          },
+          '3': {
+            label: 'Sasaran Mutu Luaran',
+            narasiKey: 'sasaran_mutu_luaran',
+            buktiKey: 'tautan_sasaran_mutu_luaran'
+          },
+          '4': {
+            label: 'Sasaran Mutu Dampak',
+            narasiKey: 'sasaran_mutu_dampak',
+            buktiKey: 'tautan_sasaran_mutu_dampak'
+          }
         };
 
         let narasiValue = response.data[narasi] ? response.data[narasi] : '';
@@ -872,7 +1070,9 @@
       dataType: 'json',
       success: function(response) {
         if (response.form_led == null || response.form_led.status == '0') {
-          $('.lihat-narasi-led').addClass('d-none');
+          // $('.lihat-narasi-led').addClass('d-none');
+          $('.btn-modal-bab').prop('disabled', true);
+          $('.btn-modal-bab').css('cursor', 'not-allowed');
           $('#total-prodi-aktif').text('-');
           $('#prodi-terakreditasi').text('-');
           $('#prodi-unggul-atau-a').text('-');
@@ -880,7 +1080,7 @@
           return Swal.fire({
             icon: 'error',
             title: 'Tidak Dapat Melakukan Penilaian',
-            text: "PT belum mengisi/simpan permanen LED.",
+            text: "PT belum mengisi/simpan permanen Laporan Implementasi SPMI.",
             confirmButtonColor: '#dc3545'
           });
         }
@@ -938,7 +1138,9 @@
         $('#catatan-3').prop('disabled', false);
         $('#skor-4').prop('disabled', false);
         $('#catatan-4').prop('disabled', false);
-        $('.lihat-narasi-led').removeClass('d-none');
+        // $('.lihat-narasi-led').removeClass('d-none');
+        $('.btn-modal-bab').prop('disabled', false);
+        $('.btn-modal-bab').css('cursor', 'pointer');
 
         // Helper untuk set readonly dan style
         function setReadonly(selector, isReadonly) {

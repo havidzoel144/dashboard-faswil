@@ -492,6 +492,7 @@ class Penilaian_model extends CI_Model
   {
     $this->db->select('kode_pt');
     $this->db->select('nm_pt');
+    $this->db->select('tgl_update');
     $this->db->select('COUNT(CASE WHEN nm_stat_prodi = "Aktif" THEN 1 END) AS total_prodi_aktif');
     $this->db->select('COUNT(CASE WHEN nm_stat_prodi = "Aktif" AND akreditasi_prodi <> "-" AND akreditasi_prodi <> "" AND akreditasi_prodi <> "Tidak Terakreditasi" THEN 1 END) AS prodi_terakreditasi');
     $this->db->select('COUNT(CASE WHEN nm_stat_prodi = "Aktif" AND (akreditasi_prodi = "Unggul" OR akreditasi_prodi = "A") THEN 1 END) AS prodi_unggul_atau_a');

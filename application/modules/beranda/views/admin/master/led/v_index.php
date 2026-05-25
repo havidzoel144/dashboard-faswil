@@ -44,9 +44,6 @@
           <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
               <h4 class="card-title" id="heading-buttons1"><?= $judul ?></h4>
-              <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-upload-logo">
-                <i class="fa fa-upload"></i> Upload Logo PT
-              </button>
             </div>
             <div class="dropdown-divider"></div>
             <div class="card-content">

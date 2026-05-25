@@ -49,43 +49,37 @@ $tglIndonesia = $tanggal . " " . $bulan . " " . $tahun;
         <div class="col-md-6 col-sm-12">
           <div class="form-group mb-2">
             <label class="font-weight-semibold text-dark" style="font-size:1rem;">Nama Perguruan Tinggi <span class="text-danger">*</span></label>
-            <input type="text" name="nama_pt" class="form-control textarea-catatan" value="<?= isset($identitas_pt['nama_pt']) ? $identitas_pt['nama_pt'] : '' ?>" placeholder="..." style="font-size:1rem; border: 1px solid #7bc67b !important; background-color: #eaf9ea; color:#216906;" disabled>
+            <input type="text" name="nama_pt" class="form-control textarea-catatan" value="<?= isset($identitas_pt['nama_pt']) ? $identitas_pt['nama_pt'] : '' ?>" placeholder="..." style="font-size:1rem; border: 1px solid #7bc67b !important; background-color: #eaf9ea; color:#216906;" disabled required>
           </div>
         </div>
         <div class="col-md-6 col-sm-12">
           <div class="form-group mb-2">
             <label class="font-weight-semibold text-dark" style="font-size:1rem;">Alamat <span class="text-danger">*</span></label>
-            <input name="alamat" class="form-control textarea-catatan" value="<?= isset($form_led['alamat']) ? $form_led['alamat'] : '' ?>" placeholder="..." style="font-size:1rem;">
+            <input name="alamat" class="form-control textarea-catatan" value="<?= isset($form_led['alamat']) ? $form_led['alamat'] : '' ?>" placeholder="..." style="font-size:1rem;" required>
           </div>
         </div>
         <div class="col-md-6 col-sm-12">
           <div class="form-group mb-2">
             <label class="font-weight-semibold text-dark" style="font-size:1rem;">Tanggal SK Pendirian PT <span class="text-danger">*</span></label>
-            <input type="date" name="tgl_sk_pendirian_pt" class="form-control textarea-catatan" value="<?= isset($form_led['tgl_sk_pendirian_pt']) ? $form_led['tgl_sk_pendirian_pt'] : '' ?>" placeholder="..." style="font-size:1rem;">
-          </div>
-        </div>
-        <div class="col-md-6 col-sm-12">
-          <div class="form-group mb-2">
-            <label class="font-weight-semibold text-dark" style="font-size:1rem;">Pejabat Penandatangan <span class="text-danger">*</span></label>
-            <input type="text" name="pejabat_penandatangan" class="form-control textarea-catatan" value="<?= isset($form_led['pejabat_penandatangan']) ? $form_led['pejabat_penandatangan'] : '' ?>" placeholder="..." style="font-size:1rem;">
+            <input type="date" name="tgl_sk_pendirian_pt" class="form-control textarea-catatan" value="<?= isset($form_led['tgl_sk_pendirian_pt']) ? $form_led['tgl_sk_pendirian_pt'] : '' ?>" placeholder="..." style="font-size:1rem;" required>
           </div>
         </div>
         <div class="col-md-6 col-sm-12">
           <div class="form-group mb-2">
             <label class="font-weight-semibold text-dark" style="font-size:1rem;">Tahun Pertama Kali Menerima Mahasiswa <span class="text-danger">*</span></label>
-            <input type="number" inputmode="numeric" name="tahun_pertama_terima_mhs" class="form-control textarea-catatan" value="<?= isset($form_led['tahun_pertama_terima_mhs']) ? $form_led['tahun_pertama_terima_mhs'] : '' ?>" placeholder="YYYY" min="1900" max="9999" step="1" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4);" style="font-size:1rem;">
+            <input type="number" inputmode="numeric" name="tahun_pertama_terima_mhs" class="form-control textarea-catatan" value="<?= isset($form_led['tahun_pertama_terima_mhs']) ? $form_led['tahun_pertama_terima_mhs'] : '' ?>" placeholder="YYYY" min="1900" max="9999" step="1" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4);" style="font-size:1rem;" required>
           </div>
         </div>
         <div class="col-md-6 col-sm-12">
           <div class="form-group mb-2">
             <label class="font-weight-semibold text-dark" style="font-size:1rem;">Akreditasi Perguruan Tinggi <span class="text-danger">*</span></label>
-            <input type="text" name="akreditasi_pt" class="form-control textarea-catatan" value="<?= isset($form_led['akreditasi_pt']) ? $form_led['akreditasi_pt'] : '' ?>" placeholder="..." style="font-size:1rem; border: 1px solid #7bc67b !important; background-color: #eaf9ea; color:#216906;" disabled>
+            <input type="text" name="akreditasi_pt" class="form-control textarea-catatan" value="<?= isset($form_led['akreditasi_pt']) ? $form_led['akreditasi_pt'] : '' ?>" placeholder="..." style="font-size:1rem; border: 1px solid #7bc67b !important; background-color: #eaf9ea; color:#216906;" disabled required>
           </div>
         </div>
         <div class="col-md-6 col-sm-12">
           <div class="form-group mb-2">
             <label class="font-weight-semibold text-dark" style="font-size:1rem;">Tanggal Akhir APT <span class="text-danger">*</span></label>
-            <input type="date" name="tgl_akhir_apt" class="form-control textarea-catatan" value="<?= isset($form_led['tgl_akhir_apt']) ? $form_led['tgl_akhir_apt'] : '' ?>" placeholder="..." style="font-size:1rem; border: 1px solid #7bc67b !important; background-color: #eaf9ea; color:#216906;" disabled>
+            <input type="date" name="tgl_akhir_apt" class="form-control textarea-catatan" value="<?= isset($form_led['tgl_akhir_apt']) ? $form_led['tgl_akhir_apt'] : '' ?>" placeholder="..." style="font-size:1rem; border: 1px solid #7bc67b !important; background-color: #eaf9ea; color:#216906;" disabled required>
           </div>
         </div>
       </div>

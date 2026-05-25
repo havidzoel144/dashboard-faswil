@@ -112,70 +112,10 @@ class Admin extends MX_Controller
       $this->session->set_flashdata('error', 'Anda belum login.');
       redirect(base_url('login'));
     }
-    $data['kode_nama_pt'] = $this->db->query("SELECT `kode_pt`, `nm_pt` FROM `data_prodi` GROUP BY `kode_pt`, `nm_pt` ORDER BY CASE WHEN LOCATE(' ', `nm_pt`) > 0 THEN LEFT(`nm_pt`, LOCATE(' ', `nm_pt`) - 1) ELSE `nm_pt` END DESC, CASE WHEN LOCATE(' ', `nm_pt`) > 0 THEN SUBSTRING(`nm_pt`, LOCATE(' ', `nm_pt`) + 1)ELSE '' END ASC")->result_array();
 
-    // Ambil data periode dari tabel
-    $periode_db = $this->db->query("SELECT `periode` FROM `data_penjaminan_mutu` GROUP BY `periode`")->result_array();
+    $data['kode_nama_pt'] = $this->db->query("SELECT `kode_pt`, `nm_pt` FROM `data_prodi` GROUP BY `kode_pt`, `nm_pt` ORDER BY CASE WHEN LOCATE(' ', `nm_pt`) > 0 THEN LEFT(`nm_pt`, LOCATE(' ', `nm_pt`) - 1) ELSE `nm_pt` END DESC, CASE WHEN LOCATE(' ', `nm_pt`) > 0 THEN SUBSTRING(`nm_pt`, LOCATE(' ', `nm_pt`) + 1) ELSE '' END ASC")->result_array();
 
-    // Inisialisasi array $data['periode']
-    $data['periode'] = [];
-
-    // Loop data hasil query dan tentukan bulan berdasarkan karakter terakhir
-    foreach ($periode_db as $row) {
-      $periode_value = $row['periode'];
-
-      // Tentukan bulan berdasarkan digit terakhir dari periode
-      $bulan = substr($periode_value, -1) == '1' ? 'Januari - Juni' : 'Juli - Desember';
-
-      // Tambahkan data ke $data['periode']
-      $data['periode'][] = [
-        'bulan' => $bulan,
-        'periode' => $periode_value,
-      ];
-    }
-
-    // Dapatkan tahun saat ini
-    $tahun_saat_ini = date('Y');
-
-    // Tentukan periode yang seharusnya ada untuk tahun saat ini
-    $periode_tahun_ini = [
-      [
-        'bulan' => 'Januari - Juni',
-        'periode' => $tahun_saat_ini . '1',
-      ],
-      [
-        'bulan' => 'Juli - Desember',
-        'periode' => $tahun_saat_ini . '2',
-      ]
-    ];
-
-    // Cek dan tambahkan periode untuk tahun saat ini jika belum ada
-    foreach ($periode_tahun_ini as $periode) {
-      $periode_values = array_column($data['periode'], 'periode');
-
-      // Jika periode belum ada di $data['periode'], tambahkan
-      if (!in_array($periode['periode'], $periode_values)) {
-        $data['periode'][] = $periode;
-      }
-    }
-
-    // Urutkan array berdasarkan 'periode' secara ascending
-    usort($data['periode'], function ($a, $b) {
-      return $a['periode'] <=> $b['periode'];
-    });
-
-    // Mendapatkan tahun saat ini
-    $currentYear = date('Y');
-
-    // Mendapatkan bulan saat ini (1-12)
-    $currentMonth = date('n'); // Format 'n' memberikan bulan tanpa nol di depan
-
-    // Menentukan periode: 1 untuk Januari-Juni, 2 untuk Juli-Desember
-    $periodSuffix = ($currentMonth >= 1 && $currentMonth <= 6) ? '1' : '2';
-
-    // Menggabungkan tahun dan periode
-    $periode = $currentYear . $periodSuffix;
-
+    $kode_pt = explode('_', $this->session->userdata('username'))[0]; //Ambil kode PT saja
     $data['data_penjaminan_mutu'] = $this->db->query("SELECT * FROM `data_penjaminan_mutu`")->result_array();
     // $data['data'] = array(
     //   'tipologi_1' => $this->db->query("SELECT * FROM data_penjaminan_mutu WHERE tipologi = 'Tipologi 1' AND periode = '$periode'")->num_rows(),
@@ -183,20 +123,6 @@ class Admin extends MX_Controller
     //   'tipologi_3' => $this->db->query("SELECT * FROM data_penjaminan_mutu WHERE tipologi = 'Tipologi 3' AND periode = '$periode'")->num_rows(),
     //   'tipologi_4' => $this->db->query("SELECT * FROM data_penjaminan_mutu WHERE tipologi = 'Tipologi 4' AND periode = '$periode'")->num_rows(),
     // );
-
-    // $periode = $this->input->post('periode');
-    $this->db->select_max('periode');
-    $query        = $this->db->get('data_penjaminan_mutu');
-    $periode_max  = $query->row_array(); // Ambil hasil sebagai array
-    $prd          = $periode_max['periode'];
-
-    // // Konversi hasil ke JSON dan kirim ke browser
-    // echo json_encode($periode_max['periode']);
-    // exit;
-
-    $data['data'] = $this->db->query("SELECT COUNT(a.`tipologi`) AS jumlah_tipologi, a.`tipologi`, a.`periode`,(SELECT COUNT(*) FROM `data_penjaminan_mutu` AS b WHERE b.periode = '$prd') AS total_data, ROUND( ( COUNT(a.`tipologi`) / (SELECT COUNT(*) FROM `data_penjaminan_mutu` AS b WHERE b.periode = '$prd') * 100 ), 1) AS persentase FROM `data_penjaminan_mutu` AS a WHERE a.`periode` = '$prd' GROUP BY a.`tipologi`, a.`periode`;")->result();
-
-    $kode_pt = explode('-', $data['data_penjaminan_mutu'][0]['kode_pt'])[0];
 
     $labels_result = $this->db->query("SELECT `periode`, `skor_total` FROM `data_penjaminan_mutu` WHERE `kode_pt` = '$kode_pt' GROUP BY `periode` ORDER BY `periode` ASC")->result_array();
     $data['labels'] = array_column($labels_result, 'periode');
@@ -237,9 +163,7 @@ class Admin extends MX_Controller
         $periode_jumlah_pt++;
       }
 
-      if ($periode_jumlah_pt > 0) {
-        $rata_rata_per_periode[] = round($periode_total_skor / $periode_jumlah_pt, 1);
-      }
+      $rata_rata_per_periode[] = $periode_jumlah_pt > 0 ? round($periode_total_skor / $periode_jumlah_pt, 1) : 0;
     }
 
     $data['rata_rata_per_periode'] = $rata_rata_per_periode;
@@ -273,7 +197,20 @@ class Admin extends MX_Controller
       $this->session->set_flashdata('error', 'Anda belum login.');
       redirect(base_url('login'));
     }
-    $data['kode_nama_pt'] = $this->db->query("SELECT `kode_pt`, `nm_pt` FROM `data_prodi` GROUP BY `kode_pt`, `nm_pt` ORDER BY CASE WHEN LOCATE(' ', `nm_pt`) > 0 THEN LEFT(`nm_pt`, LOCATE(' ', `nm_pt`) - 1) ELSE `nm_pt` END DESC, CASE WHEN LOCATE(' ', `nm_pt`) > 0 THEN SUBSTRING(`nm_pt`, LOCATE(' ', `nm_pt`) + 1)ELSE '' END ASC")->result_array();
+
+    $query_kode_nama_pt = "SELECT `kode_pt`, `nm_pt` FROM `data_prodi`";
+
+    if (has_role(['6'])) {
+      $kode_pt = explode('_', $this->session->userdata('username'))[0]; // Ambil kode PT saja
+      $query_kode_nama_pt .= " WHERE `kode_pt` = " . $this->db->escape($kode_pt);
+    }
+
+    $query_kode_nama_pt .= " GROUP BY `kode_pt`, `nm_pt`
+      ORDER BY
+        CASE WHEN LOCATE(' ', `nm_pt`) > 0 THEN LEFT(`nm_pt`, LOCATE(' ', `nm_pt`) - 1) ELSE `nm_pt` END DESC,
+        CASE WHEN LOCATE(' ', `nm_pt`) > 0 THEN SUBSTRING(`nm_pt`, LOCATE(' ', `nm_pt`) + 1) ELSE '' END ASC";
+
+    $data['kode_nama_pt'] = $this->db->query($query_kode_nama_pt)->result_array();
 
     // Ambil data periode dari tabel
     $periode_db = $this->db->query("SELECT `periode` FROM `data_penjaminan_mutu_30` GROUP BY `periode`")->result_array();
@@ -337,7 +274,7 @@ class Admin extends MX_Controller
     // Menggabungkan tahun dan periode
     $periode = $currentYear . $periodSuffix;
 
-    $data['data_penjaminan_mutu'] = $this->db->query("SELECT * FROM `data_penjaminan_mutu_30`")->result_array();
+    // $data['data_penjaminan_mutu'] = $this->db->query("SELECT * FROM `data_penjaminan_mutu_30`")->result_array();
 
     // $periode = $this->input->post('periode');
     $this->db->select_max('periode');
@@ -345,7 +282,26 @@ class Admin extends MX_Controller
     $periode_max  = $query->row_array(); // Ambil hasil sebagai array
     $prd          = $periode_max['periode'];
 
-    $data['data'] = $this->db->query("SELECT COUNT(a.`tipologi`) AS jumlah_tipologi, a.`tipologi`, a.`periode`,(SELECT COUNT(*) FROM `data_penjaminan_mutu_30` AS b WHERE b.periode = '$prd') AS total_data, ROUND( ( COUNT(a.`tipologi`) / (SELECT COUNT(*) FROM `data_penjaminan_mutu_30` AS b WHERE b.periode = '$prd') * 100 ), 1) AS persentase FROM `data_penjaminan_mutu_30` AS a WHERE a.`periode` = '$prd' GROUP BY a.`tipologi`, a.`periode`;")->result();
+    $query = $this->db->query("SELECT COUNT(a.`tipologi`) AS jumlah_tipologi, a.`tipologi`, a.`periode`,(SELECT COUNT(*) FROM `data_penjaminan_mutu_30` AS b WHERE b.periode = a.periode) AS total_data, ROUND( ( COUNT(a.`tipologi`) / (SELECT COUNT(*) FROM `data_penjaminan_mutu_30` AS b) * 100 ), 1) AS persentase FROM `data_penjaminan_mutu_30` AS a GROUP BY a.`periode`, a.`tipologi`;")->result_array();
+
+    $grouped = [];
+
+    foreach ($query as $row) {
+      $periode = $row['periode'];
+
+      if (!isset($grouped[$periode])) {
+        $grouped[$periode] = [];
+      }
+
+      $grouped[$periode][] = [
+        'jumlah_tipologi' => $row['jumlah_tipologi'],
+        'tipologi'        => $row['tipologi'],
+        'total_data'      => $row['total_data'],
+        'persentase'      => $row['persentase'],
+      ];
+    }
+
+    $data['data'] = $grouped;
 
     $this->load->view("admin/v_penjaminan_mutu_30", $data);
   }
@@ -641,5 +597,134 @@ class Admin extends MX_Controller
       $this->session->set_flashdata('success', 'File berhasil diupload: ' . basename($file_path));
       redirect($_SERVER['HTTP_REFERER']);
     }
+  }
+
+  public function get_penjaminan_mutu_pt()
+  {
+    $this->only_for_roles(['1', '2']);
+
+    if (!$this->input->is_ajax_request()) {
+      show_error('Invalid request', 400);
+    }
+
+    $kode_pt = $this->input->get('kode_pt', true);
+
+    if (!$kode_pt) {
+      return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode([
+          'status' => false,
+          'message' => 'Kode PT kosong'
+        ]));
+    }
+
+    // =====================================
+    // LABEL & CAPAIAN PT
+    // =====================================
+    $labels_result = $this->db->query("
+        SELECT periode, skor_total
+        FROM data_penjaminan_mutu
+        WHERE kode_pt = '$kode_pt'
+        GROUP BY periode
+        ORDER BY periode ASC
+    ")->result_array();
+
+    $labels = array_column($labels_result, 'periode');
+    $capaian_pt = array_column($labels_result, 'skor_total');
+
+    // =====================================
+    // NAMA PT
+    // =====================================
+    $pt = $this->db
+      ->where('kode_pt', $kode_pt)
+      ->get('data_pt')
+      ->row_array();
+
+    $nama_pt = $pt ? $pt['nama_pt'] : '';
+
+    // =====================================
+    // BENTUK PT
+    // =====================================
+    $bentuk_pt_self = $this->db->query("
+        SELECT bentuk_pt
+        FROM data_pt
+        WHERE kode_pt = '$kode_pt'
+    ")->row_array();
+
+    // =====================================
+    // SKOR NOL
+    // =====================================
+    $skor_nol = [];
+
+    foreach ($labels as $item) {
+
+      $rows = $this->db->query("
+            SELECT *
+            FROM data_penjaminan_mutu
+            WHERE periode = '$item'
+            AND kode_pt = '$kode_pt'
+        ")->result_array();
+
+      $skor_nol[$item] = [];
+
+      foreach ($rows as $row) {
+
+        $skor_1 = (float)$row['skor_1'];
+        $skor_2 = (float)$row['skor_2'];
+        $skor_3 = (float)$row['skor_3'];
+        $skor_4 = (float)$row['skor_4'];
+
+        if (
+          $skor_1 == 0 ||
+          $skor_2 == 0 ||
+          $skor_3 == 0 ||
+          $skor_4 == 0
+        ) {
+          $skor_nol[$item][] = true;
+        }
+      }
+    }
+
+    // =====================================
+    // RATA NASIONAL
+    // =====================================
+    $rata_rata_per_periode = [];
+
+    foreach ($labels as $item) {
+
+      $rows = $this->db->query("
+            SELECT a.skor_total
+            FROM data_penjaminan_mutu a
+            JOIN data_pt b
+            ON a.kode_pt = b.kode_pt
+            WHERE a.periode = '$item'
+            AND b.bentuk_pt = '{$bentuk_pt_self['bentuk_pt']}'
+            AND a.kode_pt != '$kode_pt'
+        ")->result_array();
+
+      $total = 0;
+      $jumlah = 0;
+
+      foreach ($rows as $row) {
+        $total += (float)$row['skor_total'];
+        $jumlah++;
+      }
+
+      $rata_rata_per_periode[] =
+        $jumlah > 0
+        ? round($total / $jumlah, 1)
+        : 0;
+    }
+
+    return $this->output
+      ->set_content_type('application/json')
+      ->set_output(json_encode([
+        'status' => true,
+        'nama_pt' => $nama_pt,
+        'labels' => $labels,
+        'capaian_pt' => $capaian_pt,
+        'rata_rata_per_periode' => $rata_rata_per_periode,
+        'skor_nol' => $skor_nol
+      ]));
   }
 }

@@ -31,37 +31,8 @@
     <!-- ==================== INDIKATOR 1 ==================== -->
     <div class="card shadow-sm mb-2" style="border:1px solid #ffd6ad; border-top:4px solid #fd7c02; border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(253,124,2,.10);">
       <div class="card-body" style="background:#fffdfb;">
-        <!-- Narasi -->
-        <div class="form-group mb-1 p-2 rounded" style="background:#ffffff; border:1px solid #ffe2c2; box-shadow:0 3px 10px rgba(15,23,42,.04);">
-          <div class="d-flex align-items-center justify-content-between flex-wrap mb-2">
-            <label class="font-weight-semibold text-dark mb-1" for="sasaran_mutu_masukan" style="font-size:1rem;">
-              <i class="la la-pencil text-warning mr-1"></i> A. Sasaran Mutu Masukan <span class="text-danger">*</span>
-            </label>
-            <span class="badge badge-pill" style="background:#fff4e8; color:#d96a00; font-size:.74rem; padding:.4rem .75rem;">Narasi Utama</span>
-          </div>
-          <textarea name="sasaran_mutu_masukan" id="sasaran_mutu_masukan" rows="10" class="form-control narasi-led-500 textarea-catatan" data-max-words="500" placeholder="Tuliskan narasi evaluasi diri untuk indikator Masukan sesuai Sasaran Mutu IAPT 4.1..." required style="font-size:1rem; resize:vertical; line-height:1.7; border:1px solid #ffd7b5; border-radius:10px; padding:14px 16px; background:#fffaf5;"><?= isset($form_led['sasaran_mutu_masukan']) ? $form_led['sasaran_mutu_masukan'] : '' ?></textarea>
-          <div class="d-flex align-items-center justify-content-between flex-wrap mt-0">
-            <small class="form-text text-muted mb-0">Deskripsikan secara rinci, jelas, dan terukur (maksimal 500 kata).</small>
-            <small class="form-text text-warning font-weight-semibold mb-0" id="counter_sasaran_mutu_masukan">0/500 kata</small>
-          </div>
-        </div>
-        <!-- Link Bukti -->
-        <div class="rounded p-2 mb-1" style="background:linear-gradient(180deg,#fff8f2 0%,#fff1e3 100%); border:1px solid #ffd9b3; box-shadow:0 3px 10px rgba(253,124,2,.10);">
-          <div class="d-flex align-items-center justify-content-between flex-wrap mb-1">
-            <div class="font-weight-semibold" style="font-size:1rem; letter-spacing:.1px; color:#fd7c02;">
-              <i class="la la-link mr-1"></i> Tautan Dokumen Pendukung <span class="text-danger">*</span>
-            </div>
-            <span class="badge badge-pill" style="background:#fff0e1; color:#d96a00; font-size:.74rem; padding:.4rem .75rem;">Wajib diisi</span>
-          </div>
-          <small class="d-block text-muted mb-1" style="line-height:1.6;">Sertakan tautan dokumen pendukung yang relevan dan dapat diakses untuk memperkuat narasi sasaran mutu masukan.</small>
-          <div class="row">
-            <div class="col-md-12">
-              <input type="url" class="form-control" name="tautan_sasaran_mutu_masukan" value="<?= isset($form_led['tautan_sasaran_mutu_masukan']) ? $form_led['tautan_sasaran_mutu_masukan'] : '' ?>" placeholder="Tempel tautan bukti (https://...)" style="font-size:1rem; background:#fff; border:1px solid #ffd2a8; border-radius:10px; height:44px;" required>
-            </div>
-          </div>
-        </div>
         <!-- Petunjuk Pengisian, Indikator dan Aspek Penilaian -->
-        <div class="rounded" style="border:1px solid #ffd7b5; background:#fffaf5; overflow:hidden; box-shadow:0 2px 8px rgba(253,124,2,.08);">
+        <div class="rounded mb-1" style="border:1px solid #ffd7b5; background:#fffaf5; overflow:hidden; box-shadow:0 2px 8px rgba(253,124,2,.08);">
           <div class="px-2 py-1 font-weight-semibold d-flex align-items-center justify-content-between flex-wrap" style="font-size:1rem; background:#fff4e8; color:#d96a00; border-bottom:1px solid #ffd7b5;">
             <div><i class="la la-info-circle mr-2"></i>Petunjuk Pengisian, Indikator, dan Aspek Penilaian</div>
             <span class="badge badge-pill" style="background:#ffd7b5; color:#d96a00; font-size:.72rem;">Panduan</span>
@@ -94,43 +65,46 @@
             </div>
           </div>
         </div>
+        <!-- Narasi -->
+        <div class="form-group mb-1 p-2 rounded" style="background:#ffffff; border:1px solid #ffe2c2; box-shadow:0 3px 10px rgba(15,23,42,.04);">
+          <div class="d-flex align-items-center justify-content-between flex-wrap mb-2">
+            <label class="font-weight-semibold text-dark mb-1" for="sasaran_mutu_masukan" style="font-size:1rem;">
+              <i class="la la-pencil text-warning mr-1"></i> A. Sasaran Mutu Masukan <span class="text-danger">*</span>
+            </label>
+            <span class="badge badge-pill" style="background:#fff4e8; color:#d96a00; font-size:.74rem; padding:.4rem .75rem;">Narasi Utama</span>
+          </div>
+          <textarea name="sasaran_mutu_masukan" id="sasaran_mutu_masukan" rows="10" class="form-control narasi-led-500 textarea-catatan" data-max-words="500" placeholder="Tuliskan narasi evaluasi diri untuk indikator Masukan sesuai Sasaran Mutu IAPT 4.1..." required style="font-size:1rem; resize:vertical; line-height:1.7; border:1px solid #ffd7b5; border-radius:10px; padding:14px 16px; background:#fffaf5;"><?= isset($form_led['sasaran_mutu_masukan']) ? $form_led['sasaran_mutu_masukan'] : '' ?></textarea>
+          <div class="d-flex align-items-center justify-content-between flex-wrap mt-0">
+            <small class="form-text text-muted mb-0">Deskripsikan secara rinci, jelas, dan terukur (maksimal 500 kata).</small>
+            <small class="form-text text-warning font-weight-semibold mb-0" id="counter_sasaran_mutu_masukan">0/500 kata</small>
+          </div>
+        </div>
+        <!-- Link Bukti -->
+        <div class="rounded p-2 mb-0" style="background:linear-gradient(180deg,#fff8f2 0%,#fff1e3 100%); border:1px solid #ffd9b3; box-shadow:0 3px 10px rgba(253,124,2,.10);">
+          <div class="d-flex align-items-center justify-content-between flex-wrap mb-1">
+            <div class="font-weight-semibold" style="font-size:1rem; letter-spacing:.1px; color:#fd7c02;">
+              <i class="la la-link mr-1"></i> Tautan Dokumen Pendukung <span class="text-danger">*</span>
+            </div>
+            <span class="badge badge-pill" style="background:#fff0e1; color:#d96a00; font-size:.74rem; padding:.4rem .75rem;">Wajib diisi</span>
+          </div>
+          <ul class="text-muted mb-1 pl-3">
+            <li><small>Sertakan tautan dokumen pendukung yang relevan dan dapat diakses untuk memperkuat narasi sasaran mutu masukan.</small></li>
+            <li><small>Pastikan untuk membuka share dokumen agar dapat diakses dan dinilai oleh faswil.</small></li>
+          </ul>
+          <div class="row">
+            <div class="col-md-12">
+              <input type="url" class="form-control" name="tautan_sasaran_mutu_masukan" value="<?= isset($form_led['tautan_sasaran_mutu_masukan']) ? $form_led['tautan_sasaran_mutu_masukan'] : '' ?>" placeholder="Tempel tautan bukti (https://...)" style="font-size:1rem; background:#fff; border:1px solid #ffd2a8; border-radius:10px; height:44px;" required>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- ==================== INDIKATOR 2 ==================== -->
     <div class="card shadow-sm mb-2" style="border:1px solid #a5f3fc; border-top:4px solid #06b6d4; border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(6,182,212,.10);">
       <div class="card-body pt-2 pb-2" style="background:#f0fdff;">
-        <!-- Narasi -->
-        <div class="form-group mb-1 p-2 rounded" style="background:#ffffff; border:1px solid #cffafe; box-shadow:0 3px 10px rgba(15,23,42,.04);">
-          <div class="d-flex align-items-center justify-content-between flex-wrap mb-2">
-            <label class="font-weight-semibold text-dark mb-1" style="font-size:1rem;">
-              <i class="la la-pencil mr-1" style="color:#06b6d4;"></i> B. Sasaran Mutu Proses <span class="text-danger">*</span>
-            </label>
-            <span class="badge badge-pill" style="background:#ecfeff; color:#0891b2; font-size:.74rem; padding:.4rem .75rem;">Narasi Utama</span>
-          </div>
-          <textarea name="sasaran_mutu_proses" id="sasaran_mutu_proses" rows="10" class="form-control narasi-led-500 textarea-catatan" data-max-words="500" placeholder="Tuliskan narasi evaluasi diri untuk indikator Proses sesuai Sasaran Mutu IAPT 4.1..." required style="font-size:1rem; resize:vertical; line-height:1.7; border:1px solid #a5f3fc; border-radius:10px; padding:14px 16px; background:#f0fdff;"><?= isset($form_led['sasaran_mutu_proses']) ? $form_led['sasaran_mutu_proses'] : '' ?></textarea>
-          <div class="d-flex align-items-center justify-content-between flex-wrap mt-0">
-            <small class="form-text text-muted mb-0">Deskripsikan secara rinci, jelas, dan terukur (maksimal 500 kata).</small>
-            <small class="form-text text-info font-weight-semibold mb-0" id="counter_sasaran_mutu_proses">0/500 kata</small>
-          </div>
-        </div>
-        <!-- Link Bukti -->
-        <div class="rounded p-2 mb-1" style="background:linear-gradient(180deg,#ecfeff 0%,#cffafe 100%); border:1px solid #a5f3fc; box-shadow:0 3px 10px rgba(6,182,212,.10);">
-          <div class="d-flex align-items-center justify-content-between flex-wrap mb-1">
-            <div class="font-weight-semibold" style="font-size:1rem; letter-spacing:.1px; color:#06b6d4;">
-              <i class="la la-link mr-1"></i> Tautan Dokumen Pendukung <span class="text-danger">*</span>
-            </div>
-            <span class="badge badge-pill" style="background:#cffafe; color:#0891b2; font-size:.74rem; padding:.4rem .75rem;">Wajib diisi</span>
-          </div>
-          <small class="d-block text-muted mb-1" style="line-height:1.6;">Sertakan tautan dokumen pendukung yang relevan dan dapat diakses untuk memperkuat narasi sasaran mutu proses.</small>
-          <div class="row">
-            <div class="col-md-12">
-              <input type="url" class="form-control" name="tautan_sasaran_mutu_proses" value="<?= isset($form_led['tautan_sasaran_mutu_proses']) ? $form_led['tautan_sasaran_mutu_proses'] : '' ?>" placeholder="Tempel tautan bukti (https://...)" style="font-size:1rem; background:#fff; border:1px solid #a5f3fc; border-radius:10px; height:44px;" required>
-            </div>
-          </div>
-        </div>
         <!-- Petunjuk Pengisian, Indikator dan Aspek Penilaian -->
-        <div class="rounded" style="border:1px solid #73AAB0; background:#F4FFFF; overflow:hidden; box-shadow:0 2px 8px rgba(6,182,212,.08);">
+        <div class="rounded mb-1" style="border:1px solid #73AAB0; background:#F4FFFF; overflow:hidden; box-shadow:0 2px 8px rgba(6,182,212,.08);">
           <div class="px-2 py-1 font-weight-semibold d-flex align-items-center justify-content-between flex-wrap" style="font-size:1rem; background:#ecfeff; color:#06b6d4; border-bottom:1px solid #73AAB0;">
             <div><i class="la la-info-circle mr-2"></i>Petunjuk Pengisian, Indikator, dan Aspek Penilaian</div>
             <span class="badge badge-pill" style="background:#a5f3fc; color:#0891b2; font-size:.72rem;">Panduan</span>
@@ -172,43 +146,46 @@
             </div>
           </div>
         </div>
+        <!-- Narasi -->
+        <div class="form-group mb-1 p-2 rounded" style="background:#ffffff; border:1px solid #cffafe; box-shadow:0 3px 10px rgba(15,23,42,.04);">
+          <div class="d-flex align-items-center justify-content-between flex-wrap mb-2">
+            <label class="font-weight-semibold text-dark mb-1" style="font-size:1rem;">
+              <i class="la la-pencil mr-1" style="color:#06b6d4;"></i> B. Sasaran Mutu Proses <span class="text-danger">*</span>
+            </label>
+            <span class="badge badge-pill" style="background:#ecfeff; color:#0891b2; font-size:.74rem; padding:.4rem .75rem;">Narasi Utama</span>
+          </div>
+          <textarea name="sasaran_mutu_proses" id="sasaran_mutu_proses" rows="10" class="form-control narasi-led-500 textarea-catatan" data-max-words="500" placeholder="Tuliskan narasi evaluasi diri untuk indikator Proses sesuai Sasaran Mutu IAPT 4.1..." required style="font-size:1rem; resize:vertical; line-height:1.7; border:1px solid #a5f3fc; border-radius:10px; padding:14px 16px; background:#f0fdff;"><?= isset($form_led['sasaran_mutu_proses']) ? $form_led['sasaran_mutu_proses'] : '' ?></textarea>
+          <div class="d-flex align-items-center justify-content-between flex-wrap mt-0">
+            <small class="form-text text-muted mb-0">Deskripsikan secara rinci, jelas, dan terukur (maksimal 500 kata).</small>
+            <small class="form-text text-info font-weight-semibold mb-0" id="counter_sasaran_mutu_proses">0/500 kata</small>
+          </div>
+        </div>
+        <!-- Link Bukti -->
+        <div class="rounded p-2 mb-0" style="background:linear-gradient(180deg,#ecfeff 0%,#cffafe 100%); border:1px solid #a5f3fc; box-shadow:0 3px 10px rgba(6,182,212,.10);">
+          <div class="d-flex align-items-center justify-content-between flex-wrap mb-1">
+            <div class="font-weight-semibold" style="font-size:1rem; letter-spacing:.1px; color:#06b6d4;">
+              <i class="la la-link mr-1"></i> Tautan Dokumen Pendukung <span class="text-danger">*</span>
+            </div>
+            <span class="badge badge-pill" style="background:#cffafe; color:#0891b2; font-size:.74rem; padding:.4rem .75rem;">Wajib diisi</span>
+          </div>
+          <ul class="text-muted mb-1 pl-3">
+            <li><small>Sertakan tautan dokumen pendukung yang relevan dan dapat diakses untuk memperkuat narasi sasaran mutu masukan.</small></li>
+            <li><small>Pastikan untuk membuka share dokumen agar dapat diakses dan dinilai oleh faswil.</small></li>
+          </ul>
+          <div class="row">
+            <div class="col-md-12">
+              <input type="url" class="form-control" name="tautan_sasaran_mutu_proses" value="<?= isset($form_led['tautan_sasaran_mutu_proses']) ? $form_led['tautan_sasaran_mutu_proses'] : '' ?>" placeholder="Tempel tautan bukti (https://...)" style="font-size:1rem; background:#fff; border:1px solid #a5f3fc; border-radius:10px; height:44px;" required>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- ==================== INDIKATOR 3 ==================== -->
     <div class="card shadow-sm mb-2" style="border:1px solid #bfdbfe; border-top:4px solid #2563eb; border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(37,99,235,.10);">
       <div class="card-body pt-2 pb-2" style="background:#f8fbff;">
-        <!-- Narasi -->
-        <div class="form-group mb-1 p-2 rounded" style="background:#ffffff; border:1px solid #dbeafe; box-shadow:0 3px 10px rgba(15,23,42,.04);">
-          <div class="d-flex align-items-center justify-content-between flex-wrap mb-2">
-            <label class="font-weight-semibold text-dark mb-1" style="font-size:1rem;">
-              <i class="la la-pencil mr-1" style="color:#3a86ff;"></i> C. Sasaran Mutu Luaran <span class="text-danger">*</span>
-            </label>
-            <span class="badge badge-pill" style="background:#eff6ff; color:#1d4ed8; font-size:.74rem; padding:.4rem .75rem;">Narasi Utama</span>
-          </div>
-          <textarea name="sasaran_mutu_luaran" id="sasaran_mutu_luaran" rows="10" class="form-control narasi-led-500 textarea-catatan" data-max-words="500" placeholder="Tuliskan narasi evaluasi diri untuk indikator Luaran sesuai Sasaran Mutu IAPT 4.1..." required style="font-size:1rem; resize:vertical; line-height:1.7; border:1px solid #bfdbfe; border-radius:10px; padding:14px 16px; background:#f8fbff;"><?= isset($form_led['sasaran_mutu_luaran']) ? $form_led['sasaran_mutu_luaran'] : '' ?></textarea>
-          <div class="d-flex align-items-center justify-content-between flex-wrap mt-0">
-            <small class="form-text text-muted mb-0">Deskripsikan secara rinci, jelas, dan terukur (maksimal 500 kata).</small>
-            <small class="form-text text-primary font-weight-semibold mb-0" id="counter_sasaran_mutu_luaran">0/500 kata</small>
-          </div>
-        </div>
-        <!-- Link Bukti -->
-        <div class="rounded p-2 mb-1" style="background:linear-gradient(180deg,#f0f7ff 0%,#e0efff 100%); border:1px solid #bfdbfe; box-shadow:0 3px 10px rgba(37,99,235,.10);">
-          <div class="d-flex align-items-center justify-content-between flex-wrap mb-1">
-            <div class="font-weight-semibold" style="font-size:1rem; letter-spacing:.1px; color:#2563eb;">
-              <i class="la la-link mr-1"></i> Tautan Dokumen Pendukung <span class="text-danger">*</span>
-            </div>
-            <span class="badge badge-pill" style="background:#dbeafe; color:#1d4ed8; font-size:.74rem; padding:.4rem .75rem;">Wajib diisi</span>
-          </div>
-          <small class="d-block text-muted mb-1" style="line-height:1.6;">Sertakan tautan dokumen pendukung yang relevan dan dapat diakses untuk memperkuat narasi sasaran mutu luaran.</small>
-          <div class="row">
-            <div class="col-md-12">
-              <input type="url" class="form-control" name="tautan_sasaran_mutu_luaran" value="<?= isset($form_led['tautan_sasaran_mutu_luaran']) ? $form_led['tautan_sasaran_mutu_luaran'] : '' ?>" placeholder="Tempel tautan bukti (https://...)" style="font-size:1rem; background:#fff; border:1px solid #bfdbfe; border-radius:10px; height:44px;" required>
-            </div>
-          </div>
-        </div>
         <!-- Petunjuk Pengisian, Indikator dan Aspek Penilaian -->
-        <div class="rounded" style="border:1px solid #dbeafe; background:#f8fbff; overflow:hidden; box-shadow:0 2px 8px rgba(37,99,235,.08);">
+        <div class="rounded mb-1" style="border:1px solid #dbeafe; background:#f8fbff; overflow:hidden; box-shadow:0 2px 8px rgba(37,99,235,.08);">
           <div class="px-2 py-1 font-weight-semibold d-flex align-items-center justify-content-between flex-wrap" style="font-size:1rem; background:#edf5ff; color:#2563eb; border-bottom:1px solid #dbeafe;">
             <div><i class="la la-info-circle mr-2"></i>Petunjuk Pengisian, Indikator, dan Aspek Penilaian</div>
             <span class="badge badge-pill" style="background:#dbeafe; color:#1d4ed8; font-size:.72rem;">Panduan</span>
@@ -239,12 +216,72 @@
             </div>
           </div>
         </div>
+        <!-- Narasi -->
+        <div class="form-group mb-1 p-2 rounded" style="background:#ffffff; border:1px solid #dbeafe; box-shadow:0 3px 10px rgba(15,23,42,.04);">
+          <div class="d-flex align-items-center justify-content-between flex-wrap mb-2">
+            <label class="font-weight-semibold text-dark mb-1" style="font-size:1rem;">
+              <i class="la la-pencil mr-1" style="color:#3a86ff;"></i> C. Sasaran Mutu Luaran <span class="text-danger">*</span>
+            </label>
+            <span class="badge badge-pill" style="background:#eff6ff; color:#1d4ed8; font-size:.74rem; padding:.4rem .75rem;">Narasi Utama</span>
+          </div>
+          <textarea name="sasaran_mutu_luaran" id="sasaran_mutu_luaran" rows="10" class="form-control narasi-led-500 textarea-catatan" data-max-words="500" placeholder="Tuliskan narasi evaluasi diri untuk indikator Luaran sesuai Sasaran Mutu IAPT 4.1..." required style="font-size:1rem; resize:vertical; line-height:1.7; border:1px solid #bfdbfe; border-radius:10px; padding:14px 16px; background:#f8fbff;"><?= isset($form_led['sasaran_mutu_luaran']) ? $form_led['sasaran_mutu_luaran'] : '' ?></textarea>
+          <div class="d-flex align-items-center justify-content-between flex-wrap mt-0">
+            <small class="form-text text-muted mb-0">Deskripsikan secara rinci, jelas, dan terukur (maksimal 500 kata).</small>
+            <small class="form-text text-primary font-weight-semibold mb-0" id="counter_sasaran_mutu_luaran">0/500 kata</small>
+          </div>
+        </div>
+        <!-- Link Bukti -->
+        <div class="rounded p-2 mb-0" style="background:linear-gradient(180deg,#f0f7ff 0%,#e0efff 100%); border:1px solid #bfdbfe; box-shadow:0 3px 10px rgba(37,99,235,.10);">
+          <div class="d-flex align-items-center justify-content-between flex-wrap mb-1">
+            <div class="font-weight-semibold" style="font-size:1rem; letter-spacing:.1px; color:#2563eb;">
+              <i class="la la-link mr-1"></i> Tautan Dokumen Pendukung <span class="text-danger">*</span>
+            </div>
+            <span class="badge badge-pill" style="background:#dbeafe; color:#1d4ed8; font-size:.74rem; padding:.4rem .75rem;">Wajib diisi</span>
+          </div>
+          <ul class="text-muted mb-1 pl-3">
+            <li><small>Sertakan tautan dokumen pendukung yang relevan dan dapat diakses untuk memperkuat narasi sasaran mutu masukan.</small></li>
+            <li><small>Pastikan untuk membuka share dokumen agar dapat diakses dan dinilai oleh faswil.</small></li>
+          </ul>
+          <div class="row">
+            <div class="col-md-12">
+              <input type="url" class="form-control" name="tautan_sasaran_mutu_luaran" value="<?= isset($form_led['tautan_sasaran_mutu_luaran']) ? $form_led['tautan_sasaran_mutu_luaran'] : '' ?>" placeholder="Tempel tautan bukti (https://...)" style="font-size:1rem; background:#fff; border:1px solid #bfdbfe; border-radius:10px; height:44px;" required>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- ==================== INDIKATOR 4 ==================== -->
     <div class="card shadow-sm mb-2" style="border:1px solid #bbf7d0; border-top:4px solid #10b981; border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(16,185,129,.10);">
       <div class="card-body pt-2 pb-2" style="background:#f0fdf4;">
+        <!-- Petunjuk Pengisian, Indikator dan Aspek Penilaian -->
+        <div class="rounded mb-1" style="border:1px solid #bbf7d0; background:#f0fdf4; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,.08);">
+          <div class="px-2 py-1 font-weight-semibold d-flex align-items-center justify-content-between flex-wrap" style="font-size:1rem; background:#d1fae5; color:#065f46; border-bottom:1px solid #bbf7d0;">
+            <div><i class="la la-info-circle mr-2"></i>Petunjuk Pengisian, Indikator, dan Aspek Penilaian</div>
+            <span class="badge badge-pill" style="background:#bbf7d0; color:#065f46; font-size:.72rem;">Panduan</span>
+          </div>
+          <div class="p-2" style="font-size:1rem; line-height:1.75; color:#334155;">
+            <p class="mb-1" style="text-align:justify;">
+              Jelaskan dampak implementasi SPMI terhadap peningkatan mutu pendidikan dalam bentuk akreditasi Perguruan Tinggi dan Program Studi (nasional dan atau internasional), dan atau sertifikasi internasional Program Studi.
+            </p>
+            <div class="mb-1 p-2 rounded" style="background:#fff; border:1px solid #e2e8f0;">
+              <div class="font-weight-bold text-dark mb-1 d-flex align-items-center">
+                <i class="la la-check-circle mr-1" style="color:#10b981;"></i>Indikator
+              </div>
+              <div class="mb-0">
+                Perguruan Tinggi memperoleh pengakuan atas mutu akademik yang dicapainya, berupa akreditasi program studi dari LAM/BAN-PT.
+              </div>
+            </div>
+            <div class="p-2 rounded" style="background:#fff; border:1px solid #e2e8f0;">
+              <div class="font-weight-bold text-dark mb-1 d-flex align-items-center" style="font-size:1rem;">
+                <i class="la la-tasks mr-1" style="color:#10b981;"></i>Aspek Penilaian
+              </div>
+              <div class="mb-0">
+                Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: Persentase PS terakreditasi 100%. Untuk unggul ada penilaian berbeda.
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- Narasi -->
         <div class="form-group mb-1 p-2 rounded" style="background:#ffffff; border:1px solid #bbf7d0; box-shadow:0 3px 10px rgba(15,23,42,.04);">
           <div class="d-flex align-items-center justify-content-between flex-wrap mb-2">
@@ -259,10 +296,10 @@
             <small class="form-text text-success font-weight-semibold mb-0" id="counter_sasaran_mutu_dampak">0/500 kata</small>
           </div>
         </div>
-        <!-- Link Bukti -->
-        <div class="border rounded p-2 mb-2" style="background:linear-gradient(180deg,#f0fdf8 0%,#e8fbf2 100%); border-color:#a7e8cc !important; box-shadow:0 2px 8px rgba(16,185,129,.08);">
+        <!-- Data Akreditasi Program Studi -->
+        <div class="border rounded p-2 mb-0" style="background:linear-gradient(180deg,#f0fdf8 0%,#e8fbf2 100%); border-color:#a7e8cc !important; box-shadow:0 2px 8px rgba(16,185,129,.08);">
           <div class="font-weight-semibold mb-1" style="font-size:0.95rem; color:#0f766e;">
-            <i class="la la-bar-chart mr-1"></i> Data Akreditasi Program Studi (Sumber PDDikti)
+            <i class="la la-bar-chart mr-1"></i> Data Akreditasi Program Studi (Sumber PDDikti per tanggal <?= date('d', strtotime($persentase_prodi['tgl_update'])) . ' ' . ['Jan'=>'Januari','Feb'=>'Februari','Mar'=>'Maret','Apr'=>'April','May'=>'Mei','Jun'=>'Juni','Jul'=>'Juli','Aug'=>'Agustus','Sep'=>'September','Oct'=>'Oktober','Nov'=>'November','Dec'=>'Desember'][date('M', strtotime($persentase_prodi['tgl_update']))] . ' ' . date('Y', strtotime($persentase_prodi['tgl_update'])) ?>)
           </div>
           <div class="row">
             <div class="col-md-3 mb-1 mb-md-0">
@@ -291,57 +328,6 @@
             </div>
           </div>
         </div>
-        <!-- Petunjuk Pengisian, Indikator dan Aspek Penilaian -->
-        <div class="rounded" style="border:1px solid #bbf7d0; background:#f0fdf4; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,.08);">
-          <div class="px-2 py-1 font-weight-semibold d-flex align-items-center justify-content-between flex-wrap" style="font-size:1rem; background:#d1fae5; color:#065f46; border-bottom:1px solid #bbf7d0;">
-            <div><i class="la la-info-circle mr-2"></i>Petunjuk Pengisian, Indikator, dan Aspek Penilaian</div>
-            <span class="badge badge-pill" style="background:#bbf7d0; color:#065f46; font-size:.72rem;">Panduan</span>
-          </div>
-          <div class="p-2" style="font-size:1rem; line-height:1.75; color:#334155;">
-            <p class="mb-1" style="text-align:justify;">
-              Jelaskan dampak implementasi SPMI terhadap peningkatan mutu pendidikan dalam bentuk akreditasi Perguruan Tinggi dan Program Studi (nasional dan atau internasional), dan atau sertifikasi internasional Program Studi.
-            </p>
-            <div class="mb-1 p-2 rounded" style="background:#fff; border:1px solid #e2e8f0;">
-              <div class="font-weight-bold text-dark mb-1 d-flex align-items-center">
-                <i class="la la-check-circle mr-1" style="color:#10b981;"></i>Indikator
-              </div>
-              <div class="mb-0">
-                Perguruan Tinggi memperoleh pengakuan atas mutu akademik yang dicapainya, berupa akreditasi program studi dari LAM/BAN-PT.
-              </div>
-            </div>
-            <div class="p-2 rounded" style="background:#fff; border:1px solid #e2e8f0;">
-              <div class="font-weight-bold text-dark mb-1 d-flex align-items-center" style="font-size:1rem;">
-                <i class="la la-tasks mr-1" style="color:#10b981;"></i>Aspek Penilaian
-              </div>
-              <div class="mb-0">
-                Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: Persentase PS terakreditasi 100%. Untuk unggul ada penilaian berbeda.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Uraian Bukti-Bukti -->
-    <div class="card shadow-sm mb-2" style="border:1px solid rgba(0,0,0,.45); border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(16,185,129,.10);">
-      <div class="px-2 py-1 font-weight-semibold d-flex align-items-center justify-content-between flex-wrap" style="font-size:1rem; background:#0f172a; color:#e2e8f0; border-bottom:1px solid #334155;">
-        <div><i class="la la-folder-open mr-2" style="color:#94a3b8;"></i>Uraian Bukti-Bukti</div>
-        <span class="badge badge-pill" style="background:#334155; color:#cbd5e1; font-size:.72rem;">Lampiran</span>
-      </div>
-      <div class="p-2" style="font-size:1rem; line-height:1.75; color:#cbd5e1; background:#334155;">
-        <div class="mb-1" style="text-align:justify;">
-          Bukti-bukti (dalam bentuk dokumen, laman URL atau lainnya):
-        </div>
-        <ol class="mb-0 pl-3" style="line-height:1.8; font-size:1rem;">
-          <li>Kebijakan SPMI.</li>
-          <li>Pedoman penerapan siklus PPEPP dalam SPMI.</li>
-          <li>Standar dan/atau kriteria, norma, acuan mutu penyelenggaraan pendidikan dan pengelolaan perguruan tinggi.</li>
-          <li>Pedoman pendokumentasian implementasi SPMI; organisasi yang mengimplementasikan SPMI; sistem informasi SPMI dan pelaporan PD Dikti.</li>
-          <li>Implementasi siklus PPEPP.</li>
-          <li>Laporan tahunan implementasi SPMI dan RTM dalam rangka perbaikan mutu berkelanjutan; sertifikat akreditasi Perguruan Tinggi dan Program Studi (nasional dan atau internasional).</li>
-          <li>... dst</li>
-        </ol>
       </div>
     </div>
   </div>

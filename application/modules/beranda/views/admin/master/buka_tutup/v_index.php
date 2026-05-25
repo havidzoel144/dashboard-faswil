@@ -48,7 +48,7 @@
                           $xjamtutup      = substr($bt->akhir_waktu, 0, 2);
                           $xmenittutup    = substr($bt->akhir_waktu, 3, 2);
                           $xdetiktutup    = substr($bt->akhir_waktu, 6, 2);
-                          $jamtutup       = $xjambuka . ':' . $xmenitbuka . ':' . $xdetikbuka;
+                          $jamtutup       = $xjamtutup . ':' . $xmenittutup . ':' . $xdetiktutup;
                       ?>
                           <tr>
                             <td class="text-center" style="width: 5%;"><?= ++$i ?></td>

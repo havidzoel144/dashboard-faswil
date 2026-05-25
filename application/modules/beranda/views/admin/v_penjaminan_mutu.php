@@ -32,11 +32,22 @@
                   <div role="tabpanel" class="tab-pane active" id="periode-aktif" aria-labelledby="periode-aktif-tab" aria-expanded="true">
                     <div class="row mb-2">
                       <div class="col-6">
+                        <?php if (!has_role(['6'])): ?>
+                          <div class="form-group">
+                            <label class="font-weight-bold">Pilih Perguruan Tinggi</label>
+                            <select id="filterPerguruanTinggi" class="select2 form-control select2-hidden-accessible">
+                              <option value="">-- Pilih Perguruan Tinggi --</option>
+                              <?php foreach ($kode_nama_pt as $pt): ?>
+                                <option value="<?= $pt['kode_pt'] ?>"><?= $pt['nm_pt'] ?></option>
+                              <?php endforeach; ?>
+                            </select>
+                          </div>
+                        <?php endif; ?>
                         <div class="d-flex justify-content-between align-items-center mb-2">
                           <button id="btnPanLeft" class="btn btn-primary btn-sm">
                             ← Previous
                           </button>
-                          <div id="periodeInfo" class="font-weight-bold"></div>
+                          <div id="periodeInfo" class="font-weight-bold text-center"></div>
                           <button id="btnPanRight" class="btn btn-primary btn-sm">
                             Next →
                           </button>
@@ -96,21 +107,28 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
 
 <script type="text/javascript">
-  var data_tipologi = <?= json_encode($data); ?>;
+  <?php
+  if (has_role(['6'])) :
+    $nama_pt = $this->session->userdata('nama');
+  else :
+    $nama_pt = "";
+  endif;
+  ?>
+  let namaPt = "<?= $nama_pt ?>";
   /*
   |--------------------------------------------------------------------------
   | DATA
   |--------------------------------------------------------------------------
   */
-  const dataLabels = <?= json_encode($labels); ?>;
-  const dataCapaianPT = <?= json_encode($capaian_pt); ?>;
-  const dataRataNasional = <?= json_encode($rata_rata_per_periode); ?>;
+  let dataLabels = <?= json_encode($labels); ?>;
+  let dataCapaianPT = <?= json_encode($capaian_pt); ?>;
+  let dataRataNasional = <?= json_encode($rata_rata_per_periode); ?>;
   /*
   |--------------------------------------------------------------------------
   | SKOR NOL
   |--------------------------------------------------------------------------
   */
-  const skorNol = <?= json_encode($skor_nol) ?> || {};  
+  let skorNol = <?= json_encode($skor_nol) ?> || {};
 
   /*
   |--------------------------------------------------------------------------
@@ -135,17 +153,17 @@
   */
 
   // labels chart
-  const labels = dataLabels.map(function(item) {
+  let labels = dataLabels.map(function(item) {
     return formatPeriode(item);
   });
 
   // capaian PT
-  const capaianPT = dataCapaianPT.map(function(item) {
+  let capaianPT = dataCapaianPT.map(function(item) {
     return parseFloat(item);
   });
 
   // rata-rata nasional
-  const rataNasional = dataRataNasional.map(function(item) {
+  let rataNasional = dataRataNasional.map(function(item) {
     return parseFloat(item);
   });
 
@@ -154,16 +172,13 @@
   | STATUS PT TIDAK MEMENUHI
   |--------------------------------------------------------------------------
   */
-  const skorNolStatus = dataLabels.map(function(periode) {
+  let skorNolStatus = dataLabels.map(function(periode) {
     // jika array ada isi -> true
     return (
       skorNol[periode] &&
       skorNol[periode].length > 0
     );
   });
-
-  console.log(skorNolStatus);
-  
 
   /*
   |--------------------------------------------------------------------------
@@ -224,7 +239,7 @@
           borderColor: '#f57c00',
           backgroundColor: '#f57c00',
           borderWidth: 3,
-          tension: 0.3,
+          tension: 0,
           fill: false,
           pointRadius: 5,
           pointHoverRadius: 8
@@ -268,7 +283,12 @@
   |--------------------------------------------------------------------------
   */
   function updatePeriodeInfo() {
+    if (labels.length === 0) {
+      $('#periodeInfo').html(namaPt + '<br> Belum ada penilaian yang dipubilikasi');
+      return;
+    }
     $('#periodeInfo').html(
+      namaPt + '<br> Periode: ' +
       labels[xMin] + ' - ' + labels[xMax]
     );
   }
@@ -421,4 +441,102 @@
   |--------------------------------------------------------------------------
   */
   createChart();
+
+  $('#filterPerguruanTinggi').on('change', function() {
+    const kodePt = $(this).val();
+    if (!kodePt) {
+      return;
+    }
+    loadChartByPt(kodePt);
+  });
+
+  function loadChartByPt(kodePt) {
+    $.ajax({
+      url: '<?= base_url('admin/get-penjaminan-mutu-pt') ?>',
+      type: 'GET',
+      data: {
+        kode_pt: kodePt
+      },
+      dataType: 'json',
+      beforeSend: function() {
+        $('#chartTipologi').css({
+          opacity: '.4',
+          transition: '.3s'
+        });
+      },
+      success: function(res) {
+        if (!res.status) {
+          return;
+        }
+        // update global variable
+        namaPt = res.nama_pt;
+        dataLabels.length = 0;
+        capaianPT.length = 0;
+        rataNasional.length = 0;
+        res.labels.forEach(item => dataLabels.push(item));
+        res.capaian_pt.forEach(item => capaianPT.push(parseFloat(item)));
+        res.rata_rata_per_periode.forEach(item => rataNasional.push(parseFloat(item)));
+        // skor nol
+        Object.keys(skorNol).forEach(key => {
+          delete skorNol[key];
+        });
+        Object.assign(skorNol, res.skor_nol);
+        // rebuild labels
+        labels.length = 0;
+        dataLabels.forEach(function(item) {
+          labels.push(formatPeriode(item));
+        });
+        // reset range
+        xMin = 0;
+        xMax = labels.length > 4 ?
+          3 :
+          labels.length - 1;
+        // update chart
+        lineChart.data = getChartData();
+        lineChart.options.scales.x.min = xMin;
+        lineChart.options.scales.x.max = xMax;
+        skorNolStatus = rebuildSkorNolStatus();
+        
+        lineChart.data.labels = labels;
+
+        lineChart.data.datasets[0].data = capaianPT;
+
+        lineChart.data.datasets[0].pointBackgroundColor =
+          skorNolStatus.map(item => item ? '#dc3545' : '#3366cc');
+
+        lineChart.data.datasets[0].pointBorderColor =
+          skorNolStatus.map(item => item ? '#dc3545' : '#3366cc');
+
+        lineChart.data.datasets[0].pointRadius =
+          skorNolStatus.map(item => item ? 8 : 5);
+
+        lineChart.data.datasets[0].pointHoverRadius =
+          skorNolStatus.map(item => item ? 10 : 8);
+
+        lineChart.data.datasets[1].data = rataNasional;
+
+        lineChart.data.datasets[2].data = labels.map(() => 4);
+        lineChart.update();
+        updateNavigationButtons();
+        updatePeriodeInfo();
+        $('#chartTipologi').css('opacity', '1');
+      },
+      error: function() {
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal',
+          text: 'Gagal mengambil data PT'
+        });
+      }
+    });
+  }
+
+  function rebuildSkorNolStatus() {
+    return dataLabels.map(function(periode) {
+      return (
+        skorNol[periode] &&
+        skorNol[periode].length > 0
+      );
+    });
+  }
 </script>
