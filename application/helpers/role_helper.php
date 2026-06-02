@@ -32,3 +32,33 @@ if (!function_exists('get_user_logo')) {
     return $default;
   }
 }
+
+if (!function_exists('format_tanggal_indonesia')) {
+  function format_tanggal_indonesia($tgl)
+  {
+    if (empty($tgl) || strtotime($tgl) === false) {
+      return '';
+    }
+
+    $bulanIndonesia = array(
+      '01' => 'Januari',
+      '02' => 'Februari',
+      '03' => 'Maret',
+      '04' => 'April',
+      '05' => 'Mei',
+      '06' => 'Juni',
+      '07' => 'Juli',
+      '08' => 'Agustus',
+      '09' => 'September',
+      '10' => 'Oktober',
+      '11' => 'November',
+      '12' => 'Desember'
+    );
+
+    $tanggal = date('d', strtotime($tgl));
+    $bulan = $bulanIndonesia[date('m', strtotime($tgl))] ?? '';
+    $tahun = date('Y', strtotime($tgl));
+
+    return trim($tanggal . " " . $bulan . " " . $tahun);
+  }
+}

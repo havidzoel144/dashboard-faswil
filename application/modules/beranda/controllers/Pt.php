@@ -222,6 +222,7 @@ class Pt extends MX_Controller
   {
     $kode_pt = explode('_', $this->session->userdata('username'))[0]; //Ambil kode PT saja
     $periode = safe_url_decrypt($enc_periode);
+    $buka_tutup_pengisian = $this->db->get_where('buka_tutup', ['jenis' => 'Pengisian Laporan Implementasi SPMI'])->row_array();
     $penilaian_tipologi = $this->db->get_where('penilaian_tipologi', [
       'kode_pt' => $kode_pt,
       'periode' => $periode,
@@ -239,8 +240,10 @@ class Pt extends MX_Controller
         'id_penilaian_tipologi' => $penilaian_tipologi['id_penilaian_tipologi'],
         'kode_pt' => $penilaian_tipologi['kode_pt'],
         'nama_pt' => $penilaian_tipologi['nama_pt'],
-        'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? null,
-        'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? null,
+        'alamat' => $identias_pt['alamat'] ?? 'Belum diisi',
+        'tgl_sk_pendirian_pt' => $identias_pt['tgl_sk_pendirian_pt'] ?? '0000-00-00',
+        'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? 'Belum diisi',
+        'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? '0000-00-00',
         'created_at' => date('Y-m-d H:i:s'),
       ];
       $this->db->insert('form_led', $data_insert);
@@ -248,11 +251,14 @@ class Pt extends MX_Controller
       $data_update = [
         'kode_pt' => $penilaian_tipologi['kode_pt'],
         'nama_pt' => $penilaian_tipologi['nama_pt'],
-        'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? null,
-        'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? null,
+        'alamat' => $identias_pt['alamat'] ?? 'Belum diisi',
+        'tgl_sk_pendirian_pt' => $identias_pt['tgl_sk_pendirian_pt'] ?? '0000-00-00',
+        'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? 'Belum diisi',
+        'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? '0000-00-00',
       ];
       $this->db->where('id', $form_led['id'])->update('form_led', $data_update);
     }
+    $form_led = $this->db->from('form_led as a')->join('penilaian_tipologi as b', 'a.id_penilaian_tipologi = b.id_penilaian_tipologi')->where('b.kode_pt', $kode_pt)->where('b.periode', $periode)->get()->row_array();
 
     $data = [
       'pengisian_led' => 'active',
@@ -263,6 +269,7 @@ class Pt extends MX_Controller
       'persentase_prodi' => $persentase_prodi,
       'identitas_pt' => $identias_pt,
       'form_led' => $form_led,
+      'buka_tutup_pengisian' => $buka_tutup_pengisian,
     ];
 
     $this->load->view("admin/master/led/v_form_pengisian_led", $data);
@@ -331,10 +338,10 @@ class Pt extends MX_Controller
       // bab 2
       'penetapan_diferensiasi' => 500,
       // indikator
-      'sasaran_mutu_masukan' => 500,
-      'sasaran_mutu_proses' => 500,
-      'sasaran_mutu_luaran' => 500,
-      'sasaran_mutu_dampak' => 500,
+      'sasaran_mutu_masukan' => 1000,
+      'sasaran_mutu_proses' => 1000,
+      'sasaran_mutu_luaran' => 1000,
+      'sasaran_mutu_dampak' => 1000,
       // bab 4
       'narasi_bab4' => 500
     ];
@@ -406,7 +413,7 @@ class Pt extends MX_Controller
     ])->row_array();
 
     $null_fields = array_keys(array_filter($form_led, function ($v, $k) {
-      if (in_array($k, ['akreditasi_pt', 'tgl_akhir_apt', 'tautan_sasaran_mutu_dampak', 'created_at', 'updated_at', 'status'], true)) {
+      if (in_array($k, ['akreditasi_pt', 'tgl_akhir_apt', 'tgl_sk_pendirian_pt', 'pejabat_penandatangan', 'tahun_pertama_terima_mhs', 'tautan_sasaran_mutu_dampak', 'created_at', 'updated_at', 'status'], true)) {
         return false;
       }
       return is_null($v) || $v === '' || $v === '0' || $v === 0 || $v === '0000-00-00';
@@ -426,7 +433,7 @@ class Pt extends MX_Controller
     $this->db->where('id_penilaian_tipologi', $form_led['id_penilaian_tipologi'])
       ->update('form_led', $data_update);
 
-    $pesan = $this->input->post('is_permanen') === '1' ? 'LED berhasil disimpan permanen.' : 'LED berhasil disimpan sebagai draft.';
+    $pesan = $this->input->post('is_permanen') === '1' ? 'Laporan Implementasi SPMI berhasil disimpan permanen.' : 'Laporan Implementasi SPMI berhasil disimpan sebagai draft.';
 
     $this->session->set_flashdata('success', $pesan);
     redirect(base_url('admin/pt/form-pengisian-led/' . safe_url_encrypt($periode)));
