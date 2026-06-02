@@ -1,5 +1,11 @@
 <?= $this->load->view('admin/v_header.php') ?>
 
+<style>
+  #doughnutChart {
+    transition: opacity .3s ease;
+  }
+</style>
+
 <?= $this->load->view('admin/v_menu.php') ?>
 
 <!-- BEGIN: Content-->
@@ -16,7 +22,7 @@
         <div class="col-xl-12">
           <div class="card">
             <div class="card-header">
-              <h4 class="card-title">Data Penjaminan Mutu IAPT 3.0</h4>
+              <h4 class="card-title">Penilaian SPMI 2024-2025</h4>
               <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
               <div class="heading-elements">
                 <ul class="list-inline mb-0">
@@ -60,6 +66,9 @@
                   <div role="tabpanel" class="tab-pane active" id="periode-aktif" aria-labelledby="periode-aktif-tab" aria-expanded="true">
                     <div class="row mb-2">
                       <div class="col-4">
+                        <label class="font-weight-bold">Pilih Periode</label>
+                        <select id="filterPeriode" class="select2 form-control select2-hidden-accessible">
+                        </select>
                         <canvas id="doughnutChart"></canvas>
                       </div>
 
@@ -77,40 +86,41 @@
                         </p>
                       </div>
                     </div>
-
+                    <hr>
                     <div class="row">
+                      <?php if (!has_role(['6'])) : ?>
+                        <div class="col-12 d-flex flex-column justify-content-center" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important; border-radius: 10px;">
+                          <h4 class="text-center text-white mt-2"><i class="ft ft-filter"> Filter Pencarian </i></h4>
+                          <hr>
 
-                      <div class="col-12 d-flex flex-column justify-content-center" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important; border-radius: 10px;">
-                        <h4 class="text-center text-white mt-2"><i class="ft ft-filter"> Filter Pencarian </i></h4>
-                        <hr>
+                          <div class="table-search-row mb-1">
+                            <div class="form-group row">
+                              <div class="col-md-3">
+                                <label class="text-right text-white" for="">Kode / Nama Perguruan Tinggi</label>
+                              </div>
+                              <div class="col-md-8">
+                                <select class="select2 form-control select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true" name="kode_pt" id="kode_pt" style="width: 100%;">
+                                  <option value="">Silakan pilih Kode / Nama PT</option>
+                                  <?php foreach ($kode_nama_pt as $item) { ?>
+                                    <option value="<?= $item['kode_pt'] ?>"><?= $item['kode_pt'] ?> - <?= $item['nm_pt'] ?></option>
+                                  <?php } ?>
+                                </select>
+                                <!-- <input type="text" name="kode_pt" class="form-control border-bottom" placeholder="Masukkan Kode / Nama PT"> -->
+                              </div>
+                              <div class="col-md-1"></div>
+                            </div>
 
-                        <div class="table-search-row mb-1">
-                          <div class="form-group row">
-                            <div class="col-md-3">
-                              <label class="text-right text-white" for="">Kode / Nama Perguruan Tinggi</label>
-                            </div>
-                            <div class="col-md-8">
-                              <select class="select2 form-control select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true" name="kode_pt" id="kode_pt" style="width: 100%;">
-                                <option value="">Silakan pilih Kode / Nama PT</option>
-                                <?php foreach ($kode_nama_pt as $item) { ?>
-                                  <option value="<?= $item['kode_pt'] ?>"><?= $item['kode_pt'] ?> - <?= $item['nm_pt'] ?></option>
-                                <?php } ?>
-                              </select>
-                              <!-- <input type="text" name="kode_pt" class="form-control border-bottom" placeholder="Masukkan Kode / Nama PT"> -->
-                            </div>
-                            <div class="col-md-1"></div>
+                            <?php if (has_role([200])) : ?>
+                              <div class="form-group row d-flex justify-content-center">
+                                <button type="button" class="btn btn-dark mb-1 waves-effect waves-light" data-toggle="modal" data-backdrop="false" data-target="#backdrop">Import Data</button>
+                                <a href="<?= base_url('uploads/template_penjaminan_mutu.xlsx') ?>" class="btn btn-success mb-1 waves-effect waves-light">Download Template</a>
+                                <!-- Tombol untuk truncate tabel -->
+                                <button type="button" class="btn btn-danger mb-1 waves-effect waves-light" data-toggle="modal" data-backdrop="false" data-target="#backdropHapus">Hapus Data</button>
+                              </div>
+                            <?php endif; ?>
                           </div>
-
-                          <?php if (has_role([200])) : ?>
-                            <div class="form-group row d-flex justify-content-center">
-                              <button type="button" class="btn btn-dark mb-1 waves-effect waves-light" data-toggle="modal" data-backdrop="false" data-target="#backdrop">Import Data</button>
-                              <a href="<?= base_url('uploads/template_penjaminan_mutu.xlsx') ?>" class="btn btn-success mb-1 waves-effect waves-light">Download Template</a>
-                              <!-- Tombol untuk truncate tabel -->
-                              <button type="button" class="btn btn-danger mb-1 waves-effect waves-light" data-toggle="modal" data-backdrop="false" data-target="#backdropHapus">Hapus Data</button>
-                            </div>
-                          <?php endif; ?>
                         </div>
-                      </div>
+                      <?php endif; ?>
 
                       <form class="form form-horizontal" style="width: 100%;">
                         <div class="form-body">
@@ -158,14 +168,14 @@
                           <div class="col-12" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important;">
                             <h4 class="text-center text-white mt-2"><i class="ft ft-filter"> Filter Pencarian </i></h4>
                             <hr>
-
+                            <?php $kode_pt = explode('_', $this->session->userdata('username'))[0]; ?>
                             <div class="form-group row">
                               <div class="col-12">
                                 <select class="select2 form-control select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true" name="kode_pt_riwayat" id="kode_pt_riwayat" style="width: 100%;">
                                   <option value="">Silakan pilih Kode / Nama PT</option>
-                                  <?php foreach ($kode_nama_pt as $item) { ?>
+                                  <?php foreach ($kode_nama_pt as $item) : ?>
                                     <option value="<?= $item['kode_pt'] ?>"><?= $item['kode_pt'] ?> - <?= $item['nm_pt'] ?></option>
-                                  <?php } ?>
+                                  <?php endforeach; ?>
                                 </select>
                               </div>
                               <div class="col-md-1"></div>
@@ -318,129 +328,228 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
 
 <script type="text/javascript">
-  // Mendefinisikan data untuk chart
-  var data_tipologi = <?= json_encode($data); ?>;
-
-  // Membuat array untuk data dan labels
-  // Filter data: ambil semua tipologi kecuali null/kosong
-  data_tipologi = (data_tipologi || []).filter(item => {
-    const t = item?.tipologi;
-    return t !== null && t !== undefined && String(t).trim() !== '' && String(t).toLowerCase() !== 'null';
+  const groupedData = <?= json_encode($data); ?>;
+  const periodeSelect = document.getElementById('filterPeriode');
+  let doughnutChart = null;
+  // ===============================
+  // isi select periode
+  // ===============================
+  Object.keys(groupedData).forEach(function(periode) {
+    const label =
+      periode.slice(-1) == 1 ?
+      periode.substring(0, 4) + ' Periode 1' :
+      periode.substring(0, 4) + ' Periode 2';
+    periodeSelect.innerHTML += `
+        <option value="${periode}">
+            ${label}
+        </option>
+    `;
   });
-  const labels = data_tipologi.map(item => item.tipologi); // Ambil semua nama tipologi
-  const jumlah = data_tipologi.map(item => parseInt(item.jumlah_tipologi)); // Ambil jumlah_tipologi sebagai angka
-  const $total_data = data_tipologi.map(item => parseInt(item.total_data)); // Ambil jumlah_tipologi sebagai angka
-  const $periode = data_tipologi.map(item => item.periode); // Ambil jumlah_tipologi sebagai angka
-  const $prd = $periode[0].slice(-1) == 1 ? $periode[0].substring(0, 4) + ' Periode 1' : $periode[0].substring(0, 4) + ' Periode 2';
-
-  // Tambahkan array persentase dengan menghitung persentase dari jumlah_tipologi
-  const percentages = data_tipologi.map(item => {
-    const percentage = (parseInt(item.jumlah_tipologi) / item.total_data) * 100;
-    return percentage.toFixed(1); // Membatasi 1 digit setelah koma
+  // ===============================
+  // render chart
+  // ===============================
+  function renderChart(periode) {
+    let data_tipologi = groupedData[periode] || [];
+    // filter tipologi kosong
+    data_tipologi = data_tipologi.filter(item => {
+      const t = item?.tipologi;
+      return t !== null &&
+        t !== undefined &&
+        String(t).trim() !== '' &&
+        String(t).toLowerCase() !== 'null';
+    });
+    if (data_tipologi.length === 0) {
+      return;
+    }
+    const labels = data_tipologi.map(item => item.tipologi);
+    const jumlah = data_tipologi.map(item =>
+      parseInt(item.jumlah_tipologi)
+    );
+    const total_data = parseInt(data_tipologi[0].total_data);
+    const percentages = data_tipologi.map(item => {
+      const percentage =
+        (parseInt(item.jumlah_tipologi) / item.total_data) * 100;
+      return percentage.toFixed(1);
+    });
+    const prd =
+      periode.slice(-1) == 1 ?
+      periode.substring(0, 4) + ' Periode 1' :
+      periode.substring(0, 4) + ' Periode 2';
+    const canvas = document.getElementById('doughnutChart');
+    // destroy chart lama
+    if (doughnutChart) {
+      doughnutChart.destroy();
+    }
+    doughnutChart = new Chart(canvas, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: percentages,
+          jumlah: jumlah,
+          backgroundColor: [
+            '#0796B7',
+            '#0000CD',
+            '#FFA360',
+            '#00008B'
+          ],
+          hoverBackgroundColor: [
+            '#046980',
+            '#00008F',
+            '#B27243',
+            '#000061'
+          ],
+          borderWidth: 4,
+          borderColor: 'white',
+          hoverBorderColor: 'black'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              generateLabels: (chart) => {
+                const datasets = chart.data.datasets;
+                return datasets[0].data.map((data, i) => ({
+                  text: `${chart.data.labels[i]}: ${datasets[0].jumlah[i]} PT`,
+                  fillStyle: datasets[0].backgroundColor[i],
+                  strokeStyle: datasets[0].backgroundColor[i],
+                  index: i
+                }));
+              }
+            }
+          },
+          tooltip: {
+            enabled: true,
+            callbacks: {
+              label: function(tooltipItem) {
+                const index = tooltipItem.dataIndex;
+                const value =
+                  tooltipItem.dataset.jumlah[index];
+                const label = tooltipItem.label;
+                const percentage = tooltipItem.raw;
+                return `${label}: ${value} (${percentage}%)`;
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: 'Distribusi Tipologi ' + prd,
+            font: {
+              size: 18
+            }
+          },
+          datalabels: {
+            color: '#000',
+            backgroundColor: 'white',
+            anchor: 'center',
+            align: 'center',
+            formatter: (value, context) => {
+              const jumlah =
+                context.chart.data.datasets[0]
+                .jumlah[context.dataIndex];
+              return `${jumlah} (${value}%)`;
+            }
+          },
+          annotation: {
+            annotations: {
+              dLabel: {
+                type: 'doughnutLabel',
+                content: ({
+                  chart
+                }) => [
+                  'Total',
+                  total_data
+                ],
+                font: [{
+                    size: 40
+                  },
+                  {
+                    size: 30
+                  }
+                ],
+                color: ['black', 'red']
+              }
+            }
+          }
+        },
+        animation: {
+          duration: 1000,
+          easing: 'easeOutQuart',
+          animateRotate: true,
+          animateScale: true
+        },
+        transitions: {
+          active: {
+            animation: {
+              duration: 800
+            }
+          }
+        },
+        cutout: '50%',
+      },
+      plugins: [ChartDataLabels]
+    });
+  }
+  // ===============================
+  // event change periode
+  // 
+  $('#filterPeriode').on('change', function() {
+    const periode = $(this).val();
+    updateChartByPeriode(periode);
   });
+  // ===============================
+  // default load pertama
+  // ===============================
+  const firstPeriode = Object.keys(groupedData)[0];
+  if (firstPeriode) {
+    periodeSelect.value = firstPeriode;
+    renderChart(firstPeriode);
+  }
 
-  // Mendapatkan elemen canvas
-  const canvas = document.getElementById('doughnutChart');
+  function updateChartByPeriode(periode) {
 
-  // Membuat objek data dengan konfigurasi chart
-  const data = {
-    // labels: ['Tipologi 1', 'Tipologi 2', 'Tipologi 3', 'Tipologi 4'],
-    labels: labels,
-    datasets: [{
-      // data: [data_tipologi.tipologi_1, data_tipologi.tipologi_2, data_tipologi.tipologi_3, data_tipologi.tipologi_4],
-      data: percentages,
-      jumlah: jumlah,
-      backgroundColor: ['#0796B7', '#0000CD', '#FFA360', '#00008B'],
-      // backgroundColor: ['rgba(0, 128, 0, 0.2)', 'rgba(255, 255, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(255, 0, 0, 0.2)'],
-      hoverBackgroundColor: ['#046980', '#00008F', '#B27243', '#000061'],
-      // hoverBackgroundColor: ['rgba(0, 128, 0, 0.2)', 'rgba(255, 255, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(255, 0, 0, 0.2)']
-      borderWidth: 4,
-      borderColor: 'white',
-      hoverBorderColor: 'black'
-    }]
-  };
+    $('#doughnutChart').css('opacity', '.3');
 
-  // Opsi tambahan untuk kustomisasi chart
-  const options = {
-    responsive: true, // Membuat chart responsif sesuai ukuran kontainer
-    plugins: {
-      legend: {
-        display: true, // Menampilkan legenda
-        position: 'top', // Posisi legenda (top, bottom, left, right)
-        labels: {
-          generateLabels: (chart) => {
-            const datasets = chart.data.datasets;
-            return datasets[0].data.map((data, i) => ({
-              text: `${chart.data.labels[i]}: ${datasets[0].jumlah[i]} PT`,
-              fillStyle: datasets[0].backgroundColor[i],
-              strokeStyle: datasets[0].backgroundColor[i],
-              index: i
-            }))
-          }
-        }
-      },
-      tooltip: {
-        enabled: true, // Mengaktifkan tooltip saat hover
-        callbacks: {
-          label: function(tooltipItem) {
-            const index = tooltipItem.dataIndex;
-            const value = (tooltipItem.dataset['jumlah'][index]);
-            const label = tooltipItem.label; // Ambil label (Tipologi 1, 2, dst.)
-            const percentage = tooltipItem.raw; // Ambil persentase
-            return `${label}: ${value} (${percentage}%)`;
-          }
-        }
-      },
-      title: {
-        display: true, // Menampilkan judul
-        text: 'Distribusi Tipologi ' + $prd, // Teks judul
-        font: {
-          size: 18, // Ukuran font judul
-        }
-      },
-      datalabels: {
-        color: '#000', // Warna label
-        backgroundColor: 'white',
-        anchor: 'center', // Posisi label
-        align: 'center', // Penyelarasan label
-        formatter: (value, context) => {
-          const label = context.chart.data.labels[context.dataIndex];
-          const jumlah = (context.chart.data.datasets[0].jumlah[context.dataIndex]);
-          // return `${label}: ${jumlah} (${value}%)`; // Format teks label
-          return `${jumlah} (${value}%)`; // Format teks label
-        }
-      },
-      annotation: {
-        annotations: {
-          dLabel: {
-            type: 'doughnutLabel',
-            content: ({
-              chart
-            }) => ['Total',
-              $total_data[0],
-            ],
-            font: [{
-              size: 40
-            }, {
-              size: 30
-            }],
-            color: ['black', 'red']
-          }
-        }
-      }
-    },
-    animation: {
-      animateScale: true, // Mengaktifkan animasi skala
-      animateRotate: true // Mengaktifkan animasi rotasi
-    },
-    cutout: '50%', // Ukuran lubang di tengah chart
-  };
+    setTimeout(function() {
 
-  // Membuat chart doughnut
-  new Chart(canvas, {
-    type: 'doughnut',
-    data: data,
-    options: options, // Menambahkan opsi di sini
-    plugins: [ChartDataLabels] // Tambahkan plugin datalabels di sini
-  });
+      const rows = groupedData[periode] || [];
+
+      const labels = rows.map(item => item.tipologi);
+
+      const jumlah = rows.map(item =>
+        parseInt(item.jumlah_tipologi)
+      );
+
+      const percentages = rows.map(item =>
+        parseFloat(item.persentase)
+      );
+
+      const total_data = rows.length > 0 ?
+        rows[0].total_data :
+        0;
+
+      const prd =
+        periode.slice(-1) == 1 ?
+        periode.substring(0, 4) + ' Periode 1' :
+        periode.substring(0, 4) + ' Periode 2';
+
+      doughnutChart.data.labels = labels;
+      doughnutChart.data.datasets[0].data = percentages;
+      doughnutChart.data.datasets[0].jumlah = jumlah;
+
+      doughnutChart.options.plugins.title.text =
+        'Distribusi Tipologi ' + prd;
+
+      doughnutChart.options.plugins.annotation.annotations.dLabel.content = ['Total', total_data];
+
+      doughnutChart.update();
+
+      $('#doughnutChart').css('opacity', '1');
+
+    }, 200);
+  }
 </script>

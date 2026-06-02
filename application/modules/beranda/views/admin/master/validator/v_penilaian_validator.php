@@ -325,6 +325,26 @@
         <div class="cardshadow-sm border-0" style="border-radius: 10px; overflow: hidden;">
           <div class="card-body bg-light">
             <div class="form-group row">
+              <div class="col-lg-12">
+                <div class="p-1 mb-0" style="background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%); border: 1px solid #dbe6ff; border-radius: 12px; box-shadow: 0 4px 12px rgba(52, 58, 64, 0.08);">
+                  <div class="d-flex flex-wrap align-items-center mb-1">
+                    <span class="badge badge-primary mr-2" style="font-size: .8rem; padding: .4rem .65rem;">Sasaran Mutu Masukan</span>
+                    <strong style="font-size: 1rem; color: #2f3e5c;">Indikator Penilaian</strong>
+                  </div>
+
+                  <div style="color: #394b6a; font-size: .95rem;">
+                    Sistem Penjaminan Mutu Internal yang dikembangkan Perguruan Tinggi, mencakup:
+                    <ol class="mb-0 pl-2 mt-1">
+                      <li class="mb-1">Standar Pendidikan Tinggi (akademik dan non akademik) yang melampauai SN Dikti dan sesuai fokus misi PT, telah ditetapkan oleh perguruan tinggi serta telah disosialisasikan ke seluruh pemangku kepentingan.</li>
+                      <li class="mb-1">Sistem Tatakelola Perguruan Tinggi dalam mengimplementasikan SPMI, mencakup minimal: SOP implementasi SPMI, keberfungsian SPMI di berbagai tingkat (pelaksana dan sistem implementasi) yang akuntabel, transparan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun.</li>
+                      <li class="mb-1">Sistem Evaluasi Pemenuhan Standar Pendidikan Tinggi yang transparan, akuntabel, mapan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun.</li>
+                      <li>Sistem Peningkatan Mutu Berkelanjutan yang telah diimplementasikan secara efektif dan efisien paling sedikit selama 3 tahun.</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
               <div class="col-sm-2">
                 <label class="col-form-label text-left" style="display: block; text-align: left;">
                   Skor 1
@@ -335,7 +355,9 @@
               <div class="col-sm-10">
                 <label class="col-form-label text-left" style="display: block; text-align: left;">
                   Catatan Fasilitator Skor 1
-                  <span class="text-danger" data-toggle="popover" data-content="Sistem Penjaminan Mutu Internal yang dikembangkan Perguruan Tinggi, mencakup: <br> 1. Standar Pendidikan Tinggi (akademik dan non akademik) yang melampauai SN Dikti dan sesuai fokus misi PT, telah ditetapkan oleh perguruan tinggi serta telah disosialisasikan ke seluruh pemangku kepentingan. <br> 2. Sistem Tatakelola Perguruan Tinggi dalam mengimplementasikan SPMI, mencakup minimal: SOP implementasi SPMI, keberfungsian SPMI di berbagai tingkat (pelaksana dan sistem implementasi) yang akuntabel, transparan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 3. Sistem Evaluasi Pemenuhan Standar Pendidikan Tinggi yang transparan, akuntabel, mapan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 4. Sistem Peningkatan Mutu Berkelanjutan yang telah diimplementasikan secara efektif dan efisien paling sedikit selama 3 tahun." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                  <?php if (false) : ?>
+                    <span class="text-danger" data-toggle="popover" data-content="Sistem Penjaminan Mutu Internal yang dikembangkan Perguruan Tinggi, mencakup: <br> 1. Standar Pendidikan Tinggi (akademik dan non akademik) yang melampauai SN Dikti dan sesuai fokus misi PT, telah ditetapkan oleh perguruan tinggi serta telah disosialisasikan ke seluruh pemangku kepentingan. <br> 2. Sistem Tatakelola Perguruan Tinggi dalam mengimplementasikan SPMI, mencakup minimal: SOP implementasi SPMI, keberfungsian SPMI di berbagai tingkat (pelaksana dan sistem implementasi) yang akuntabel, transparan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 3. Sistem Evaluasi Pemenuhan Standar Pendidikan Tinggi yang transparan, akuntabel, mapan dan telah diimplementasikan secara konsisten paling sedikit selama 3 tahun. <br> 4. Sistem Peningkatan Mutu Berkelanjutan yang telah diimplementasikan secara efektif dan efisien paling sedikit selama 3 tahun." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                  <?php endif; ?>
                 </label>
                 <textarea class="form-control textarea-catatan" id="catatan-1" rows="3" readonly></textarea>
               </div>
@@ -355,6 +377,27 @@
 
             <hr style="border-top: 3px solid #343a40;">
 
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <div class="p-1 mb-0" style="background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%); border: 1px solid #dbe6ff; border-radius: 12px; box-shadow: 0 4px 12px rgba(52, 58, 64, 0.08);">
+                  <div class="d-flex flex-wrap align-items-center mb-1">
+                    <span class="badge badge-primary mr-2" style="font-size: .8rem; padding: .4rem .65rem;">Sasaran Mutu Proses</span>
+                    <strong style="font-size: 1rem; color: #2f3e5c;">Indikator Penilaian</strong>
+                  </div>
+
+                  <div style="color: #394b6a; font-size: .95rem;">
+                    Implementasi siklus penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan (PPEPP) dalam bidang akademik dan non-akademik, paling sedikit selama 3 tahun secara konsisten, berkelanjutan dan terbukti efektif, dan terdiri atas:
+                    <ol class="mb-0 pl-2 mt-1">
+                      <li class="mb-1">Penetapan Standar Pendidikan Tinggi yang sesuai misi perguruan tinggi, yaitu perancangan, perumusan, dan pengesahan standar PT.</li>
+                      <li class="mb-1">Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan standar oleh semua pihak yang bertanggungjawab agar isi standar tercapai.</li>
+                      <li class="mb-1">Evaluasi Pemenuhan Standar Pendidikan Tinggi, yaitu evaluasi kesesuaian pelaksanaan standar dengan standar yang telah ditetapkan dan cara pemenuhannya.</li>
+                      <li class="mb-1">Pengendalian Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan koreksi bila terjadi penyimpangan terhadap isi dan/atau pelaksanaan standar, mempertahan pelaksanaan yang telah memenuhi standar dan sedapat mungkin meningkatkan kualitas pelaksanaannya.</li>
+                      <li>Peningkatan Standar Pendidikan Tinggi, yaitu evaluasi isi standar dan peningkatan mutu isi standar secara berkala dan berkelanjutan.</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class=" form-group row">
               <div class="col-sm-2">
                 <label class="col-form-label text-left" style="display: block; text-align: left;">
@@ -366,7 +409,9 @@
               <div class=" col-sm-10">
                 <label class="col-form-label text-left" style="display: block; text-align: left;">
                   Catatan Fasilitator Skor 2
-                  <span class="text-danger" data-toggle="popover" data-content="Implementasi siklus  penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan (PPEPP) dalam bidang akademik dan non-akademik, paling sedikit selama 3 tahun secara konsisten, berkelanjutan dan terbukti efektif, dan terdiri atas: <br> 1. Penetapan Standar Pendidikan Tinggi  yang sesuai misi perguruan tinggi, yaitu perancangan, perumusan, dan pengesahan standar PT. <br> 2. Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan standar oleh semua pihak yang bertanggungjawab agar isi standar tercapai. <br> 3. Evaluasi Pemenuhan Standar Pendidikan Tinggi, yaitu evaluasi kesesuaian pelaksanaan standar dengan standar yang telah ditetapkan dan cara pemenuhannya. <br> 4. Pengendalian Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan koreksi bila terjadi penyimpangan terhadap isi dan/atau pelaksanaan standar, mempertahan pelaksanaan yang telah memenuhi standar dan sedapat mungkin meningkatkan kualitas pelaksanaannya. <br> 5. Peningkatan Standar Pendidikan Tinggi, yaitu evaluasi isi standar dan peningkatan  mutu isi standar secara berkala dan berkelanjutan." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                  <?php if (false) : ?>
+                    <span class="text-danger" data-toggle="popover" data-content="Implementasi siklus  penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan (PPEPP) dalam bidang akademik dan non-akademik, paling sedikit selama 3 tahun secara konsisten, berkelanjutan dan terbukti efektif, dan terdiri atas: <br> 1. Penetapan Standar Pendidikan Tinggi  yang sesuai misi perguruan tinggi, yaitu perancangan, perumusan, dan pengesahan standar PT. <br> 2. Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan standar oleh semua pihak yang bertanggungjawab agar isi standar tercapai. <br> 3. Evaluasi Pemenuhan Standar Pendidikan Tinggi, yaitu evaluasi kesesuaian pelaksanaan standar dengan standar yang telah ditetapkan dan cara pemenuhannya. <br> 4. Pengendalian Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan koreksi bila terjadi penyimpangan terhadap isi dan/atau pelaksanaan standar, mempertahan pelaksanaan yang telah memenuhi standar dan sedapat mungkin meningkatkan kualitas pelaksanaannya. <br> 5. Peningkatan Standar Pendidikan Tinggi, yaitu evaluasi isi standar dan peningkatan  mutu isi standar secara berkala dan berkelanjutan." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                  <?php endif; ?>
                 </label>
                 <textarea class="form-control textarea-catatan" id="catatan-2" rows="3" readonly></textarea>
               </div>
@@ -386,6 +431,24 @@
 
             <hr style="border-top: 3px solid #343a40;">
 
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <div class="p-1 mb-0" style="background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%); border: 1px solid #dbe6ff; border-radius: 12px; box-shadow: 0 4px 12px rgba(52, 58, 64, 0.08);">
+                  <div class="d-flex flex-wrap align-items-center mb-1">
+                    <span class="badge badge-primary mr-2" style="font-size: .8rem; padding: .4rem .65rem;">Sasaran Mutu Luaran</span>
+                    <strong style="font-size: 1rem; color: #2f3e5c;">Indikator Penilaian</strong>
+                  </div>
+
+                  <div style="color: #394b6a; font-size: .95rem;">
+                    Laporan implementasi SPMI dan kinerja perguruan tinggi secara berkala, sistematis, dan pengelolaan data serta informasi terkait implementasi SPMI melalui PD Dikti, mencakup:
+                    <ol class="mb-0 pl-2 mt-1">
+                      <li class="mb-1">Laporan semesteran/tahunan tentang implementasi SPMI dan kinerja perguruan tinggi yang menerus bertambah baik dalam bentuk digital/sistem/hardcopy paling sedikit selama 3 tahun terakhir secara sistematis.</li>
+                      <li class="mb-1">2. Keberfungsian sistem pengelolaan data dan informasi terkait implementasi SPMI melalui PD Dikti yang transparan, akuntabel, valid dan berintegritas.</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class=" form-group row">
               <div class="col-sm-2">
                 <label class="col-form-label text-left" style="display: block; text-align: left;">
@@ -397,7 +460,9 @@
               <div class=" col-sm-10">
                 <label class="col-form-label text-left" style="display: block; text-align: left;">
                   Catatan Fasilitator Skor 3
-                  <span class="text-danger" data-toggle="popover" data-content="Laporan implementasi SPMI dan kinerja perguruan tinggi secara berkala, sistematis,  dan pengelolaan data serta informasi terkait implementasi SPMI melalui PD Dikti, mencakup: <br> 1. Laporan semesteran/tahunan tentang implementasi SPMI dan kinerja perguruan tinggi yang menerus bertambah baik dalam bentuk digital/sistem/hardcopy paling sedikit selama 3 tahun terakhir secara sistematis. <br> 2. Keberfungsian sistem pengelolaan data dan informasi  terkait implementasi SPMI melalui PD Dikti yang transparan, akuntabel, valid dan berintegritas." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                  <?php if (false) : ?>
+                    <span class="text-danger" data-toggle="popover" data-content="Laporan implementasi SPMI dan kinerja perguruan tinggi secara berkala, sistematis,  dan pengelolaan data serta informasi terkait implementasi SPMI melalui PD Dikti, mencakup: <br> 1. Laporan semesteran/tahunan tentang implementasi SPMI dan kinerja perguruan tinggi yang menerus bertambah baik dalam bentuk digital/sistem/hardcopy paling sedikit selama 3 tahun terakhir secara sistematis. <br> 2. Keberfungsian sistem pengelolaan data dan informasi  terkait implementasi SPMI melalui PD Dikti yang transparan, akuntabel, valid dan berintegritas." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                  <?php endif; ?>
                 </label>
                 <textarea class="form-control textarea-catatan" id="catatan-3" rows="3" readonly></textarea>
               </div>
@@ -417,36 +482,61 @@
 
             <hr style="border-top: 3px solid #343a40;">
 
-            <div class=" form-group row">
-              <div class="col-sm-2">
-                <label class="col-form-label text-left" style="display: block; text-align: left;">
-                  Skor 4
-                  <span class="text-danger popover-skor4-trigger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Persentase PS terakreditasi 100%. <br> 1.5 = Syarat perlu status terakreditasi Unggul  (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>15% sd <20%</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>40% sd <50% (PTNBH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>20% sd <25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>30% sd <40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%.(PTS Vokasi)</li></ol> 2 = Syarat perlu status terakreditasi Unggul (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%.</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 50%.(PTN BH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.(PTS Vokasi)</li></ol>" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
-                </label>
-                <input type="text" class="form-control square skor border rounded bg-white font-weight-bold text-center" style="height: 83px;" id="skor-4" readonly>
-              </div>
-              <div class=" col-sm-10">
-                <label class="col-form-label text-left" style="display: block; text-align: left;">
-                  Catatan Fasilitator Skor 4
-                  <span class="text-danger" data-toggle="popover" data-content="Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: <br> 1. PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%. <br> 2. PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
-                </label>
-                <textarea class="form-control textarea-catatan" id="catatan-4" rows="3" readonly></textarea>
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col-sm-2">
-                <label class="col-form-label text-left label-required" style="display: block; text-align: left;font-weight: 800;">Validasi</label>
-                <input required type="radio" style="transform: scale(1.3);" name="cek_4" value="1">&nbsp;Valid
-                <br>
-                <input required type="radio" style="transform: scale(1.3);" name="cek_4" value="0">&nbsp;Tidak Valid
-              </div>
-              <div class="col-sm-10">
-                <label class="col-form-label text-left label-required" style="display: block; text-align: left;">Catatan Validator Skor 4</label>
-                <textarea class="form-control textarea-catatan" style="border-radius: 8px !important; border: 1px solid #007bff !important;" required placeholder="ketik disini..." rows="3" name="catatan_4_validator"></textarea>
-              </div>
-            </div>
+            <?php if (false) : ?>
+              <div class="form-group row">
+                <div class="col-lg-12">
+                  <div class="p-1 mb-0" style="background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%); border: 1px solid #dbe6ff; border-radius: 12px; box-shadow: 0 4px 12px rgba(52, 58, 64, 0.08);">
+                    <div class="d-flex flex-wrap align-items-center mb-1">
+                      <span class="badge badge-primary mr-2" style="font-size: .8rem; padding: .4rem .65rem;">Sasaran Mutu Dampak</span>
+                      <strong style="font-size: 1rem; color: #2f3e5c;">Indikator Penilaian</strong>
+                    </div>
 
-            <hr style="border-top: 3px solid #343a40;">
+                    <div style="color: #394b6a; font-size: .95rem;">
+                      Implementasi siklus penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan (PPEPP) dalam bidang akademik dan non-akademik, paling sedikit selama 3 tahun secara konsisten, berkelanjutan dan terbukti efektif, dan terdiri atas:
+                      <ol class="mb-0 pl-2 mt-1">
+                        <li class="mb-1">Penetapan Standar Pendidikan Tinggi yang sesuai misi perguruan tinggi, yaitu perancangan, perumusan, dan pengesahan standar PT.</li>
+                        <li class="mb-1">Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan standar oleh semua pihak yang bertanggungjawab agar isi standar tercapai.</li>
+                        <li class="mb-1">Evaluasi Pemenuhan Standar Pendidikan Tinggi, yaitu evaluasi kesesuaian pelaksanaan standar dengan standar yang telah ditetapkan dan cara pemenuhannya.</li>
+                        <li class="mb-1">Pengendalian Pelaksanaan Standar Pendidikan Tinggi, yaitu pelaksanaan koreksi bila terjadi penyimpangan terhadap isi dan/atau pelaksanaan standar, mempertahan pelaksanaan yang telah memenuhi standar dan sedapat mungkin meningkatkan kualitas pelaksanaannya.</li>
+                        <li>Peningkatan Standar Pendidikan Tinggi, yaitu evaluasi isi standar dan peningkatan mutu isi standar secara berkala dan berkelanjutan.</li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class=" form-group row">
+                <div class="col-sm-2">
+                  <label class="col-form-label text-left" style="display: block; text-align: left;">
+                    Skor 4
+                    <span class="text-danger popover-skor4-trigger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Persentase PS terakreditasi 100%. <br> 1.5 = Syarat perlu status terakreditasi Unggul  (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>15% sd <20%</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>40% sd <50% (PTNBH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>20% sd <25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>30% sd <40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%.(PTS Vokasi)</li></ol> 2 = Syarat perlu status terakreditasi Unggul (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%.</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 50%.(PTN BH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.(PTS Vokasi)</li></ol>" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                  </label>
+                  <input type="text" class="form-control square skor border rounded bg-white font-weight-bold text-center" style="height: 83px;" id="skor-4" readonly>
+                </div>
+                <div class=" col-sm-10">
+                  <label class="col-form-label text-left" style="display: block; text-align: left;">
+                    Catatan Fasilitator Skor 4
+                    <?php if (false) : ?>
+                      <span class="text-danger" data-toggle="popover" data-content="Pengakuan eksternal atas capaian target-target mutu pendidikan berupa akreditasi Program Studi, yaitu: <br> 1. PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%. <br> 2. PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%." data-trigger="hover" data-original-title="Indikator Penilaian :" data-html="true"><i class="la la-info-circle"></i></span>
+                    <?php endif; ?>
+                  </label>
+                  <textarea class="form-control textarea-catatan" id="catatan-4" rows="3" readonly></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-2">
+                  <label class="col-form-label text-left label-required" style="display: block; text-align: left;font-weight: 800;">Validasi</label>
+                  <input required type="radio" style="transform: scale(1.3);" name="cek_4" value="1">&nbsp;Valid
+                  <br>
+                  <input required type="radio" style="transform: scale(1.3);" name="cek_4" value="0">&nbsp;Tidak Valid
+                </div>
+                <div class="col-sm-10">
+                  <label class="col-form-label text-left label-required" style="display: block; text-align: left;">Catatan Validator Skor 4</label>
+                  <textarea class="form-control textarea-catatan" style="border-radius: 8px !important; border: 1px solid #007bff !important;" required placeholder="ketik disini..." rows="3" name="catatan_4_validator"></textarea>
+                </div>
+              </div>
+
+              <hr style="border-top: 3px solid #343a40;">
+            <?php endif; ?>
 
             <fieldset class="form-group">
               <label for="current-password">Catatan Keseluruhan Fasilitator</label>

@@ -366,10 +366,25 @@
                     </ul>
 
                     <ul class="nav navbar-nav float-right">
-                        <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link waves-effect waves-dark" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700"><?= $this->session->userdata('nama') ?></span></a>
+                        <li class="dropdown dropdown-user nav-item">
+                            <a class="dropdown-toggle nav-link dropdown-user-link waves-effect waves-dark" href="#" data-toggle="dropdown">
+                                <?php if (has_role(['6', '7'])): ?>
+                                    <span class="mr-1 user-name text-bold-700">
+                                        <img src="<?= base_url('admin/pt/logo/' . urlencode(safe_url_encrypt(get_user_logo()))) ?>" width="40" height="40" alt="Logo PT">
+                                    </span>
+                                <?php else: ?>
+                                    <span class="mr-1 user-name text-bold-700"><?= $this->session->userdata('nama') ?></span>
+                                <?php endif; ?>
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right">
+                                <?php if (has_role(['6', '7'])): ?>
+                                    <a class="dropdown-item dropdown-item-user waves-effect waves-dark d-flex align-items-center" href="javascript:void(0)" data-toggle="modal" data-target="#modal-upload-logo">
+                                        <i class="material-icons">account_circle</i>
+                                        <span>Upload Logo</span>
+                                    </a>
+                                <?php endif; ?>
                                 <a class="dropdown-item waves-effect waves-dark d-flex align-items-center" href="#" onclick="ubahPassword('<?= $this->session->userdata('user_id') ?>')">
-                                    <i class="material-icons">person_outline</i> <span>Ubah Password</span>
+                                    <i class="material-icons">lock</i> <span>Ubah Password</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item waves-effect waves-dark d-flex align-items-center" href="<?= base_url('logout') ?>"><i class="material-icons">power_settings_new</i> Logout</a>
@@ -380,4 +395,59 @@
             </div>
         </div>
     </nav>
+
+    <!-- Modal Upload Logo PT -->
+    <div class="modal fade" id="modal-upload-logo" tabindex="-1" role="dialog" aria-labelledby="modalUploadLogoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white" id="modalUploadLogoLabel">Upload Logo PT</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span class="d-block mb-2 text-muted text-center font-medium-5">
+                        <?= $this->session->userdata('nama') ?>
+                    </span>
+
+                    <?php
+                    $logo_pt_existing = '';
+                    if (!empty(get_user_logo())) {
+                        $logo_pt_existing = get_user_logo();
+                    }
+
+                    if (!empty($logo_pt_existing)) {
+                        $logo_src = base_url('admin/pt/logo/' . urlencode(safe_url_encrypt($logo_pt_existing)));
+                    }
+                    ?>
+
+                    <?php if (!empty($logo_pt_existing)): ?>
+                        <div class="mb-2 text-center">
+                            <small class="d-block text-muted mb-1">Logo PT saat ini</small>
+                            <img src="<?= $logo_src ?>" alt="Logo PT" class="img-fluid rounded border" style="max-height: 140px;">
+                        </div>
+                    <?php endif; ?>
+
+                    <?= form_open_multipart('admin/pt/upload-logo', ['id' => 'form-upload-logo']) ?>
+                    <label for="file-logo">Pilih file logo</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="file-logo" name="file_logo" accept=".png, .jpg, .jpeg, .svg" required>
+                        <label class="custom-file-label" for="file-logo" id="label-file-logo">Pilih file...</label>
+                    </div>
+                    <small class="form-text text-muted">Format yang diizinkan: .png, .jpg, .jpeg, .svg (maksimal 2MB)</small>
+
+                    <div class="d-flex justify-content-end mt-2">
+                        <div class="btn-group" role="group" aria-label="Aksi Upload Logo">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="la la-upload"></i> Upload
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        </div>
+                    </div>
+                    <?= form_close() ?>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- END: Header-->

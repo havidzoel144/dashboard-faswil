@@ -158,7 +158,7 @@
       <p class="nomor-surat"><?php echo $nomor_sertifikat; ?></p>
 
       <p class="label-diberikan">DIBERIKAN KEPADA :</p>
-      <h2 class="nama-pt">Sekolah Tinggi Manajemen Informatika dan Komputer Indo Daya Suvana</h2>
+      <h2 class="nama-pt"><?php echo $nama_pt; ?></h2>
 
       <p class="narasi">
         Atas pencapaian implementasi penjaminan mutu internal tahun <?php echo $tahun; ?><br>

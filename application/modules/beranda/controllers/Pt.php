@@ -25,12 +25,13 @@ class Pt extends MX_Controller
     $logo_pt = $this->db->get_where('logo_pt', ['kode_pt' => $kode_pt])->row_array();
     $data = [
       'pengisian_led' => 'active',
-      'judul' => 'Pengisian LED',
+      'judul' => 'Pengisian Laporan Implementasi SPMI',
       'data_periode' => $this->db->select('p.*, pt.kode_pt, pt.file_led, pt.tgl_upload_led, dpm.periode as periode_dpm, fl.status as status_led, fl.id_penilaian_tipologi')
         ->from('periode as p')
         ->join('penilaian_tipologi as pt', 'p.kode = pt.periode AND pt.kode_pt = ' . $this->db->escape($kode_pt), 'left')
         ->join('data_penjaminan_mutu as dpm', 'dpm.kode_pt = pt.kode_pt AND dpm.periode = p.kode', 'left')
         ->join('form_led as fl', 'pt.id_penilaian_tipologi = fl.id_penilaian_tipologi', 'left')
+        ->where('p.status', '1')
         ->order_by('p.kode', 'ASC')
         ->get()->result_array(),
       // 'data_penjaminan_mutu' => $data_penjaminan_mutu,
@@ -221,6 +222,7 @@ class Pt extends MX_Controller
   {
     $kode_pt = explode('_', $this->session->userdata('username'))[0]; //Ambil kode PT saja
     $periode = safe_url_decrypt($enc_periode);
+    $buka_tutup_pengisian = $this->db->get_where('buka_tutup', ['jenis' => 'Pengisian Laporan Implementasi SPMI'])->row_array();
     $penilaian_tipologi = $this->db->get_where('penilaian_tipologi', [
       'kode_pt' => $kode_pt,
       'periode' => $periode,
@@ -238,29 +240,36 @@ class Pt extends MX_Controller
         'id_penilaian_tipologi' => $penilaian_tipologi['id_penilaian_tipologi'],
         'kode_pt' => $penilaian_tipologi['kode_pt'],
         'nama_pt' => $penilaian_tipologi['nama_pt'],
-        'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? null,
-        'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? null,
+        'alamat' => $identias_pt['alamat'] ?? 'Belum diisi',
+        'tgl_sk_pendirian_pt' => $identias_pt['tgl_sk_pendirian_pt'] ?? '0000-00-00',
+        'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? 'Belum diisi',
+        'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? '0000-00-00',
+        'created_at' => date('Y-m-d H:i:s'),
       ];
       $this->db->insert('form_led', $data_insert);
     } else {
       $data_update = [
         'kode_pt' => $penilaian_tipologi['kode_pt'],
         'nama_pt' => $penilaian_tipologi['nama_pt'],
-        'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? null,
-        'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? null,
+        'alamat' => $identias_pt['alamat'] ?? 'Belum diisi',
+        'tgl_sk_pendirian_pt' => $identias_pt['tgl_sk_pendirian_pt'] ?? '0000-00-00',
+        'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? 'Belum diisi',
+        'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? '0000-00-00',
       ];
       $this->db->where('id', $form_led['id'])->update('form_led', $data_update);
     }
+    $form_led = $this->db->from('form_led as a')->join('penilaian_tipologi as b', 'a.id_penilaian_tipologi = b.id_penilaian_tipologi')->where('b.kode_pt', $kode_pt)->where('b.periode', $periode)->get()->row_array();
 
     $data = [
       'pengisian_led' => 'active',
-      'judul' => 'Form Pengisian LED',
+      'judul' => 'Form Pengisian Laporan Implementasi SPMI',
       'kode_pt' => $kode_pt,
       'periode' => $periode,
       'penilaian_tipologi' => $penilaian_tipologi,
       'persentase_prodi' => $persentase_prodi,
       'identitas_pt' => $identias_pt,
       'form_led' => $form_led,
+      'buka_tutup_pengisian' => $buka_tutup_pengisian,
     ];
 
     $this->load->view("admin/master/led/v_form_pengisian_led", $data);
@@ -329,10 +338,10 @@ class Pt extends MX_Controller
       // bab 2
       'penetapan_diferensiasi' => 500,
       // indikator
-      'sasaran_mutu_masukan' => 500,
-      'sasaran_mutu_proses' => 500,
-      'sasaran_mutu_luaran' => 500,
-      'sasaran_mutu_dampak' => 500,
+      'sasaran_mutu_masukan' => 1000,
+      'sasaran_mutu_proses' => 1000,
+      'sasaran_mutu_luaran' => 1000,
+      'sasaran_mutu_dampak' => 1000,
       // bab 4
       'narasi_bab4' => 500
     ];
@@ -404,10 +413,10 @@ class Pt extends MX_Controller
     ])->row_array();
 
     $null_fields = array_keys(array_filter($form_led, function ($v, $k) {
-      if (in_array($k, ['updated_at', 'status'], true)) {
+      if (in_array($k, ['akreditasi_pt', 'tgl_akhir_apt', 'tgl_sk_pendirian_pt', 'pejabat_penandatangan', 'tahun_pertama_terima_mhs', 'tautan_sasaran_mutu_dampak', 'created_at', 'updated_at', 'status'], true)) {
         return false;
       }
-      return is_null($v) || $v === '' || $v === '0' || $v === 0;
+      return is_null($v) || $v === '' || $v === '0' || $v === 0 || $v === '0000-00-00';
     }, ARRAY_FILTER_USE_BOTH));
 
     if (!empty($null_fields)) {
@@ -424,7 +433,7 @@ class Pt extends MX_Controller
     $this->db->where('id_penilaian_tipologi', $form_led['id_penilaian_tipologi'])
       ->update('form_led', $data_update);
 
-    $pesan = $this->input->post('is_permanen') === '1' ? 'LED berhasil disimpan permanen.' : 'LED berhasil disimpan sebagai draft.';
+    $pesan = $this->input->post('is_permanen') === '1' ? 'Laporan Implementasi SPMI berhasil disimpan permanen.' : 'Laporan Implementasi SPMI berhasil disimpan sebagai draft.';
 
     $this->session->set_flashdata('success', $pesan);
     redirect(base_url('admin/pt/form-pengisian-led/' . safe_url_encrypt($periode)));
@@ -476,6 +485,7 @@ class Pt extends MX_Controller
       ->where('fl.kode_pt', $kode_pt)
       ->get()
       ->row();
+    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
 
     if (!$data_db) {
       $this->session->set_flashdata('error', 'Data LED tidak ditemukan untuk periode ini.');
@@ -493,7 +503,7 @@ class Pt extends MX_Controller
     $file_pdf = "Laporan_LED_" . $data_db->nama_pt . "_" . $data_db->periode . "_" . date('Y-m-d_H-i-s');
     $paper = 'A4';
     $orientation = "portrait";
-    $html = $this->load->view('admin/master/led/template_laporan_led', ['data' => $data_db], true);
+    $html = $this->load->view('admin/master/led/template_laporan_led', ['data' => $data_db, 'persentase_prodi' => $persentase_prodi], true);
     $this->pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
   }
 
@@ -516,9 +526,9 @@ class Pt extends MX_Controller
     $data['skor_luaran']      = $data_db->skor_3;
     $data['skor_dampak']      = $data_db->skor_4;
     $data['skor_total']       = $data_db->skor_total;
-    $data['nomor_sertifikat'] = "332/LL3/KL.02.00/2026";
-    $data['tahun']            = "2026";
-    $data['tanggal_cetak']    = "09 Februari 2026";
+    $data['nomor_sertifikat'] = "Nomor Sertifikat"; // Ganti dengan logika generate nomor sertifikat jika ada
+    $data['tahun']            = "Tahun"; // Ganti dengan logika ambil tahun dari periode atau data lain jika ada
+    $data['tanggal_cetak']    = "Tanggal Cetak"; // Ganti dengan logika ambil tanggal cetak saat ini atau dari data lain jika ada
     $data['nama_pejabat']     = "Dr. Henri Tambunan, SE., M.A";
     $data['nip_pejabat']      = "196811261994031001";
 

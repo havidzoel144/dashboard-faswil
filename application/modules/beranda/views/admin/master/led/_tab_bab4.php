@@ -15,9 +15,9 @@
         <label class="font-weight-semibold text-dark" style="font-size:0.98rem;">
           <i class="la la-pencil mr-1" style="color:#ec4899;"></i> Narasi Bab 4 <span class="text-danger">*</span>
         </label>
-        <textarea name="narasi_bab4" id="narasi_bab4" rows="6" class="form-control narasi-led-500 textarea-catatan" data-max-words="500" placeholder="Tuliskan narasi penutup LED..." required style="font-size:0.98rem; resize:vertical; line-height:1.5;"><?= isset($form_led['narasi_bab4']) ? $form_led['narasi_bab4'] : '' ?></textarea>
-        <small class="form-text text-muted">Deskripsikan secara rinci (maksimal 500 kata).</small>
-        <small class="form-text text-primary" id="counter_narasi_bab4">0/500 kata</small>
+        <textarea name="narasi_bab4" id="narasi_bab4" rows="6" class="form-control narasi-led-200 textarea-catatan" data-max-words="200" placeholder="Tuliskan narasi penutup LED..." required style="font-size:0.98rem; resize:vertical; line-height:1.5;"><?= isset($form_led['narasi_bab4']) ? $form_led['narasi_bab4'] : '' ?></textarea>
+        <small class="form-text text-muted">Deskripsikan secara rinci (maksimal 200 kata).</small>
+        <small class="form-text text-primary" id="counter_narasi_bab4">0/200 kata</small>
       </div>
     </div>
   </div>

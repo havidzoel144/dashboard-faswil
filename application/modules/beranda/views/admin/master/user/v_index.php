@@ -119,9 +119,15 @@
               <span>Ambil Data Dosen</span>
             </button>
             <?php if (!in_array('1', array_column($this->session->userdata('roles'), 'role_id'))): ?>
-              <button type="button" class="btn btn-dark flex-fill d-flex align-items-center justify-content-center" id="btn-ambil-pt">
+              <?php if (false): ?>
+                <button type="button" class="btn btn-dark flex-fill d-flex align-items-center justify-content-center" id="btn-ambil-pt">
+                  <i class="la la-building mr-1"></i>
+                  <span>Ambil Data PT</span>
+                </button>
+              <?php endif; ?>
+              <button type="button" class="btn btn-dark flex-fill d-flex align-items-center justify-content-center" id="btn-generate-pt">
                 <i class="la la-building mr-1"></i>
-                <span>Ambil Data PT</span>
+                <span>Generate User PT</span>
               </button>
             <?php endif; ?>
           </div>
@@ -268,6 +274,106 @@
 </div>
 <!-- Modal Data Pt -->
 
+<!-- MODAL GENERATE USER PT START -->
+<div class="modal fade" id="modalGenerateUserPt" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title text-white">
+          <i class="la la-building mr-1"></i>
+          Generate User PT
+        </h5>
+        <button type="button" class="close text-white" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-light border">
+          Sistem akan membuat akun user untuk seluruh Perguruan Tinggi yang belum memiliki akun.
+        </div>
+        <table class="table table-bordered">
+          <tr>
+            <th>Total Data PT</th>
+            <td id="total-pt">0</td>
+          </tr>
+          <tr>
+            <th>User Sudah Ada</th>
+            <td>
+              <a href="javascript:void(0)"
+                id="btn-detail-sudah-ada"
+                class="font-weight-bold text-success">
+                <span id="total-user-ada">0</span>
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <th>User Belum Ada</th>
+            <td>
+              <a href="javascript:void(0)"
+                id="btn-detail-belum-ada"
+                class="font-weight-bold text-danger">
+                <span id="total-user-belum">0</span>
+              </a>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal">
+          Batal
+        </button>
+        <button type="button"
+          class="btn btn-dark"
+          id="btn-proses-generate">
+          <i class="la la-check"></i>
+          Generate Sekarang
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL GENERATE USER PT END -->
+
+<!-- MODAL DETAIL USER PT START -->
+<div class="modal fade" id="modalDetailUserPt" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="detail-title">
+          Detail PT
+        </h5>
+        <button type="button"
+          class="close text-white"
+          data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped" id="table-detail-user-pt" style="width: 100%;">
+            <thead>
+              <tr>
+                <th width="5%">No</th>
+                <th>Kode PT</th>
+                <th>Nama PT</th>
+                <th>Username</th>
+              </tr>
+            </thead>
+            <tbody id="detail-user-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETAIL USER PT END -->
+
+
 <?= $this->load->view('admin/v_footer') ?>
 
 <!-- BEGIN: Page Vendor JS-->
@@ -285,6 +391,7 @@
 <script type="text/javascript">
   $(document).ready(function() {
     var tabelUser = $('#tabel-user').DataTable();
+    var detailUserTable = null;
 
     // Inisialisasi tooltip saat tabel selesai digambar ulang
     tabelUser.on('draw.dt', function() {
@@ -322,6 +429,172 @@
       $('#edit-label-status').text(this.checked ? 'Aktif' : 'Non Aktif');
       this.value = this.checked ? '1' : '0';
     });
+
+    // buka modal
+    $('#btn-generate-pt').on('click', function() {
+      $.ajax({
+        url: '<?= base_url('admin/get-statistik-user-pt') ?>',
+        type: 'GET',
+        dataType: 'json',
+        success: function(res) {
+          $('#total-pt').text(res.total_pt);
+          $('#total-user-ada').text(res.sudah_ada);
+          $('#total-user-belum').text(res.belum_ada);
+          $('#modalGenerateUserPt').modal('show');
+        }
+      });
+    });
+
+    // proses generate
+    $('#btn-proses-generate').on('click', function() {
+      Swal.fire({
+        title: 'Generate User?',
+        text: 'User PT yang belum ada akan dibuat otomatis.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Generate',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: '<?= base_url('admin/generate-user-pt') ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+              [csrfName]: csrfHash
+            },
+            beforeSend: function() {
+              $('#btn-proses-generate')
+                .prop('disabled', true)
+                .html('<i class="la la-spinner spinner"></i> Memproses...');
+            },
+            success: function(res) {
+              $('#modalGenerateUserPt').modal('hide');
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                html: `
+                <div class="text-left">
+                  <p>User berhasil dibuat: <b>${res.berhasil}</b></p>
+                  <p>User dilewati: <b>${res.skip}</b></p>
+                </div>
+              `
+              });
+            },
+            complete: function() {
+              $('#btn-proses-generate')
+                .prop('disabled', false)
+                .html('<i class="la la-check"></i> Generate Sekarang');
+            }
+          });
+        }
+      });
+    });
+
+    function loadDetailUser(type) {
+      $.ajax({
+        url: '<?= base_url('admin/detail-user-pt') ?>',
+        type: 'GET',
+        data: {
+          type: type
+        },
+        dataType: 'json',
+        beforeSend: function() {
+          $('#detail-user-body').html(`
+        <tr>
+          <td colspan="4" class="text-center">
+            <i class="la la-spinner spinner"></i> Loading...
+          </td>
+        </tr>
+      `);
+        },
+        success: function(res) {
+          let html = '';
+          if (type === 'sudah') {
+            $('#detail-title').text(
+              'Daftar PT Yang Sudah Memiliki Akun'
+            );
+          } else {
+            $('#detail-title').text(
+              'Daftar PT Yang Belum Memiliki Akun'
+            );
+          }
+          if (res.data.length === 0) {
+            html += ``;
+          } else {
+            $.each(res.data, function(i, item) {
+              html += `
+            <tr>
+              <td>${i + 1}</td>
+              <td>${item.kode_pt}</td>
+              <td>${item.nama_pt}</td>
+              <td>${item.username}</td>
+            </tr>
+          `;
+            });
+          }
+          // destroy datatable lama
+          if ($.fn.DataTable.isDataTable('#table-detail-user-pt')) {
+            $('#table-detail-user-pt').DataTable().destroy();
+          }
+          $('#detail-user-body').html(html);
+          $('#modalDetailUserPt').modal('show');
+          // init datatable baru
+          detailUserTable = $('#table-detail-user-pt').DataTable({
+            responsive: true,
+            autoWidth: false,
+            destroy: true,
+            pageLength: 10,
+            ordering: true,
+            searching: true,
+            lengthMenu: [
+              [10, 25, 50, 100],
+              [10, 25, 50, 100]
+            ],
+            language: {
+              search: "Cari:",
+              lengthMenu: "Tampilkan _MENU_ data",
+              zeroRecords: "Data tidak ditemukan",
+              info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+              infoEmpty: "Tidak ada data",
+              paginate: {
+                first: "Awal",
+                last: "Akhir",
+                next: "›",
+                previous: "‹"
+              }
+            }
+          });
+
+          detailUserTable.on('order.dt search.dt draw.dt', function() {
+            detailUserTable.column(0, {
+              search: 'applied',
+              order: 'applied'
+            }).nodes().each(function(cell, i) {
+              cell.innerHTML = i + 1;
+            });
+          }).draw();
+        },
+        error: function() {
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: 'Terjadi kesalahan saat mengambil data.'
+          });
+        }
+      });
+    }
+
+    // klik sudah ada
+    $(document).on('click', '#btn-detail-sudah-ada', function() {
+      loadDetailUser('sudah');
+    });
+
+    // klik belum ada
+    $(document).on('click', '#btn-detail-belum-ada', function() {
+      loadDetailUser('belum');
+    });
+
   });
 
   function confirmDelete(id) {

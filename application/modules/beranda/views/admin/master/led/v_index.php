@@ -44,9 +44,6 @@
           <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
               <h4 class="card-title" id="heading-buttons1"><?= $judul ?></h4>
-              <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-upload-logo">
-                <i class="fa fa-upload"></i> Upload Logo PT
-              </button>
             </div>
             <div class="dropdown-divider"></div>
             <div class="card-content">
@@ -86,7 +83,7 @@
                                 <?php endif; ?>
                               </div>
                             </td>
-                            <td class="text-center" style="width: 15%;">
+                            <td class="text-center" style="width: 10%;">
                               <?php
                               $disabled = '';
                               $notAllowed = '';
@@ -94,23 +91,19 @@
                                 $warna_btn = 'btn-danger';
                                 $tooltip_text = 'Belum plotting fasilitator untuk periode ' . $data['kode'];
                                 $icon_btn = 'la la-times';
-                                $label_btn = 'Belum Plotting';
                                 $disabled = 'disabled';
                                 $notAllowed = "style='cursor: not-allowed;'";
                               } else if ($data['kode_pt'] != null && ($data['status_led'] == '0' || $data['status_led'] == null)) {
                                 $warna_btn = 'btn-primary';
-                                $tooltip_text = 'Silakan isi LED untuk periode ' . $data['kode'];
+                                $tooltip_text = 'Silakan isi Laporan Implementasi SPMI untuk periode ' . $data['kode'];
                                 $icon_btn = 'la la-edit';
-                                $label_btn = 'Pengisian LED';
                               } else if ($data['kode_pt'] != null && $data['status_led'] == '1') {
-                                $warna_btn = 'btn-warning';
                                 $warna_btn = 'btn-success';
-                                $tooltip_text = 'LED sudah simpan permanen untuk periode ' . $data['kode'];
+                                $tooltip_text = 'Laporan Implementasi SPMI sudah simpan permanen untuk periode ' . $data['kode'];
                                 $icon_btn = 'la la-check';
-                                $label_btn = 'LED Terisi';
                               }
                               ?>
-                              <div class="btn-group" role="group" aria-label="Aksi LED">
+                              <div class="btn-group" role="group" aria-label="Aksi Laporan Implementasi SPMI">
                                 <a href="<?= base_url('admin/pt/form-pengisian-led/' . safe_url_encrypt($data['kode'])) ?>">
                                   <button
                                     class="btn <?= $warna_btn ?> btn-sm"
@@ -128,23 +121,23 @@
                                       class="btn btn-dark btn-sm"
                                       type="button"
                                       data-toggle="tooltip"
-                                      title="Unduh Laporan LED untuk periode <?= $data['kode'] ?>"
+                                      title="Unduh Laporan Implementasi SPMI untuk periode <?= $data['kode'] ?>"
                                       <?= $disabled . ' ' . $notAllowed ?>>
                                       <i class="la la-file"></i>
                                     </button>
                                   </a>
-                                <?php endif; ?>
-                                <?php if ($data['periode_dpm'] != null): ?>
-                                  <a href="<?= base_url('admin/pt/unduh-sertifikat/' . safe_url_encrypt($data['kode'])) ?>">
-                                    <button
-                                      class="btn btn-info btn-sm"
-                                      type="button"
-                                      data-toggle="tooltip"
-                                      title="Unduh Sertifikat LED untuk periode <?= $data['kode'] ?>"
-                                      <?= $disabled . ' ' . $notAllowed ?>>
-                                      <i class="la la-download"></i>
-                                    </button>
-                                  </a>
+                                  <?php if ($data['periode_dpm'] != null): ?>
+                                    <a href="<?= base_url('admin/pt/unduh-sertifikat/' . safe_url_encrypt($data['kode'])) ?>">
+                                      <button
+                                        class="btn btn-info btn-sm"
+                                        type="button"
+                                        data-toggle="tooltip"
+                                        title="Unduh Sertifikat Laporan Implementasi SPMI untuk periode <?= $data['kode'] ?>"
+                                        <?= $disabled . ' ' . $notAllowed ?>>
+                                        <i class="la la-download"></i>
+                                      </button>
+                                    </a>
+                                  <?php endif; ?>
                                 <?php endif; ?>
                               </div>
                             </td>
@@ -228,7 +221,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-primary">
-        <h5 class="modal-title text-white" id="modalUploadLedLabel">Upload File LED</h5>
+        <h5 class="modal-title text-white" id="modalUploadLedLabel">Upload File Laporan Implementasi SPMI</h5>
         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -243,14 +236,14 @@
         <div id="section-upload">
           <?= form_open_multipart('admin/pt/upload-led/simpan', ['id' => 'form-upload-led']) ?>
           <input type="hidden" name="kode_periode" id="modal-kode-periode">
-          <label for="file-led">Pilih file LED</label>
+          <label for="file-led">Pilih file Laporan Implementasi SPMI</label>
           <div class="custom-file">
             <input type="file" class="custom-file-input" id="file-led" name="file_led" accept=".doc, .docx, .pdf" required>
             <label class="custom-file-label" for="file-led" id="label-file-led">Pilih file...</label>
           </div>
           <small class="form-text text-muted">Format yang diizinkan: .doc, .docx, .pdf (maksimal 2MB)</small>
           <div class="d-flex justify-content-end mt-1">
-            <div class="btn-group" role="group" aria-label="Aksi Upload LED">
+            <div class="btn-group" role="group" aria-label="Aksi Upload Laporan Implementasi SPMI">
               <button type="submit" class="btn btn-primary">
                 <i class="la la-upload"></i> Upload
               </button>
@@ -298,7 +291,7 @@
         <div id="section-final" style="display:none;">
           <div class="alert shadow-sm" role="alert" style="background:#f1f8f4; border:1px solid #b7dfc8; color:#1f5e3b;">
             <i class="la la-check-circle" style="color:#2e7d4f;"></i>
-            <strong style="color:#1f5e3b;">File LED sudah dikirim secara permanen.</strong><br>
+            <strong style="color:#1f5e3b;">File Laporan Implementasi SPMI sudah dikirim secara permanen.</strong><br>
             <span style="color:#2f6f4b;">File tidak dapat diubah atau dihapus lagi.</span>
           </div>
           <div class="d-flex align-items-center border rounded px-3 py-2" style="background:#f8fffb; border:1px solid #c8e6c9 !important;">
@@ -306,7 +299,7 @@
               <i class="la la-file-text text-success" style="font-size:1.15em;"></i>
             </span>
             <div class="d-flex flex-column" style="min-width:0;">
-              <small class="text-muted" style="line-height:1;">File LED Final</small>
+              <small class="text-muted" style="line-height:1;">File Laporan Implementasi SPMI Final</small>
               <a id="section-final-filename" class="font-weight-bold text-success text-truncate" style="max-width:320px;" href="#" target="_blank"></a>
             </div>
           </div>
@@ -386,7 +379,7 @@
       $('#label-file-led').text('Pilih file...').attr('title', 'Pilih file...');
 
       // Default title modal
-      $('#modalUploadLedLabel').text('Upload File LED');
+      $('#modalUploadLedLabel').text('Upload File Laporan Implementasi SPMI');
 
       // State 1: belum ada file -> boleh upload
       if (!hasFile) {
@@ -398,7 +391,7 @@
         $('#section-pending').show();
         $('#file-led').prop('required', false);
 
-        $('#modalUploadLedLabel').text('File LED Belum Permanen');
+        $('#modalUploadLedLabel').text('File Laporan Implementasi SPMI Belum Permanen');
         $('#section-pending-filename')
           .text(formatFileLabel(file_led, 50))
           .attr('title', file_led)
@@ -414,7 +407,7 @@
         $('#section-final').show();
         $('#file-led').prop('required', false);
 
-        $('#modalUploadLedLabel').text('File LED Sudah Permanen');
+        $('#modalUploadLedLabel').text('File Laporan Implementasi SPMI Sudah Permanen');
         $('#section-final-filename')
           .text(formatFileLabel(file_led, 50))
           .attr('title', file_led)
@@ -432,8 +425,8 @@
       e.preventDefault();
       var href = $(this).attr('href');
       Swal.fire({
-        title: 'Hapus File LED?',
-        text: 'Apakah Anda yakin ingin menghapus file LED ini? Tindakan ini tidak dapat dibatalkan.',
+        title: 'Hapus File Laporan Implementasi SPMI?',
+        text: 'Apakah Anda yakin ingin menghapus file Laporan Implementasi SPMI ini? Tindakan ini tidak dapat dibatalkan.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -478,7 +471,7 @@
       var fileInput = $('#file-led')[0];
       if (!fileInput.files || !fileInput.files.length) {
         e.preventDefault();
-        alert('Silakan pilih file LED terlebih dahulu.');
+        alert('Silakan pilih file Laporan Implementasi SPMI terlebih dahulu.');
         return false;
       }
     });

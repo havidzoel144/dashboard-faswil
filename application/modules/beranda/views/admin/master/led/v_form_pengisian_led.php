@@ -15,17 +15,22 @@
         <div class="row">
           <div class="col-lg-10 col-md-6 col-sm-12 mx-auto">
             <div class="card" style="margin-bottom: 80px;">
-              <div class="card-header" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); border-radius: 6px 6px 0 0; padding: 1.25rem 1.5rem;">
-                <div class="content-header-left col-md-12 col-12 mb-0 d-flex align-items-center justify-content-start">
+              <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); border-radius: 6px 6px 0 0; padding: 1.25rem 1.5rem;">
+                <div class="content-header-left mb-0 d-flex align-items-center justify-content-start flex-grow-1 pr-2">
                   <span class="d-inline-flex align-items-center justify-content-center mr-1" style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.2);">
                     <i class="la la-file-text-o" style="font-size:1.8em;color:#fff;"></i>
                   </span>
                   <div class="text-center">
                     <h3 class="content-header-title mb-0" style="font-size:1.4rem;color:#fff;font-weight:700;letter-spacing:0.5px;">
-                      Form Pengisian Laporan Evaluasi Diri (LED)
+                      Form Pengisian Laporan Implementasi SPMI
                     </h3>
                     <small style="color:rgba(255,255,255,0.75);font-size:0.85rem;">Silakan lengkapi seluruh indikator dengan narasi dan bukti pendukung</small>
                   </div>
+                </div>
+                <div class="ml-auto">
+                  <a href="<?= base_url('admin/pt/pengisian-led') ?>" class="d-inline-flex align-items-center justify-content-center mr-1" style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.2);" data-toggle="tooltip" data-placement="top" title="Kembali">
+                    <i class="la la-arrow-left" style="font-size:1.8em;color:#fff;"></i>
+                  </a>
                 </div>
               </div>
               <div class="card-content">
@@ -37,7 +42,7 @@
                   <input type="hidden" name="periode" value="<?= safe_url_encrypt($periode) ?>">
                   <input type="hidden" name="is_permanen" id="is_permanen" value="<?= $form_led['status'] ?>">
                   <!-- INFO CARD -->
-                  <div class="card border-0 shadow-sm mb-2" style="border-left: 4px solid #007bff !important;">
+                  <div class="card border-0 shadow-sm mb-1" style="border-left: 4px solid #007bff !important;">
                     <div class="card-body py-2 px-3 d-flex align-items-center" style="background: linear-gradient(90deg,#eaf2ff 0%,#f8fbff 100%); border-radius: 6px;">
                       <span class="d-inline-flex align-items-center justify-content-center mr-3" style="width:44px;height:44px;border-radius:50%;background:#007bff22;">
                         <i class="la la-info-circle text-primary" style="font-size:1.7em;"></i>
@@ -49,13 +54,43 @@
                     </div>
                   </div>
 
+                  <?php
+                  $waktu_sekarang = time();
+                  $waktu_mulai = strtotime($buka_tutup_pengisian['mulai_tgl'] . ' ' . $buka_tutup_pengisian['mulai_waktu']);
+                  $waktu_akhir = strtotime($buka_tutup_pengisian['akhir_tgl'] . ' ' . $buka_tutup_pengisian['akhir_waktu']);
+
+                  $is_periode_aktif = ($waktu_mulai !== false && $waktu_akhir !== false)
+                    ? ($waktu_sekarang >= $waktu_mulai && $waktu_sekarang <= $waktu_akhir)
+                    : false;
+
+                  $warna_text_periode = $is_periode_aktif ? '#166534' : '#7f1d1d';
+                  $warna_bg_periode = $is_periode_aktif ? '#ecfdf5' : '#fee2e2';
+                  $warna_border_periode = $is_periode_aktif ? '#86efac' : '#fca5a5';
+                  $warna_border_kiri_periode = $is_periode_aktif ? '#16a34a' : '#dc2626';
+                  $warna_badge_periode = $is_periode_aktif ? '#bbf7d0' : '#fecaca';
+                  $label_status_periode = $is_periode_aktif ? 'Periode Pengisian Dibuka' : 'Periode Pengisian Ditutup';
+                  ?>
+                  <div class="px-3 py-2 mb-1" style="font-size:0.98em; color:<?= $warna_text_periode ?>; background:<?= $warna_bg_periode ?>; border:1px solid <?= $warna_border_periode ?>; border-left:4px solid <?= $warna_border_kiri_periode ?>; border-radius:6px; font-weight:600; line-height:1.5;">
+                    <h5 style="margin:0 0 8px; display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; font-size:0.95rem; font-weight:800; letter-spacing:0.2px; color:<?= $warna_text_periode ?>; background:linear-gradient(135deg, <?= $warna_badge_periode ?> 0%, #ffffff 100%); border:1px solid <?= $warna_border_periode ?>; box-shadow:0 2px 8px rgba(0,0,0,0.08); text-transform:uppercase;">
+                      <i class="la la-check-circle" style="font-size:1rem;"></i>
+                      <?= $label_status_periode ?>
+                    </h5><br>
+                    <i class="la la-calendar mr-1" style="font-size:1.1em;"></i>
+                    Pengisian Laporan Implementasi SPMI dimulai pada
+                    <span style="color:<?= $warna_text_periode ?>; background:<?= $warna_badge_periode ?>; padding:2px 6px; border-radius:4px; font-weight:700;"><?= format_tanggal_indonesia($buka_tutup_pengisian['mulai_tgl']) ?></span>
+                    <span style="color:<?= $warna_text_periode ?>; background:<?= $warna_badge_periode ?>; padding:2px 6px; border-radius:4px; font-weight:700;"><?= $buka_tutup_pengisian['mulai_waktu'] ?></span>
+                    dan berakhir pada
+                    <span style="color:<?= $warna_text_periode ?>; background:<?= $warna_badge_periode ?>; padding:2px 6px; border-radius:4px; font-weight:700;"><?= format_tanggal_indonesia($buka_tutup_pengisian['akhir_tgl']) ?></span>
+                    <span style="color:<?= $warna_text_periode ?>; background:<?= $warna_badge_periode ?>; padding:2px 6px; border-radius:4px; font-weight:700;"><?= $buka_tutup_pengisian['akhir_waktu'] ?></span>
+                  </div>
+
                   <?php if ($form_led['status'] === '1') : ?>
                     <div class="alert mb-2" style="background:#ecfdf5; border:1px solid #86efac; color:#166534; border-radius:8px;">
-                      <i class="la la-lock mr-1"></i> Data LED sudah disimpan permanen dan tidak dapat diubah lagi.
+                      <i class="la la-lock mr-1"></i> Data Laporan Implementasi SPMI sudah disimpan permanen dan tidak dapat diubah lagi.
                     </div>
                   <?php elseif ($form_led['status'] === '0'): ?>
-                    <div class="alert mb-2" style="background:#fffbeb; border:1px solid #fcd34d; color:#78350f; border-radius:8px;">
-                      <i class="la la-exclamation-triangle mr-1"></i> Data LED saat ini disimpan sebagai draft. Pastikan untuk menyimpan permanen agar dapat dilakukan penilaian oleh fasilitator.
+                    <div class="alert mb-1" style="background:#fffbeb; border:1px solid #fcd34d; color:#78350f; border-radius:8px;">
+                      <i class="la la-exclamation-triangle mr-1"></i> Data Laporan Implementasi SPMI saat ini disimpan sebagai draft. Pastikan untuk menyimpan permanen agar dapat dilakukan penilaian oleh fasilitator.
                     </div>
                   <?php endif; ?>
 
@@ -115,7 +150,7 @@
                       <?php if ($form_led['status'] === '1'): ?>
                         <div class="d-flex align-items-center px-3 py-2" style="background:rgba(16,185,129,.14); border:1px solid rgba(16,185,129,.32); border-radius:10px; color:#d1fae5; font-size:0.9rem; font-weight:600;">
                           <i class="la la-check-circle mr-2" style="font-size:1rem; color:#86efac;"></i>
-                          LED sudah disimpan permanen.
+                          Laporan Implementasi SPMI sudah disimpan permanen.
                         </div>
                       <?php else: ?>
                         <div class="btn-group" role="group" aria-label="Aksi formulir LED">
@@ -168,10 +203,10 @@
       }
 
       if (el.classList.contains('narasi-led-500')) {
-        return 500;
+        return 1000;
       }
 
-      return parseInt(el.getAttribute('data-max-words') || '500', 10);
+      return parseInt(el.getAttribute('data-max-words') || '1000', 10);
     }
 
     function countWords(text) {
@@ -206,9 +241,84 @@
       return empty;
     }
 
-    var narasiFields = document.querySelectorAll('.narasi-led-200, .narasi-led-500');
+    function getFieldDisplayName(field, index) {
+      if (!field) {
+        return 'Narasi ' + (index + 1);
+      }
+
+      if (field.id) {
+        var label = document.querySelector('label[for="' + field.id + '"]');
+        if (label) {
+          var labelText = (label.textContent || '').trim();
+          if (labelText) {
+            return labelText;
+          }
+        }
+      }
+
+      if (field.getAttribute('placeholder')) {
+        var placeholder = (field.getAttribute('placeholder') || '').trim();
+        if (placeholder) {
+          return placeholder;
+        }
+      }
+
+      if (field.name) {
+        return field.name;
+      }
+
+      return 'Narasi ' + (index + 1);
+    }
+
+    function getEmptyNarasiFields(fields) {
+      var emptyFields = [];
+      fields.forEach(function(field, index) {
+        if (!((field.value || '').trim())) {
+          emptyFields.push({
+            element: field,
+            name: getFieldDisplayName(field, index)
+          });
+        }
+      });
+      return emptyFields;
+    }
+
+    var narasiFields = document.querySelectorAll('.narasi-led-200, .narasi-led-500, .textarea-catatan');
     var isPermanenInput = document.getElementById('is_permanen');
-    var isLocked = isPermanenInput && isPermanenInput.value === '1';
+    var mulaiTgl = "<?php echo $buka_tutup_pengisian['mulai_tgl']; ?>";
+    var mulaiWaktu = "<?php echo $buka_tutup_pengisian['mulai_waktu']; ?>";
+    var akhirTgl = "<?php echo $buka_tutup_pengisian['akhir_tgl']; ?>";
+    var akhirWaktu = "<?php echo $buka_tutup_pengisian['akhir_waktu']; ?>";
+
+    function parseDateTime(dateStr, timeStr) {
+      var d = (dateStr || '').trim();
+      var t = (timeStr || '').trim();
+      if (!d || !t) {
+        return null;
+      }
+
+      var normalized = d + 'T' + t;
+      var parsed = new Date(normalized);
+      if (isNaN(parsed.getTime())) {
+        return null;
+      }
+
+      return parsed;
+    }
+
+    function isOutsideInputWindow() {
+      var now = new Date();
+      var mulaiDateTime = parseDateTime(mulaiTgl, mulaiWaktu);
+      var akhirDateTime = parseDateTime(akhirTgl, akhirWaktu);
+
+      if (!mulaiDateTime || !akhirDateTime) {
+        return false;
+      }
+
+      return now < mulaiDateTime || now > akhirDateTime;
+    }
+
+    var isLocked = (isPermanenInput && isPermanenInput.value === '1') || isOutsideInputWindow();
 
     function disableAllFormInputs() {
       var form = document.getElementById('form-led');
@@ -218,7 +328,7 @@
 
       var fields = form.querySelectorAll('input, textarea, select, button');
       fields.forEach(function(field) {
-        if (field.id === 'is_permanen') {
+        if (field.id === 'is_permanen' || field.id === 'btn-simpan-permanen') {
           return;
         }
         field.disabled = true;
@@ -381,16 +491,33 @@
 
     initAutoSave();
 
+    var allInputs = formLed.querySelectorAll('input, textarea, select');
+    allInputs.forEach(function(field) {
+      field.addEventListener('input', function() {
+        var value = (field.value || '').trim();
+        if (field.type === 'url') {
+          if (isValidUrlValue(value)) {
+            field.classList.remove('is-invalid');
+          }
+        } else {
+          if (value !== '') {
+            field.classList.remove('is-invalid');
+          }
+        }
+      });
+    });
+
     if (formLed) {
       formLed.addEventListener('submit', function(e) {
-        if (isLocked) {
+        var submitter = e.submitter || document.activeElement;
+        var submitType = submitter ? submitter.getAttribute('data-submit-type') : 'draft';
+
+        if (isLocked && submitType !== 'permanen') {
           e.preventDefault();
           return;
         }
 
         var invalid = false;
-        var submitter = e.submitter || document.activeElement;
-        var submitType = submitter ? submitter.getAttribute('data-submit-type') : 'draft';
 
         narasiFields.forEach(function(field) {
           if (updateWordState(field)) {
@@ -440,16 +567,70 @@
         }
 
         if (submitType === 'permanen') {
-          if (hasEmptyNarasi(narasiFields)) {
+          var emptyNarasiFields = getEmptyNarasiFields(narasiFields);
+          if (emptyNarasiFields.length > 0) {
             e.preventDefault();
+
+            emptyNarasiFields.forEach(function(item) {
+              if (item.element) {
+                item.element.classList.add('is-invalid');
+              }
+            });
+
+            var firstEmptyField = emptyNarasiFields[0] && emptyNarasiFields[0].element ?
+              emptyNarasiFields[0].element :
+              null;
+            if (firstEmptyField) {
+              // cari tab-pane parent
+              var parentTabPane = firstEmptyField.closest('.tab-pane');
+              if (parentTabPane) {
+                var tabPaneId = parentTabPane.getAttribute('id');
+                // cari tombol/tab navigation
+                var relatedTabButton = document.querySelector(
+                  '[data-toggle="tab"][href="#' + tabPaneId + '"]'
+                );
+                if (relatedTabButton) {
+                  // aktifkan tab bootstrap
+                  $(relatedTabButton).tab('show');
+                  // tunggu tab selesai tampil
+                  setTimeout(function() {
+                    firstEmptyField.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'center'
+                    });
+                    firstEmptyField.focus();
+                  }, 300);
+                } else {
+                  // fallback
+                  firstEmptyField.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                  });
+                  firstEmptyField.focus();
+                }
+              } else {
+                // fallback jika tidak ada tab
+                firstEmptyField.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'center'
+                });
+                firstEmptyField.focus();
+              }
+            }
+
+            var emptyFieldListText = emptyNarasiFields.map(function(item, idx) {
+              return (idx + 1) + '. ' + item.name;
+            }).join('\n');
+
+            var warningText = 'Simpan permanen hanya bisa dilakukan jika semua narasi indikator sudah terisi.\n\nField yang belum diisi:\n' + emptyFieldListText;
             if (typeof Swal !== 'undefined') {
               Swal.fire({
                 icon: 'warning',
                 title: 'Validasi Gagal',
-                text: 'Simpan permanen hanya bisa dilakukan jika semua narasi indikator sudah terisi.'
+                text: warningText
               });
             } else {
-              alert('Simpan permanen hanya bisa dilakukan jika semua narasi indikator sudah terisi.');
+              alert(warningText);
             }
             return;
           }
@@ -458,7 +639,7 @@
             isPermanenInput.value = '1';
           }
 
-          var confirmationMessage = 'Setelah simpan permanen, data LED tidak dapat diubah lagi. Lanjutkan?';
+          var confirmationMessage = 'Setelah simpan permanen, data Laporan Implementasi SPMI tidak dapat diubah lagi. Lanjutkan?';
           if (typeof Swal !== 'undefined') {
             e.preventDefault();
             Swal.fire({
@@ -466,10 +647,15 @@
               title: 'Simpan Permanen',
               text: confirmationMessage,
               showCancelButton: true,
-              confirmButtonText: 'Ya, simpan permanen',
+              confirmButtonText: 'Ya, Simpan Permanen',
               cancelButtonText: 'Batal'
             }).then(function(result) {
               if (result.isConfirmed) {
+                // aktifkan kembali seluruh field disabled
+                formLed.querySelectorAll('[disabled]').forEach(function(el) {
+                  el.disabled = false;
+                });
+
                 formLed.setAttribute('action', '<?= base_url('admin/pt/simpan-permanen') ?>');
                 formLed.submit();
               }
