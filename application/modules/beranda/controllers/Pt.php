@@ -240,23 +240,25 @@ class Pt extends MX_Controller
         'id_penilaian_tipologi' => $penilaian_tipologi['id_penilaian_tipologi'],
         'kode_pt' => $penilaian_tipologi['kode_pt'],
         'nama_pt' => $penilaian_tipologi['nama_pt'],
-        'alamat' => $identias_pt['alamat'] ?? 'Belum diisi',
-        'tgl_sk_pendirian_pt' => $identias_pt['tgl_sk_pendirian_pt'] ?? '0000-00-00',
+        'alamat' => $identias_pt['alamat_jalan'] ?? 'Belum diisi',
+        'tgl_sk_pendirian_pt' => $identias_pt['tgl_sk_pendirian'] ?? '0000-00-00',
         'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? 'Belum diisi',
         'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? '0000-00-00',
         'created_at' => date('Y-m-d H:i:s'),
       ];
       $this->db->insert('form_led', $data_insert);
     } else {
-      $data_update = [
-        'kode_pt' => $penilaian_tipologi['kode_pt'],
-        'nama_pt' => $penilaian_tipologi['nama_pt'],
-        'alamat' => $identias_pt['alamat'] ?? 'Belum diisi',
-        'tgl_sk_pendirian_pt' => $identias_pt['tgl_sk_pendirian_pt'] ?? '0000-00-00',
-        'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? 'Belum diisi',
-        'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? '0000-00-00',
-      ];
-      $this->db->where('id', $form_led['id'])->update('form_led', $data_update);
+      if ($form_led['status'] == '0') {
+        $data_update = [
+          'kode_pt' => $penilaian_tipologi['kode_pt'],
+          'nama_pt' => $penilaian_tipologi['nama_pt'],
+          'alamat' => $identias_pt['alamat_jalan'] ?? 'Belum diisi',
+          'tgl_sk_pendirian_pt' => $identias_pt['tgl_sk_pendirian'] ?? '0000-00-00',
+          'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? 'Belum diisi',
+          'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? '0000-00-00',
+        ];
+        $this->db->where('id', $form_led['id'])->update('form_led', $data_update);
+      }
     }
     $form_led = $this->db->from('form_led as a')->join('penilaian_tipologi as b', 'a.id_penilaian_tipologi = b.id_penilaian_tipologi')->where('b.kode_pt', $kode_pt)->where('b.periode', $periode)->get()->row_array();
 

@@ -221,7 +221,7 @@ class SinkronPt extends MX_Controller
             // ---- Tarik API per PT, dan simpan ke DB
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api.kemdikbud.go.id:8445/pddikti/1.2/pt/' . $kd_pt,
+                CURLOPT_URL => 'https://api.kemdiktisaintek.go.id:8445/pddikti/1.2/pt/' . $kd_pt,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -234,6 +234,7 @@ class SinkronPt extends MX_Controller
                     'Content-Type: application/x-www-form-urlencoded'
                 ),
                 CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
             ));
             $respon         = curl_exec($curl);
             $http_code      = curl_getinfo($curl, CURLINFO_HTTP_CODE);  // Cek status HTTP
@@ -255,6 +256,8 @@ class SinkronPt extends MX_Controller
                             'kode_pt'        => isset($responseData[0]['kode']) ? $responseData[0]['kode'] : null,
                             'nama_pt'        => isset($responseData[0]['nama']) ? $responseData[0]['nama'] : null,
                             'status_pt'      => isset($responseData[0]['status']) ? $responseData[0]['status'] : null,
+                            'tgl_sk_pendirian'  => isset($responseData[0]['tgl_sk_pendirian']) ? $responseData[0]['tgl_sk_pendirian'] : null,
+                            'alamat_jalan'      => isset($responseData[0]['alamat']['jalan']) ? $responseData[0]['alamat']['jalan'] : null,
                             'bentuk_pt'      => isset($responseData[0]['bentuk_pendidikan']['nama']) ? $responseData[0]['bentuk_pendidikan']['nama'] : null,
                             'tgl_update'     => date('Y-m-d')
                         ];
@@ -441,7 +444,7 @@ class SinkronPt extends MX_Controller
             // ---- Tarik API per PT, dan simpan ke DB
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api.kemdikbud.go.id:8445/pddikti/1.2/pt/' . $kd_pt . '/akreditasi',
+                CURLOPT_URL => 'https://api.kemdiktisaintek.go.id:8445/pddikti/1.2/pt/' . $kd_pt . '/akreditasi',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -454,6 +457,7 @@ class SinkronPt extends MX_Controller
                     'Content-Type: application/x-www-form-urlencoded'
                 ),
                 CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
             ));
             $respon                 = curl_exec($curl);
             $http_code              = curl_getinfo($curl, CURLINFO_HTTP_CODE);  // Cek status HTTP
@@ -588,6 +592,8 @@ class SinkronPt extends MX_Controller
                                         COALESCE(b.`status_pt`, '') AS status_pt,
                                         COALESCE(c.`akreditasi_pt`, '') AS akreditasi_pt,
                                         COALESCE(b.`bentuk_pt`, '') AS bentuk_pt,
+                                        COALESCE(b.`tgl_sk_pendirian`, '') AS tgl_sk_pendirian,
+                                        COALESCE(b.`alamat_jalan`, '') AS alamat_jalan,
                                         COALESCE(c.tgl_mulai_akred, '0000-00-00') AS tgl_mulai_akred,
                                         COALESCE(c.tgl_akhir_akred, '0000-00-00') AS tgl_akhir_akred,
                                         CURDATE() AS tgl_update
