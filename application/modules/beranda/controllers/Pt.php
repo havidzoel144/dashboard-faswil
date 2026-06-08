@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Writer\Word2007;
+use PhpOffice\PhpWord\TemplateProcessor;
+
 class Pt extends MX_Controller
 {
   function __construct()
@@ -26,7 +30,7 @@ class Pt extends MX_Controller
     $data = [
       'pengisian_led' => 'active',
       'judul' => 'Pengisian Laporan Implementasi SPMI',
-      'data_periode' => $this->db->select('p.*, pt.kode_pt, pt.file_led, pt.tgl_upload_led, dpm.periode as periode_dpm, fl.status as status_led, fl.id_penilaian_tipologi')
+      'data_periode' => $this->db->select('p.*, pt.kode_pt, pt.file_led, pt.tgl_upload_led, pt.id_status_penilaian, dpm.periode as periode_dpm, fl.status as status_led, fl.id_penilaian_tipologi,')
         ->from('periode as p')
         ->join('penilaian_tipologi as pt', 'p.kode = pt.periode AND pt.kode_pt = ' . $this->db->escape($kode_pt), 'left')
         ->join('data_penjaminan_mutu as dpm', 'dpm.kode_pt = pt.kode_pt AND dpm.periode = p.kode', 'left')
@@ -415,14 +419,26 @@ class Pt extends MX_Controller
     ])->row_array();
 
     $null_fields = array_keys(array_filter($form_led, function ($v, $k) {
-      if (in_array($k, ['akreditasi_pt', 'tgl_akhir_apt', 'tgl_sk_pendirian_pt', 'pejabat_penandatangan', 'tahun_pertama_terima_mhs', 'tautan_sasaran_mutu_dampak', 'created_at', 'updated_at', 'status'], true)) {
+      if (in_array($k, ['akreditasi_pt', 'tgl_akhir_apt', 'tgl_sk_pendirian_pt', 'alamat', 'pejabat_penandatangan', 'tahun_pertama_terima_mhs', 'tautan_sasaran_mutu_dampak', 'created_at', 'updated_at', 'status'], true)) {
         return false;
       }
       return is_null($v) || $v === '' || $v === '0' || $v === 0 || $v === '0000-00-00';
     }, ARRAY_FILTER_USE_BOTH));
 
     if (!empty($null_fields)) {
-      $this->session->set_flashdata('error', 'Tidak dapat disimpan permanen. Pastikan semua data sudah diisi.');
+      $field_labels = [
+        'id_penilaian_tipologi' => 'ID Penilaian Tipologi',
+        'nama_file' => 'Upload File Mind Map',
+      ];
+
+      $readable_fields = array_map(function ($field) use ($field_labels) {
+        if (isset($field_labels[$field])) {
+          return $field_labels[$field];
+        }
+        return ucwords(str_replace('_', ' ', $field));
+      }, $null_fields);
+
+      $this->session->set_flashdata('error', 'Tidak dapat disimpan permanen. Pastikan semua data sudah diisi. Field yang belum diisi: ' . implode(', ', $readable_fields));
       redirect(base_url('admin/pt/form-pengisian-led/' . safe_url_encrypt($periode)));
       return;
     }
@@ -507,6 +523,107 @@ class Pt extends MX_Controller
     $orientation = "portrait";
     $html = $this->load->view('admin/master/led/template_laporan_led', ['data' => $data_db, 'persentase_prodi' => $persentase_prodi], true);
     $this->pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
+  }
+
+  public function unduhLaporanLedWord($enc_id_penilaian_tipologi)
+  {
+    // $phpWord = new PhpWord();
+    // $section = $phpWord->addSection();
+    // $section->addText('Hello World !');
+
+    // $writer = new Word2007($phpWord);
+
+    // $filename = 'simple';
+
+    // header('Content-Type: application/msword');
+    // header('Content-Disposition: attachment;filename="' . $filename . '.docx"');
+    // header('Cache-Control: max-age=0');
+
+    // $writer->save('php://output');
+
+    $id_penilaian_tipologi = safe_url_decrypt($enc_id_penilaian_tipologi);
+    $kode_pt = explode('_', $this->session->userdata('username'))[0];
+
+    $data_db = $this->db->select('fl.*, pt.periode, pt.nama_pt, lp.nama_logo')
+      ->from('form_led as fl')
+      ->join('penilaian_tipologi as pt', 'fl.id_penilaian_tipologi = pt.id_penilaian_tipologi')
+      ->join('logo_pt as lp', 'lp.kode_pt = pt.kode_pt', 'left')
+      ->where('fl.id_penilaian_tipologi', $id_penilaian_tipologi)
+      ->where('fl.kode_pt', $kode_pt)
+      ->get()
+      ->row();
+
+    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+
+    if (!$data_db) {
+      $this->session->set_flashdata('error', 'Data LED tidak ditemukan untuk periode ini.');
+      redirect(base_url('admin/pt/pengisian-led'));
+      return;
+    }
+
+    $template_path = FCPATH . 'uploads/template_laporan_led.docx'; // path template
+    $templateProcessor = new TemplateProcessor($template_path);
+
+    // Jika $persentase_prodi adalah array, convert dulu ke string
+    $persentase_prodi_text = '';
+
+    if (is_array($persentase_prodi)) {
+      foreach ($persentase_prodi as $prodi => $nilai) {
+        $persentase_prodi_text .= $prodi . ': ' . $nilai . "%\n";
+      }
+    }
+
+    // Ganti placeholder dengan data nyata
+    $templateProcessor->setValue('nama_pt_cover', strtoupper($data_db->nama_pt));
+    $templateProcessor->setValue('nama_pt', $data_db->nama_pt);
+    $templateProcessor->setValue('tahun', substr($data_db->periode, 0, 4));
+    $templateProcessor->setValue('periode', substr($data_db->periode, 4, 1));
+    $templateProcessor->setValue('alamat', $data_db->alamat);
+    $templateProcessor->setValue('semester', substr($data_db->periode, 4, 1));
+    $templateProcessor->setValue('tgl_sk_pendirian_pt', $data_db->tgl_sk_pendirian_pt == '0000-00-00' ? $data_db->tgl_sk_pendirian_pt : format_tanggal_indonesia($data_db->tgl_sk_pendirian_pt));
+    $templateProcessor->setValue('akreditasi_pt', $data_db->akreditasi_pt);
+    $templateProcessor->setValue('tgl_akhir_apt', $data_db->tgl_akhir_apt == '0000-00-00' ? $data_db->tgl_akhir_apt : format_tanggal_indonesia($data_db->tgl_akhir_apt));
+    $templateProcessor->setValue('dasar_penyusunan', $data_db->dasar_penyusunan);
+    $templateProcessor->setValue('mekanisme_kerja_penyusunan_laporan', $data_db->mekanisme_kerja_penyusunan_laporan);
+    $templateProcessor->setValue('penetapan_diferensiasi', $data_db->penetapan_diferensiasi);
+    $templateProcessor->setValue('sasaran_mutu_masukan', $data_db->sasaran_mutu_masukan);
+    $templateProcessor->setValue('tautan_sasaran_mutu_masukan', $data_db->tautan_sasaran_mutu_masukan);
+    $templateProcessor->setValue('sasaran_mutu_proses', $data_db->sasaran_mutu_proses);
+    $templateProcessor->setValue('tautan_sasaran_mutu_proses', $data_db->tautan_sasaran_mutu_proses);
+    $templateProcessor->setValue('sasaran_mutu_luaran', $data_db->sasaran_mutu_luaran);
+    $templateProcessor->setValue('tautan_sasaran_mutu_luaran', $data_db->tautan_sasaran_mutu_luaran);
+    $templateProcessor->setValue('sasaran_mutu_dampak', $data_db->sasaran_mutu_dampak);
+    $templateProcessor->setValue('total_prodi_aktif', $persentase_prodi['total_prodi_aktif'] ?? 0);
+    $templateProcessor->setValue('prodi_terakreditasi', $persentase_prodi['prodi_terakreditasi'] ?? 0);
+    $templateProcessor->setValue('prodi_unggul_atau_a', $persentase_prodi['prodi_unggul_atau_a'] ?? 0);
+    $templateProcessor->setValue('persentase_unggul_atau_a', number_format($persentase_prodi['persentase_unggul_atau_a'], 2, ',', '.') ?? 0);
+    $templateProcessor->setValue('narasi_bab4', $data_db->narasi_bab4);
+
+    // Jika mau, bisa juga ganti gambar/logo
+    if (!empty($data_db->nama_logo)) {
+      $templateProcessor->setImageValue('logo_pt', [
+        'path' => FCPATH . 'uploads/logo_pt/' . $data_db->nama_logo,
+        'width' => 150,
+        'height' => 150,
+        'ratio' => true
+      ]);
+    } else {
+      // Jika tidak ada logo, bisa set placeholder dengan gambar default atau kosong
+      $templateProcessor->setImageValue('logo_pt', [
+        'path' => FCPATH . 'uploads/logo_pt/default.jpg', // pastikan ada gambar default ini
+        'width' => 150,
+        'height' => 150,
+        'ratio' => true
+      ]);
+    }
+
+    $file_word = 'Laporan_LED_' . $data_db->nama_pt . '_' . $data_db->periode . '_' . date('Y-m-d_H-i-s') . '.docx';
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    header('Content-Disposition: attachment; filename="' . $file_word . '"');
+    header('Cache-Control: max-age=0');
+
+    $templateProcessor->saveAs('php://output');
   }
 
   public function unduhSertifikat($enc_periode)
@@ -641,6 +758,128 @@ class Pt extends MX_Controller
     // Jika logo tidak ditemukan, tampilkan placeholder atau kirim response 404
     header("HTTP/1.0 404 Not Found");
     echo "Logo tidak ditemukan.";
+    exit;
+  }
+
+  public function uploadMindmap()
+  {
+    if (!$this->input->is_ajax_request()) {
+      show_error('Permintaan tidak valid', 400);
+      return;
+    }
+
+    $id_form_led = safe_url_decrypt($this->input->post('id_form_led'));
+    if (empty($id_form_led) || $id_form_led == 'undefined') {
+      return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode([
+          'status' => false,
+          'message' => 'ID Form LED tidak valid.',
+        ]));
+    }
+
+    if (!isset($_FILES['file_mindmap']) || empty($_FILES['file_mindmap']['name'])) {
+      return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode([
+          'status' => false,
+          'message' => 'File mindmap wajib diupload.',
+        ]));
+    }
+
+    $kode_pt = explode('_', $this->session->userdata('username'))[0];
+    $upload_path = FCPATH . 'uploads/mindmap_pt/';
+    if (!is_dir($upload_path)) {
+      mkdir($upload_path, 0777, true);
+    }
+
+    $config['upload_path'] = $upload_path;
+    $config['allowed_types'] = 'png|jpg|jpeg';
+    $config['max_size'] = 2048;
+    $config['file_ext_tolower'] = true;
+    $config['remove_spaces'] = true;
+    $config['file_name'] = 'Mindmap_' . $kode_pt . '_' . time();
+
+    $this->load->library('upload');
+    $this->upload->initialize($config);
+
+    if (!$this->upload->do_upload('file_mindmap')) {
+      return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode([
+          'status' => false,
+          'message' => strip_tags($this->upload->display_errors()),
+        ]));
+    }
+
+    $upload_data = $this->upload->data();
+    $file_mindmap = $upload_data['file_name'];
+
+    $existing = $this->db->get_where('form_led', [
+      'id' => $id_form_led,
+    ])->row_array();
+
+    $this->db->trans_begin();
+
+    $data_save = [
+      'nama_file' => $file_mindmap,
+    ];
+
+    if (!empty($existing)) {
+      $this->db->where('id', $id_form_led)->update('form_led', $data_save);
+    } else {
+      return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode([
+          'status' => false,
+          'message' => 'Data Form LED tidak ditemukan.',
+        ]));
+    }
+
+    if ($this->db->trans_status() === FALSE) {
+      $this->db->trans_rollback();
+      @unlink($upload_path . $file_mindmap);
+
+      return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode([
+          'status' => false,
+          'message' => 'Gagal menyimpan data mindmap ke database.',
+        ]));
+    }
+
+    $this->db->trans_commit();
+
+    if (!empty($existing['nama_file'])) {
+      $old_file = $upload_path . $existing['nama_file'];
+      if (file_exists($old_file)) {
+        @unlink($old_file);
+      }
+    }
+
+    return $this->output
+      ->set_content_type('application/json')
+      ->set_output(json_encode([
+        'status' => true,
+        'message' => 'File mindmap berhasil diupload.',
+        'nama_file' => $file_mindmap,
+      ]));
+  }
+
+  public function lihatFileMindmap($enc_id_form_led)
+  {
+    $id_form_led = safe_url_decrypt($enc_id_form_led);
+    $form_led = $this->db->get_where('form_led', ['id' => $id_form_led])->row_array();
+    if (!$form_led || empty($form_led['nama_file'])) {
+      $this->session->set_flashdata('error', 'File mindmap tidak ditemukan.');
+      redirect(base_url('admin/pt/pengisian-led'));
+      return;
+    }
+
+    $file_url = base_url('uploads/mindmap_pt/' . $form_led['nama_file']);
+    header('Content-Type: ' . mime_content_type(FCPATH . 'uploads/mindmap_pt/' . $form_led['nama_file']));
+    header('Content-Disposition: inline; filename="' . $form_led['nama_file'] . '"');
+    readfile(FCPATH . 'uploads/mindmap_pt/' . $form_led['nama_file']);
     exit;
   }
 }

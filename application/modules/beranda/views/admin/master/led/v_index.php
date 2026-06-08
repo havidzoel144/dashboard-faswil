@@ -40,7 +40,7 @@
     </div>
     <div class="content-body">
       <div class="row">
-        <div class="col-lg-8 col-md-6 col-sm-12 mx-auto">
+        <div class="col-lg-10 col-md-6 col-sm-12 mx-auto">
           <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
               <h4 class="card-title" id="heading-buttons1"><?= $judul ?></h4>
@@ -97,10 +97,18 @@
                                 $warna_btn = 'btn-primary';
                                 $tooltip_text = 'Silakan isi Laporan Implementasi SPMI untuk periode ' . $data['kode'];
                                 $icon_btn = 'la la-edit';
+                                $label_btn = 'Isi Laporan';
                               } else if ($data['kode_pt'] != null && $data['status_led'] == '1') {
                                 $warna_btn = 'btn-success';
                                 $tooltip_text = 'Laporan Implementasi SPMI sudah simpan permanen untuk periode ' . $data['kode'];
                                 $icon_btn = 'la la-check';
+                                $label_btn = 'Sudah Terkirim';
+                                if ($data['id_status_penilaian'] !== null) {
+                                  $warna_btn = 'btn-warning';
+                                  $tooltip_text = 'Laporan dalam proses review untuk periode ' . $data['kode'];
+                                  $icon_btn = 'la la-exclamation-triangle';
+                                  $label_btn = 'Proses Review';
+                                }
                               }
                               ?>
                               <div class="btn-group" role="group" aria-label="Aksi Laporan Implementasi SPMI">
@@ -116,27 +124,41 @@
                                   </button>
                                 </a>
                                 <?php if ($data['status_led'] == '1'): ?>
-                                  <a href="<?= base_url('admin/pt/unduh-laporan-led/' . safe_url_encrypt($data['id_penilaian_tipologi'])) ?>">
+                                  <?php if (false) : ?>
+                                    <a href="<?= base_url('admin/pt/unduh-laporan-led/' . safe_url_encrypt($data['id_penilaian_tipologi'])) ?>">
+                                      <button
+                                        class="btn btn-dark btn-sm"
+                                        type="button"
+                                        data-toggle="tooltip"
+                                        title="Unduh Laporan Implementasi SPMI untuk periode <?= $data['kode'] ?>"
+                                        <?= $disabled . ' ' . $notAllowed ?>>
+                                        <i class="la la-file"></i>
+                                      </button>
+                                    </a>
+                                  <?php endif; ?>
+                                  <a href="<?= base_url('admin/pt/unduh-laporan-led-word/' . safe_url_encrypt($data['id_penilaian_tipologi'])) ?>">
                                     <button
-                                      class="btn btn-dark btn-sm"
+                                      class="btn btn-info btn-sm"
                                       type="button"
                                       data-toggle="tooltip"
-                                      title="Unduh Laporan Implementasi SPMI untuk periode <?= $data['kode'] ?>"
+                                      title="Unduh Laporan Implementasi SPMI untuk periode <?= $data['kode'] ?> dalam format Word"
                                       <?= $disabled . ' ' . $notAllowed ?>>
                                       <i class="la la-file"></i>
                                     </button>
                                   </a>
-                                  <?php if ($data['periode_dpm'] != null): ?>
-                                    <a href="<?= base_url('admin/pt/unduh-sertifikat/' . safe_url_encrypt($data['kode'])) ?>">
-                                      <button
-                                        class="btn btn-info btn-sm"
-                                        type="button"
-                                        data-toggle="tooltip"
-                                        title="Unduh Sertifikat Laporan Implementasi SPMI untuk periode <?= $data['kode'] ?>"
-                                        <?= $disabled . ' ' . $notAllowed ?>>
-                                        <i class="la la-download"></i>
-                                      </button>
-                                    </a>
+                                  <?php if (false) : ?>
+                                    <?php if ($data['periode_dpm'] != null): ?>
+                                      <a href="<?= base_url('admin/pt/unduh-sertifikat/' . safe_url_encrypt($data['kode'])) ?>">
+                                        <button
+                                          class="btn btn-info btn-sm"
+                                          type="button"
+                                          data-toggle="tooltip"
+                                          title="Unduh Sertifikat Laporan Implementasi SPMI untuk periode <?= $data['kode'] ?>"
+                                          <?= $disabled . ' ' . $notAllowed ?>>
+                                          <i class="la la-download"></i>
+                                        </button>
+                                      </a>
+                                    <?php endif; ?>
                                   <?php endif; ?>
                                 <?php endif; ?>
                               </div>

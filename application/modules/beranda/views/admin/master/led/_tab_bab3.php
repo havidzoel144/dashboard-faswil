@@ -266,8 +266,7 @@
             <li>
               Dokumen yang ditautkan dapat berupa :
               <ol>
-                <li>Bukti pelaksanaan semua standar yang dimiliki bisa dilihat dari hasil AMI atau laporan terkait capaian isi standar.</li>
-                <li>Bukti semua hasil AMI baik temuan atau yang sesuai telah ditindaklanjuti secara konsisten dalam 3 tahun terakhir.</li>
+                <li>Hasil verifikasi dan validasi di laman spmi semuanya valid sampai dengan bagian peningkatan.</li>
               </ol>
             </li>
           </ul>
@@ -328,28 +327,34 @@
         <!-- Data Akreditasi Program Studi -->
         <div class="border rounded p-2 mb-0" style="background:linear-gradient(180deg,#f0fdf8 0%,#e8fbf2 100%); border-color:#a7e8cc !important; box-shadow:0 2px 8px rgba(16,185,129,.08);">
           <div class="font-weight-semibold mb-1" style="font-size:0.95rem; color:#0f766e;">
-            <i class="la la-bar-chart mr-1"></i> Data Akreditasi Program Studi (Sumber PDDikti per tanggal <?= date('d', strtotime($persentase_prodi['tgl_update'])) . ' ' . ['Jan' => 'Januari', 'Feb' => 'Februari', 'Mar' => 'Maret', 'Apr' => 'April', 'May' => 'Mei', 'Jun' => 'Juni', 'Jul' => 'Juli', 'Aug' => 'Agustus', 'Sep' => 'September', 'Oct' => 'Oktober', 'Nov' => 'November', 'Dec' => 'Desember'][date('M', strtotime($persentase_prodi['tgl_update']))] . ' ' . date('Y', strtotime($persentase_prodi['tgl_update'])) ?>)
+            <i class="la la-bar-chart mr-1"></i> Data Akreditasi Program Studi (Sumber PDDikti per tanggal <?= format_tanggal_indonesia($persentase_prodi['tgl_update']) ?>)
           </div>
-          <div class="row align-items-stretch">
-            <div class="col-md-3 mb-1 mb-md-0 d-flex">
+          <div class="d-flex flex-wrap" style="gap:.75rem;">
+            <div style="flex:1 1 180px; min-width:180px;">
               <div class="p-2 rounded w-100 h-100 d-flex flex-column justify-content-end text-center" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8; min-height:92px;">
-                <small class="text-muted d-block mb-1">Jumlah Prodi</small>
+                <small class="text-muted d-block mb-1">Jumlah Prodi Aktif</small>
                 <div class="font-weight-bold mt-auto" style="font-size:1.35rem; line-height:1.1; color:#0f766e;"><?= number_format($persentase_prodi['total_prodi_aktif'], 0, ',', '.') ?></div>
               </div>
             </div>
-            <div class="col-md-3 mb-1 mb-md-0 d-flex">
+            <div style="flex:1 1 180px; min-width:180px;">
               <div class="p-2 rounded w-100 h-100 d-flex flex-column justify-content-end text-center" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8; min-height:92px;">
                 <small class="text-muted d-block mb-1">Jumlah Prodi Terakreditasi</small>
                 <div class="font-weight-bold mt-auto" style="font-size:1.35rem; line-height:1.1; color:#0f766e;"><?= number_format($persentase_prodi['prodi_terakreditasi'], 0, ',', '.') ?></div>
               </div>
             </div>
-            <div class="col-md-3 mb-1 mb-md-0 d-flex">
+            <div style="flex:1 1 180px; min-width:180px;">
+              <div class="p-2 rounded w-100 h-100 d-flex flex-column justify-content-end text-center" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8; min-height:92px;">
+                <small class="text-muted d-block mb-1">Persentase Prodi Terakreditasi</small>
+                <div class="font-weight-bold mt-auto" style="font-size:1.35rem; line-height:1.1; color:#0f766e;"><?= number_format($persentase_prodi['persentase_prodi_terakreditasi'], 2, ',', '.') ?>%</div>
+              </div>
+            </div>
+            <div style="flex:1 1 180px; min-width:180px;">
               <div class="p-2 rounded w-100 h-100 d-flex flex-column justify-content-end text-center" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8; min-height:92px;">
                 <small class="text-muted d-block mb-1">Jumlah Prodi Unggul/Terakreditasi Unggul/A</small>
                 <div class="font-weight-bold mt-auto" style="font-size:1.35rem; line-height:1.1; color:#0f766e;"><?= number_format(isset($persentase_prodi['prodi_unggul_atau_a']) ? $persentase_prodi['prodi_unggul_atau_a'] : (isset($persentase_prodi['jumlah_prodi_unggul_atau_a']) ? $persentase_prodi['jumlah_prodi_unggul_atau_a'] : 0), 0, ',', '.') ?></div>
               </div>
             </div>
-            <div class="col-md-3 d-flex">
+            <div style="flex:1 1 180px; min-width:180px;">
               <div class="p-2 rounded w-100 h-100 d-flex flex-column justify-content-end text-center" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8; min-height:92px;">
                 <small class="text-muted d-block mb-1">Persentase Prodi Unggul/Terakreditasi Unggul/A</small>
                 <div class="font-weight-bold mt-auto" style="font-size:1.35rem; line-height:1.1; color:#0f766e;"><?= number_format($persentase_prodi['persentase_unggul_atau_a'], 2, ',', '.') ?>%</div>

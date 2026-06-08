@@ -87,6 +87,7 @@ class Penilaian extends MX_Controller
         'jenis_pt' => 'PTS'
       ]);
       $form_led = $this->db->query("SELECT * FROM form_led WHERE id_penilaian_tipologi = '$id_penilaian_tipologi'")->row();
+      $enc_id_form_led = safe_url_encrypt($form_led->id);
 
       if (!empty($hasil)) {
         echo json_encode([
@@ -95,7 +96,8 @@ class Penilaian extends MX_Controller
           'persentase_prodi' => $persentase_prodi,
           'skoring_prodi' => $skoring_prodi,
           'csrfHash' => $this->security->get_csrf_hash(), // ← penting
-          'form_led' => $form_led
+          'form_led' => $form_led,
+          'enc_id_form_led' => $enc_id_form_led
         ]);
       } else {
         echo json_encode([
@@ -118,8 +120,16 @@ class Penilaian extends MX_Controller
     $fasilitator_id = $this->session->userdata('user_id'); // Contoh ambil dari session
     // $periode = $this->Periode_model->get_active_periode(); // Contoh, bisa juga dari input
     $id_penilaian_tipologi = $post['id_penilaian_tipologi'];
+    $kode_pt = $post['kode_pt'];
+    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    $skoring_prodi = $this->skoring_akreditasi->hitung([
+      'jumlah_prodi_aktif' => $persentase_prodi['total_prodi_aktif'],
+      'prodi_terakreditasi' => $persentase_prodi['prodi_terakreditasi'],
+      'persentase_unggul_atau_a' => $persentase_prodi['persentase_unggul_atau_a'],
+      'jenis_pt' => 'PTS'
+    ]);
 
-    $skor_total = $post['skor_1'] + $post['skor_2'] + $post['skor_3'] + $post['skor_4'];
+    $skor_total = $post['skor_1'] + $post['skor_2'] + $post['skor_3'] + $skoring_prodi['skor'];
     $tipologi = $this->get_tipologi($skor_total);
 
     // Mulai transaksi database
@@ -134,7 +144,7 @@ class Penilaian extends MX_Controller
       'catatan_2' => $post['catatan_2'],
       'skor_3' => $post['skor_3'],
       'catatan_3' => $post['catatan_3'],
-      'skor_4' => $post['skor_4'],
+      'skor_4' => $skoring_prodi['skor'],
       'catatan_4' => $post['catatan_4'],
       'catatan_keseluruhan' => $post['catatan_keseluruhan'],
       // 'link_detail_penilaian' => $post['link_detail_penilaian'],
@@ -156,7 +166,7 @@ class Penilaian extends MX_Controller
       'skor_1' => $post['skor_1'],
       'skor_2' => $post['skor_2'],
       'skor_3' => $post['skor_3'],
-      'skor_4' => $post['skor_4'],
+      'skor_4' => $skoring_prodi['skor'],
       'skor_total' => $skor_total,
       'catatan_1' => $post['catatan_1'],
       'catatan_2' => $post['catatan_2'],
@@ -265,5 +275,22 @@ class Penilaian extends MX_Controller
 
     echo '<pre>';
     print_r($hasil);
+  }
+
+  public function lihatFileMindmap($enc_id_form_led)
+  {
+    $id_form_led = safe_url_decrypt($enc_id_form_led);
+    $form_led = $this->db->get_where('form_led', ['id' => $id_form_led])->row_array();
+    if (!$form_led || empty($form_led['nama_file'])) {
+      $this->session->set_flashdata('error', 'File mindmap tidak ditemukan.');
+      redirect(base_url('admin/pt/pengisian-led'));
+      return;
+    }
+
+    $file_url = base_url('uploads/mindmap_pt/' . $form_led['nama_file']);
+    header('Content-Type: ' . mime_content_type(FCPATH . 'uploads/mindmap_pt/' . $form_led['nama_file']));
+    header('Content-Disposition: inline; filename="' . $form_led['nama_file'] . '"');
+    readfile(FCPATH . 'uploads/mindmap_pt/' . $form_led['nama_file']);
+    exit;
   }
 }

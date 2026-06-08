@@ -6,7 +6,7 @@ class Validator extends MX_Controller
   function __construct()
   {
     parent::__construct();
-    $this->load->library(['javascript']);
+    $this->load->library(['javascript', 'Skoring_akreditasi']);
     $this->load->model(['Periode_model', 'Penilaian_model']);
     date_default_timezone_set("Asia/Jakarta");
 
@@ -197,7 +197,8 @@ class Validator extends MX_Controller
       'cek_1' => $cek_1,
       'cek_2' => $cek_2,
       'cek_3' => $cek_3,
-      'cek_4' => $cek_4,
+      // 'cek_4' => $cek_4,
+      'cek_4' => '1', // Asumsikan cek_4 selalu 1 karena tidak ada input dari validator
       'catatan_1_validator' => $catatan_1_validator,
       'catatan_2_validator' => $catatan_2_validator,
       'catatan_3_validator' => $catatan_3_validator,
@@ -330,5 +331,61 @@ class Validator extends MX_Controller
     } else {
       echo json_encode(['status' => 'error', 'message' => 'Data penilaian tidak ditemukan']);
     }
+  }
+
+  public function getPenilaian()
+  {
+    if ($this->input->is_ajax_request()) {
+      $id_penilaian_tipologi = $this->input->post('id_penilaian_tipologi');
+      $hasil = $this->Penilaian_model->getPenilaian($id_penilaian_tipologi);
+      $kode_pt = $hasil->kode_pt;
+      $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+      $skoring_prodi = $this->skoring_akreditasi->hitung([
+        'jumlah_prodi_aktif' => $persentase_prodi['total_prodi_aktif'],
+        'prodi_terakreditasi' => $persentase_prodi['prodi_terakreditasi'],
+        'persentase_unggul_atau_a' => $persentase_prodi['persentase_unggul_atau_a'],
+        'jenis_pt' => 'PTS'
+      ]);
+      $form_led = $this->db->query("SELECT * FROM form_led WHERE id_penilaian_tipologi = '$id_penilaian_tipologi'")->row();
+      $enc_id_form_led = safe_url_encrypt($form_led->id);
+
+      if (!empty($hasil)) {
+        echo json_encode([
+          'success' => true,
+          'data' => $hasil,
+          'persentase_prodi' => $persentase_prodi,
+          'skoring_prodi' => $skoring_prodi,
+          'csrfHash' => $this->security->get_csrf_hash(), // ← penting
+          'form_led' => $form_led,
+          'enc_id_form_led' => $enc_id_form_led
+        ]);
+      } else {
+        echo json_encode([
+          'success' => false,
+          'message' => 'Data tidak ditemukan.',
+          'csrfHash' => $this->security->get_csrf_hash() // ← pastikan tetap dikirim
+        ]);
+      }
+    } else {
+      // Jika bukan AJAX, tampilkan halaman error
+      show_error('Permintaan tidak valid', 400);
+    }
+  }
+
+  public function lihatFileMindmap($enc_id_form_led)
+  {
+    $id_form_led = safe_url_decrypt($enc_id_form_led);
+    $form_led = $this->db->get_where('form_led', ['id' => $id_form_led])->row_array();
+    if (!$form_led || empty($form_led['nama_file'])) {
+      $this->session->set_flashdata('error', 'File mindmap tidak ditemukan.');
+      redirect(base_url('admin/pt/pengisian-led'));
+      return;
+    }
+
+    $file_url = base_url('uploads/mindmap_pt/' . $form_led['nama_file']);
+    header('Content-Type: ' . mime_content_type(FCPATH . 'uploads/mindmap_pt/' . $form_led['nama_file']));
+    header('Content-Disposition: inline; filename="' . $form_led['nama_file'] . '"');
+    readfile(FCPATH . 'uploads/mindmap_pt/' . $form_led['nama_file']);
+    exit;
   }
 }

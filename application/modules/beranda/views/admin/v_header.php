@@ -270,6 +270,11 @@
             border: 1px solid rgba(0, 0, 0, 0.3) !important;
         }
 
+        .input-text {
+            resize: none;
+            border: 1px solid rgba(0, 0, 0, 0.3) !important;
+        }
+
         .label-required::after {
             content: " *";
             color: red;

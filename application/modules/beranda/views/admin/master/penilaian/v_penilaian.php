@@ -203,9 +203,12 @@
                       <div class="row">
                         <div class="col-lg-3">
                           <fieldset class="form-group mb-1">
+                            <style>
+
+                            </style>
                             <label for="skor-1" class="label-required">
                               Skor 1
-                              <span class="text-danger" data-toggle="popover" data-content="0 = Tidak Memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Perguruan tinggi terbukti telah mengimplementasikan Sistem Penjaminan Mutu Internal yang  mencakup keempat aspek secara konsisten dan efektif dalam peningkatan mutu pendidikan secara berkelanjutan. <br> 1.5 = Perguruan tinggi terbukti telah mengimplementasikan Sistem Penjaminan Mutu Internal yang mencakup keempat aspek secara konsisten dan efektif dalam peningkatan mutu pendidikan secara berkelanjutan, serta telah menunjukkan adanya upaya pengembangan, namun belum sepenuhnya terbukti efektif <br> 2 = Syarat perlu status terakreditasi Unggul : Perguruan tinggi terbukti telah mengembangkan dan mengimplementasikan Sistem Penjaminan Mutu Internal yang  mencakup keempat aspek dan telah terbukti efektif dalam peningkatan mutu pendidikan secara berkelanjutan." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                              <span class="text-danger" data-toggle="popover" data-content="0 = Tidak Memenuhi <br> 1 = Perguruan tinggi terbukti telah mengimplementasikan Sistem Penjaminan Mutu Internal <b class='text-primary'>yang mencakup keempat aspek secara konsisten dan efektif</b> dalam peningkatan mutu pendidikan secara berkelanjutan. <br> 1.5 = Perguruan tinggi terbukti telah mengimplementasikan Sistem Penjaminan Mutu Internal yang mencakup keempat aspek secara konsisten dan efektif dalam peningkatan mutu pendidikan secara berkelanjutan, serta telah menunjukkan adanya upaya pengembangan, <b>namun belum sepenuhnya terbukti efektif</b> <br> 2 = Perguruan tinggi terbukti telah <b>mengembangkan dan mengimplementasikan Sistem Penjaminan Mutu Internal yang mencakup keempat aspek dan telah terbukti efektif</b> dalam peningkatan mutu pendidikan secara berkelanjutan." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
                             </label>
                             <select class="form-control square" id="skor-1" name="skor_1" required>
                               <option value="">-- Pilih Skor --</option>
@@ -214,13 +217,6 @@
                               <option value="1.5">1.5</option>
                               <option value="2.0">2</option>
                             </select>
-                            <div class="mt-1 lihat-narasi-led d-none">
-                              <small class="text-muted">
-                                <a href="javascript:void(0)" data-indikator="1" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 1" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
-                                  <i class="fa fa-search"></i> Narasi LED Indikator 1
-                                </a>
-                              </small>
-                            </div>
                           </fieldset>
                         </div>
                         <div class="col-lg-9">
@@ -252,7 +248,7 @@
                           <fieldset class="form-group mb-1">
                             <label for="skor-2" class="label-required">
                               Skor 2
-                              <span class="text-danger" data-toggle="popover" data-content="0 = Tidak Memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Perguruan Tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tatakelola perguruan tinggi dalam bidang akademik dan non-akademik. <br> 1.5 = Perguruan tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian, dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tata kelola perguruan tinggi dalam bidang akademik dan non-akademik, serta sudah menunjukkan adanya upaya peningkatan mutu pendidikan tinggi yang memenuhi aspek berkelanjutan, efektif, dan konsisten. <br> 2 = Syarat perlu status terakreditasi Unggul : Perguruan Tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tatakelola perguruan tinggi dalam bidang akademik dan non-akademik  untuk meningkatkan mutu pendidikan tinggi secara berkelanjutan, efektif dan konsisten. " data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                              <span class="text-danger" data-toggle="popover" data-content="0 = Tidak Memenuhi <br> 1 = Perguruan Tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tatakelola perguruan tinggi dalam bidang akademik dan non-akademik. <br> 1.5 = Perguruan tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian, dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tata kelola perguruan tinggi dalam bidang akademik dan non-akademik, <b>serta sudah menunjukkan adanya upaya peningkatan mutu pendidikan tinggi yang memenuhi aspek berkelanjutan, efektif, dan konsisten.</b> <br> 2 = Perguruan Tinggi terbukti telah melaksanakan siklus penetapan, pelaksanaan, evaluasi, pengendalian dan peningkatan standar pendidikan tinggi yang menunjukkan keberfungsian tatakelola perguruan tinggi dalam bidang akademik dan non-akademik <b>untuk meningkatkan mutu pendidikan tinggi secara berkelanjutan, efektif dan konsisten.</b>" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
                             </label>
                             <select class="form-control square" id="skor-2" name="skor_2" required>
                               <option value="">-- Pilih Skor --</option>
@@ -261,13 +257,6 @@
                               <option value="1.5">1.5</option>
                               <option value="2.0">2</option>
                             </select>
-                            <div class="mt-1 lihat-narasi-led d-none">
-                              <small class="text-muted">
-                                <a href="javascript:void(0)" data-indikator="2" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 2" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
-                                  <i class="fa fa-search"></i> Narasi LED Indikator 2
-                                </a>
-                              </small>
-                            </div>
                           </fieldset>
                         </div>
                         <div class="col-lg-9">
@@ -298,7 +287,7 @@
                           <fieldset class="form-group mb-1">
                             <label for="skor-3" class="label-required">
                               Skor 3
-                              <span class="text-danger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Perguruan tinggi terbukti memililki laporan implementasi SPMI secara berkala dan lengkap yang mencakup kedua aspek, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi. <br> 1.5 = Perguruan tinggi terbukti memiliki laporan implementasi SPMI secara berkala dan lengkap yang mencakup kedua aspek, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi, namun belum sepenuhnya sistematis. <br> 2 = Perguruan tinggi terbukti memililki laporan implementasi SPMI secara berkala, sistematis, dan lengkap yang mencakup kedua aspek, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                              <span class="text-danger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Perguruan tinggi terbukti memililki laporan implementasi SPMI <b class='text-primary'>secara berkala dan lengkap yang mencakup kedua aspek</b>, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi. <br> 1.5 = Perguruan tinggi terbukti memiliki laporan implementasi SPMI secara berkala dan lengkap yang mencakup kedua aspek, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi, <b>namun belum sepenuhnya sistematis.</b> <br> 2 = Perguruan tinggi terbukti memililki laporan implementasi SPMI <b>secara berkala, sistematis, dan lengkap yang mencakup kedua aspek</b>, yang menunjukkan kinerja perguruan tinggi dan keberfungsian sistem pengelolaan data dan informasi." data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
                             </label>
                             <select class="form-control square" id="skor-3" name="skor_3" required>
                               <option value="">-- Pilih Skor --</option>
@@ -307,13 +296,6 @@
                               <option value="1.5">1.5</option>
                               <option value="2.0">2</option>
                             </select>
-                            <div class="mt-1 lihat-narasi-led d-none">
-                              <small class="text-muted">
-                                <a href="javascript:void(0)" data-indikator="3" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 3" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
-                                  <i class="fa fa-search"></i> Narasi LED Indikator 3
-                                </a>
-                              </small>
-                            </div>
                           </fieldset>
                         </div>
                         <div class="col-lg-9">
@@ -339,68 +321,78 @@
                         </div>
                       </div>
                       <hr>
-                      <div class="row mb-1">
-                        <div class="col-md-3 mb-1 mb-md-0">
-                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
-                            <small class="text-muted d-block">Total Prodi</small>
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <label for="skor-4" class="label-required">
+                            Data Akreditasi Program Studi
+                            <span class="text-danger popover-skor4-trigger" data-toggle="popover" data-content="1 = Persentase PS terakreditasi 100%. <br> 1.5 = <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>15% sd <20%</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%</li></ol> 2 = <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%.</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.</li></ol>" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i>
+                            </span>
+                        </div>
+                        </label>
+                      </div>
+                      <div class="mb-1 d-flex flex-wrap" style="gap:0.75rem;">
+                        <div style="flex:1 1 220px; min-width:220px;">
+                          <div class="p-2 rounded h-100" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Total Prodi Aktif</small>
                             <div class="font-weight-bold" id="total-prodi-aktif" style="font-size:1.05rem; color:#0f766e;">-</div>
                           </div>
                         </div>
-                        <div class="col-md-3 mb-1 mb-md-0">
-                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                        <div style="flex:1 1 220px; min-width:220px;">
+                          <div class="p-2 rounded h-100" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
                             <small class="text-muted d-block">Jumlah Prodi Terakreditasi</small>
                             <div class="font-weight-bold" id="prodi-terakreditasi" style="font-size:1.05rem; color:#0f766e;">-</div>
                           </div>
                         </div>
-                        <div class="col-md-3 mb-1 mb-md-0">
-                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
-                            <small class="text-muted d-block">Jumlah Prodi Unggul/A</small>
+                        <div style="flex:1 1 220px; min-width:220px;">
+                          <div class="p-2 rounded h-100" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Persentase Prodi Terakreditasi</small>
+                            <div class="font-weight-bold" id="persentase-prodi-terakreditasi" style="font-size:1.05rem; color:#0f766e;">-</div>
+                          </div>
+                        </div>
+                        <div style="flex:1 1 220px; min-width:220px;">
+                          <div class="p-2 rounded h-100" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Jumlah Prodi Unggul/Terakreditasi Unggul/A</small>
                             <div class="font-weight-bold" id="prodi-unggul-atau-a" style="font-size:1.05rem; color:#0f766e;">-</div>
                           </div>
                         </div>
-                        <div class="col-md-3">
-                          <div class="p-2 rounded" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
-                            <small class="text-muted d-block">Persentase Prodi Unggul/A</small>
+                        <div style="flex:1 1 220px; min-width:220px;">
+                          <div class="p-2 rounded h-100" style="background:#ffffff; box-shadow:inset 0 0 0 1px #bdeed8;">
+                            <small class="text-muted d-block">Persentase Prodi Unggul/Terakreditasi Unggul/A</small>
                             <div class="font-weight-bold" id="persentase-prodi-unggul-atau-a" style="font-size:1.05rem; color:#0f766e;">-</div>
                           </div>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-lg-3">
-                          <fieldset class="form-group mb-1">
-                            <label for="skor-4" class="label-required">
-                              Skor 4
-                              <span class="text-danger popover-skor4-trigger" data-toggle="popover" data-content="0 = Tidak memenuhi <br> 1 = Syarat Perlu untuk Perolehan Status Terakreditasi : Persentase PS terakreditasi 100%. <br> 1.5 = Syarat perlu status terakreditasi Unggul  (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>15% sd <20%</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>40% sd <50% (PTNBH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>20% sd <25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal =>30% sd <40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%.(PTS Vokasi)</li></ol> 2 = Syarat perlu status terakreditasi Unggul (Semua Prodi Harus Terakreditasi) : <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%.</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 50%.(PTN BH)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 25%. (PTN Akademik)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 40%.(PTN Vokasi)</li><li>Persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.(PTS Vokasi)</li></ol>" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
-                            </label>
-                            <select class="form-control square" id="skor-4" name="skor_4" required disabled>
-                              <option value="">-- Skor Tampil Otomatis --</option>
-                              <option value="0.0">0</option>
-                              <option value="1.0">1</option>
-                              <option value="1.5">1.5</option>
-                              <option value="2.0">2</option>
-                            </select>
-                            <div class="mt-1 lihat-narasi-led d-none">
-                              <small class="text-muted">
-                                <a href="javascript:void(0)" data-indikator="4" data-toggle="tooltip" data-placement="top" title="Klik untuk Lihat Narasi LED Indikator 4" class="badge badge-primary d-block w-100 text-center py-1 narasi-indikator-led">
-                                  <i class="fa fa-search"></i> Narasi LED Indikator 4
-                                </a>
-                              </small>
-                            </div>
-                          </fieldset>
-                        </div>
-                        <div class="col-lg-9">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <fieldset class="form-group mb-1">
-                                <label for="catatan-4-validator">Catatan Skor 4 Validator</label>
-                                <textarea class="form-control textarea-catatan" id="catatan-4-validator" placeholder="Catatan skor 4 dari validator" disabled></textarea>
-                              </fieldset>
+
+                      <?php if (false) :  ?>
+                        <div class="row">
+                          <div class="col-lg-3">
+                            <fieldset class="form-group mb-1">
+                              <label for="skor-4" class="label-required">
+                                Skor 4
+                                <span class="text-danger popover-skor4-trigger" data-toggle="popover" data-content="1 = Persentase PS terakreditasi 100%. <br> 1.5 = <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>15% sd <20%</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A =>10% sd <15%</li></ol> 2 = <ol><li>PT dengan jumlah Prodi >= 40, atau <= 10, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 20%.</li><li>PT dengan jumlah Prodi antara 10 s.d. 40, persentase PS Terakreditasi Unggul, dan/atau peringkat A minimal 15%.</li></ol>" data-trigger="hover" data-original-title="Detail" data-html="true"><i class="la la-info-circle"></i></span>
+                              </label>
+                              <select class="form-control square" id="skor-4" name="skor_4" required disabled>
+                                <option value="">-- Skor Tampil Otomatis --</option>
+                                <option value="0.0">0</option>
+                                <option value="1.0">1</option>
+                                <option value="1.5">1.5</option>
+                                <option value="2.0">2</option>
+                              </select>
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-9">
+                            <div class="row">
+                              <div class="col-lg-12">
+                                <fieldset class="form-group mb-1">
+                                  <label for="catatan-4-validator">Catatan Skor 4 Validator</label>
+                                  <textarea class="form-control textarea-catatan" id="catatan-4-validator" placeholder="Catatan skor 4 dari validator" disabled></textarea>
+                                </fieldset>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
 
-                      <!-- <div class="row">
+                        <!-- <div class="row">
                         <div class="col-lg-12">
                           <fieldset class="form-group mb-1">
                             <label for="skor-2" class="label-required">Link Detail Penilaian</label>
@@ -408,6 +400,7 @@
                           </fieldset>
                         </div>
                       </div> -->
+                      <?php endif; ?>
 
                       <div class="row">
                         <div class="col-lg-12">
@@ -488,7 +481,7 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header bg-primary white">
-              <h5 class="modal-title text-white" id="modalBabLedLabel">Dokumen LED</h5>
+              <h5 class="modal-title text-white" id="modalBabLedLabel">Dokumen Implementasi SPMI</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -745,7 +738,7 @@
       '4': 'BAB 4'
     };
 
-    $('#modalBabLedLabel').text(titleMap[bab] ? titleMap[bab] : 'Dokumen LED');
+    $('#modalBabLedLabel').text(titleMap[bab] ? titleMap[bab] : 'Dokumen Implementasi SPMI');
     $('#modal-bab-led-content').html('');
 
     if (!idPenilaian) {
@@ -762,10 +755,8 @@
       },
       dataType: 'json',
       success: function(response) {
-        console.log(response);
-
         if (!response.form_led) {
-          $('#modal-bab-led-info').removeClass('d-none').text('Data LED tidak tersedia.');
+          $('#modal-bab-led-info').removeClass('d-none').text('Data tidak tersedia.');
           return;
         }
 
@@ -806,10 +797,15 @@
             '</div>';
         } else if (bab === 2) {
           const penetapan_diferensiasi = response.form_led && response.form_led.penetapan_diferensiasi ? response.form_led.penetapan_diferensiasi : '';
+          const enc_id_form_led = response.enc_id_form_led ? response.enc_id_form_led : '';
           konten =
             '<div style="white-space: normal; word-break: break-word; overflow-wrap: anywhere; font-size: 16px;">' +
             '<div><strong>Penetapan Diferensiasi:</strong><br>' +
             (penetapan_diferensiasi ? penetapan_diferensiasi : '-') +
+            '</div>' +
+            '<br>' +
+            '<div><strong>Mindmap Diferensiasi Misi Perguruan Tinggi ke Penjaminan Mutu :</strong><br>' +
+            (enc_id_form_led ? '<a href="<?= base_url("admin/lihat-file-mindmap/") ?>' + enc_id_form_led + '" target="_blank">Lihat Gambar Mindmap</a>' : '-') +
             '</div>' +
             '</div>';
         } else if (bab === 3) {
@@ -858,7 +854,7 @@
           const narasi_bab4 = response.form_led && response.form_led.narasi_bab4 ? response.form_led.narasi_bab4 : '';
           konten =
             '<div style="white-space: normal; word-break: break-word; overflow-wrap: anywhere; font-size: 16px;">' +
-            '<div><strong>Penetapan Diferensiasi:</strong><br>' +
+            '<div><strong>BAB 4:</strong><br>' +
             (narasi_bab4 ? narasi_bab4 : '-') +
             '</div>' +
             '</div>';
@@ -873,73 +869,6 @@
       },
       error: function() {
         $('#modal-bab-led-info').removeClass('d-none').text('Gagal mengambil data.');
-      }
-    });
-  });
-
-  $('.narasi-indikator-led').on('click', function() {
-    let id_penilaian_tipologi = $('#id-penilaian-tipologi').val();
-    let narasi = 'narasi_' + $(this).data('indikator');
-    let bukti = 'bukti_' + $(this).data('indikator');
-
-    $.ajax({
-      url: '<?= base_url("admin/get-penilaian") ?>',
-      method: 'POST',
-      data: {
-        id_penilaian_tipologi: id_penilaian_tipologi,
-        [csrfName]: csrfHash
-      },
-      dataType: 'json',
-      success: function(response) {
-        if (response.form_led == null) {
-          return Swal.fire({
-            icon: 'error',
-            title: 'Gagal!',
-            text: "Narasi tidak tersedia.",
-            confirmButtonColor: '#dc3545'
-          });
-        }
-
-        const indikator = narasi.split('_')[1];
-        const indikatorMap = {
-          '1': {
-            label: 'Sasaran Mutu Masukan',
-            narasiKey: 'sasaran_mutu_masukan',
-            buktiKey: 'tautan_sasaran_mutu_masukan'
-          },
-          '2': {
-            label: 'Sasaran Mutu Proses',
-            narasiKey: 'sasaran_mutu_proses',
-            buktiKey: 'tautan_sasaran_mutu_proses'
-          },
-          '3': {
-            label: 'Sasaran Mutu Luaran',
-            narasiKey: 'sasaran_mutu_luaran',
-            buktiKey: 'tautan_sasaran_mutu_luaran'
-          },
-          '4': {
-            label: 'Sasaran Mutu Dampak',
-            narasiKey: 'sasaran_mutu_dampak',
-            buktiKey: 'tautan_sasaran_mutu_dampak'
-          }
-        };
-
-        let narasiValue = response.data[narasi] ? response.data[narasi] : '';
-        let buktiValue = response.data[bukti] ? response.data[bukti] : '';
-
-        if (indikatorMap[indikator]) {
-          narasiValue = response.form_led[indikatorMap[indikator].narasiKey] ? response.form_led[indikatorMap[indikator].narasiKey] : '';
-          buktiValue = response.form_led[indikatorMap[indikator].buktiKey] ? response.form_led[indikatorMap[indikator].buktiKey] : '';
-        }
-
-        $('#modalNarasiLedLabel').text((indikatorMap[indikator] ? indikatorMap[indikator].label : 'Indikator ' + indikator));
-        $('#narasi-led-indikator').val(narasiValue);
-        $('#link-bukti-indikator').val(buktiValue);
-        $('#btn-link-bukti-indikator').attr('href', buktiValue);
-        $('#modal-narasi-led').modal('show');
-      },
-      error: function(xhr) {
-        alert('Gagal mengambil data');
       }
     });
   });
@@ -1075,6 +1004,7 @@
           $('.btn-modal-bab').css('cursor', 'not-allowed');
           $('#total-prodi-aktif').text('-');
           $('#prodi-terakreditasi').text('-');
+          $('#persentase-prodi-terakreditasi').text('-');
           $('#prodi-unggul-atau-a').text('-');
           $('#persentase-prodi-unggul-atau-a').text('-');
           return Swal.fire({
@@ -1096,6 +1026,11 @@
 
         const totalProdi = ambilNilai(response.persentase_prodi, ['total_prodi_aktif'], '0');
         const prodiTerakreditasi = ambilNilai(response.persentase_prodi, ['prodi_terakreditasi'], '0');
+        let persentaseTerakreditasi = ambilNilai(response.persentase_prodi, ['persentase_prodi_terakreditasi'], '0');
+        if (persentaseTerakreditasi !== '' && !String(persentaseTerakreditasi).includes('%')) {
+          const angkaPersentase = parseFloat(String(persentaseTerakreditasi).replace(',', '.'));
+          persentaseTerakreditasi = isNaN(angkaPersentase) ? persentaseTerakreditasi + '%' : angkaPersentase.toFixed(2) + '%';
+        }
         const prodiUnggulA = ambilNilai(response.persentase_prodi, ['prodi_unggul_atau_a'], '0');
         let persentaseUnggulA = ambilNilai(response.persentase_prodi, ['persentase_unggul_atau_a'], '0');
 
@@ -1106,6 +1041,7 @@
 
         $('#total-prodi-aktif').text(totalProdi);
         $('#prodi-terakreditasi').text(prodiTerakreditasi);
+        $('#persentase-prodi-terakreditasi').text(persentaseTerakreditasi);
         $('#prodi-unggul-atau-a').text(prodiUnggulA);
         $('#persentase-prodi-unggul-atau-a').text(persentaseUnggulA);
 

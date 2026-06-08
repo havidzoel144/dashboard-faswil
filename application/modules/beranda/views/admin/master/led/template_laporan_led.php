@@ -205,7 +205,7 @@ $tglAkhirAptIndonesia = tanggal_indonesia($data->tanggal_akhir_apt ?? $data->tgl
     </div>
 
     <div class="tahun">
-      TAHUN <?= substr($data->periode, 0, 4); ?> SEMESTER <?= substr($data->periode, 4, 1); ?>
+      TAHUN <?= substr($data->periode, 0, 4); ?> PERIODE <?= substr($data->periode, 4, 1); ?>
     </div>
   </div>
 
@@ -220,7 +220,7 @@ $tglAkhirAptIndonesia = tanggal_indonesia($data->tanggal_akhir_apt ?? $data->tgl
 
   <table class="lembar-pengesahan" style="width:100%; margin-top:40px;">
     <tr>
-      <td colspan="3" style="text-align: center;">Lamporan Implementasi Sistem Manajemen Mutu Internal (SPMI)</td>
+      <td colspan="3" style="text-align: center;">Laporan Implementasi Sistem Manajemen Mutu Internal (SPMI)</td>
     </tr>
 
     <tr>
