@@ -57,6 +57,34 @@ class MX_Controller
 
         // autoload module items
         $this->load->_autoloader($this->autoload);
+
+        // Check if password is still standard
+        $user_id = $this->session->userdata('user_id');
+        $this->db->select('password');
+        $this->db->from('users');
+        $this->db->where('id', $user_id);
+        $user = $this->db->get()->row();
+
+        $this->is_standard_password = false;
+        if ($user && password_verify('admin123', $user->password)) {
+            $this->is_standard_password = true;
+            $current_uri = ltrim(CI::$APP->uri->uri_string(), '/');
+            $is_dashboard = (strpos($current_uri, 'admin/dashboard') === 0);
+            $is_logout = ($current_uri === 'logout' || substr($current_uri, -7) === '/logout');
+            $is_change_password_post = (
+                $_SERVER['REQUEST_METHOD'] === 'POST'
+                && (
+                    strpos($current_uri, 'admin/ubah-password') !== false
+                    || strpos($current_uri, 'change-password') !== false
+                    || strpos($current_uri, 'change_password') !== false
+                )
+            );
+
+            if (!$is_dashboard && !$is_logout && !$is_change_password_post) {
+                $this->session->set_flashdata('error', 'Anda harus mengganti password standar sebelum mengakses halaman lain.');
+                redirect(base_url('admin/dashboard'));
+            }
+        }
     }
 
     /**
@@ -85,7 +113,7 @@ class MX_Controller
         }
 
         // Ambil role_id user dalam array
-        $user_role_ids = array_map(fn ($r) => $r->role_id, $user_roles);
+        $user_role_ids = array_map(fn($r) => $r->role_id, $user_roles);
 
         // Cek intersection antara role user dan allowed_roles
         $allowed = count(array_intersect($user_role_ids, $allowed_roles)) > 0;

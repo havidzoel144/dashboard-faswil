@@ -617,7 +617,7 @@ class Pt extends MX_Controller
       ]);
     }
 
-    $file_word = 'Laporan_LED_' . $data_db->nama_pt . '_' . $data_db->periode . '_' . date('Y-m-d_H-i-s') . '.docx';
+    $file_word = 'Laporan_Implementasi_SPMI_' . $data_db->nama_pt . '_' . $data_db->periode . '_' . date('Y-m-d_H-i-s') . '.docx';
 
     header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
     header('Content-Disposition: attachment; filename="' . $file_word . '"');
