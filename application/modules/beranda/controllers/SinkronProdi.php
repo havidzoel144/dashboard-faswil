@@ -207,7 +207,7 @@ class sinkronProdi extends MX_Controller
             // ---- Tarik API per PT, dan simpan ke DB
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api.kemdikbud.go.id:8445/pddikti/1.2/pt/' . $kd_pt . '/prodi',
+                CURLOPT_URL => 'https://api.kemdiktisaintek.go.id:8445/pddikti/1.2/pt/' . $kd_pt . '/prodi',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -220,6 +220,7 @@ class sinkronProdi extends MX_Controller
                     'Content-Type: application/x-www-form-urlencoded'
                 ),
                 CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
             ));
             $respon                 = curl_exec($curl);
             $http_code              = curl_getinfo($curl, CURLINFO_HTTP_CODE);  // Cek status HTTP
@@ -452,7 +453,7 @@ class sinkronProdi extends MX_Controller
             // ---- Tarik API per PT, dan simpan ke DB
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api.kemdikbud.go.id:8445/pddikti/1.2/pt/' . $kd_pt . '/' . 'prodi/' . $id_prodi . '/akreditasi',
+                CURLOPT_URL => 'https://api.kemdiktisaintek.go.id:8445/pddikti/1.2/pt/' . $kd_pt . '/' . 'prodi/' . $id_prodi . '/akreditasi',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -465,6 +466,7 @@ class sinkronProdi extends MX_Controller
                     'Content-Type: application/x-www-form-urlencoded'
                 ),
                 CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
             ));
             $respon     = curl_exec($curl);
             $http_code  = curl_getinfo($curl, CURLINFO_HTTP_CODE);  // Cek status HTTP
@@ -706,7 +708,7 @@ class sinkronProdi extends MX_Controller
             // ---- Tarik API per PT, dan simpan ke DB
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api.kemdikbud.go.id:8445/pddikti/1.2/pt/' . $kd_pt . '/' . 'prodi/' . $id_prodi . '/akreditasi',
+                CURLOPT_URL => 'https://api.kemdiktisaintek.go.id:8445/pddikti/1.2/pt/' . $kd_pt . '/' . 'prodi/' . $id_prodi . '/akreditasi',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -719,6 +721,7 @@ class sinkronProdi extends MX_Controller
                     'Content-Type: application/x-www-form-urlencoded'
                 ),
                 CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
             ));
             $respon = curl_exec($curl);
             curl_close($curl);

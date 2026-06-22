@@ -52,6 +52,8 @@ $route['admin/simpan-skor'] = 'beranda/penilaian/simpanSkor';
 $route['admin/riwayat-penilaian/(:any)'] = 'beranda/penilaian/riwayatPenilaian/$1';
 $route['admin/kirim-nilai/(:any)/(:any)'] = 'beranda/penilaian/kirimNilai/$1/$2';
 $route['admin/persentase-prodi'] = 'beranda/penilaian/persentaseProdi';
+$route['admin/lihat-file-mindmap/(:any)'] = 'beranda/penilaian/lihatFileMindmap/$1';
+$route['admin/unduh-laporan-led-word/(:any)'] = 'beranda/penilaian/unduhLaporanLedWord/$1';
 
 // PENILAIAN VALIDATOR
 $route['admin/validator'] = 'beranda/validator';
@@ -62,6 +64,9 @@ $route['rwy-validator/(:any)'] = 'beranda/validator/rwy_validator/$1';
 $route['daftar-fasilitator/(:any)'] = 'beranda/validator/daftar_fasilitator/$1';
 $route['penilaian-validator/(:any)'] = 'beranda/validator/penilaian_validator/$1';
 $route['admin/validator/get-data-penilaian/(:any)'] = 'beranda/validator/getDataPenilaian/$1';
+$route['admin/validator/get-penilaian'] = 'beranda/validator/getPenilaian';
+$route['admin/validator/lihat-file-mindmap/(:any)'] = 'beranda/validator/lihatFileMindmap/$1';
+$route['admin/validator/unduh-laporan-led-word/(:any)'] = 'beranda/validator/unduhLaporanLedWord/$1';
 
 // PROGRES PENILAIAN
 $route['admin/progres-penilaian'] = 'beranda/progres';
@@ -97,9 +102,14 @@ $route['admin/pt/form-pengisian-led/(:any)'] = 'beranda/pt/formPengisianLed/$1';
 $route['admin/pt/simpan-led'] = 'beranda/pt/simpanLed';
 $route['admin/pt/simpan-permanen'] = 'beranda/pt/simpanPermanen';
 $route['admin/pt/unduh-laporan-led/(:any)'] = 'beranda/pt/unduhLaporanLed/$1';
+$route['admin/pt/unduh-laporan-led-word/(:any)'] = 'beranda/pt/unduhLaporanLedWord/$1';
 $route['admin/pt/unduh-sertifikat/(:any)'] = 'beranda/pt/unduhSertifikat/$1';
 $route['admin/pt/upload-logo'] = 'beranda/pt/uploadLogo';
 $route['admin/pt/logo/(:any)'] = 'beranda/pt/logo/$1';
+$route['admin/pt/upload-mindmap'] = 'beranda/pt/uploadMindmap';
+$route['admin/pt/lihat-file-mindmap/(:any)'] = 'beranda/pt/lihatFileMindmap/$1';
+$route['admin/pt/export-nilai-pdf/(:any)'] = 'beranda/pt/exportNilaiPdf/$1';
+
 $route['admin/pt/upload-led'] = 'beranda/pt/uploadLed';
 $route['admin/pt/upload-led/simpan'] = 'beranda/pt/simpanUploadLed';
 $route['admin/pt/lihat-file-led/(:num)/(:num)'] = 'beranda/pt/lihatFileLed/$1/$2';

@@ -124,8 +124,9 @@ class Admin extends MX_Controller
     //   'tipologi_4' => $this->db->query("SELECT * FROM data_penjaminan_mutu WHERE tipologi = 'Tipologi 4' AND periode = '$periode'")->num_rows(),
     // );
 
-    $labels_result = $this->db->query("SELECT `periode`, `skor_total` FROM `data_penjaminan_mutu` WHERE `kode_pt` = '$kode_pt' GROUP BY `periode` ORDER BY `periode` ASC")->result_array();
+    $labels_result = $this->db->query("SELECT `periode`, `skor_total`, `tipologi` FROM `data_penjaminan_mutu` WHERE `kode_pt` = '$kode_pt' GROUP BY `periode` ORDER BY `periode` ASC")->result_array();
     $data['labels'] = array_column($labels_result, 'periode');
+    $data['tipologi'] = array_column($labels_result, 'tipologi');
     $data['capaian_pt'] = array_column($labels_result, 'skor_total');
     $bentuk_pt_self = $this->db->query("SELECT `bentuk_pt` FROM `data_pt` WHERE `kode_pt` = '$kode_pt'")->row_array();
 
@@ -168,6 +169,7 @@ class Admin extends MX_Controller
 
     $data['rata_rata_per_periode'] = $rata_rata_per_periode;
     $data['skor_nol'] = $skor_nol;
+    $data['bentuk_pt_self'] = $bentuk_pt_self['bentuk_pt'];
 
     // echo json_encode([
     //   'labels' => $data['labels'],

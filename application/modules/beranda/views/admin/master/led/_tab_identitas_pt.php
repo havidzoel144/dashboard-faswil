@@ -19,32 +19,32 @@
       <div class="row">
         <div class="col-md-6 col-sm-12">
           <div class="form-group mb-2">
-            <label class="font-weight-semibold text-dark" style="font-size:1rem;">Nama Perguruan Tinggi <span class="text-danger">*</span></label>
-            <input type="text" name="nama_pt" class="form-control textarea-catatan" value="<?= isset($identitas_pt['nama_pt']) ? $identitas_pt['nama_pt'] : '' ?>" placeholder="Nama Perguruan Tinggi" disabled required>
+            <label class="font-weight-semibold text-dark" style="font-size:1rem;">Nama Perguruan Tinggi</label>
+            <input type="text" name="nama_pt" class="form-control input-text" value="<?= isset($identitas_pt['nama_pt']) ? $identitas_pt['nama_pt'] : '' ?>" placeholder="Nama Perguruan Tinggi" disabled>
           </div>
         </div>
         <div class="col-md-6 col-sm-12">
           <div class="form-group mb-2">
-            <label class="font-weight-semibold text-dark" style="font-size:1rem;">Alamat <span class="text-danger">*</span></label>
-            <input name="alamat" class="form-control textarea-catatan" value="<?= isset($form_led['alamat']) ? $form_led['alamat'] : '' ?>" placeholder="Alamat Perguruan Tinggi" disabled required>
+            <label class="font-weight-semibold text-dark" style="font-size:1rem;">Alamat</label>
+            <input name="alamat" class="form-control input-text" value="<?= isset($form_led['alamat']) ? $form_led['alamat'] : '' ?>" placeholder="Alamat Perguruan Tinggi" disabled>
           </div>
         </div>
         <div class="col-md-6 col-sm-12">
           <div class="form-group mb-2">
-            <label class="font-weight-semibold text-dark" style="font-size:1rem;">Tanggal SK Pendirian PT <span class="text-danger">*</span></label>
-            <input type="text" name="tgl_sk_pendirian_pt" class="form-control textarea-catatan" value="<?= isset($form_led['tgl_sk_pendirian_pt']) ? $form_led['tgl_sk_pendirian_pt'] : '' ?>" placeholder="Tanggal SK Pendirian PT" disabled required>
+            <label class="font-weight-semibold text-dark" style="font-size:1rem;">Tanggal SK Pendirian PT</label>
+            <input type="text" name="tgl_sk_pendirian_pt" class="form-control input-text" value="<?= isset($form_led['tgl_sk_pendirian_pt']) ? $form_led['tgl_sk_pendirian_pt'] : '' ?>" placeholder="Tanggal SK Pendirian PT" disabled>
           </div>
         </div>
         <div class="col-md-6 col-sm-12">
           <div class="form-group mb-2">
-            <label class="font-weight-semibold text-dark" style="font-size:1rem;">Akreditasi Perguruan Tinggi <span class="text-danger">*</span></label>
-            <input type="text" name="akreditasi_pt" class="form-control textarea-catatan" value="<?= isset($form_led['akreditasi_pt']) ? $form_led['akreditasi_pt'] : '' ?>" placeholder="Akreditasi Perguruan Tinggi" disabled required>
+            <label class="font-weight-semibold text-dark" style="font-size:1rem;">Akreditasi Perguruan Tinggi</label>
+            <input type="text" name="akreditasi_pt" class="form-control input-text" value="<?= isset($form_led['akreditasi_pt']) ? $form_led['akreditasi_pt'] : '' ?>" placeholder="Akreditasi Perguruan Tinggi" disabled>
           </div>
         </div>
         <div class="col-md-6 col-sm-12">
           <div class="form-group mb-2">
-            <label class="font-weight-semibold text-dark" style="font-size:1rem;">Tanggal Akhir APT <span class="text-danger">*</span></label>
-            <input type="date" name="tgl_akhir_apt" class="form-control textarea-catatan" value="<?= isset($form_led['tgl_akhir_apt']) ? $form_led['tgl_akhir_apt'] : '' ?>" placeholder="..." disabled required>
+            <label class="font-weight-semibold text-dark" style="font-size:1rem;">Tanggal Akhir APT</label>
+            <input type="text" name="tgl_akhir_apt" class="form-control input-text" value="<?= isset($form_led['tgl_akhir_apt']) ? $form_led['tgl_akhir_apt'] : '' ?>" placeholder="..." disabled>
           </div>
         </div>
       </div>

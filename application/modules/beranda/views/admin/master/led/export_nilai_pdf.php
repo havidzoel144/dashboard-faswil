@@ -113,14 +113,6 @@
       <th>Tipologi</th>
       <td><?= htmlspecialchars($progres_penilaian->tipologi); ?></td>
     </tr>
-    <tr>
-      <th>Nama Fasilitator</th>
-      <td><?= htmlspecialchars($progres_penilaian->nama_fasilitator); ?></td>
-    </tr>
-    <tr>
-      <th>Nama Validator</th>
-      <td><?= htmlspecialchars($progres_penilaian->nama_validator); ?></td>
-    </tr>
   </table>
 
   <div class="section-title">Hasil Penilaian</div>

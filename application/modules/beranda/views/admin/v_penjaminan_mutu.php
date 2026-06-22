@@ -53,6 +53,23 @@
                           </button>
                         </div>
                         <canvas id="chartTipologi"></canvas>
+                        <div class="mt-2 text-center">
+                          <span class="badge mr-2" style="background:#c8e6c9;color:#000;">
+                            Tipologi 1
+                          </span>
+
+                          <span class="badge mr-2" style="background:#fff9c4;color:#000;">
+                            Tipologi 2
+                          </span>
+
+                          <span class="badge mr-2" style="background:#ffe0b2;color:#000;">
+                            Tipologi 3
+                          </span>
+
+                          <span class="badge" style="background:#ffcdd2;color:#000;">
+                            Tipologi 4
+                          </span>
+                        </div>
                       </div>
 
                       <div class="col-6 d-flex flex-column justify-content-center p-2" style="background-image: linear-gradient(90deg, #6712c8 28%, #2375fc 98%) !important; border-radius: 10px;">
@@ -62,7 +79,7 @@
                           Dalam rangka menyesuaikan kebijakan penjaminan mutu pendidikan tinggi berdasarkan Permendiktisaintek No. 39 Tahun 2025, LLDikti Wilayah III melaksanakan fasilitasi serta verifikasi dan evaluasi implementasi SPMI di perguruan tinggi. Pemetaan tipologi SPMI merupakan bagian dari pola pembinaan LLDikti yang dilakukan melalui verifikasi dan validasi implementasi SPMI perguruan tinggi melalui laman <a href="https://spmi.kemdiktisaintek.go.id" class="text-white text-bold-700" target="_blank" rel="noreferrer"><u>https://spmi.kemdiktisaintek.go.id,</u></a> sebagai dasar pemberian fasilitasi yang sesuai dengan tingkat tipologi, serta pelaksanaan pemantauan dan evaluasi secara periodik.
                         </p>
                         <p class="text-white text-justify px-2 font-medium-1">
-                          Pola pembinaan SPMI diselaraskan dengan sasaran budaya mutu pada mekanisme akreditasi institusi (IAPT 4.1) yang mencakup aspek masukan, proses, luaran, dan dampak, meliputi keberfungsian standar dan tata kelola SPMI, implementasi siklus PPEPP, ketersediaan laporan dan pengelolaan data, serta capaian akreditasi program studi sebagai bentuk pengakuan mutu.
+                          Pola pembinaan SPMI diselaraskan dengan sasaran budaya mutu pada mekanisme akreditasi yang mencakup aspek masukan, proses, luaran, dan dampak, meliputi keberfungsian standar dan tata kelola SPMI, implementasi siklus PPEPP, ketersediaan laporan dan pengelolaan data, serta capaian akreditasi program studi sebagai bentuk pengakuan mutu.
                         </p>
                         <p class="text-white text-justify px-2 font-medium-1">
                           Lebih lanjut tentang Pola Pembinaan SPMI, dapat diunduh pada tautan <a href="http://lldikti3.kemdikbud.go.id/wp-content/uploads/2024/07/pola_pembinaan_spmi_ll3-Revisi-1.pdf" class="text-white text-bold-700" target="_blank" rel="noreferrer"><u>berikut.</u></a>
@@ -121,8 +138,10 @@
   |--------------------------------------------------------------------------
   */
   let dataLabels = <?= json_encode($labels); ?>;
+  let dataTipologi = <?= json_encode($tipologi); ?>;
   let dataCapaianPT = <?= json_encode($capaian_pt); ?>;
   let dataRataNasional = <?= json_encode($rata_rata_per_periode); ?>;
+  let bentukPtSelf = "<?= $bentuk_pt_self ?>";
   /*
   |--------------------------------------------------------------------------
   | SKOR NOL
@@ -153,8 +172,9 @@
   */
 
   // labels chart
-  let labels = dataLabels.map(function(item) {
-    return formatPeriode(item);
+  let labels = dataLabels.map(function(item, index) {
+    let tipologi = dataTipologi[index] || '-';
+    return formatPeriode(item) + ' (' + tipologi + ')';
   });
 
   // capaian PT
@@ -162,7 +182,7 @@
     return parseFloat(item);
   });
 
-  // rata-rata nasional
+  // rata-rata per bentuk
   let rataNasional = dataRataNasional.map(function(item) {
     return parseFloat(item);
   });
@@ -232,9 +252,9 @@
           // pointHoverRadius: 8
         },
 
-        // RATA NASIONAL
+        // RATA-RATA PER BENTUK
         {
-          label: 'Rata-rata Nasional',
+          label: 'Rata-rata per Bentuk',
           data: rataNasional,
           borderColor: '#f57c00',
           backgroundColor: '#f57c00',
@@ -250,8 +270,9 @@
           label: 'Ambang Terpenuhi',
           data: labels.map(() => 4),
           borderColor: 'red',
+          backgroundColor: 'red',
           borderWidth: 2,
-          borderDash: [10, 5],
+          // borderDash: [10, 5],
           pointRadius: 0,
           fill: false
         }
@@ -304,6 +325,14 @@
         type: 'line',
         data: getChartData(),
         options: {
+          animations: {
+            radius: {
+              duration: 400,
+              easing: "linear",
+              loop: (context) => context.active,
+            },
+          },
+          hoverRadius: 12,
           responsive: true,
           maintainAspectRatio: false,
           interaction: {
@@ -316,7 +345,7 @@
             },
             title: {
               display: true,
-              text: 'Tipologi SPMI'
+              text: 'Tipologi SPMI (Bentuk PT: ' + bentukPtSelf + ')'
             },
             zoom: {
               pan: {
@@ -340,6 +369,7 @@
               }
             },
             tooltip: {
+              position: 'nearest',
               callbacks: {
                 afterLabel: function(context) {
                   // hanya dataset capaian PT
@@ -354,6 +384,54 @@
                   return '';
                 }
               }
+            },
+            annotation: {
+              annotations: {
+                line1: {
+                  type: 'line',
+                  yMin: 4,
+                  yMax: 4,
+                  borderColor: 'red',
+                  borderWidth: 3,
+                  drawTime: 'beforeDatasetsDraw',
+                  z: -1,
+                },
+                tipologi1: {
+                  type: "box",
+                  yMin: 7.6,
+                  yMax: 8.5,
+                  backgroundColor: "rgba(0, 128, 0, 0.2)", // Hijau transparan
+                  borderWidth: 0,
+                },
+                tipologi2: {
+                  type: "box",
+                  yMin: 5.6,
+                  yMax: 7.5,
+                  backgroundColor: "rgba(255, 255, 0, 0.2)", // Kuning transparan
+                  borderWidth: 0,
+                },
+                tipologi3: {
+                  type: "box",
+                  yMin: 4,
+                  yMax: 5.5,
+                  backgroundColor: "rgba(255, 165, 0, 0.2)", // Oranye transparan
+                  borderWidth: 0,
+                },
+                tipologi4: {
+                  type: "box",
+                  yMin: 0,
+                  yMax: 4,
+                  backgroundColor: "rgba(255, 0, 0, 0.2)", // Merah transparan
+                  borderWidth: 0,
+                },
+              },
+              tooltip: {
+                callbacks: {
+                  footer: function(tooltipItems) {
+                    return `Nilai: ${tooltipItems[0].parsed.y}`;
+                  },
+                },
+              },
             },
           },
           scales: {
@@ -496,7 +574,7 @@
         lineChart.options.scales.x.min = xMin;
         lineChart.options.scales.x.max = xMax;
         skorNolStatus = rebuildSkorNolStatus();
-        
+
         lineChart.data.labels = labels;
 
         lineChart.data.datasets[0].data = capaianPT;

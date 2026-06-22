@@ -270,6 +270,11 @@
             border: 1px solid rgba(0, 0, 0, 0.3) !important;
         }
 
+        .input-text {
+            resize: none;
+            border: 1px solid rgba(0, 0, 0, 0.3) !important;
+        }
+
         .label-required::after {
             content: " *";
             color: red;
@@ -378,7 +383,8 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <?php if (has_role(['6', '7'])): ?>
-                                    <a class="dropdown-item dropdown-item-user waves-effect waves-dark d-flex align-items-center" href="javascript:void(0)" data-toggle="modal" data-target="#modal-upload-logo">
+                                    <?php $target = $this->is_standard_password == false ? '#modal-upload-logo' : '#modal-alert-password'; ?>
+                                    <a class="dropdown-item dropdown-item-user waves-effect waves-dark d-flex align-items-center" href="javascript:void(0)" data-toggle="modal" data-target="<?= $target ?>">
                                         <i class="material-icons">account_circle</i>
                                         <span>Upload Logo</span>
                                     </a>
@@ -446,6 +452,27 @@
                         </div>
                     </div>
                     <?= form_close() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Alert Wajib Ganti Password -->
+    <div class="modal fade" id="modal-alert-password" tabindex="-1" role="dialog" aria-labelledby="modalAlertPasswordLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title text-white" id="modalAlertPasswordLabel">Perhatian</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="la la-exclamation-triangle font-large-2 text-warning mb-1"></i>
+                    <p class="mb-0">Anda harus mengganti password terlebih dahulu sebelum upload logo.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>

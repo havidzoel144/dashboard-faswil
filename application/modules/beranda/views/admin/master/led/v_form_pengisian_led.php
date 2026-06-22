@@ -85,7 +85,7 @@
                   </div>
 
                   <?php if ($form_led['status'] === '1') : ?>
-                    <div class="alert mb-2" style="background:#ecfdf5; border:1px solid #86efac; color:#166534; border-radius:8px;">
+                    <div class="alert mb-1" style="background:#ecfdf5; border:1px solid #86efac; color:#166534; border-radius:8px;">
                       <i class="la la-lock mr-1"></i> Data Laporan Implementasi SPMI sudah disimpan permanen dan tidak dapat diubah lagi.
                     </div>
                   <?php elseif ($form_led['status'] === '0'): ?>
@@ -203,6 +203,10 @@
       }
 
       if (el.classList.contains('narasi-led-500')) {
+        return 500;
+      }
+
+      if (el.classList.contains('narasi-led-1000')) {
         return 1000;
       }
 
@@ -283,7 +287,7 @@
       return emptyFields;
     }
 
-    var narasiFields = document.querySelectorAll('.narasi-led-200, .narasi-led-500, .textarea-catatan');
+    var narasiFields = document.querySelectorAll('.narasi-led-200, .narasi-led-500, .narasi-led-1000, .textarea-catatan');
     var isPermanenInput = document.getElementById('is_permanen');
     var mulaiTgl = "<?php echo $buka_tutup_pengisian['mulai_tgl']; ?>";
     var mulaiWaktu = "<?php echo $buka_tutup_pengisian['mulai_waktu']; ?>";
@@ -407,7 +411,7 @@
         return;
       }
 
-      if ((field.classList.contains('narasi-led-200') || field.classList.contains('narasi-led-500')) && updateWordState(field)) {
+      if ((field.classList.contains('narasi-led-200') || field.classList.contains('narasi-led-500') || field.classList.contains('narasi-led-1000')) && updateWordState(field)) {
         showAutoSaveNotification('Narasi melebihi batas maksimal ' + getMaxWords(field) + ' kata. Simpan otomatis dibatalkan.', true);
         return;
       }
@@ -439,6 +443,10 @@
       formData.append('autosave', '1');
       formData.append('changed_field', field.name);
       formData.append('changed_value', field.value || '');
+
+      if (field.name === 'upload_mindmap') {
+        return;
+      }
 
       fetch(actionUrl, {
           method: 'POST',
@@ -669,4 +677,70 @@
       });
     }
   })();
+
+  $(document).on('click', '.btn-upload-mindmap', function() {
+    var targetInputId = this.getAttribute('data-id-form-led');
+    var fileInput = document.getElementById('upload_mindmap');
+
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      var formData = new FormData();
+      formData.append('file_mindmap', fileInput.files[0]);
+      formData.append('id_form_led', targetInputId);
+      formData.append(csrfName, csrfHash);
+
+      $.ajax({
+        url: '<?= base_url('admin/pt/upload-mindmap') ?>',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        success: function(response) {
+          if (response.status) {
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'File berhasil diunggah'
+              });
+            } else {
+              alert('File berhasil diunggah');
+            }
+            fileInput.value = '';
+          } else {
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: response.message || 'Gagal mengunggah file'
+              });
+            } else {
+              alert(response.message || 'Gagal mengunggah file');
+            }
+          }
+        },
+        error: function() {
+          if (typeof Swal !== 'undefined') {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat mengunggah file'
+            });
+          } else {
+            alert('Terjadi kesalahan saat mengunggah file');
+          }
+        }
+      });
+    } else {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Peringatan',
+          text: 'Silakan pilih file terlebih dahulu'
+        });
+      } else {
+        alert('Silakan pilih file terlebih dahulu');
+      }
+    }
+  });
 </script>

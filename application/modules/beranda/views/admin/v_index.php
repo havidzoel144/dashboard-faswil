@@ -146,6 +146,15 @@
       transform: translateY(0);
     }
   }
+
+  .alert {
+    transition: all .2s ease;
+  }
+
+  .alert:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+  }
 </style>
 
 <?= $this->load->view('admin/v_menu') ?>
@@ -180,6 +189,35 @@
         $roles_string = $role_names[0];
       }
       ?>
+
+      <?php if ($this->is_standard_password): ?>
+        <div class="row justify-content-center mb-1">
+          <div class="col-12">
+            <div class="alert alert-dismissible fade show border-0 shadow-sm" role="alert"
+              style="background: linear-gradient(90deg, #1e90ff 0%, #87ceeb 100%); border-radius: 12px; color: #ffffff;">
+              <div class="d-flex align-items-center">
+                <div class="p-2" style="font-size: 4rem; line-height: 1;">
+                  🔐
+                </div>
+                <div class="flex-grow-1 p-2">
+                  <div class="font-weight-bold" style="font-size: 1.5em; letter-spacing: 0.3px;">
+                    Peringatan Keamanan Akun
+                  </div>
+                  <div style="font-size: 1.1em; margin-top: 2px;">
+                    Anda tidak dapat mengakses fitur pada sistem karena password Anda masih menggunakan password standar (<code style="background:rgba(0,0,0,0.08); padding: 1px 5px; border-radius:4px;">admin123</code>). <br>
+                    Segera ubah password Anda untuk dapat mengakses fitur-fitur sistem dan melindungi keamanan akun.
+                  </div>
+                  <a href="#" class="d-inline-flex align-items-center mt-2 text-white font-weight-medium"
+                    onclick="ubahPassword('<?= $this->session->userdata('user_id') ?>'); return false;" style="text-decoration: none; gap: 6px; background: rgba(255, 255, 255, 0.3); padding: 6px 12px; border-radius: 8px; font-size: 1.02em;">
+                    <i class="material-icons" style="font-size: 1.7em;">lock</i>
+                    <span>Ubah Password</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <?php endif; ?>
 
       <div class="row justify-content-center">
         <div class="col-12 text-center">

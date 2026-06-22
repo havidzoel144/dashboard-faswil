@@ -112,7 +112,7 @@ class Progres extends MX_Controller
     // return $this->load->view('admin/master/progres/export_nilai_pdf', $data);
 
     $this->load->library('pdfgenerator');
-    $file_pdf = "Penilaian Tipologi_" . $data['nama_pt'] . "_" . $data['progres_penilaian']->periode . "_" . date('Y-m-d_H-i-s');
+    $file_pdf = "Hasil Review Eksternal LLDikti Wilayah III_" . $data['nama_pt'] . "_" . $data['progres_penilaian']->periode . "_" . date('Y-m-d_H-i-s');
     $paper = 'A4';
     $orientation = "portrait";
     $html = $this->load->view('admin/master/progres/export_nilai_pdf', $data, true);
@@ -128,7 +128,7 @@ class Progres extends MX_Controller
     $data['nama_pt'] = $data['progres_penilaian']->nama_pt;
 
     $this->load->library('pdfgenerator');
-    $file_pdf = "Penilaian Tipologi_" . $data['nama_pt'] . "_" . $data['progres_penilaian']->periode . "_" . date('Y-m-d_H-i-s');
+    $file_pdf = "Hasil Review Eksternal LLDikti Wilayah III_" . $data['nama_pt'] . "_" . $data['progres_penilaian']->periode . "_" . date('Y-m-d_H-i-s');
     $paper = 'A4';
     $orientation = "portrait";
     $html = $this->load->view('admin/master/progres/export_nilai_pdf', $data, true);
