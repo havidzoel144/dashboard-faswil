@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use PhpOffice\PhpWord\TemplateProcessor;
+
 class Validator extends MX_Controller
 {
   function __construct()
@@ -387,5 +389,92 @@ class Validator extends MX_Controller
     header('Content-Disposition: inline; filename="' . $form_led['nama_file'] . '"');
     readfile(FCPATH . 'uploads/mindmap_pt/' . $form_led['nama_file']);
     exit;
+  }
+
+  public function unduhLaporanLedWord($enc_id_penilaian_tipologi)
+  {
+    $id_penilaian_tipologi = safe_url_decrypt($enc_id_penilaian_tipologi);
+
+    $data_db = $this->db->select('fl.*, pt.periode, pt.nama_pt, lp.nama_logo')
+      ->from('form_led as fl')
+      ->join('penilaian_tipologi as pt', 'fl.id_penilaian_tipologi = pt.id_penilaian_tipologi')
+      ->join('logo_pt as lp', 'lp.kode_pt = pt.kode_pt', 'left')
+      ->where('fl.id_penilaian_tipologi', $id_penilaian_tipologi)
+      ->get()
+      ->row();
+
+    if (!$data_db) {
+      $this->session->set_flashdata('error', 'Data tidak ditemukan.');
+      redirect($_SERVER['HTTP_REFERER'] ?? base_url());
+      exit;
+    }
+
+    $kode_pt = $data_db->kode_pt;
+    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+
+
+    $template_path = FCPATH . 'uploads/template_laporan_led.docx'; // path template
+    $templateProcessor = new TemplateProcessor($template_path);
+
+    // Jika $persentase_prodi adalah array, convert dulu ke string
+    $persentase_prodi_text = '';
+
+    if (is_array($persentase_prodi)) {
+      foreach ($persentase_prodi as $prodi => $nilai) {
+        $persentase_prodi_text .= $prodi . ': ' . $nilai . "%\n";
+      }
+    }
+
+    // Ganti placeholder dengan data nyata
+    $templateProcessor->setValue('nama_pt_cover', strtoupper($data_db->nama_pt));
+    $templateProcessor->setValue('nama_pt', $data_db->nama_pt);
+    $templateProcessor->setValue('tahun', substr($data_db->periode, 0, 4));
+    $templateProcessor->setValue('periode', substr($data_db->periode, 4, 1));
+    $templateProcessor->setValue('alamat', $data_db->alamat);
+    $templateProcessor->setValue('semester', substr($data_db->periode, 4, 1));
+    $templateProcessor->setValue('tgl_sk_pendirian_pt', $data_db->tgl_sk_pendirian_pt == '0000-00-00' ? $data_db->tgl_sk_pendirian_pt : format_tanggal_indonesia($data_db->tgl_sk_pendirian_pt));
+    $templateProcessor->setValue('akreditasi_pt', $data_db->akreditasi_pt);
+    $templateProcessor->setValue('tgl_akhir_apt', $data_db->tgl_akhir_apt == '0000-00-00' ? $data_db->tgl_akhir_apt : format_tanggal_indonesia($data_db->tgl_akhir_apt));
+    $templateProcessor->setValue('dasar_penyusunan', $data_db->dasar_penyusunan);
+    $templateProcessor->setValue('mekanisme_kerja_penyusunan_laporan', $data_db->mekanisme_kerja_penyusunan_laporan);
+    $templateProcessor->setValue('penetapan_diferensiasi', $data_db->penetapan_diferensiasi);
+    $templateProcessor->setValue('sasaran_mutu_masukan', $data_db->sasaran_mutu_masukan);
+    $templateProcessor->setValue('tautan_sasaran_mutu_masukan', $data_db->tautan_sasaran_mutu_masukan);
+    $templateProcessor->setValue('sasaran_mutu_proses', $data_db->sasaran_mutu_proses);
+    $templateProcessor->setValue('tautan_sasaran_mutu_proses', $data_db->tautan_sasaran_mutu_proses);
+    $templateProcessor->setValue('sasaran_mutu_luaran', $data_db->sasaran_mutu_luaran);
+    $templateProcessor->setValue('tautan_sasaran_mutu_luaran', $data_db->tautan_sasaran_mutu_luaran);
+    $templateProcessor->setValue('sasaran_mutu_dampak', $data_db->sasaran_mutu_dampak);
+    $templateProcessor->setValue('total_prodi_aktif', $persentase_prodi['total_prodi_aktif'] ?? 0);
+    $templateProcessor->setValue('prodi_terakreditasi', $persentase_prodi['prodi_terakreditasi'] ?? 0);
+    $templateProcessor->setValue('prodi_unggul_atau_a', $persentase_prodi['prodi_unggul_atau_a'] ?? 0);
+    $templateProcessor->setValue('persentase_unggul_atau_a', number_format($persentase_prodi['persentase_unggul_atau_a'], 2, ',', '.') ?? 0);
+    $templateProcessor->setValue('narasi_bab4', $data_db->narasi_bab4);
+
+    // Jika mau, bisa juga ganti gambar/logo
+    if (!empty($data_db->nama_logo)) {
+      $templateProcessor->setImageValue('logo_pt', [
+        'path' => FCPATH . 'uploads/logo_pt/' . $data_db->nama_logo,
+        'width' => 150,
+        'height' => 150,
+        'ratio' => true
+      ]);
+    } else {
+      // Jika tidak ada logo, bisa set placeholder dengan gambar default atau kosong
+      $templateProcessor->setImageValue('logo_pt', [
+        'path' => FCPATH . 'uploads/logo_pt/default.jpg', // pastikan ada gambar default ini
+        'width' => 150,
+        'height' => 150,
+        'ratio' => true
+      ]);
+    }
+
+    $file_word = 'Laporan_Implementasi_SPMI_' . $data_db->nama_pt . '_' . $data_db->periode . '_' . date('Y-m-d_H-i-s') . '.docx';
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    header('Content-Disposition: attachment; filename="' . $file_word . '"');
+    header('Cache-Control: max-age=0');
+
+    $templateProcessor->saveAs('php://output');
   }
 }

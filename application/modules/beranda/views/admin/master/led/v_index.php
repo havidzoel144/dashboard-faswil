@@ -103,11 +103,22 @@
                                 $tooltip_text = 'Laporan Implementasi SPMI sudah simpan permanen untuk periode ' . $data['kode'];
                                 $icon_btn = 'la la-check';
                                 $label_btn = 'Sudah Terkirim';
-                                if ($data['id_status_penilaian'] !== null) {
+                                if ($data['id_status_penilaian'] !== null && $data['id_status_penilaian'] != '4') {
                                   $warna_btn = 'btn-warning';
                                   $tooltip_text = 'Laporan dalam proses review untuk periode ' . $data['kode'];
                                   $icon_btn = 'la la-exclamation-triangle';
                                   $label_btn = 'Proses Review';
+                                } else if ($data['id_status_penilaian'] !== null && $data['id_status_penilaian'] == '4') {
+                                  $warna_btn = 'btn-secondary';
+                                  $tooltip_text = 'Penilaian valid untuk periode ' . $data['kode'] . ' dan mengunggu untuk publish';
+                                  $icon_btn = 'la la-check-circle';
+                                  $label_btn = 'Valid';
+                                  if ($data['periode_dpm'] != null) {
+                                    $warna_btn = 'btn-dark';
+                                    $tooltip_text = 'Penilaian Laporan SPMI untuk periode ' . $data['kode'] . ' sudah publish dan dapat diunduh';
+                                    $icon_btn = 'la la-check-circle';
+                                    $label_btn = 'Sudah Publish';
+                                  }
                                 }
                               }
                               ?>
@@ -146,8 +157,18 @@
                                       <i class="la la-file"></i>
                                     </button>
                                   </a>
-                                  <?php if (false) : ?>
-                                    <?php if ($data['periode_dpm'] != null): ?>
+                                  <?php if ($data['periode_dpm'] != null): ?>
+                                    <a href="<?= base_url('admin/pt/export-nilai-pdf/' . safe_url_encrypt($data['id_penilaian_tipologi'])) ?>">
+                                      <button
+                                        class="btn btn-primary btn-sm"
+                                        type="button"
+                                        data-toggle="tooltip"
+                                        title="Unduh Hasil Penilaian Tipologi untuk periode <?= $data['kode'] ?>"
+                                        <?= $disabled . ' ' . $notAllowed ?>>
+                                        <i class="la la-download"></i>
+                                      </button>
+                                    </a>
+                                    <?php if (false) : ?>
                                       <a href="<?= base_url('admin/pt/unduh-sertifikat/' . safe_url_encrypt($data['kode'])) ?>">
                                         <button
                                           class="btn btn-info btn-sm"

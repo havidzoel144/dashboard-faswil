@@ -342,6 +342,11 @@
                 <button type="button" class="btn btn-warning btn-sm btn-modal-bab" data-bab="4" data-toggle="modal" data-target="#modal-bab-led">
                   BAB 4
                 </button>
+                <a href="javascript:void(0);" id="link-unduh-laporan-spmi" target="_blank">
+                  <button class="btn btn-dark btn-sm btn-unduh-laporan-spmi" type="button" data-toggle="tooltip" title="Unduh Laporan Implementasi SPMI">
+                    <i class="la la-file"></i>
+                  </button>
+                </a>
               </div>
             </fieldset>
           </div>
@@ -733,10 +738,9 @@
         $('#validasiModal #catatan-keseluruhan').val(response.data.catatan_keseluruhan);
         $('#validasiModal textarea[name="catatan_keseluruhan_validator"]').val(response.data.catatan_keseluruhan_validator);
 
-        $('#validasiModal').data(
-          'id_penilaian_tipologi',
-          response.data.id_penilaian_tipologi
-        );
+        $('#validasiModal').data('id_penilaian_tipologi', response.data.id_penilaian_tipologi);
+        $('#link-unduh-laporan-spmi').attr('href', '<?= base_url('admin/validator/unduh-laporan-led-word/') ?>' + enc_id_penilaian_tipologi);
+
 
         renderFooterValidasi(response.data.id_status_penilaian);
       },

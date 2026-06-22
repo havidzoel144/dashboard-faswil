@@ -14,11 +14,9 @@
             <li class="nav-item <?= $belmawa ?>" data-menu="">
                 <a class="nav-link" href="<?= base_url() ?>belmawa" data-toggle=""><i class="la la-sitemap"></i><span data-i18n="Dashboard">Belmawa</span></a>
             </li>
-            <?php if (false) : ?>
                 <li class="nav-item <?= $pm ?>" data-menu="">
                     <a class="nav-link" href="<?= base_url() ?>penjaminan_mutu" data-toggle=""><i class="la la-server"></i><span data-i18n="Dashboard">Penjaminan Mutu</span></a>
                 </li>
-            <?php endif; ?>
         </ul>
 
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">

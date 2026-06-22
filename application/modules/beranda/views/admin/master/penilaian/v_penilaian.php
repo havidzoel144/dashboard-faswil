@@ -195,6 +195,11 @@
                               <button type="button" class="btn btn-warning btn-sm btn-modal-bab" data-bab="4" data-toggle="modal" data-target="#modal-bab-led" style="cursor: not-allowed;" disabled>
                                 BAB 4
                               </button>
+                              <a href="javascript:void(0);" id="link-unduh-laporan-spmi" target="_blank">
+                                <button class="btn btn-dark btn-sm btn-unduh-laporan-spmi" type="button" data-toggle="tooltip" title="Unduh Laporan Implementasi SPMI" style="cursor: not-allowed;" disabled>
+                                  <i class="la la-file"></i>
+                                </button>
+                              </a>
                             </div>
                           </fieldset>
                         </div>
@@ -998,15 +1003,17 @@
       },
       dataType: 'json',
       success: function(response) {
+        const enc_id_penilaian_tipologi = response.enc_id_penilaian_tipologi ? response.enc_id_penilaian_tipologi : '';
         if (response.form_led == null || response.form_led.status == '0') {
           // $('.lihat-narasi-led').addClass('d-none');
-          $('.btn-modal-bab').prop('disabled', true);
-          $('.btn-modal-bab').css('cursor', 'not-allowed');
+          $('.btn-modal-bab, .btn-unduh-laporan-spmi').prop('disabled', true);
+          $('.btn-modal-bab, .btn-unduh-laporan-spmi').css('cursor', 'not-allowed');
           $('#total-prodi-aktif').text('-');
           $('#prodi-terakreditasi').text('-');
           $('#persentase-prodi-terakreditasi').text('-');
           $('#prodi-unggul-atau-a').text('-');
           $('#persentase-prodi-unggul-atau-a').text('-');
+          $('#link-unduh-laporan-spmi').attr('href', 'javascript:void(0);');
           return Swal.fire({
             icon: 'error',
             title: 'Tidak Dapat Melakukan Penilaian',
@@ -1075,8 +1082,9 @@
         $('#skor-4').prop('disabled', false);
         $('#catatan-4').prop('disabled', false);
         // $('.lihat-narasi-led').removeClass('d-none');
-        $('.btn-modal-bab').prop('disabled', false);
-        $('.btn-modal-bab').css('cursor', 'pointer');
+        $('.btn-modal-bab, .btn-unduh-laporan-spmi').prop('disabled', false);
+        $('.btn-modal-bab, .btn-unduh-laporan-spmi').css('cursor', 'pointer');
+        $('#link-unduh-laporan-spmi').attr('href', '<?= base_url('admin/unduh-laporan-led-word/') ?>' + response.enc_id_penilaian_tipologi);
 
         // Helper untuk set readonly dan style
         function setReadonly(selector, isReadonly) {

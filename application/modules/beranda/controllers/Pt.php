@@ -553,13 +553,13 @@ class Pt extends MX_Controller
       ->get()
       ->row();
 
-    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
-
     if (!$data_db) {
       $this->session->set_flashdata('error', 'Data LED tidak ditemukan untuk periode ini.');
       redirect(base_url('admin/pt/pengisian-led'));
       return;
     }
+
+    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
 
     $template_path = FCPATH . 'uploads/template_laporan_led.docx'; // path template
     $templateProcessor = new TemplateProcessor($template_path);
@@ -881,5 +881,24 @@ class Pt extends MX_Controller
     header('Content-Disposition: inline; filename="' . $form_led['nama_file'] . '"');
     readfile(FCPATH . 'uploads/mindmap_pt/' . $form_led['nama_file']);
     exit;
+  }
+
+  public function exportNilaiPdf($enc_id_penilaian_topologi)
+  {
+    $id_penilaian_topologi = safe_url_decrypt($enc_id_penilaian_topologi);
+    $data = [
+      'progres_penilaian' => $this->Penilaian_model->get_data_penilaian_by_id($id_penilaian_topologi),
+    ];
+    $data['nama_pt'] = $data['progres_penilaian']->nama_pt;
+
+    // echo json_encode($data['progres_penilaian']);exit;
+    // return $this->load->view('admin/master/led/export_nilai_pdf', $data);
+
+    $this->load->library('pdfgenerator');
+    $file_pdf = "Hasil Review Eksternal LLDikti Wilayah III_" . $data['nama_pt'] . "_" . $data['progres_penilaian']->periode . "_" . date('Y-m-d_H-i-s');
+    $paper = 'A4';
+    $orientation = "portrait";
+    $html = $this->load->view('admin/master/led/export_nilai_pdf', $data, true);
+    $this->pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
   }
 }

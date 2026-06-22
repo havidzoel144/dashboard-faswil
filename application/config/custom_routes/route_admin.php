@@ -53,6 +53,7 @@ $route['admin/riwayat-penilaian/(:any)'] = 'beranda/penilaian/riwayatPenilaian/$
 $route['admin/kirim-nilai/(:any)/(:any)'] = 'beranda/penilaian/kirimNilai/$1/$2';
 $route['admin/persentase-prodi'] = 'beranda/penilaian/persentaseProdi';
 $route['admin/lihat-file-mindmap/(:any)'] = 'beranda/penilaian/lihatFileMindmap/$1';
+$route['admin/unduh-laporan-led-word/(:any)'] = 'beranda/penilaian/unduhLaporanLedWord/$1';
 
 // PENILAIAN VALIDATOR
 $route['admin/validator'] = 'beranda/validator';
@@ -65,6 +66,7 @@ $route['penilaian-validator/(:any)'] = 'beranda/validator/penilaian_validator/$1
 $route['admin/validator/get-data-penilaian/(:any)'] = 'beranda/validator/getDataPenilaian/$1';
 $route['admin/validator/get-penilaian'] = 'beranda/validator/getPenilaian';
 $route['admin/validator/lihat-file-mindmap/(:any)'] = 'beranda/validator/lihatFileMindmap/$1';
+$route['admin/validator/unduh-laporan-led-word/(:any)'] = 'beranda/validator/unduhLaporanLedWord/$1';
 
 // PROGRES PENILAIAN
 $route['admin/progres-penilaian'] = 'beranda/progres';
@@ -106,6 +108,7 @@ $route['admin/pt/upload-logo'] = 'beranda/pt/uploadLogo';
 $route['admin/pt/logo/(:any)'] = 'beranda/pt/logo/$1';
 $route['admin/pt/upload-mindmap'] = 'beranda/pt/uploadMindmap';
 $route['admin/pt/lihat-file-mindmap/(:any)'] = 'beranda/pt/lihatFileMindmap/$1';
+$route['admin/pt/export-nilai-pdf/(:any)'] = 'beranda/pt/exportNilaiPdf/$1';
 
 $route['admin/pt/upload-led'] = 'beranda/pt/uploadLed';
 $route['admin/pt/upload-led/simpan'] = 'beranda/pt/simpanUploadLed';

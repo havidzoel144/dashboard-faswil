@@ -208,7 +208,7 @@
                     Segera ubah password Anda untuk dapat mengakses fitur-fitur sistem dan melindungi keamanan akun.
                   </div>
                   <a href="#" class="d-inline-flex align-items-center mt-2 text-white font-weight-medium"
-                    onclick="ubahPassword('57'); return false;" style="text-decoration: none; gap: 6px; background: rgba(255, 255, 255, 0.3); padding: 6px 12px; border-radius: 8px; font-size: 1.02em;">
+                    onclick="ubahPassword('<?= $this->session->userdata('user_id') ?>'); return false;" style="text-decoration: none; gap: 6px; background: rgba(255, 255, 255, 0.3); padding: 6px 12px; border-radius: 8px; font-size: 1.02em;">
                     <i class="material-icons" style="font-size: 1.7em;">lock</i>
                     <span>Ubah Password</span>
                   </a>
