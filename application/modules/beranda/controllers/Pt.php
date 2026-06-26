@@ -559,6 +559,7 @@ class Pt extends MX_Controller
       return;
     }
 
+    $identias_pt = $this->db->get_where('data_pt', ['kode_pt' => $kode_pt])->row_array();
     $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
 
     $template_path = FCPATH . 'uploads/template_laporan_led.docx'; // path template
@@ -586,6 +587,16 @@ class Pt extends MX_Controller
     $templateProcessor->setValue('dasar_penyusunan', $data_db->dasar_penyusunan);
     $templateProcessor->setValue('mekanisme_kerja_penyusunan_laporan', $data_db->mekanisme_kerja_penyusunan_laporan);
     $templateProcessor->setValue('penetapan_diferensiasi', $data_db->penetapan_diferensiasi);
+    if ($data_db->nama_file <> null || $data_db->nama_file <> '' && file_exists(FCPATH . 'uploads/mindmap_pt/' . $data_db->nama_file)) {
+      $templateProcessor->setImageValue('mindmap_diferensiasi', [
+        'path' => FCPATH . 'uploads/mindmap_pt/' . $data_db->nama_file,
+        'width' => 550,
+        'height' => 550,
+        'ratio' => true
+      ]);
+    } else {
+      $templateProcessor->setValue('mindmap_diferensiasi', 'Gambar Mindmap Diferensiasi tidak tersedia');
+    }
     $templateProcessor->setValue('sasaran_mutu_masukan', $data_db->sasaran_mutu_masukan);
     $templateProcessor->setValue('tautan_sasaran_mutu_masukan', $data_db->tautan_sasaran_mutu_masukan);
     $templateProcessor->setValue('sasaran_mutu_proses', $data_db->sasaran_mutu_proses);
@@ -593,6 +604,7 @@ class Pt extends MX_Controller
     $templateProcessor->setValue('sasaran_mutu_luaran', $data_db->sasaran_mutu_luaran);
     $templateProcessor->setValue('tautan_sasaran_mutu_luaran', $data_db->tautan_sasaran_mutu_luaran);
     $templateProcessor->setValue('sasaran_mutu_dampak', $data_db->sasaran_mutu_dampak);
+    $templateProcessor->setValue('tgl_update', format_tanggal_indonesia($identias_pt['tgl_update']));
     $templateProcessor->setValue('total_prodi_aktif', $persentase_prodi['total_prodi_aktif'] ?? 0);
     $templateProcessor->setValue('prodi_terakreditasi', $persentase_prodi['prodi_terakreditasi'] ?? 0);
     $templateProcessor->setValue('prodi_unggul_atau_a', $persentase_prodi['prodi_unggul_atau_a'] ?? 0);
@@ -895,7 +907,7 @@ class Pt extends MX_Controller
     // return $this->load->view('admin/master/led/export_nilai_pdf', $data);
 
     $this->load->library('pdfgenerator');
-    $file_pdf = "Hasil Review Eksternal LLDikti Wilayah III_" . $data['nama_pt'] . "_" . $data['progres_penilaian']->periode . "_" . date('Y-m-d_H-i-s');
+    $file_pdf = "Hasil Reviu Eksternal LLDikti Wilayah III_" . $data['nama_pt'] . "_" . $data['progres_penilaian']->periode . "_" . date('Y-m-d_H-i-s');
     $paper = 'A4';
     $orientation = "portrait";
     $html = $this->load->view('admin/master/led/export_nilai_pdf', $data, true);

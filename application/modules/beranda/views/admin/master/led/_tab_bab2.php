@@ -115,16 +115,19 @@
                   <span>Upload Gambar Mind Map Diferensiasi <span class="text-danger">*</span></span>
                 </label>
 
-                <?php if (isset($form_led['nama_file'])): ?>
-                <div class="alert mb-1" style="background:#ecfdf5; border:1px solid #86efac; color:#166534; border-radius:8px;" role="alert">
-                    <i class="la la-file mr-1"></i>
-                    <a href="<?= base_url('admin/pt/lihat-file-mindmap/' . safe_url_encrypt($form_led['id'])) ?>" target="_blank" class="alert-link">Klik disini untuk melihat file mind map yang sudah diunggah</a>
-                  </div>
-                <?php else: ?>
-                    <div class="alert mb-1" style="background:#fffbeb; border:1px solid #fcd34d; color:#78350f; border-radius:8px;" role="alert">
-                    <i class="la la-exclamation-triangle mr-1"></i>Belum ada file mind map yang diunggah.
-                  </div>
-                <?php endif; ?>
+                <?php 
+                  $hasFile = isset($form_led['nama_file']);
+                  $alertStyle = $hasFile 
+                    ? 'background:#ecfdf5; border:1px solid #86efac; color:#166534;' 
+                    : 'background:#fffbeb; border:1px solid #fcd34d; color:#78350f;';
+                  $icon = $hasFile ? 'la-file' : 'la-exclamation-triangle';
+                  $message = $hasFile 
+                    ? '<a href="' . base_url('admin/pt/lihat-file-mindmap/' . safe_url_encrypt($form_led['id'])) . '" target="_blank" class="alert-link">Klik disini untuk melihat file mind map yang sudah diunggah</a>'
+                    : 'Belum ada file mind map yang diunggah.';
+                ?>
+                <div class="alert mb-1 alert-mindmap" style="<?= $alertStyle ?> border-radius:8px;" role="alert">
+                  <i class="la <?= $icon ?> mr-1"></i><?= $message ?>
+                </div>
 
                 <input type="file" name="upload_mindmap" id="upload_mindmap" class="form-control" accept=".jpg,.jpeg,.png" style="font-size:0.95rem; border:1px solid #94a3b8; border-radius:6px; padding:0.375rem 0.75rem;" required>
                 <small class="form-text text-danger">Format file: JPG, JPEG, PNG (maksimal 2MB)</small>

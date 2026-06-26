@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Hasil Review Eksternal LLDikti Wilayah III <?= htmlspecialchars($progres_penilaian->nama_pt); ?></title>
+  <title>Hasil Reviu Eksternal LLDikti Wilayah III <?= htmlspecialchars($progres_penilaian->nama_pt); ?></title>
 
   <style>
     body {
@@ -91,7 +91,7 @@
 
 <body>
   <div class="header">
-    <h2>Hasil Review Eksternal LLDikti Wilayah III</h2>
+    <h2>Hasil Reviu Eksternal LLDikti Wilayah III</h2>
     <small>Sistem Penilaian Tipologi Perguruan Tinggi</small>
   </div>
 
