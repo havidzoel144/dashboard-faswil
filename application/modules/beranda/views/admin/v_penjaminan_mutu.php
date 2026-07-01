@@ -82,7 +82,7 @@
                           Pola pembinaan SPMI diselaraskan dengan sasaran budaya mutu pada mekanisme akreditasi yang mencakup aspek masukan, proses, luaran, dan dampak, meliputi keberfungsian standar dan tata kelola SPMI, implementasi siklus PPEPP, ketersediaan laporan dan pengelolaan data, serta capaian akreditasi program studi sebagai bentuk pengakuan mutu.
                         </p>
                         <p class="text-white text-justify px-2 font-medium-1">
-                          Lebih lanjut tentang Pola Pembinaan SPMI, dapat diunduh pada tautan <a href="http://lldikti3.kemdikbud.go.id/wp-content/uploads/2024/07/pola_pembinaan_spmi_ll3-Revisi-1.pdf" class="text-white text-bold-700" target="_blank" rel="noreferrer"><u>berikut.</u></a>
+                          Lebih lanjut tentang Pola Pembinaan SPMI, dapat diunduh pada tautan <a href="https://drive.google.com/drive/u/1/folders/1hO2QbudeUfSPq_fOT_oHXyWQpnb-mxLx" class="text-white text-bold-700" target="_blank" rel="noreferrer"><u>berikut.</u></a>
                         </p>
                       </div>
                     </div>
@@ -398,14 +398,14 @@
                 },
                 tipologi1: {
                   type: "box",
-                  yMin: 7.6,
+                  yMin: 7.5,
                   yMax: 8.5,
                   backgroundColor: "rgba(0, 128, 0, 0.2)", // Hijau transparan
                   borderWidth: 0,
                 },
                 tipologi2: {
                   type: "box",
-                  yMin: 5.6,
+                  yMin: 5.5,
                   yMax: 7.5,
                   backgroundColor: "rgba(255, 255, 0, 0.2)", // Kuning transparan
                   borderWidth: 0,
