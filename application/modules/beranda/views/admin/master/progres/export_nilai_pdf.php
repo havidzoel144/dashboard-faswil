@@ -128,15 +128,24 @@
   <table class="table">
     <tr>
       <th>Nilai Indikator 1</th>
-      <td><strong><?= htmlspecialchars($progres_penilaian->skor_1); ?></strong></td>
+      <td>
+        <strong><?= htmlspecialchars($progres_penilaian->skor_1); ?></strong> -
+        <span><?= htmlspecialchars($progres_penilaian->catatan_1); ?></span>
+      </td>
     </tr>
     <tr>
       <th>Nilai Indikator 2</th>
-      <td><strong><?= htmlspecialchars($progres_penilaian->skor_2); ?></strong></td>
+      <td>
+        <strong><?= htmlspecialchars($progres_penilaian->skor_2); ?></strong> -
+        <span><?= htmlspecialchars($progres_penilaian->catatan_2); ?></span>
+      </td>
     </tr>
     <tr>
       <th>Nilai Indikator 3</th>
-      <td><strong><?= htmlspecialchars($progres_penilaian->skor_3); ?></strong></td>
+      <td>
+        <strong><?= htmlspecialchars($progres_penilaian->skor_3); ?></strong> -
+        <span><?= htmlspecialchars($progres_penilaian->catatan_3); ?></span>
+      </td>
     </tr>
     <tr>
       <th>Nilai Indikator 4</th>
