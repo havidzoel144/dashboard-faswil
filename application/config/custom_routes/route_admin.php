@@ -115,3 +115,13 @@ $route['admin/pt/upload-led/simpan'] = 'beranda/pt/simpanUploadLed';
 $route['admin/pt/lihat-file-led/(:num)/(:num)'] = 'beranda/pt/lihatFileLed/$1/$2';
 $route['admin/pt/upload-led/hapus'] = 'beranda/pt/hapusUploadLed';
 $route['admin/pt/upload-led/kirim-permanen'] = 'beranda/pt/kirimUploadLedPermanen';
+
+// KELOLA KEGIATAN
+$route['admin/kelola-kegiatan'] = 'beranda/kegiatan';
+$route['admin/kelola-kegiatan/table'] = 'beranda/kegiatan/tableKegiatan';
+$route['admin/kelola-kegiatan/tambah'] = 'beranda/kegiatan/tambahKegiatan';
+$route['admin/kelola-kegiatan/simpan'] = 'beranda/kegiatan/simpanKegiatan';
+$route['admin/kelola-kegiatan/edit/(:num)'] = 'beranda/kegiatan/editKegiatan/$1';
+$route['admin/kelola-kegiatan/update'] = 'beranda/kegiatan/updateKegiatan';
+$route['admin/kelola-kegiatan/hapus/(:num)'] = 'beranda/kegiatan/hapusKegiatan/$1';
+$route['admin/kelola-kegiatan/update-urutan'] = 'beranda/kegiatan/updateUrutan';
