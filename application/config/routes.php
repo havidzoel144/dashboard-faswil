@@ -12,6 +12,8 @@ $route['penjaminan_mutu'] = 'beranda/penjaminan_mutu';
 $route['login'] = 'beranda/auth';
 $route['postLogin'] = 'beranda/auth/postLogin';
 $route['logout'] = 'beranda/auth/logout';
+$route['admin/login-as'] = 'beranda/auth/loginAs';
+$route['admin/stop-login-as'] = 'beranda/auth/stopLoginAs';
 
 $route['admin/data-kip-kuliah'] = 'beranda/admin/data_kip_kuliah';
 $route['admin/simpan-kip-kuliah'] = 'beranda/admin/simpan_kip_kuliah';

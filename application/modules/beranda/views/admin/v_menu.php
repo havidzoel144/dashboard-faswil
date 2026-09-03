@@ -1,3 +1,33 @@
+<style>
+    .menu-animasi-baru {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-weight: 600;
+        transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+        animation: pulseMenuBaru .4s ease-in-out infinite;
+    }
+
+    .menu-animasi-baru:hover {
+        transform: translateY(-1px);
+        text-shadow: 0 0 8px rgba(255, 193, 7, 0.35);
+    }
+
+    @keyframes pulseMenuBaru {
+
+        0%,
+        100% {
+            transform: translateY(2px);
+            opacity: 0.86;
+        }
+
+        50% {
+            transform: translateY(-2px);
+            opacity: 1;
+        }
+    }
+</style>
+
 <!-- BEGIN: Main Menu-->
 <div class="header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-dark navbar-without-dd-arrow navbar-shadow navbar-lldikti" role="navigation" data-menu="menu-wrapper">
     <div class="navbar-container main-menu-content container center-layout" data-menu="menu-container">
@@ -25,6 +55,10 @@
                             <li data-menu="" class="<?= $BukaTutup ?>"><a class="dropdown-item" href="<?= base_url('admin/buka-tutup') ?>"><i class="la la-toggle-on"></i><span data-i18n="BukaTutup">Buka Tutup</span></a></li>
                         <?php endif; ?>
                     </ul>
+                </li>
+
+                <li class="nav-item" data-menu="">
+                    <a class="nav-link text-warning menu-animasi-baru" href="<?= base_url() ?>admin/coba-ui-baru"><i class="la la-info"></i><span data-i18n="Coba UI Baru">Coba UI Baru</span></a>
                 </li>
             <?php endif; ?>
 

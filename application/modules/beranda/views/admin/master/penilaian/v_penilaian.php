@@ -1031,15 +1031,27 @@
           return defaultValue;
         }
 
-        const totalProdi = ambilNilai(response.persentase_prodi, ['total_prodi_aktif'], '0');
-        const prodiTerakreditasi = ambilNilai(response.persentase_prodi, ['prodi_terakreditasi'], '0');
-        let persentaseTerakreditasi = ambilNilai(response.persentase_prodi, ['persentase_prodi_terakreditasi'], '0');
+        let persentaseProdi = {};
+        if (response.form_led && typeof response.form_led.persentase_prodi === 'string') {
+          try {
+            persentaseProdi = JSON.parse(response.form_led.persentase_prodi);
+          } catch (e) {
+            console.error('Gagal parse persentase_prodi sebagai JSON:', e);
+            alert('Gagal memproses data persentase prodi. Silakan hubungi administrator.');
+          }
+        } else {
+          persentaseProdi = response.persentase_prodi;
+        }
+
+        const totalProdi = ambilNilai(persentaseProdi, ['total_prodi_aktif'], '0');
+        const prodiTerakreditasi = ambilNilai(persentaseProdi, ['prodi_terakreditasi'], '0');
+        let persentaseTerakreditasi = ambilNilai(persentaseProdi, ['persentase_prodi_terakreditasi'], '0');
         if (persentaseTerakreditasi !== '' && !String(persentaseTerakreditasi).includes('%')) {
           const angkaPersentase = parseFloat(String(persentaseTerakreditasi).replace(',', '.'));
           persentaseTerakreditasi = isNaN(angkaPersentase) ? persentaseTerakreditasi + '%' : angkaPersentase.toFixed(2) + '%';
         }
-        const prodiUnggulA = ambilNilai(response.persentase_prodi, ['prodi_unggul_atau_a'], '0');
-        let persentaseUnggulA = ambilNilai(response.persentase_prodi, ['persentase_unggul_atau_a'], '0');
+        const prodiUnggulA = ambilNilai(persentaseProdi, ['prodi_unggul_atau_a'], '0');
+        let persentaseUnggulA = ambilNilai(persentaseProdi, ['persentase_unggul_atau_a'], '0');
 
         if (persentaseUnggulA !== '' && !String(persentaseUnggulA).includes('%')) {
           const angkaPersentase = parseFloat(String(persentaseUnggulA).replace(',', '.'));

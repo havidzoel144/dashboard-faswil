@@ -64,6 +64,147 @@ class Auth extends MX_Controller
     redirect(base_url('admin/dashboard'));
   }
 
+  private function isAdminCanLoginAs()
+  {
+    $username = $this->session->userdata('username');
+    // $roles = $this->session->userdata('roles');
+
+    // if (!is_array($roles)) {
+    //   return false;
+    // }
+
+    // foreach ($roles as $role) {
+    //   if (
+    //     isset($role['role_id']) &&
+    //     in_array($role['role_id'], ['1'])
+    //   ) {
+    //     return true;
+    //   }
+    // }
+
+    if ($username === 'admin-develop') {
+      return true;
+    }
+
+    return false;
+  }
+
+  public function loginAs()
+  {
+    $user_id = safe_url_decrypt($this->input->post('user_id'));
+
+
+    // Pastikan sudah login
+    if (!$this->session->userdata('logged_in')) {
+      redirect(base_url('login'));
+    }
+
+    // Jangan boleh impersonate lagi
+    if ($this->session->userdata('login_as') === TRUE) {
+      $this->session->set_flashdata(
+        'error',
+        'Anda sedang login sebagai user lain.'
+      );
+
+      redirect(base_url('admin/dashboard'));
+    }
+
+    if (!$this->isAdminCanLoginAs()) {
+      show_error('Anda tidak memiliki hak untuk Login As.', 403);
+    }
+
+    // Ambil data user tujuan
+    $user_data = $this->User_model->get_user_by_id_logged_in($user_id);
+
+    if (!$user_data) {
+      $this->session->set_flashdata(
+        'error',
+        'User tidak ditemukan.'
+      );
+
+      redirect($_SERVER['HTTP_REFERER'] ?? base_url('admin/user'));
+    }
+
+    // Pastikan user aktif
+    if ($user_data['status'] == '0') {
+      $this->session->set_flashdata(
+        'error',
+        'User tersebut tidak aktif.'
+      );
+
+      redirect($_SERVER['HTTP_REFERER'] ?? base_url('admin/user'));
+    }
+
+    // Simpan session admin asli
+    $original_user = [
+      'user_id'  => $this->session->userdata('user_id'),
+      'nama'     => $this->session->userdata('nama'),
+      'username' => $this->session->userdata('username'),
+      'email'    => $this->session->userdata('email'),
+      'roles'    => $this->session->userdata('roles'),
+    ];
+
+    // Ganti session dengan user tujuan
+    $this->session->set_userdata([
+      'user_id'       => $user_data['id'],
+      'nama'          => $user_data['nama'],
+      'username'      => $user_data['username'],
+      'email'         => $user_data['email'],
+      'roles'         => $user_data['roles'],
+      'logged_in'     => TRUE,
+
+      // Penanda bahwa sedang Login As
+      'login_as'      => TRUE,
+      'original_user' => $original_user,
+    ]);
+
+    $this->session->set_flashdata(
+      'success-login',
+      'Sekarang Anda login sebagai ' . $user_data['nama']
+    );
+
+    redirect(base_url('admin/dashboard'));
+  }
+
+  public function stopLoginAs()
+  {
+    if ($this->session->userdata('login_as') !== TRUE) {
+      redirect(base_url('admin/dashboard'));
+    }
+
+    $original_user = $this->session->userdata('original_user');
+
+    if (!$original_user) {
+      // Kondisi abnormal, hapus session
+      $this->session->sess_destroy();
+
+      redirect(base_url('login'));
+    }
+
+    // Restore session admin
+    $this->session->set_userdata([
+      'user_id'  => $original_user['user_id'],
+      'nama'     => $original_user['nama'],
+      'username' => $original_user['username'],
+      'email'    => $original_user['email'],
+      'roles'    => $original_user['roles'],
+      'logged_in' => TRUE,
+    ]);
+
+    // Hapus informasi impersonate
+    $this->session->unset_userdata([
+      'login_as',
+      'original_user'
+    ]);
+
+    $this->session->set_flashdata(
+      'success-login',
+      'Anda kembali login sebagai ' . $original_user['nama']
+    );
+
+    redirect(base_url('admin/dashboard'));
+  }
+
   public function logout()
   {
     // Set flashdata sebelum session dihancurkan

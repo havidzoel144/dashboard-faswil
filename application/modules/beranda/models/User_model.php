@@ -161,4 +161,27 @@ class User_model extends CI_Model
     $query = $this->db->get();
     return $query->result();
   }
+
+  public function get_user_by_id_logged_in($user_id)
+  {
+
+    $user = $this->db->where('id', $user_id)->get('users')->row_array();
+
+    if (!$user) {
+      return false;
+    }
+
+    // Ambil semua role user
+    $this->db->select('r.id AS role_id, r.nama_role');
+    $this->db->from('user_roles ur');
+    $this->db->join('roles r', 'ur.role_id = r.id');
+    $this->db->where('ur.user_id', $user_id);
+    $roles = $this->db->get()->result();
+
+    // Jika roles berasal dari tabel terpisah,
+    // gunakan function yang sama dengan proses login
+    $user['roles'] = $roles;
+
+    return $user;
+  }
 }

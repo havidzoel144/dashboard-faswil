@@ -24,7 +24,7 @@ $(document).ready(function () {
             }
         },
         order: [
-            [3, "asc"]
+            [4, "asc"]
         ]
     });
 
@@ -38,24 +38,16 @@ $(document).ready(function () {
     });
 
     // Menambahkan event listener ke setiap input pencarian
-    var searchInputs = $('.table-search-row input');
-    var selectJafung = document.getElementById('nm_jabatan');
-
     $('#kode_pt').select2().on("change", function (e) { //Search by Kode PT
         dataTable.draw();
     });
 
-    searchInputs.eq(0).on('keyup change', function () { // Pencarian untuk NAMA PT
-        dataTable.column(3).search(this.value).draw(); // Angka 2 mengacu pada kolom NAMA PT (index dimulai dari 0)
+    $('input[name="nm_prodi"]').on('keyup change', function () { // Pencarian untuk NAMA PRODI
+        dataTable.column(5).search(this.value).draw();
     });
 
-    // searchInputs.eq(1).on('keyup change', function() { // Pencarian untuk NAMA PRODI
-    //     console.log('prodi:', this.value);
-    //     dataTable.column(3).search(this.value).draw(); // Angka 3 mengacu pada kolom NAMA PRODI
-    // });
-
-    searchInputs.eq(2).on('keyup change', function () { // Pencarian untuk BIDANG ILMU
-        dataTable.column(5).search(this.value).draw(); // Angka 5 mengacu pada kolom BIDANG ILMU
+    $('input[name="bidang_ilmu"]').on('keyup change', function () { // Pencarian untuk BIDANG ILMU
+        dataTable.column(7).search(this.value).draw();
     });
 
     // searchInputs.eq(3).on('keyup change', function() { // Pencarian untuk status keaktifan

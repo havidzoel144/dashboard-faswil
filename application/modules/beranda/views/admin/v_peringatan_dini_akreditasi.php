@@ -576,6 +576,24 @@
                 </table>
               </div>
 
+              <div class="row mt-1">
+                <div class="col-12">
+                  <div class="alert alert-with-icon" role="alert" style="background: linear-gradient(135deg, #edf6ff 0%, #f6fbff 100%); border: 1px solid #d5e7ff; border-left: 5px solid #7aa7d9; color: #2f3f4d; box-shadow: 0 4px 12px rgba(122, 167, 217, 0.08); padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 0; font-size: 0.82rem;">
+                    <span class="alert-icon mr-2" style="color: #5a86c7; font-size: 0.9rem; display: inline-flex; align-items: center;">
+                      <i class="fa fa-info-circle"></i>
+                    </span>
+                    <span class="alert-text" style="color: #334155; line-height: 1.35; font-size: 0.82rem;">
+                      <strong style="color: #1f2937;">Informasi Data:</strong>
+                      <ul style="margin-bottom: 0; padding-left: 1.5rem; line-height: 1.35;">
+                        <li>Data pada poin 1 dan 2 diambil berdasarkan data penilaian Reviu External pada periode <strong id="periode-reviu-external" style="color: #1f2937;">-</strong></li>
+                        <li>Data pada poin 3 diambil berdasarkan data PDDIKTI per tanggal <strong id="tanggal-data-pddikti-prodi" style="color: #1f2937;">-</strong></li>
+                        <li>Data pada poin 4 dan 5 diambil berdasarkan data PDDIKTI per tanggal <strong id="tanggal-data-pddikti-dosen" style="color: #1f2937;">-</strong></li>
+                      </ul>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
               <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-12 d-flex align-items-center">
                   <div class="item font-weight-bolder mr-2">Keterangan Status Simulasi:</div>
@@ -620,39 +638,7 @@
           <div class="col-md-4 mb-1">
             <div class="pda-box p-1">
               <h5 style="color:#27306c;font-weight:700;">Prioritas Tindak Lanjut</h5>
-              <div class="row">
-                <div class="col-12">
-                  <div class="alert alert-info mb-3 d-flex align-items-center" role="alert" style="border-radius:12px;padding:1.1rem 1.35rem;font-size:1.2rem;line-height:1.65;box-shadow:0 8px 20px rgba(37,99,235,.12);border-left:4px solid #2563eb;background:linear-gradient(135deg,#e0ecff 0%,#f3f8ff 55%,#ffffff 100%);">
-                    <i class="la la-info-circle mr-2" style="font-size:3.55rem;color:#2563eb;"></i>
-                    <div class="font-medium-1" style="line-height:1.45;">
-                      <strong>Informasi:</strong> Bagian ini masih dalam tahap pengembangan dan akan terus disempurnakan.
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="pda-priority-item">
-                <span class="icon">
-                  <i class="fa fa-exclamation-triangle" style="font-size:20px;color:#fd1b3b;"></i>
-                </span>
-                <div class="content">
-                  <div class="head">Jabatan akademik dosen</div>
-                  <small>Status: <span style="color:#d34545;font-weight:600;">Perlu Tindak Lanjut</span></small>
-                  <small>Indikator 5 (Data PDDikti)</small>
-                </div>
-                <span class="badge-soft badge-soft-red">Prioritas Tinggi</span>
-              </div>
-
-              <div class="pda-priority-item">
-                <span class="icon">
-                  <i class="fa fa-exclamation-circle" style="font-size:20px;color:#f78b00;"></i>
-                </span>
-                <div class="content">
-                  <div class="head">Kecukupan dosen pada beberapa program studi</div>
-                  <small>Status: <span style="color:#d38c20;font-weight:600;">Perlu Verifikasi</span></small>
-                  <small>Indikator 4 (Data PDDikti)</small>
-                </div>
-                <span class="badge-soft badge-soft-orange">Prioritas Sedang</span>
-              </div>
+              <div class="prioritas-tindak-lanjut"></div>
 
               <div class="pda-priority-item">
                 <span class="icon">
@@ -814,6 +800,27 @@
     return teksSisaWaktu;
   }
 
+  const formatTanggalIndonesia = function(value) {
+    if (!value) {
+      return '-';
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const months = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${day} ${month} ${year}`;
+  };
+
   // Load dashboard data based on selected kode_pt
   function loadDashboard(kode_pt) {
     if (!kode_pt) {
@@ -880,8 +887,127 @@
         $('#badge-status-jja-dosen').removeClass().addClass(`badge-soft ${res.indikator_penjaminan_mutu.jja_dosen.badge_class} badge-status`);
         $('#status-jja-dosen').text(res.indikator_penjaminan_mutu.jja_dosen.status);
         $('#label-jja-dosen').text(`${res.indikator_penjaminan_mutu.jja_dosen.label}`);
+
+
+        let periodeReviuExternalText = '-';
+        if (res.penjaminan_mutu != null) {
+          const periodeReviuExternal = res.penjaminan_mutu.periode || '-';
+          periodeReviuExternalText = (() => {
+            const value = String(periodeReviuExternal).trim();
+            if (!value || value === '-') {
+              return '-';
+            }
+
+            const match = value.match(/^(\d{4})([12])$/);
+            if (!match) {
+              return value;
+            }
+
+            const [, tahun, semester] = match;
+            const range = semester === '1' ? 'Januari-Juni' : 'Juli-November';
+            return `${tahun}-${semester} (${range})`;
+          })();
+        }
+
+        $('#periode-reviu-external').text(periodeReviuExternalText);
+        $('#tanggal-data-pddikti-prodi').text(formatTanggalIndonesia(res.statistik.tgl_update));
+        $('#tanggal-data-pddikti-dosen').text(formatTanggalIndonesia(res.jja_dosen.tgl_update));
+
+        renderPrioritasTindakLanjut(res.indikator_penjaminan_mutu);
       }
     });
+  }
+
+  // Render Prioritas Tindak Lanjut based on indikator_penjaminan_mutu
+  function renderPrioritasTindakLanjut(indikator) {
+    const $container = $('.prioritas-tindak-lanjut');
+    if (!$container.length || !indikator) {
+      return;
+    }
+
+    const indikatorConfig = [{
+        key: 'indikator_1',
+        head: 'SPMI yang Dikembangkan oleh PT',
+        sumber: 'Indikator 1 (Reviu Eksternal SPMI)'
+      },
+      {
+        key: 'indikator_2',
+        head: 'Implementasi SPMI Melalui Siklus PPEPP',
+        sumber: 'Indikator 2 (Reviu Eksternal SPMI)'
+      },
+      {
+        key: 'indikator_4',
+        head: 'Akreditasi Program Studi',
+        sumber: 'Indikator 3 (Reviu Eksternal SPMI)'
+      },
+      {
+        key: 'jumlah_dosen_per_prodi',
+        head: 'Kecukupan Dosen per Program Studi',
+        sumber: 'Indikator 4 (Data PDDikti)'
+      },
+      {
+        key: 'jja_dosen',
+        head: 'Jabatan Akademik Dosen',
+        sumber: 'Indikator 5 (Data PDDikti)'
+      }
+    ];
+
+    const getPriorityMeta = function(badgeClass) {
+      if (badgeClass === 'badge-soft-red') {
+        return {
+          icon: 'fa-exclamation-triangle',
+          iconColor: '#fd1b3b',
+          statusLabel: 'Tidak Memenuhi',
+          statusColor: '#d34545',
+        };
+      }
+
+      return null;
+    };
+
+    let html = '';
+
+    indikatorConfig.forEach(function(cfg) {
+      const data = indikator[cfg.key];
+      if (!data) {
+        return;
+      }
+
+      const meta = getPriorityMeta(data.badge_class);
+      if (!meta) {
+        return;
+      }
+
+      const head = cfg.head;
+
+      html += `
+        <div class="pda-priority-item alert alert-with-icon mb-1" role="alert" style="background: linear-gradient(135deg, #fff5f5 0%, #fffafa 100%); border: 1px solid #f5c2c7; border-left: 5px solid #fd1b3b; color: #2f3f4d; box-shadow: 0 4px 12px rgba(253, 27, 59, 0.08); padding: 0.9rem 1rem; border-radius: 10px; margin-bottom: 0;">
+          <span class="icon">
+            <i class="fa ${meta.icon}" style="font-size:20px;color:${meta.iconColor};"></i>
+          </span>
+          <div class="content">
+            <div class="head">${head}</div>
+            <small>Status: <span style="color:${meta.statusColor};font-weight:600;">${meta.statusLabel}</span></small>
+            <small>${cfg.sumber}</small>
+          </div>
+        </div>`;
+    });
+
+    if (!html) {
+      html = `
+        <div class="pda-priority-item alert alert-with-icon mb-1" role="alert" style="background: linear-gradient(135deg, #f0fff0 0%, #f0fff0 100%); border: 1px solid #d4edda; border-left: 5px solid #28a745; color: #155724; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.08); padding: 0.9rem 1rem; border-radius: 10px; margin-bottom: 0;">
+          <span class="icon">
+            <i class="fa fa-check-circle" style="font-size:20px;color:#28a745;"></i>
+          </span>
+          <div class="content">
+            <div class="head">Semua Indikator Memenuhi</div>
+            <small>Status: <span style="color:#1e8a4c;font-weight:600;">Memenuhi</span></small>
+            <small>Seluruh indikator syarat perlu telah terpenuhi</small>
+          </div>
+        </div>`;
+    }
+
+    $container.html(html);
   }
 
   // Load dashboard on page load

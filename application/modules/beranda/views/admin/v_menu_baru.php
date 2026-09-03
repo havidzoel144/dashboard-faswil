@@ -240,3 +240,30 @@
   </div>
 </div>
 <!-- END: Main Menu-->
+
+<?php if ($this->session->userdata('login_as') === TRUE): ?>
+  <div class="content" style="min-height: fit-content;">
+    <div class="content-wrapper">
+      <div class="row justify-content-center mt-2">
+        <div class="col-12">
+          <div class="alert alert-warning mb-0 d-flex flex-column flex-md-row align-items-center justify-content-center text-center">
+            <div class="d-flex align-items-center justify-content-center mb-2 mb-md-0">
+              <i class="la la-user mr-2"></i>
+              <span>
+                Anda sedang login sebagai:
+                <strong><?= html_escape($this->session->userdata('nama')) ?></strong>
+              </span>
+            </div>
+
+            <a
+              href="<?= base_url('admin/stop-login-as') ?>"
+              class="btn btn-sm btn-danger ml-md-3 mt-2 mt-md-0">
+              <i class="la la-sign-out"></i>
+              Kembali ke Admin
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php endif; ?>

@@ -395,7 +395,7 @@
                 <!-- Bawah: Periode + Unduh -->
                 <div class="d-flex flex-wrap align-items-end justify-content-lg-end" style="gap:12px; width:100%;">
                   <!-- Periode -->
-                  <div class="ppu-filter-group" style="flex:0 0 calc(50% - 6px); max-width:calc(50% - 6px); min-width:0;">
+                  <!-- <div class="ppu-filter-group" style="flex:0 0 calc(50% - 6px); max-width:calc(50% - 6px); min-width:0;">
                     <label style="color:rgba(255,255,255,0.8);">Periode</label>
                     <div class="input-group">
                       <div class="input-group-prepend">
@@ -403,14 +403,14 @@
                       </div>
                       <input type="month" class="form-control text-center" value="2026-01" style="width:140px;">
                     </div>
-                  </div>
+                  </div> -->
 
                   <!-- Unduh -->
-                  <div style="flex:0 0 calc(50% - 6px); max-width:calc(50% - 6px); min-width:0;">
+                  <!-- <div style="flex:0 0 calc(50% - 6px); max-width:calc(50% - 6px); min-width:0;">
                     <button class="btn font-weight-bold d-flex align-items-center justify-content-center" style="height:38px;font-size:12px;border-radius:10px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);backdrop-filter:blur(4px);width:100%;">
                       <i class="ft-download mr-2"></i> Unduh Laporan
                     </button>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -423,6 +423,10 @@
           <div class="col-lg-4 mb-3 mb-lg-0">
             <div class="card ppu-card">
               <div class="card-body p-3 d-flex flex-column justify-content-between">
+                <div class="d-flex align-items-center justify-content-center text-center p-2 mb-2" style="background:#fff7ed;border:1px dashed #f59e0b;border-radius:12px;color:#92400e;font-size:11px;font-weight:600;letter-spacing:.2px;">
+                  <i class="ft-alert-triangle mr-1"></i>
+                  Bagian ini sedang dalam pengembangan
+                </div>
                 <div class="d-flex align-items-center justify-content-between mb-1">
                   <h6 class="font-weight-bold mb-0" style="color:#1e293b;font-size:15.5px;">Ringkasan Potensi Terakreditasi Unggul</h6>
                 </div>
@@ -549,11 +553,16 @@
           <div class="col-lg-8 mb-4">
             <div class="card ppu-card" style="height:auto;">
               <div class="card-body p-0">
+
                 <!-- Card Header -->
                 <div class="d-flex align-items-center justify-content-between px-2 py-2" style="border-bottom:1px solid #f1f5f9;">
                   <div>
                     <h6 class="font-weight-bold mb-0" style="color:#1e293b;font-size:13.5px;">Simulasi Pemenuhan Indikator Syarat Perlu Terakreditasi Unggul</h6>
                   </div>
+                </div>
+
+                <div class="mx-1 mt-1 mb-2 px-1 py-1" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;color:#334155;font-size:11px;">
+                  <i class="ft-info mr-1"></i> Baris berwarna abu-abu belum dinamis.
                 </div>
 
                 <div class="table-responsive-prodi px-2 pb-0">
@@ -617,16 +626,18 @@
                       <tr>
                         <td class="text-muted font-weight-bold">4</td>
                         <td style="color:#334155;font-weight:600;">Ketersediaan Dosen Berkualifikasi Doktor</td>
-                        <td><span class="badge-terpenuhi">&#10003; Terpenuhi</span></td>
+                        <td id="status-dosen-doktor"></td>
                         <td>
                           <div class="d-flex align-items-center" style="gap:8px;">
-                            <span class="font-weight-bold" style="min-width:50px;text-align:right;font-size:12px;">0%</span>
+                            <span class="font-weight-bold" id="label-persen-dosen-doktor" style="min-width:50px;text-align:right;font-size:12px;">0%</span>
                             <div class="ppu-progress flex-grow-1">
-                              <div class="ppu-progress-bar bg-success" style="width:0%;"></div>
+                              <div class="ppu-progress-bar bg-success" id="bar-dosen-doktor" style="width:0%;">
+                              </div>
                             </div>
-                          </div>
                         </td>
-                        <td style="color:#64748b;font-size:11px;">312 dari 433 dosen (72%).</td>
+                        <td style="color:#64748b;font-size:11px;" id="keterangan-dosen-doktor">
+                          <!-- 312 dari 433 dosen (72%). -->
+                        </td>
                       </tr>
                       <!-- Row 5 -->
                       <tr>
@@ -644,10 +655,12 @@
                         <td style="color:#64748b;font-size:11px;" id="keterangan-jabatan-lk-atau-gb"></td>
                       </tr>
                       <!-- Row 6 -->
-                      <tr>
+                      <tr class="bg-light">
                         <td class="text-muted font-weight-bold">6</td>
                         <td style="color:#334155;font-weight:600;">Luaran Riset & Pengabdian Masyarakat (3 Tahun Terakhir)</td>
-                        <td><span class="badge-belum">&#128711; Belum Terpenuhi</span></td>
+                        <td>
+                          <!-- <span class="badge-belum">&#128711; Belum Terpenuhi</span> -->
+                        </td>
                         <td>
                           <div class="d-flex align-items-center" style="gap:8px;">
                             <span class="font-weight-bold" style="min-width:50px;text-align:right;font-size:12px;">0%</span>
@@ -656,13 +669,17 @@
                             </div>
                           </div>
                         </td>
-                        <td style="color:#64748b;font-size:11px;">Publikasi, HKI, dan PkM masih perlu ditingkatkan.</td>
+                        <td style="color:#64748b;font-size:11px;">
+                          <!-- Publikasi, HKI, dan PkM masih perlu ditingkatkan. -->
+                        </td>
                       </tr>
                       <!-- Row 7 -->
-                      <tr>
+                      <tr class="bg-light">
                         <td class="text-muted font-weight-bold">7</td>
                         <td style="color:#334155;font-weight:600;">Ketersediaan Diferensiasi Misi yang Jelas</td>
-                        <td><span class="badge-terpenuhi">&#10003; Terpenuhi</span></td>
+                        <td>
+                          <!-- <span class="badge-terpenuhi">&#10003; Terpenuhi</span> -->
+                        </td>
                         <td>
                           <div class="d-flex align-items-center" style="gap:8px;">
                             <span class="font-weight-bold" style="min-width:50px;text-align:right;font-size:12px;">0%</span>
@@ -671,13 +688,17 @@
                             </div>
                           </div>
                         </td>
-                        <td style="color:#64748b;font-size:11px;">Visi, misi, dan strategi telah terdiferensiasi.</td>
+                        <td style="color:#64748b;font-size:11px;">
+                          <!-- Visi, misi, dan strategi telah terdiferensiasi. -->
+                        </td>
                       </tr>
                       <!-- Row 8 -->
-                      <tr>
+                      <tr class="bg-light">
                         <td class="text-muted font-weight-bold">8</td>
                         <td style="color:#334155;font-weight:600;">Rekognisi Keunggulan Tridharma terkait Fokus Misi</td>
-                        <td><span class="badge-perlu">&#9888; Perlu Peningkatan</span></td>
+                        <td>
+                          <!-- <span class="badge-perlu">&#9888; Perlu Peningkatan</span> -->
+                        </td>
                         <td>
                           <div class="d-flex align-items-center" style="gap:8px;">
                             <span class="font-weight-bold" style="min-width:50px;text-align:right;font-size:12px;">0%</span>
@@ -686,13 +707,17 @@
                             </div>
                           </div>
                         </td>
-                        <td style="color:#64748b;font-size:11px;">Rekognisi masih perlu ditingkatkan.</td>
+                        <td style="color:#64748b;font-size:11px;">
+                          <!-- Rekognisi masih perlu ditingkatkan. -->
+                        </td>
                       </tr>
                       <!-- Row 9 -->
-                      <tr>
+                      <tr class="bg-light">
                         <td class="text-muted font-weight-bold">9</td>
                         <td style="color:#334155;font-weight:600;">Pelaksanaan Audit Keuangan</td>
-                        <td><span class="badge-terpenuhi">&#10003; Terpenuhi</span></td>
+                        <td>
+                          <!-- <span class="badge-terpenuhi">&#10003; Terpenuhi</span> -->
+                        </td>
                         <td>
                           <div class="d-flex align-items-center" style="gap:8px;">
                             <span class="font-weight-bold" style="min-width:50px;text-align:right;font-size:12px;">0%</span>
@@ -701,7 +726,9 @@
                             </div>
                           </div>
                         </td>
-                        <td style="color:#64748b;font-size:11px;">Laporan audit keuangan tersedia dan sah.</td>
+                        <td style="color:#64748b;font-size:11px;">
+                          <!-- Laporan audit keuangan tersedia dan sah. -->
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -737,15 +764,15 @@
                 <h6 class="font-weight-bold mb-1" style="color:#1e293b;font-size:13.5px;">Ringkasan Indikator</h6>
                 <div class="d-flex" style="gap:10px;">
                   <div class="ppu-summary-box" style="background:#f0fdf4;border:1px solid #bbf7d0;">
-                    <div class="font-weight-bold" style="font-size:26px;color:#15803d;line-height:1;">6</div>
+                    <div class="font-weight-bold" style="font-size:26px;color:#15803d;line-height:1;" id="terpenuhi-count">0</div>
                     <small style="font-size:10.5px;color:#16a34a;font-weight:600;">Terpenuhi</small>
                   </div>
                   <div class="ppu-summary-box" style="background:#fff7ed;border:1px solid #fed7aa;">
-                    <div class="font-weight-bold" style="font-size:26px;color:#ea580c;line-height:1;">3</div>
+                    <div class="font-weight-bold" style="font-size:26px;color:#ea580c;line-height:1;" id="perlu-peningkatan-count">0</div>
                     <small style="font-size:10.5px;color:#c2410c;font-weight:600;">Perlu Peningkatan</small>
                   </div>
                   <div class="ppu-summary-box" style="background:#fef2f2;border:1px solid #fecaca;">
-                    <div class="font-weight-bold" style="font-size:26px;color:#b91c1c;line-height:1;">0</div>
+                    <div class="font-weight-bold" style="font-size:26px;color:#b91c1c;line-height:1;" id="belum-terpenuhi-count">0</div>
                     <small style="font-size:10.5px;color:#dc2626;font-weight:600;">Belum Terpenuhi</small>
                   </div>
                 </div>
@@ -755,6 +782,9 @@
             <!-- Rekomendasi -->
             <div class="card ppu-card mb-1" style="height:auto;">
               <div class="card-body p-2">
+                <div class="alert alert-warning mb-2" role="alert" style="padding:10px 12px;border-radius:10px;border:1px solid #fcd34d;background:#fff7ed;color:#92400e;font-size:11.5px;line-height:1.5;">
+                  Fitur rekomendasi tindak lanjut sedang dalam pengembangan.
+                </div>
                 <div class="d-flex align-items-center justify-content-between mb-2">
                   <h6 class="font-weight-bold mb-0" style="color:#1e293b;font-size:13.5px;">Rekomendasi Tindak Lanjut</h6>
                   <span style="background:#fff7ed;color:#ea580c;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;">3 Aksi</span>
@@ -945,11 +975,17 @@
         $('#keterangan-ppepp').html(res.indikator_penjaminan_mutu.ppepp.keterangan);
         // Update progress bar for Akreditasi Prodi
         const persentaseAkreditasi = res.indikator_penjaminan_mutu.akreditasi_prodi.persentase_prodi_terakreditasi;
-        const warnaAkreditasi = persentaseAkreditasi >= 70
-          ? { teks: '#059669', bar: 'linear-gradient(90deg,#059669,#10b981)' }
-          : persentaseAkreditasi >= 40
-            ? { teks: '#f97316', bar: 'linear-gradient(90deg,#f97316,#fb923c)' }
-            : { teks: '#dc2626', bar: 'linear-gradient(90deg,#ef4444,#f87171)' };
+        const warnaAkreditasi = persentaseAkreditasi >= 70 ? {
+            teks: '#059669',
+            bar: 'linear-gradient(90deg,#059669,#10b981)'
+          } :
+          persentaseAkreditasi >= 40 ? {
+            teks: '#f97316',
+            bar: 'linear-gradient(90deg,#f97316,#fb923c)'
+          } : {
+            teks: '#dc2626',
+            bar: 'linear-gradient(90deg,#ef4444,#f87171)'
+          };
 
         $('#label-persen-akreditasi-prodi, #keterangan-akreditasi-prodi').css('color', warnaAkreditasi.teks);
         $('#bar-akreditasi-prodi').css('background', warnaAkreditasi.bar);
@@ -957,8 +993,36 @@
         $('#label-persen-akreditasi-prodi').text(res.indikator_penjaminan_mutu.akreditasi_prodi.persentase_prodi_terakreditasi_tampil + '%');
         $('#bar-akreditasi-prodi').css('width', res.indikator_penjaminan_mutu.akreditasi_prodi.persentase_prodi_terakreditasi + '%');
         $('#keterangan-akreditasi-prodi').html(res.indikator_penjaminan_mutu.akreditasi_prodi.keterangan);
-        // Update progress bar for jabatan-lk-atau-gb
+
         const bentukPt = res.data_pt.bentuk_pt.toLowerCase();
+        // Ketersediaan Dosen Berkualifikasi Doktor
+        const batasDosenDoktor = {
+          'universitas': 20,
+          'institut': 20,
+          'sekolah tinggi': 20,
+          'akademi': 10,
+          'politeknik': 10,
+          'akademi komunitas': 10
+        } [bentukPt];
+        const persentaseDosenDoktor = res.indikator_penjaminan_mutu.dosen_doktor.persentase_dosen_doktor;
+
+        if (batasDosenDoktor !== undefined) {
+          const tercapai = persentaseDosenDoktor >= batasDosenDoktor;
+          const warna = tercapai ? '#059669' : '#dc2626';
+          const background = tercapai ?
+            'linear-gradient(90deg,#059669,#10b981)' :
+            'linear-gradient(90deg,#ef4444,#f87171)';
+
+          $('#label-persen-dosen-doktor, #keterangan-dosen-doktor').css('color', warna);
+          $('#bar-dosen-doktor').css('background', background);
+        }
+
+        $('#status-dosen-doktor').html(res.indikator_penjaminan_mutu.dosen_doktor.status);
+        $('#label-persen-dosen-doktor').text(res.indikator_penjaminan_mutu.dosen_doktor.persentase_dosen_doktor_tampil + '%');
+        $('#bar-dosen-doktor').css('width', res.indikator_penjaminan_mutu.dosen_doktor.persentase_dosen_doktor + '%');
+        $('#keterangan-dosen-doktor').html(res.indikator_penjaminan_mutu.dosen_doktor.keterangan);
+
+        // Update progress bar for jabatan-lk-atau-gb
         const batasJabatan = {
           'universitas': 10,
           'institut': 10,
@@ -966,15 +1030,15 @@
           'akademi': 7.5,
           'politeknik': 7.5,
           'akademi komunitas': 7.5
-        }[bentukPt];
+        } [bentukPt];
         const persentaseJabatan = res.indikator_penjaminan_mutu.jja_dosen_lk_atau_gb.persentase_jabatan_lk_atau_gb;
 
         if (batasJabatan !== undefined) {
           const tercapai = persentaseJabatan >= batasJabatan;
           const warna = tercapai ? '#059669' : '#dc2626';
-          const background = tercapai
-            ? 'linear-gradient(90deg,#059669,#10b981)'
-            : 'linear-gradient(90deg,#ef4444,#f87171)';
+          const background = tercapai ?
+            'linear-gradient(90deg,#059669,#10b981)' :
+            'linear-gradient(90deg,#ef4444,#f87171)';
 
           $('#label-persen-jabatan-lk-atau-gb, #keterangan-jabatan-lk-atau-gb').css('color', warna);
           $('#bar-jabatan-lk-atau-gb').css('background', background);
@@ -984,8 +1048,10 @@
         $('#label-persen-jabatan-lk-atau-gb').text(res.indikator_penjaminan_mutu.jja_dosen_lk_atau_gb.persentase_jabatan_lk_atau_gb_tampil + '%');
         $('#bar-jabatan-lk-atau-gb').css('width', res.indikator_penjaminan_mutu.jja_dosen_lk_atau_gb.persentase_jabatan_lk_atau_gb + '%');
         $('#keterangan-jabatan-lk-atau-gb').html(res.indikator_penjaminan_mutu.jja_dosen_lk_atau_gb.keterangan);
-
-
+    
+        $('#terpenuhi-count').text(res.indikator_penjaminan_mutu.ringkasan_indikator.terpenuhi);
+        $('#perlu-peningkatan-count').text(res.indikator_penjaminan_mutu.ringkasan_indikator.perlu_peningkatan);
+        $('#belum-terpenuhi-count').text(res.indikator_penjaminan_mutu.ringkasan_indikator.belum_terpenuhi);
       }
     });
   }

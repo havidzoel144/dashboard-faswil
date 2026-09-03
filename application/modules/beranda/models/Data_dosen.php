@@ -20,7 +20,8 @@ class Data_dosen extends CI_Model
         // Hanya tambahkan pencarian umum jika $search tidak kosong
         if (!empty($search)) {
             $this->db->group_start();
-            $this->db->like('nidn', $search);
+            $this->db->like('nuptk', $search);
+            $this->db->or_like('nidn', $search);
             $this->db->or_like('nama', $search);
             $this->db->or_like('nm_pt', $search);
             $this->db->or_like('nm_prodi', $search);
@@ -88,7 +89,8 @@ class Data_dosen extends CI_Model
         // Hanya tambahkan pencarian umum jika $search tidak kosong
         if (!empty($search)) {
             $this->db->group_start();
-            $this->db->like('nidn', $search);
+            $this->db->like('nuptk', $search);
+            $this->db->or_like('nidn', $search);
             $this->db->or_like('nama', $search);
             $this->db->or_like('nm_pt', $search);
             $this->db->or_like('nm_prodi', $search);
@@ -158,7 +160,7 @@ class Data_dosen extends CI_Model
     // Fungsi untuk mendapatkan nama kolom berdasarkan index
     protected function getColumnOrderName($orderColumn)
     {
-        $columns = ["", "nidn", "nama", "nm_pt", "nm_prodi", "nm_jabatan", "bidang_ilmu", "nm_stat_aktif"]; // Sesuaikan dengan urutan kolom di tabel Anda
+        $columns = ["", "nuptk", "nidn", "nama", "nm_pt", "nm_prodi", "nm_jabatan", "bidang_ilmu", "nm_stat_aktif"]; // Sesuaikan dengan urutan kolom di tabel Anda
         return $columns[$orderColumn] ?? null;
     }
 }

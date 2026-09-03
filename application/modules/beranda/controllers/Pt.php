@@ -233,7 +233,12 @@ class Pt extends MX_Controller
     ])->row_array();
 
     $form_led = $this->db->from('form_led as a')->join('penilaian_tipologi as b', 'a.id_penilaian_tipologi = b.id_penilaian_tipologi')->where('b.kode_pt', $kode_pt)->where('b.periode', $periode)->get()->row_array();
-    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+
+    if ($form_led && !empty($form_led['persentase_prodi'])) {
+      $persentase_prodi = json_decode($form_led['persentase_prodi'], true);
+    } else {
+      $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    }
     $identias_pt = $this->db->get_where('data_pt', ['kode_pt' => $kode_pt])->row_array();
 
     // echo json_encode($penilaian_tipologi); // Debugging: Tampilkan data form_led
@@ -419,7 +424,7 @@ class Pt extends MX_Controller
     ])->row_array();
 
     $null_fields = array_keys(array_filter($form_led, function ($v, $k) {
-      if (in_array($k, ['akreditasi_pt', 'tgl_akhir_apt', 'tgl_sk_pendirian_pt', 'alamat', 'pejabat_penandatangan', 'tahun_pertama_terima_mhs', 'tautan_sasaran_mutu_dampak', 'created_at', 'updated_at', 'status'], true)) {
+      if (in_array($k, ['akreditasi_pt', 'tgl_akhir_apt', 'tgl_sk_pendirian_pt', 'alamat', 'pejabat_penandatangan', 'tahun_pertama_terima_mhs', 'tautan_sasaran_mutu_dampak', 'created_at', 'updated_at', 'status', 'persentase_prodi'], true)) {
         return false;
       }
       return is_null($v) || $v === '' || $v === '0' || $v === 0 || $v === '0000-00-00';
@@ -443,9 +448,12 @@ class Pt extends MX_Controller
       return;
     }
 
+    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+
     $data_update = [
       'status'     => '1',
       'updated_at' => date('Y-m-d H:i:s'),
+      'persentase_prodi' => json_encode($persentase_prodi)
     ];
 
     $this->db->where('id_penilaian_tipologi', $form_led['id_penilaian_tipologi'])
@@ -503,7 +511,8 @@ class Pt extends MX_Controller
       ->where('fl.kode_pt', $kode_pt)
       ->get()
       ->row();
-    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    // $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    $persentase_prodi = json_decode($data_db->persentase_prodi, true);
 
     if (!$data_db) {
       $this->session->set_flashdata('error', 'Data LED tidak ditemukan untuk periode ini.');
@@ -560,7 +569,8 @@ class Pt extends MX_Controller
     }
 
     $identias_pt = $this->db->get_where('data_pt', ['kode_pt' => $kode_pt])->row_array();
-    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    // $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    $persentase_prodi = json_decode($data_db->persentase_prodi, true);
 
     $template_path = FCPATH . 'uploads/template_laporan_led.docx'; // path template
     $templateProcessor = new TemplateProcessor($template_path);

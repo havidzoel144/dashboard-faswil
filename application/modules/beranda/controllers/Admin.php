@@ -894,7 +894,8 @@ class Admin extends MX_Controller
       ROUND(
         (SUM(CASE WHEN `nm_jabatan` IS NOT NULL AND TRIM(`nm_jabatan`) <> '' THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0)) * 100,
         2
-      ) AS persentase_nm_jabatan_terisi
+      ) AS persentase_nm_jabatan_terisi,
+      MAX(`tgl_update`) AS tgl_update
       FROM `data_dosen`
       WHERE `kode_pt` = '$kode_pt'")->row();
 
@@ -1092,7 +1093,7 @@ class Admin extends MX_Controller
 
     $penjaminan_mutu = $this->db->query("SELECT * FROM `data_penjaminan_mutu` WHERE `kode_pt` = '$kode_pt' ORDER BY `periode` DESC LIMIT 1")->row();
     $statistik = $this->Penilaian_model->statistikProdi($kode_pt);
-    $jumlah_dosen_per_prodi = $this->db->query("SELECT `kode_prodi`, `nm_prodi`, COUNT(*) AS jumlah_dosen FROM `data_dosen` WHERE `kode_pt` = '$kode_pt' GROUP BY `kode_prodi`")->result_array();
+    $jumlah_dosen_doktor = $this->db->query("SELECT COUNT(*) AS jumlah_semua_dosen, SUM(CASE WHEN `nm_pend_akhir` = 'S3' THEN 1 ELSE 0 END) AS jumlah_dosen_doktor FROM `data_dosen` WHERE `kode_pt` = ?", [$kode_pt])->row();
 
     $jja_dosen = $this->db->query("SELECT 
       COUNT(*) AS jumlah_semua_dosen,
@@ -1115,25 +1116,16 @@ class Admin extends MX_Controller
       FROM `data_dosen`
       WHERE `kode_pt` = ?", [$kode_pt])->row();
 
-    // Tambah 1 prodi sampel dengan jumlah dosen kurang dari 5
-    // $jumlah_dosen_per_prodi[] = [
-    //   'kode_prodi' => 'SAMPLE001',
-    //   'nm_prodi' => 'Program Studi Sampel',
-    //   'jumlah_dosen' => 3
-    // ];
-
-    $prodi_dosen_kurang_dari_5 = array_filter($jumlah_dosen_per_prodi, function ($prodi) {
-      return $prodi['jumlah_dosen'] < 5;
-    });
-
     // SPMI yang dikembangkan oleh PT
     $skor_spmi = isset($penjaminan_mutu->skor_1) ? (float) $penjaminan_mutu->skor_1 : 0;
     $status_spmi = $skor_spmi == 2 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+    $kesimpulan_spmi = $skor_spmi == 2 ? 'Terpenuhi' : 'Belum Terpenuhi';
     $keterangan_spmi = $skor_spmi == 2 ? "<span style='color:#15803d;font-size:11px;'>Dokumen SPMI lengkap dan sah.</span>" : "<span style='color:#dc2626;font-size:11px;'>Dokumen SPMI tidak lengkap atau tidak sah.</span>";
 
     // Implementasi SPMI melalui siklus PPEPP
     $skor_ppepp = isset($penjaminan_mutu->skor_2) ? (float) $penjaminan_mutu->skor_2 : 0;
     $status_ppepp = $skor_ppepp == 2 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+    $kesimpulan_ppepp = $skor_ppepp == 2 ? 'Terpenuhi' : 'Belum Terpenuhi';
     $keterangan_ppepp = $skor_ppepp == 2 ? "<span style='color:#15803d;font-size:11px;'>Implementasi telah berjalan efektif.</span>" : "<span style='color:#dc2626;font-size:11px;'>Implementasi belum berjalan efektif.</span>";
 
     // PT memperoleh pengakuan atas mutu akademik yang dicapainya, berupa akreditasi program studi dari LAM/BAN-PT
@@ -1142,13 +1134,28 @@ class Admin extends MX_Controller
       ? (int) $persentase_prodi_terakreditasi
       : rtrim(rtrim(number_format((float) $persentase_prodi_terakreditasi, 2, ',', '.'), '0'), ',');
     $status_akre_prodi = (float) $persentase_prodi_terakreditasi >= 70 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : (((float) $persentase_prodi_terakreditasi >= 40 && (float) $persentase_prodi_terakreditasi <= 69) ? '<span class="badge-perlu">&#9888; Perlu Peningkatan</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>');
+    $kesimpulan_akre_prodi = (float) $persentase_prodi_terakreditasi >= 70 ? 'Terpenuhi' : (((float) $persentase_prodi_terakreditasi >= 40 && (float) $persentase_prodi_terakreditasi <= 69) ? 'Perlu Peningkatan' : 'Belum Terpenuhi');
     $keterangan_akre_prodi = $statistik['prodi_terakreditasi'] . " dari " . $statistik['total_prodi_aktif'] . " prodi terakreditasi.";
 
-    // Perguruan Tinggi memiliki kecukupan dosen untuk setiap program studi
-    $dosen_tidak_cukup = $prodi_dosen_kurang_dari_5;
-    $status_jumlah_dosen = $dosen_tidak_cukup === null || !empty($dosen_tidak_cukup) ? "Belum Terpenuhi" : "Terpenuhi";
-    $badge_class_jumlah_dosen = $dosen_tidak_cukup === null || !empty($dosen_tidak_cukup) ? "badge-soft-red" : "badge-soft-green";
-    $label_jumlah_dosen = $dosen_tidak_cukup === null || !empty($dosen_tidak_cukup) ? "Ada Prodi dengan Jumlah Dosen Kurang" : "Semua Prodi Memiliki Jumlah Dosen Cukup";
+    // Ketersediaan Dosen Berkualifikasi Doktor
+    $persentase_dosen_doktor = isset($jumlah_dosen_doktor->jumlah_dosen_doktor) ? ($jumlah_dosen_doktor->jumlah_dosen_doktor / $jumlah_dosen_doktor->jumlah_semua_dosen) * 100 : 0;
+    $persentase_dosen_doktor_tampil = ((float) $persentase_dosen_doktor == floor((float) $persentase_dosen_doktor))
+      ? (int) $persentase_dosen_doktor
+      : rtrim(rtrim(number_format((float) $persentase_dosen_doktor, 2, ',', '.'), '0'), ',');
+    $bentuk_pt = isset($data_pt->bentuk_pt) ? $data_pt->bentuk_pt : '';
+
+    if ($bentuk_pt == 'Universitas' || $bentuk_pt == 'Institut' || $bentuk_pt == 'Sekolah Tinggi') {
+      $status_dosen_doktor = $persentase_dosen_doktor >= 20 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+      $kesimpulan_dosen_doktor = $persentase_dosen_doktor >= 20 ? 'Terpenuhi' : 'Belum Terpenuhi';
+    } elseif ($bentuk_pt == 'Akademi' || $bentuk_pt == 'Politeknik' || $bentuk_pt == 'Akademi Komunitas') {
+      $status_dosen_doktor = $persentase_dosen_doktor >= 10 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+      $kesimpulan_dosen_doktor = $persentase_dosen_doktor >= 10 ? 'Terpenuhi' : 'Belum Terpenuhi';
+    } else {
+      $status_dosen_doktor = "Bentuk PT tidak dikenali";
+      $kesimpulan_dosen_doktor = "Bentuk PT tidak dikenali";
+    }
+
+    $keterangan_dosen_doktor = "{$jumlah_dosen_doktor->jumlah_dosen_doktor} dari {$jumlah_dosen_doktor->jumlah_semua_dosen} ({$persentase_dosen_doktor_tampil}%).";
 
     // Perguruan Tinggi memiliki dosen tetap dengan jabatan akademik Lektor Kepala atau Guru Besar
     $persentase_jabatan_lk_atau_gb = isset($jja_dosen->persentase_jabatan_lk_atau_gb) ? (float) $jja_dosen->persentase_jabatan_lk_atau_gb : 0;
@@ -1159,49 +1166,68 @@ class Admin extends MX_Controller
 
     if ($bentuk_pt == 'Universitas' || $bentuk_pt == 'Institut' || $bentuk_pt == 'Sekolah Tinggi') {
       $status_jabatan_lk_atau_gb = $persentase_jabatan_lk_atau_gb >= 10 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+      $kesimpulan_jabatan_lk_atau_gb = $persentase_jabatan_lk_atau_gb >= 10 ? 'Terpenuhi' : 'Belum Terpenuhi';
     } elseif ($bentuk_pt == 'Akademi' || $bentuk_pt == 'Politeknik' || $bentuk_pt == 'Akademi Komunitas') {
       $status_jabatan_lk_atau_gb = $persentase_jabatan_lk_atau_gb >= 7.5 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+      $kesimpulan_jabatan_lk_atau_gb = $persentase_jabatan_lk_atau_gb >= 7.5 ? 'Terpenuhi' : 'Belum Terpenuhi';
     } else {
       $status_jabatan_lk_atau_gb = "Bentuk PT tidak dikenali";
+      $kesimpulan_jabatan_lk_atau_gb = "Bentuk PT tidak dikenali";
     }
 
     $keterangan_jabatan_lk_atau_gb = "{$jja_dosen->jumlah_jabatan_lk} Lektor Kepala ({$jja_dosen->persentase_jabatan_lk}%), {$jja_dosen->jumlah_jabatan_gb} Guru Besar ({$jja_dosen->persentase_jabatan_gb}%).";
 
-    $perlu_perhatian = ($status_spmi == "Belum Terpenuhi" ? 1 : 0)
-      + ($status_ppepp == "Belum Terpenuhi" ? 1 : 0)
-      + ($status_akre_prodi == "Belum Terpenuhi" ? 1 : 0)
-      + ($status_jumlah_dosen == "Belum Terpenuhi" ? 1 : 0)
-      + (($status_jabatan_lk_atau_gb == "Belum Terpenuhi" || $status_jabatan_lk_atau_gb == "Bentuk PT tidak dikenali") ? 1 : 0);
+    $ringkasan_indikator = [
+      'terpenuhi' => 0,
+      'perlu_peningkatan' => 0,
+      'belum_terpenuhi' => 0,
+    ];
+
+    foreach ([$kesimpulan_spmi, $kesimpulan_ppepp, $kesimpulan_akre_prodi, $kesimpulan_dosen_doktor, $kesimpulan_jabatan_lk_atau_gb] as $kesimpulan) {
+      if ($kesimpulan == 'Terpenuhi') {
+        $ringkasan_indikator['terpenuhi']++;
+      } elseif ($kesimpulan == 'Perlu Peningkatan') {
+        $ringkasan_indikator['perlu_peningkatan']++;
+      } elseif ($kesimpulan == 'Belum Terpenuhi') {
+        $ringkasan_indikator['belum_terpenuhi']++;
+      }
+    }
 
     $indikator_penjaminan_mutu = [
       'spmi' => [
         'skor' => $skor_spmi,
         'status' => $status_spmi,
+        'kesimpulan' => $kesimpulan_spmi,
         'keterangan' => $keterangan_spmi,
       ],
       'ppepp' => [
         'skor' => $skor_ppepp,
         'status' => $status_ppepp,
+        'kesimpulan' => $kesimpulan_ppepp,
         'keterangan' => $keterangan_ppepp,
       ],
       'akreditasi_prodi' => [
         'persentase_prodi_terakreditasi' => $persentase_prodi_terakreditasi,
         'persentase_prodi_terakreditasi_tampil' => $persentase_prodi_terakreditasi_tampil,
         'status' => $status_akre_prodi,
+        'kesimpulan' => $kesimpulan_akre_prodi,
         'keterangan' => $keterangan_akre_prodi,
       ],
-      'jumlah_dosen_per_prodi' => [
-        'status' => $status_jumlah_dosen,
-        'badge_class' => $badge_class_jumlah_dosen,
-        'label' => $label_jumlah_dosen,
+      'dosen_doktor' => [
+        'persentase_dosen_doktor' => $persentase_dosen_doktor,
+        'persentase_dosen_doktor_tampil' => $persentase_dosen_doktor_tampil,
+        'status' => $status_dosen_doktor,
+        'kesimpulan' => $kesimpulan_dosen_doktor,
+        'keterangan' => $keterangan_dosen_doktor,
       ],
       'jja_dosen_lk_atau_gb' => [
         'persentase_jabatan_lk_atau_gb' => $persentase_jabatan_lk_atau_gb,
         'persentase_jabatan_lk_atau_gb_tampil' => $persentase_jabatan_lk_atau_gb_tampil,
         'status' => $status_jabatan_lk_atau_gb,
+        'kesimpulan' => $kesimpulan_jabatan_lk_atau_gb,
         'keterangan' => $keterangan_jabatan_lk_atau_gb,
       ],
-      'perlu_perhatian' => $perlu_perhatian,
+      'ringkasan_indikator' => $ringkasan_indikator,
     ];
 
     echo json_encode([
@@ -1213,7 +1239,6 @@ class Admin extends MX_Controller
       'penjaminan_mutu' => $penjaminan_mutu,
       'statistik' => $statistik,
       'jja_dosen' => $jja_dosen,
-      'prodi_dosen_kurang_dari_5' => $prodi_dosen_kurang_dari_5,
       'indikator_penjaminan_mutu' => $indikator_penjaminan_mutu,
       'data_prodi' => $data_prodi
     ]);
