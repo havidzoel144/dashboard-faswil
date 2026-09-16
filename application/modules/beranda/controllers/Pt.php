@@ -254,6 +254,7 @@ class Pt extends MX_Controller
         'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? 'Belum diisi',
         'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? '0000-00-00',
         'created_at' => date('Y-m-d H:i:s'),
+        'persentase_prodi' => json_encode($persentase_prodi),
       ];
       $this->db->insert('form_led', $data_insert);
     } else {
@@ -265,6 +266,7 @@ class Pt extends MX_Controller
           'tgl_sk_pendirian_pt' => $identias_pt['tgl_sk_pendirian'] ?? '0000-00-00',
           'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? 'Belum diisi',
           'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? '0000-00-00',
+          'persentase_prodi' => json_encode($persentase_prodi),
         ];
         $this->db->where('id', $form_led['id'])->update('form_led', $data_update);
       }
