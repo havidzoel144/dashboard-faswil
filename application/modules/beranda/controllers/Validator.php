@@ -410,7 +410,8 @@ class Validator extends MX_Controller
     }
 
     $kode_pt = $data_db->kode_pt;
-    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    // $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    $persentase_prodi = json_decode($data_db->persentase_prodi, true);
 
 
     $template_path = FCPATH . 'uploads/template_laporan_led.docx'; // path template

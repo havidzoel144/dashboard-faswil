@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Hasil Review Eksternal LLDikti Wilayah III <?= htmlspecialchars($progres_penilaian->nama_pt); ?></title>
+  <title>Hasil Reviu Eksternal LLDikti Wilayah III <?= htmlspecialchars($progres_penilaian->nama_pt); ?></title>
 
   <style>
     body {
@@ -91,7 +91,7 @@
 
 <body>
   <div class="header">
-    <h2>Hasil Review Eksternal LLDikti Wilayah III</h2>
+    <h2>Hasil Reviu Eksternal LLDikti Wilayah III</h2>
     <small>Sistem Penilaian Tipologi Perguruan Tinggi</small>
   </div>
 
@@ -120,15 +120,24 @@
   <table class="table">
     <tr>
       <th>Nilai Indikator 1</th>
-      <td><strong><?= htmlspecialchars($progres_penilaian->skor_1); ?></strong></td>
+      <td>
+        <strong><?= htmlspecialchars($progres_penilaian->skor_1); ?></strong> - 
+        <span><?= htmlspecialchars($progres_penilaian->catatan_1); ?></span>
+      </td>
     </tr>
     <tr>
       <th>Nilai Indikator 2</th>
-      <td><strong><?= htmlspecialchars($progres_penilaian->skor_2); ?></strong></td>
+      <td>
+        <strong><?= htmlspecialchars($progres_penilaian->skor_2); ?></strong> - 
+        <span><?= htmlspecialchars($progres_penilaian->catatan_2); ?></span>
+      </td>
     </tr>
     <tr>
       <th>Nilai Indikator 3</th>
-      <td><strong><?= htmlspecialchars($progres_penilaian->skor_3); ?></strong></td>
+      <td>
+        <strong><?= htmlspecialchars($progres_penilaian->skor_3); ?></strong> - 
+        <span><?= htmlspecialchars($progres_penilaian->catatan_3); ?></span>
+      </td>
     </tr>
     <tr>
       <th>Nilai Indikator 4</th>

@@ -205,7 +205,8 @@
                                                 <thead>
                                                     <tr style="background-color: #563BFF; color: #ffffff">
                                                         <th class="text-center">#</th>
-                                                        <th class="text-center">No. Registrasi</th>
+                                                        <th class="text-center">NUPTK</th>
+                                                        <th class="text-center">NIDN</th>
                                                         <th class="text-center">Nama</th>
                                                         <th class="text-center">Perguruan <br>Tinggi</th>
                                                         <th class="text-center">Program <br>Studi</th>

@@ -126,13 +126,14 @@ class Beranda extends MX_Controller
             $order = $this->input->post('order');  // Menangkap data sorting
 
             $columnSearch = [
-                'nidn' => $this->input->post('columns')[0]['search']['value'],
-                'nama' => $this->input->post('columns')[1]['search']['value'],
-                'nm_pt' => $this->input->post('columns')[2]['search']['value'],
-                'nm_prodi' => $this->input->post('columns')[3]['search']['value'],
-                // 'nm_jabatan' => $this->input->post('columns')[4]['search']['value'],
-                'bidang_ilmu' => $this->input->post('columns')[5]['search']['value'],
-                // 'nm_stat_aktif' => $this->input->post('columns')[6]['search']['value'],
+                'nuptk' => $this->input->post('columns')[1]['search']['value'] ?? null,
+                'nidn' => $this->input->post('columns')[2]['search']['value'] ?? null,
+                'nama' => $this->input->post('columns')[3]['search']['value'] ?? null,
+                'nm_pt' => $this->input->post('columns')[4]['search']['value'] ?? null,
+                'nm_prodi' => $this->input->post('columns')[5]['search']['value'] ?? null,
+                // 'nm_jabatan' => $this->input->post('columns')[6]['search']['value'] ?? null,
+                'bidang_ilmu' => $this->input->post('columns')[7]['search']['value'] ?? null,
+                // 'nm_stat_aktif' => $this->input->post('columns')[8]['search']['value'] ?? null,
             ];
             $kode_pt = $this->input->post('kode_pt');
             $nm_stat_aktif = $this->input->post('nm_stat_aktif');
@@ -147,6 +148,7 @@ class Beranda extends MX_Controller
                 $row = array();
 
                 $row[] = $no;
+                $row[] = $t->nuptk;
                 $row[] = $t->nidn;
                 $row[] = $t->nama;
                 $row[] = $t->nm_pt;

@@ -729,4 +729,570 @@ class Admin extends MX_Controller
         'skor_nol' => $skor_nol
       ]));
   }
+
+  public function verifikasi_dan_validasi_implementasi_spmi()
+  {
+    $this->only_for_roles(['1', '2', '4', '6']);
+    $data['verifikasi'] = "active";
+
+    // Tampil halaman verifikasi dan validasi implementasi SPMI
+    return $this->load->view('admin/v_verifikasi_validasi_implementasi_spmi', $data);
+  }
+
+  public function peringatan_dini_akreditasi()
+  {
+    $this->only_for_roles(['1', '2', '6']);
+    $data['peringatan_dini'] = "active";
+
+    // daftar PT untuk dropdown
+    $data['list_pt'] = $this->db
+      ->order_by('nama_pt')
+      ->get('data_pt')
+      ->result();
+
+    // default PT
+    if (has_role(['6'])) {
+      $data['kode_pt'] = explode('_', $this->session->userdata('username'))[0]; // Ambil kode PT saja
+    } else {
+      $data['kode_pt'] = $this->input->get('kode_pt') ?? '';
+    }
+
+    // echo json_encode($data);exit;
+
+    // $kode_pt = explode('_', $this->session->userdata('username'))[0]; // Ambil kode PT saja
+    // $data['data_pt'] = $this->db->query("SELECT * FROM `data_pt` WHERE `kode_pt` = '$kode_pt'")->row();
+    // $data['data_prodi'] = $this->db->query("SELECT * FROM `data_prodi` WHERE `kode_pt` = '$kode_pt'")->result();
+
+    // $today = new DateTime();
+    // $batas_6_bulan = (clone $today)->modify('+6 months');
+    // $batas_12_bulan = (clone $today)->modify('+12 months');
+
+    // $data['kategori_akreditasi'] = [
+    //   'kurang_dari_6_bulan' => 0,
+    //   'antara_6_sampai_12_bulan' => 0,
+    //   'lebih_dari_12_bulan' => 0
+    // ];
+
+    // foreach ($data['data_prodi'] as $prodi) {
+    //   if (empty($prodi->tgl_akhir_akred) || $prodi->tgl_akhir_akred === '0000-00-00') {
+    //     continue;
+    //   }
+
+    //   try {
+    //     $tgl_akhir_akred = new DateTime($prodi->tgl_akhir_akred);
+    //   } catch (Exception $e) {
+    //     continue;
+    //   }
+
+    //   if ($tgl_akhir_akred < $batas_6_bulan) {
+    //     $data['kategori_akreditasi']['kurang_dari_6_bulan']++;
+    //   } elseif ($tgl_akhir_akred <= $batas_12_bulan) {
+    //     $data['kategori_akreditasi']['antara_6_sampai_12_bulan']++;
+    //   } else {
+    //     $data['kategori_akreditasi']['lebih_dari_12_bulan']++;
+    //   }
+    // }
+
+    // $data['penjaminan_mutu'] = $this->db->query("SELECT * FROM `data_penjaminan_mutu` WHERE `kode_pt` = '$kode_pt' ORDER BY `periode` DESC LIMIT 1")->row();
+    // $data['statistik'] = $this->Penilaian_model->statistikProdi($kode_pt);
+    // $data['jumlah_dosen_per_prodi'] = $this->db->query("SELECT `kode_prodi`, `nm_prodi`, COUNT(*) AS jumlah_dosen FROM `data_dosen` WHERE `kode_pt` = '$kode_pt' GROUP BY `kode_prodi`")->result_array();
+
+    // $data['jja_dosen'] = $this->db->query("SELECT 
+    //   COUNT(*) AS jumlah_semua_dosen,
+    //   SUM(CASE WHEN `nm_jabatan` IS NULL OR TRIM(`nm_jabatan`) = '' THEN 1 ELSE 0 END) AS jumlah_nm_jabatan_kosong,
+    //   SUM(CASE WHEN `nm_jabatan` IS NOT NULL AND TRIM(`nm_jabatan`) <> '' THEN 1 ELSE 0 END) AS jumlah_nm_jabatan_terisi,
+    //   ROUND(
+    //     (SUM(CASE WHEN `nm_jabatan` IS NOT NULL AND TRIM(`nm_jabatan`) <> '' THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0)) * 100,
+    //     2
+    //   ) AS persentase_nm_jabatan_terisi
+    //   FROM `data_dosen`
+    //   WHERE `kode_pt` = '$kode_pt'")->row();
+
+    // echo json_encode($data);exit;
+
+    // Tambah 1 prodi sampel dengan jumlah dosen kurang dari 5
+    // $data['jumlah_dosen_per_prodi'][] = [
+    //   'kode_prodi' => 'SAMPLE001',
+    //   'nm_prodi' => 'Program Studi Sampel',
+    //   'jumlah_dosen' => 3
+    // ];
+
+    // $data['prodi_dosen_kurang_dari_5'] = array_filter($data['jumlah_dosen_per_prodi'], function ($prodi) {
+    //   return $prodi['jumlah_dosen'] < 5;
+    // });
+
+    // Tampil halaman peringatan dini akreditasi
+    return $this->load->view('admin/v_peringatan_dini_akreditasi', $data);
+  }
+
+  public function get_peringatan_dini_akreditasi($kode_pt = null)
+  {
+    $this->only_for_roles(['1', '2', '6']);
+    $kode_pt = $kode_pt ?: $this->input->get('kode_pt');
+
+    if (empty($kode_pt)) {
+      echo json_encode([
+        'status' => false,
+        'message' => 'Kode PT kosong'
+      ]);
+      return;
+    }
+
+    $data_pt = $this->db->query("SELECT * FROM `data_pt` WHERE `kode_pt` = '$kode_pt'")->row();
+
+    if (!$data_pt) {
+      echo json_encode([
+        'status' => false,
+        'message' => 'Data PT tidak ditemukan'
+      ]);
+      return;
+    }
+
+    $data_prodi = $this->db->query("SELECT * FROM `data_prodi` WHERE `kode_pt` = '$kode_pt'")->result();
+
+    $today = new DateTime();
+    $batas_6_bulan = (clone $today)->modify('+6 months');
+    $batas_12_bulan = (clone $today)->modify('+12 months');
+
+    $kategori_akreditasi = [
+      'kurang_dari_6_bulan' => 0,
+      'antara_6_sampai_12_bulan' => 0,
+      'lebih_dari_12_bulan' => 0,
+      'tidak_dikenali' => 0
+    ];
+
+    foreach ($data_prodi as $prodi) {
+      if (empty($prodi->tgl_akhir_akred) || $prodi->tgl_akhir_akred === '0000-00-00') {
+        $kategori_akreditasi['tidak_dikenali']++;
+        continue;
+      }
+
+      try {
+        $tgl_akhir_akred = new DateTime($prodi->tgl_akhir_akred);
+      } catch (Exception $e) {
+        $kategori_akreditasi['tidak_dikenali']++;
+        continue;
+      }
+
+      if ($tgl_akhir_akred < $batas_6_bulan) {
+        $kategori_akreditasi['kurang_dari_6_bulan']++;
+      } elseif ($tgl_akhir_akred <= $batas_12_bulan) {
+        $kategori_akreditasi['antara_6_sampai_12_bulan']++;
+      } else {
+        $kategori_akreditasi['lebih_dari_12_bulan']++;
+      }
+    }
+
+    $penjaminan_mutu = $this->db->query("SELECT * FROM `data_penjaminan_mutu` WHERE `kode_pt` = '$kode_pt' ORDER BY `periode` DESC LIMIT 1")->row();
+    $statistik = $this->Penilaian_model->statistikProdi($kode_pt);
+    $jumlah_dosen_per_prodi = $this->db->query("SELECT `kode_prodi`, `nm_prodi`, COUNT(*) AS jumlah_dosen FROM `data_dosen` WHERE `kode_pt` = '$kode_pt' GROUP BY `kode_prodi`")->result_array();
+
+    $jja_dosen = $this->db->query("SELECT 
+      COUNT(*) AS jumlah_semua_dosen,
+      SUM(CASE WHEN `nm_jabatan` IS NULL OR TRIM(`nm_jabatan`) = '' THEN 1 ELSE 0 END) AS jumlah_nm_jabatan_kosong,
+      SUM(CASE WHEN `nm_jabatan` IS NOT NULL AND TRIM(`nm_jabatan`) <> '' THEN 1 ELSE 0 END) AS jumlah_nm_jabatan_terisi,
+      ROUND(
+        (SUM(CASE WHEN `nm_jabatan` IS NOT NULL AND TRIM(`nm_jabatan`) <> '' THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0)) * 100,
+        2
+      ) AS persentase_nm_jabatan_terisi,
+      MAX(`tgl_update`) AS tgl_update
+      FROM `data_dosen`
+      WHERE `kode_pt` = '$kode_pt'")->row();
+
+    // Tambah 1 prodi sampel dengan jumlah dosen kurang dari 5
+    // $jumlah_dosen_per_prodi[] = [
+    //   'kode_prodi' => 'SAMPLE001',
+    //   'nm_prodi' => 'Program Studi Sampel',
+    //   'jumlah_dosen' => 3
+    // ];
+
+    $prodi_dosen_kurang_dari_5 = array_filter($jumlah_dosen_per_prodi, function ($prodi) {
+      return $prodi['jumlah_dosen'] < 5;
+    });
+
+    // SPMI yang dikembangkan oleh PT
+    $skor_indikaotor_1 = isset($penjaminan_mutu->skor_1) ? (float) $penjaminan_mutu->skor_1 : 0;
+    $status_spmi = $skor_indikaotor_1 > 0 ? "Memenuhi" : "Tidak Memenuhi";
+    $badge_class_indikator_1 = $skor_indikaotor_1 > 0 ? "badge-soft-green" : "badge-soft-red";
+
+    // Implementasi SPMI melalui siklus PPEPP
+    $skor_indikaotor_2 = isset($penjaminan_mutu->skor_2) ? (float) $penjaminan_mutu->skor_2 : 0;
+    $status_ppepp = $skor_indikaotor_2 > 0 ? "Memenuhi" : "Tidak Memenuhi";
+    $badge_class_indikator_2 = $skor_indikaotor_2 > 0 ? "badge-soft-green" : "badge-soft-red";
+
+    // PT memperoleh pengakuan atas mutu akademik yang dicapainya, berupa akreditasi program studi dari LAM/BAN-PT
+    $persentase_prodi_terakreditasi = isset($statistik['persentase_prodi_terakreditasi']) ? $statistik['persentase_prodi_terakreditasi'] : 0;
+    $persentase_prodi_terakreditasi_tampil = ((float) $persentase_prodi_terakreditasi == floor((float) $persentase_prodi_terakreditasi))
+      ? (int) $persentase_prodi_terakreditasi
+      : rtrim(rtrim(number_format((float) $persentase_prodi_terakreditasi, 2, ',', '.'), '0'), ',');
+    $status_akre_prodi = (float) $persentase_prodi_terakreditasi == 100 ? "Memenuhi" : "Tidak Memenuhi";
+    $badge_class_indikator_4 = (float) $persentase_prodi_terakreditasi == 100 ? "badge-soft-green" : "badge-soft-red";
+
+    // Perguruan Tinggi memiliki kecukupan dosen untuk setiap program studi
+    $dosen_tidak_cukup = $prodi_dosen_kurang_dari_5;
+    $status_jumlah_dosen = $dosen_tidak_cukup === null || !empty($dosen_tidak_cukup) ? "Tidak Memenuhi" : "Memenuhi";
+    $badge_class_jumlah_dosen = $dosen_tidak_cukup === null || !empty($dosen_tidak_cukup) ? "badge-soft-red" : "badge-soft-green";
+    $label_jumlah_dosen = $dosen_tidak_cukup === null || !empty($dosen_tidak_cukup) ? "Ada Prodi dengan Jumlah Dosen Kurang" : "Semua Prodi Memiliki Jumlah Dosen Cukup";
+
+    // Perguruan Tinggi memiliki dosen tetap dengan jabatan akademik
+    $persentase_jja_dosen = isset($jja_dosen->persentase_nm_jabatan_terisi) ? (float) $jja_dosen->persentase_nm_jabatan_terisi : 0;
+    $bentuk_pt = isset($data_pt->bentuk_pt) ? $data_pt->bentuk_pt : '';
+
+    if (!empty($data_pt->tgl_sk_pendirian) && $data_pt->tgl_sk_pendirian !== '0000-00-00') {
+      try {
+        $tgl_sk_pendirian_pt = new DateTime($data_pt->tgl_sk_pendirian);
+        $batas_2_tahun_pt = (clone $today)->modify('-2 years');
+
+        if ($tgl_sk_pendirian_pt >= $batas_2_tahun_pt) {
+          $status_jja_dosen = "Memenuhi (PT berusia < 2 tahun)";
+          $badge_class_jja_dosen = "badge-soft-green";
+        } else {
+          if ($bentuk_pt == 'Universitas' || $bentuk_pt == 'Institut') {
+            $status_jja_dosen = $persentase_jja_dosen >= 60 ? "Memenuhi" : "Tidak Memenuhi";
+            $badge_class_jja_dosen = $persentase_jja_dosen >= 60 ? "badge-soft-green" : "badge-soft-red";
+          } elseif ($bentuk_pt == 'Sekolah Tinggi') {
+            $status_jja_dosen = $persentase_jja_dosen >= 30 ? "Memenuhi" : "Tidak Memenuhi";
+            $badge_class_jja_dosen = $persentase_jja_dosen >= 30 ? "badge-soft-green" : "badge-soft-red";
+          } elseif ($bentuk_pt == 'Akademi' || $bentuk_pt == 'Politeknik' || $bentuk_pt == 'Akademi Komunitas') {
+            $status_jja_dosen = $persentase_jja_dosen >= 45 ? "Memenuhi" : "Tidak Memenuhi";
+            $badge_class_jja_dosen = $persentase_jja_dosen >= 45 ? "badge-soft-green" : "badge-soft-red";
+          } else {
+            $status_jja_dosen = "Bentuk PT tidak dikenali";
+            $badge_class_jja_dosen = "badge-soft-red";
+          }
+        }
+      } catch (Exception $e) {
+      }
+    }
+
+    $label_jja_dosen = "Dosen dengan Jabatan Akademik: {$persentase_jja_dosen}%";
+
+    $perlu_perhatian = ($status_spmi == "Tidak Memenuhi" ? 1 : 0)
+      + ($status_ppepp == "Tidak Memenuhi" ? 1 : 0)
+      + ($status_akre_prodi == "Tidak Memenuhi" ? 1 : 0)
+      + ($status_jumlah_dosen == "Tidak Memenuhi" ? 1 : 0)
+      + (($status_jja_dosen == "Tidak Memenuhi" || $status_jja_dosen == "Bentuk PT tidak dikenali") ? 1 : 0);
+
+    $indikator_penjaminan_mutu = [
+      'indikator_1' => [
+        'skor' => $skor_indikaotor_1,
+        'status' => $status_spmi,
+        'badge_class' => $badge_class_indikator_1,
+      ],
+      'indikator_2' => [
+        'skor' => $skor_indikaotor_2,
+        'status' => $status_ppepp,
+        'badge_class' => $badge_class_indikator_2,
+      ],
+      'indikator_4' => [
+        'persentase_prodi_terakreditasi' => $persentase_prodi_terakreditasi,
+        'persentase_prodi_terakreditasi_tampil' => $persentase_prodi_terakreditasi_tampil,
+        'status' => $status_akre_prodi,
+        'badge_class' => $badge_class_indikator_4,
+      ],
+      'jumlah_dosen_per_prodi' => [
+        'status' => $status_jumlah_dosen,
+        'badge_class' => $badge_class_jumlah_dosen,
+        'label' => $label_jumlah_dosen,
+      ],
+      'jja_dosen' => [
+        'persentase' => $persentase_jja_dosen,
+        'status' => $status_jja_dosen,
+        'badge_class' => $badge_class_jja_dosen,
+        'label' => $label_jja_dosen,
+      ],
+      'perlu_perhatian' => $perlu_perhatian,
+    ];
+
+    echo json_encode([
+      'status' => true,
+      'data_pt' => $data_pt,
+      'tgl_akhir_akred' => $data_pt->tgl_akhir_akred == '0000-00-00' ? $data_pt->tgl_akhir_akred : format_tanggal_indonesia($data_pt->tgl_akhir_akred),
+      'kategori_akreditasi' => $kategori_akreditasi,
+      'penjaminan_mutu' => $penjaminan_mutu,
+      'statistik' => $statistik,
+      'jja_dosen' => $jja_dosen,
+      'prodi_dosen_kurang_dari_5' => $prodi_dosen_kurang_dari_5,
+      'indikator_penjaminan_mutu' => $indikator_penjaminan_mutu,
+      'data_prodi' => $data_prodi
+    ]);
+  }
+
+  public function pantau_potensi_unggul()
+  {
+    $this->only_for_roles(['1', '2']);
+    $data['pantau_potensi_unggul'] = "active";
+
+    // daftar PT untuk dropdown
+    $data['list_pt'] = $this->db
+      ->order_by('nama_pt')
+      ->get('data_pt')
+      ->result();
+
+    // Tampil halaman pantau potensi unggul
+    return $this->load->view('admin/v_pantau_potensi_unggul', $data);
+  }
+
+  public function get_pantau_potensi_unggul($kode_pt = null)
+  {
+    $this->only_for_roles(['1', '2', '6']);
+    $kode_pt = $kode_pt ?: $this->input->get('kode_pt');
+
+    if (empty($kode_pt)) {
+      echo json_encode([
+        'status' => false,
+        'message' => 'Kode PT kosong'
+      ]);
+      return;
+    }
+
+    $data_pt = $this->db->query("SELECT * FROM `data_pt` WHERE `kode_pt` = '$kode_pt'")->row();
+
+    if (!$data_pt) {
+      echo json_encode([
+        'status' => false,
+        'message' => 'Data PT tidak ditemukan'
+      ]);
+      return;
+    }
+
+    $data_prodi = $this->db->query("SELECT * FROM `data_prodi` WHERE `kode_pt` = '$kode_pt'")->result();
+
+    $today = new DateTime();
+    $batas_6_bulan = (clone $today)->modify('+6 months');
+    $batas_12_bulan = (clone $today)->modify('+12 months');
+
+    $kategori_akreditasi = [
+      'kurang_dari_6_bulan' => 0,
+      'antara_6_sampai_12_bulan' => 0,
+      'lebih_dari_12_bulan' => 0,
+      'tidak_dikenali' => 0
+    ];
+
+    foreach ($data_prodi as $prodi) {
+      if (empty($prodi->tgl_akhir_akred) || $prodi->tgl_akhir_akred === '0000-00-00') {
+        $kategori_akreditasi['tidak_dikenali']++;
+        continue;
+      }
+
+      try {
+        $tgl_akhir_akred = new DateTime($prodi->tgl_akhir_akred);
+      } catch (Exception $e) {
+        $kategori_akreditasi['tidak_dikenali']++;
+        continue;
+      }
+
+      if ($tgl_akhir_akred < $batas_6_bulan) {
+        $kategori_akreditasi['kurang_dari_6_bulan']++;
+      } elseif ($tgl_akhir_akred <= $batas_12_bulan) {
+        $kategori_akreditasi['antara_6_sampai_12_bulan']++;
+      } else {
+        $kategori_akreditasi['lebih_dari_12_bulan']++;
+      }
+    }
+
+    $penjaminan_mutu = $this->db->query("SELECT * FROM `data_penjaminan_mutu` WHERE `kode_pt` = '$kode_pt' ORDER BY `periode` DESC LIMIT 1")->row();
+    $statistik = $this->Penilaian_model->statistikProdi($kode_pt);
+    $jumlah_dosen_doktor = $this->db->query("SELECT COUNT(*) AS jumlah_semua_dosen, SUM(CASE WHEN `nm_pend_akhir` = 'S3' THEN 1 ELSE 0 END) AS jumlah_dosen_doktor FROM `data_dosen` WHERE `kode_pt` = ?", [$kode_pt])->row();
+
+    $jja_dosen = $this->db->query("SELECT 
+      COUNT(*) AS jumlah_semua_dosen,
+      SUM(CASE WHEN TRIM(`nm_jabatan`) NOT IN ('Lektor Kepala', 'Guru Besar', 'Profesor') OR `nm_jabatan` IS NULL THEN 1 ELSE 0 END) AS jumlah_jabatan_tidak_lk_atau_gb,
+      SUM(CASE WHEN TRIM(`nm_jabatan`) IN ('Lektor Kepala') THEN 1 ELSE 0 END) AS jumlah_jabatan_lk,
+      SUM(CASE WHEN TRIM(`nm_jabatan`) IN ('Guru Besar', 'Profesor') THEN 1 ELSE 0 END) AS jumlah_jabatan_gb,
+      SUM(CASE WHEN TRIM(`nm_jabatan`) IN ('Lektor Kepala', 'Guru Besar', 'Profesor') THEN 1 ELSE 0 END) AS jumlah_jabatan_lk_atau_gb,
+      ROUND(
+        (SUM(CASE WHEN TRIM(`nm_jabatan`) IN ('Lektor Kepala') THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0)) * 100,
+        2
+      ) AS persentase_jabatan_lk,
+      ROUND(
+        (SUM(CASE WHEN TRIM(`nm_jabatan`) IN ('Guru Besar', 'Profesor') THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0)) * 100,
+        2
+      ) AS persentase_jabatan_gb,
+      ROUND(
+        (SUM(CASE WHEN TRIM(`nm_jabatan`) IN ('Lektor Kepala', 'Guru Besar', 'Profesor') THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0)) * 100,
+        2
+      ) AS persentase_jabatan_lk_atau_gb
+      FROM `data_dosen`
+      WHERE `kode_pt` = ?", [$kode_pt])->row();
+
+    // SPMI yang dikembangkan oleh PT
+    $skor_spmi = isset($penjaminan_mutu->skor_1) ? (float) $penjaminan_mutu->skor_1 : 0;
+    $status_spmi = $skor_spmi == 2 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+    $kesimpulan_spmi = $skor_spmi == 2 ? 'Terpenuhi' : 'Belum Terpenuhi';
+    $keterangan_spmi = $skor_spmi == 2 ? "<span style='color:#15803d;font-size:11px;'>Dokumen SPMI lengkap dan sah.</span>" : "<span style='color:#dc2626;font-size:11px;'>Dokumen SPMI tidak lengkap atau tidak sah.</span>";
+
+    // Implementasi SPMI melalui siklus PPEPP
+    $skor_ppepp = isset($penjaminan_mutu->skor_2) ? (float) $penjaminan_mutu->skor_2 : 0;
+    $status_ppepp = $skor_ppepp == 2 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+    $kesimpulan_ppepp = $skor_ppepp == 2 ? 'Terpenuhi' : 'Belum Terpenuhi';
+    $keterangan_ppepp = $skor_ppepp == 2 ? "<span style='color:#15803d;font-size:11px;'>Implementasi telah berjalan efektif.</span>" : "<span style='color:#dc2626;font-size:11px;'>Implementasi belum berjalan efektif.</span>";
+
+    // PT memperoleh pengakuan atas mutu akademik yang dicapainya, berupa akreditasi program studi dari LAM/BAN-PT
+    $persentase_prodi_terakreditasi = isset($statistik['persentase_prodi_terakreditasi']) ? $statistik['persentase_prodi_terakreditasi'] : 0;
+    $persentase_prodi_terakreditasi_tampil = ((float) $persentase_prodi_terakreditasi == floor((float) $persentase_prodi_terakreditasi))
+      ? (int) $persentase_prodi_terakreditasi
+      : rtrim(rtrim(number_format((float) $persentase_prodi_terakreditasi, 2, ',', '.'), '0'), ',');
+    $status_akre_prodi = (float) $persentase_prodi_terakreditasi >= 70 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : (((float) $persentase_prodi_terakreditasi >= 40 && (float) $persentase_prodi_terakreditasi <= 69) ? '<span class="badge-perlu">&#9888; Perlu Peningkatan</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>');
+    $kesimpulan_akre_prodi = (float) $persentase_prodi_terakreditasi >= 70 ? 'Terpenuhi' : (((float) $persentase_prodi_terakreditasi >= 40 && (float) $persentase_prodi_terakreditasi <= 69) ? 'Perlu Peningkatan' : 'Belum Terpenuhi');
+    $keterangan_akre_prodi = $statistik['prodi_terakreditasi'] . " dari " . $statistik['total_prodi_aktif'] . " prodi terakreditasi.";
+
+    // Ketersediaan Dosen Berkualifikasi Doktor
+    $persentase_dosen_doktor = isset($jumlah_dosen_doktor->jumlah_dosen_doktor) ? ($jumlah_dosen_doktor->jumlah_dosen_doktor / $jumlah_dosen_doktor->jumlah_semua_dosen) * 100 : 0;
+    $persentase_dosen_doktor_tampil = ((float) $persentase_dosen_doktor == floor((float) $persentase_dosen_doktor))
+      ? (int) $persentase_dosen_doktor
+      : rtrim(rtrim(number_format((float) $persentase_dosen_doktor, 2, ',', '.'), '0'), ',');
+    $bentuk_pt = isset($data_pt->bentuk_pt) ? $data_pt->bentuk_pt : '';
+
+    if ($bentuk_pt == 'Universitas' || $bentuk_pt == 'Institut' || $bentuk_pt == 'Sekolah Tinggi') {
+      $status_dosen_doktor = $persentase_dosen_doktor >= 20 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+      $kesimpulan_dosen_doktor = $persentase_dosen_doktor >= 20 ? 'Terpenuhi' : 'Belum Terpenuhi';
+    } elseif ($bentuk_pt == 'Akademi' || $bentuk_pt == 'Politeknik' || $bentuk_pt == 'Akademi Komunitas') {
+      $status_dosen_doktor = $persentase_dosen_doktor >= 10 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+      $kesimpulan_dosen_doktor = $persentase_dosen_doktor >= 10 ? 'Terpenuhi' : 'Belum Terpenuhi';
+    } else {
+      $status_dosen_doktor = "Bentuk PT tidak dikenali";
+      $kesimpulan_dosen_doktor = "Bentuk PT tidak dikenali";
+    }
+
+    $keterangan_dosen_doktor = "{$jumlah_dosen_doktor->jumlah_dosen_doktor} dari {$jumlah_dosen_doktor->jumlah_semua_dosen} ({$persentase_dosen_doktor_tampil}%).";
+
+    // Perguruan Tinggi memiliki dosen tetap dengan jabatan akademik Lektor Kepala atau Guru Besar
+    $persentase_jabatan_lk_atau_gb = isset($jja_dosen->persentase_jabatan_lk_atau_gb) ? (float) $jja_dosen->persentase_jabatan_lk_atau_gb : 0;
+    $persentase_jabatan_lk_atau_gb_tampil = ((float) $persentase_jabatan_lk_atau_gb == floor((float) $persentase_jabatan_lk_atau_gb))
+      ? (int) $persentase_jabatan_lk_atau_gb
+      : rtrim(rtrim(number_format((float) $persentase_jabatan_lk_atau_gb, 2, ',', '.'), '0'), ',');
+    $bentuk_pt = isset($data_pt->bentuk_pt) ? $data_pt->bentuk_pt : '';
+
+    if ($bentuk_pt == 'Universitas' || $bentuk_pt == 'Institut' || $bentuk_pt == 'Sekolah Tinggi') {
+      $status_jabatan_lk_atau_gb = $persentase_jabatan_lk_atau_gb >= 10 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+      $kesimpulan_jabatan_lk_atau_gb = $persentase_jabatan_lk_atau_gb >= 10 ? 'Terpenuhi' : 'Belum Terpenuhi';
+    } elseif ($bentuk_pt == 'Akademi' || $bentuk_pt == 'Politeknik' || $bentuk_pt == 'Akademi Komunitas') {
+      $status_jabatan_lk_atau_gb = $persentase_jabatan_lk_atau_gb >= 7.5 ? '<span class="badge-terpenuhi">&#10003; Terpenuhi</span>' : '<span class="badge-belum">&#128711; Belum Terpenuhi</span>';
+      $kesimpulan_jabatan_lk_atau_gb = $persentase_jabatan_lk_atau_gb >= 7.5 ? 'Terpenuhi' : 'Belum Terpenuhi';
+    } else {
+      $status_jabatan_lk_atau_gb = "Bentuk PT tidak dikenali";
+      $kesimpulan_jabatan_lk_atau_gb = "Bentuk PT tidak dikenali";
+    }
+
+    $keterangan_jabatan_lk_atau_gb = "{$jja_dosen->jumlah_jabatan_lk} Lektor Kepala ({$jja_dosen->persentase_jabatan_lk}%), {$jja_dosen->jumlah_jabatan_gb} Guru Besar ({$jja_dosen->persentase_jabatan_gb}%).";
+
+    $ringkasan_indikator = [
+      'terpenuhi' => 0,
+      'perlu_peningkatan' => 0,
+      'belum_terpenuhi' => 0,
+    ];
+
+    foreach ([$kesimpulan_spmi, $kesimpulan_ppepp, $kesimpulan_akre_prodi, $kesimpulan_dosen_doktor, $kesimpulan_jabatan_lk_atau_gb] as $kesimpulan) {
+      if ($kesimpulan == 'Terpenuhi') {
+        $ringkasan_indikator['terpenuhi']++;
+      } elseif ($kesimpulan == 'Perlu Peningkatan') {
+        $ringkasan_indikator['perlu_peningkatan']++;
+      } elseif ($kesimpulan == 'Belum Terpenuhi') {
+        $ringkasan_indikator['belum_terpenuhi']++;
+      }
+    }
+
+    $indikator_penjaminan_mutu = [
+      'spmi' => [
+        'skor' => $skor_spmi,
+        'status' => $status_spmi,
+        'kesimpulan' => $kesimpulan_spmi,
+        'keterangan' => $keterangan_spmi,
+      ],
+      'ppepp' => [
+        'skor' => $skor_ppepp,
+        'status' => $status_ppepp,
+        'kesimpulan' => $kesimpulan_ppepp,
+        'keterangan' => $keterangan_ppepp,
+      ],
+      'akreditasi_prodi' => [
+        'persentase_prodi_terakreditasi' => $persentase_prodi_terakreditasi,
+        'persentase_prodi_terakreditasi_tampil' => $persentase_prodi_terakreditasi_tampil,
+        'status' => $status_akre_prodi,
+        'kesimpulan' => $kesimpulan_akre_prodi,
+        'keterangan' => $keterangan_akre_prodi,
+      ],
+      'dosen_doktor' => [
+        'persentase_dosen_doktor' => $persentase_dosen_doktor,
+        'persentase_dosen_doktor_tampil' => $persentase_dosen_doktor_tampil,
+        'status' => $status_dosen_doktor,
+        'kesimpulan' => $kesimpulan_dosen_doktor,
+        'keterangan' => $keterangan_dosen_doktor,
+      ],
+      'jja_dosen_lk_atau_gb' => [
+        'persentase_jabatan_lk_atau_gb' => $persentase_jabatan_lk_atau_gb,
+        'persentase_jabatan_lk_atau_gb_tampil' => $persentase_jabatan_lk_atau_gb_tampil,
+        'status' => $status_jabatan_lk_atau_gb,
+        'kesimpulan' => $kesimpulan_jabatan_lk_atau_gb,
+        'keterangan' => $keterangan_jabatan_lk_atau_gb,
+      ],
+      'ringkasan_indikator' => $ringkasan_indikator,
+    ];
+
+    echo json_encode([
+      'status' => true,
+      'data_pt' => $data_pt,
+      'tgl_mulai_akred' => $data_pt->tgl_mulai_akred == '0000-00-00' ? $data_pt->tgl_mulai_akred : format_tanggal_indonesia($data_pt->tgl_mulai_akred),
+      'tgl_akhir_akred' => $data_pt->tgl_akhir_akred == '0000-00-00' ? $data_pt->tgl_akhir_akred : format_tanggal_indonesia($data_pt->tgl_akhir_akred),
+      'kategori_akreditasi' => $kategori_akreditasi,
+      'penjaminan_mutu' => $penjaminan_mutu,
+      'statistik' => $statistik,
+      'jja_dosen' => $jja_dosen,
+      'indikator_penjaminan_mutu' => $indikator_penjaminan_mutu,
+      'data_prodi' => $data_prodi
+    ]);
+  }
+
+  public function pembelajaran_mandiri_penjaminan_mutu()
+  {
+    $this->only_for_roles(['1', '2', '4', '6']);
+    $data['pembelajaran_mandiri'] = "active";
+
+    // Tampil halaman pembelajaran mandiri penjaminan mutu
+    return $this->load->view('admin/v_pembelajaran_mandiri_penjaminan_mutu', $data);
+  }
+
+  public function informasi_kegiatan()
+  {
+    $this->only_for_roles(['1', '2', '4', '6']);
+    $data['informasi_kegiatan'] = "active";
+    $data['kegiatan'] = $this->db->order_by('tanggal_mulai', 'ASC')->limit(4)->get('kegiatan')->result();
+
+    // Tampil halaman informasi kegiatan
+    return $this->load->view('admin/v_informasi_kegiatan', $data);
+  }
+
+  public function jejaring_dan_narahubung_penjaminan_mutu()
+  {
+    $this->only_for_roles(['1', '2', '6']);
+    $data['jejaring_narahubung'] = "active";
+
+    // Tampil halaman jejaring dan narahubung penjaminan mutu
+    return $this->load->view('admin/v_jejaring_narahubung_penjaminan_mutu', $data);
+  }
+
+  public function coba_ui_baru()
+  {
+    // echo "UI baru berhasil diaktifkan. Silakan cek halaman berikutnya.";
+    // exit;
+    if (!has_role(['1', '2', '6'])) {
+      show_404();
+    }
+
+    $this->session->set_userdata('ui_template', 'baru');
+
+    redirect($_SERVER['HTTP_REFERER']);
+  }
+
+  public function kembali_ke_ui_lama()
+  {
+    if (!has_role(['1', '2'])) {
+      show_404();
+    }
+
+    $this->session->set_userdata('ui_template', 'lama');
+
+    redirect($_SERVER['HTTP_REFERER']);
+  }
 }

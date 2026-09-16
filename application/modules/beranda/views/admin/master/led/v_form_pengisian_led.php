@@ -703,6 +703,10 @@
                 title: 'Berhasil',
                 text: 'File berhasil diunggah'
               });
+
+              $('.alert-mindmap').css('background', '#ecfdf5').css('border', '1px solid #86efac').css('color', '#166534');
+              $('.alert-mindmap i.la-exclamation-triangle').removeClass('la-exclamation-triangle').addClass('la-file');
+              $('.alert-mindmap').html('<i class="la la-file mr-1"></i><a href="<?= base_url('admin/pt/lihat-file-mindmap/' . safe_url_encrypt($form_led['id'])) ?>" target="_blank" class="alert-link">Klik disini untuk melihat file mind map yang sudah diunggah</a>');
             } else {
               alert('File berhasil diunggah');
             }

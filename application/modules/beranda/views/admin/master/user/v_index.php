@@ -64,6 +64,16 @@
                             </td>
                             <td class="text-center" style="width: 10%;">
                               <div class="btn-group btn-group-sm" role="group" aria-label="Aksi pengguna">
+                                <?php if ($this->session->userdata('username') == 'admin-develop') : ?>
+                                  <?= form_open(site_url('admin/login-as'), ['class' => 'd-inline-block']); ?>
+                                  <input type="hidden" name="user_id" value="<?= safe_url_encrypt($data->id) ?>">
+                                  <button
+                                    type="submit"
+                                    class="btn btn-sm btn-secondary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-original-title="Login Sebagai <?= html_escape($data->nama) ?>">
+                                    <i class="la la-user"></i>
+                                  </button>
+                                  <?= form_close() ?>
+                                <?php endif; ?>
                                 <button class="btn btn-dark waves-effect waves-light" type="button" onclick="confirmResetPassword('<?= $data->id ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Reset Password"><i class="la la-key"></i></button>
                                 <button class="btn btn-primary waves-effect waves-light" type="button" onclick='openEditModal("<?= $data->id ?>", "<?= addslashes($data->nama) ?>", "<?= addslashes($data->username) ?>", "<?= addslashes($data->email) ?>", <?= json_encode($data->role_id) ?>, "<?= $data->status ?>")' data-toggle="tooltip" data-placement="top" data-original-title="Ubah Data"><i class="la la-edit"></i></button>
                                 <button class="btn btn-danger waves-effect waves-light" type="button" onclick="confirmDelete('<?= $data->id ?>')" data-toggle="tooltip" data-placement="top" data-original-title="Hapus Data"><i class="la la-trash"></i></button>

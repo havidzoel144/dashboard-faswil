@@ -233,7 +233,12 @@ class Pt extends MX_Controller
     ])->row_array();
 
     $form_led = $this->db->from('form_led as a')->join('penilaian_tipologi as b', 'a.id_penilaian_tipologi = b.id_penilaian_tipologi')->where('b.kode_pt', $kode_pt)->where('b.periode', $periode)->get()->row_array();
-    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+
+    if ($form_led && !empty($form_led['persentase_prodi'])) {
+      $persentase_prodi = json_decode($form_led['persentase_prodi'], true);
+    } else {
+      $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    }
     $identias_pt = $this->db->get_where('data_pt', ['kode_pt' => $kode_pt])->row_array();
 
     // echo json_encode($penilaian_tipologi); // Debugging: Tampilkan data form_led
@@ -249,6 +254,7 @@ class Pt extends MX_Controller
         'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? 'Belum diisi',
         'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? '0000-00-00',
         'created_at' => date('Y-m-d H:i:s'),
+        'persentase_prodi' => json_encode($persentase_prodi),
       ];
       $this->db->insert('form_led', $data_insert);
     } else {
@@ -260,6 +266,7 @@ class Pt extends MX_Controller
           'tgl_sk_pendirian_pt' => $identias_pt['tgl_sk_pendirian'] ?? '0000-00-00',
           'akreditasi_pt' => $identias_pt['akreditasi_pt'] ?? 'Belum diisi',
           'tgl_akhir_apt' => $identias_pt['tgl_akhir_akred'] ?? '0000-00-00',
+          'persentase_prodi' => json_encode($persentase_prodi),
         ];
         $this->db->where('id', $form_led['id'])->update('form_led', $data_update);
       }
@@ -419,7 +426,7 @@ class Pt extends MX_Controller
     ])->row_array();
 
     $null_fields = array_keys(array_filter($form_led, function ($v, $k) {
-      if (in_array($k, ['akreditasi_pt', 'tgl_akhir_apt', 'tgl_sk_pendirian_pt', 'alamat', 'pejabat_penandatangan', 'tahun_pertama_terima_mhs', 'tautan_sasaran_mutu_dampak', 'created_at', 'updated_at', 'status'], true)) {
+      if (in_array($k, ['akreditasi_pt', 'tgl_akhir_apt', 'tgl_sk_pendirian_pt', 'alamat', 'pejabat_penandatangan', 'tahun_pertama_terima_mhs', 'tautan_sasaran_mutu_dampak', 'created_at', 'updated_at', 'status', 'persentase_prodi'], true)) {
         return false;
       }
       return is_null($v) || $v === '' || $v === '0' || $v === 0 || $v === '0000-00-00';
@@ -443,9 +450,12 @@ class Pt extends MX_Controller
       return;
     }
 
+    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+
     $data_update = [
       'status'     => '1',
       'updated_at' => date('Y-m-d H:i:s'),
+      'persentase_prodi' => json_encode($persentase_prodi)
     ];
 
     $this->db->where('id_penilaian_tipologi', $form_led['id_penilaian_tipologi'])
@@ -503,7 +513,8 @@ class Pt extends MX_Controller
       ->where('fl.kode_pt', $kode_pt)
       ->get()
       ->row();
-    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    // $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    $persentase_prodi = json_decode($data_db->persentase_prodi, true);
 
     if (!$data_db) {
       $this->session->set_flashdata('error', 'Data LED tidak ditemukan untuk periode ini.');
@@ -559,7 +570,9 @@ class Pt extends MX_Controller
       return;
     }
 
-    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    $identias_pt = $this->db->get_where('data_pt', ['kode_pt' => $kode_pt])->row_array();
+    // $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    $persentase_prodi = json_decode($data_db->persentase_prodi, true);
 
     $template_path = FCPATH . 'uploads/template_laporan_led.docx'; // path template
     $templateProcessor = new TemplateProcessor($template_path);
@@ -586,6 +599,16 @@ class Pt extends MX_Controller
     $templateProcessor->setValue('dasar_penyusunan', $data_db->dasar_penyusunan);
     $templateProcessor->setValue('mekanisme_kerja_penyusunan_laporan', $data_db->mekanisme_kerja_penyusunan_laporan);
     $templateProcessor->setValue('penetapan_diferensiasi', $data_db->penetapan_diferensiasi);
+    if ($data_db->nama_file <> null || $data_db->nama_file <> '' && file_exists(FCPATH . 'uploads/mindmap_pt/' . $data_db->nama_file)) {
+      $templateProcessor->setImageValue('mindmap_diferensiasi', [
+        'path' => FCPATH . 'uploads/mindmap_pt/' . $data_db->nama_file,
+        'width' => 550,
+        'height' => 550,
+        'ratio' => true
+      ]);
+    } else {
+      $templateProcessor->setValue('mindmap_diferensiasi', 'Gambar Mindmap Diferensiasi tidak tersedia');
+    }
     $templateProcessor->setValue('sasaran_mutu_masukan', $data_db->sasaran_mutu_masukan);
     $templateProcessor->setValue('tautan_sasaran_mutu_masukan', $data_db->tautan_sasaran_mutu_masukan);
     $templateProcessor->setValue('sasaran_mutu_proses', $data_db->sasaran_mutu_proses);
@@ -593,6 +616,7 @@ class Pt extends MX_Controller
     $templateProcessor->setValue('sasaran_mutu_luaran', $data_db->sasaran_mutu_luaran);
     $templateProcessor->setValue('tautan_sasaran_mutu_luaran', $data_db->tautan_sasaran_mutu_luaran);
     $templateProcessor->setValue('sasaran_mutu_dampak', $data_db->sasaran_mutu_dampak);
+    $templateProcessor->setValue('tgl_update', format_tanggal_indonesia($identias_pt['tgl_update']));
     $templateProcessor->setValue('total_prodi_aktif', $persentase_prodi['total_prodi_aktif'] ?? 0);
     $templateProcessor->setValue('prodi_terakreditasi', $persentase_prodi['prodi_terakreditasi'] ?? 0);
     $templateProcessor->setValue('prodi_unggul_atau_a', $persentase_prodi['prodi_unggul_atau_a'] ?? 0);
@@ -895,7 +919,7 @@ class Pt extends MX_Controller
     // return $this->load->view('admin/master/led/export_nilai_pdf', $data);
 
     $this->load->library('pdfgenerator');
-    $file_pdf = "Hasil Review Eksternal LLDikti Wilayah III_" . $data['nama_pt'] . "_" . $data['progres_penilaian']->periode . "_" . date('Y-m-d_H-i-s');
+    $file_pdf = "Hasil Reviu Eksternal LLDikti Wilayah III_" . $data['nama_pt'] . "_" . $data['progres_penilaian']->periode . "_" . date('Y-m-d_H-i-s');
     $paper = 'A4';
     $orientation = "portrait";
     $html = $this->load->view('admin/master/led/export_nilai_pdf', $data, true);

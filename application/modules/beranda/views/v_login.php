@@ -172,9 +172,29 @@
 
     .footer {
       text-align: center;
-      margin-top: 15px;
+      margin-top: 22px;
       font-size: 12px;
-      color: #999;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .footer a {
+      color: #1e3c72;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 1000;
+      transition: color .2s ease, text-decoration-color .2s ease;
+    }
+
+    .footer a:hover {
+      color: #2a5298;
+      text-decoration: underline;
+    }
+
+    .footer .copyright {
+      display: block;
+      margin-top: 4px;
+      color: #94a3b8;
     }
   </style>
 
@@ -214,7 +234,8 @@
       <?php echo form_close(); ?>
 
       <div class="footer">
-        © <?= date('Y') ?> LLDIKTI III
+        <a href="https://drive.google.com/drive/u/1/folders/1hO2QbudeUfSPq_fOT_oHXyWQpnb-mxLx" target="_blank" rel="noopener noreferrer">Unduh Panduan</a>
+        <span class="copyright">© <?= date('Y') ?> LLDIKTI III</span>
       </div>
 
     </div>

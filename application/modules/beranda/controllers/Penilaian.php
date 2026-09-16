@@ -125,7 +125,9 @@ class Penilaian extends MX_Controller
     // $periode = $this->Periode_model->get_active_periode(); // Contoh, bisa juga dari input
     $id_penilaian_tipologi = $post['id_penilaian_tipologi'];
     $kode_pt = $post['kode_pt'];
-    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    $form_led = $this->db->from('form_led as a')->join('penilaian_tipologi as b', 'a.id_penilaian_tipologi = b.id_penilaian_tipologi')->where('b.kode_pt', $kode_pt)->where('a.id_penilaian_tipologi', $id_penilaian_tipologi)->get()->row_array();
+    // $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    $persentase_prodi = json_decode($form_led['persentase_prodi'], true);
     $skoring_prodi = $this->skoring_akreditasi->hitung([
       'jumlah_prodi_aktif' => $persentase_prodi['total_prodi_aktif'],
       'prodi_terakreditasi' => $persentase_prodi['prodi_terakreditasi'],
@@ -317,7 +319,8 @@ class Penilaian extends MX_Controller
     }
 
     $kode_pt = $data_db->kode_pt;
-    $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    // $persentase_prodi = $this->Penilaian_model->statistikProdi($kode_pt);
+    $persentase_prodi = json_decode($data_db->persentase_prodi, true); // Ambil dari database jika sudah ada
 
     $template_path = FCPATH . 'uploads/template_laporan_led.docx'; // path template
     $templateProcessor = new TemplateProcessor($template_path);
